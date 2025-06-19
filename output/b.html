@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLHeli电调使用遥控器摇杆进行参数设置指南</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>BLHeli电调使用遥控器摇杆进行参数设置指南</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/148579554" target="_blank">https://blog.csdn.net/aerror/article/details/148579554</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-11 11:19:27</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 837</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 5</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 6</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">单片机</span></div>
+    
+    <div class="article-description">介绍了RX42BL接收器集成标准BLHELI电调，使用遥控器进行参数修改的方法， 提供11个可调参数（如0-30度换向时序）</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>你想改一下BLHeli的参数，但是你没有BLHeli的编程器？你不想操作电脑？你已经在飞场了，根本没有电脑？ 你讨厌使用编程器和blhelisuite? 全部设备都安装好了，你不想再拆下电调了？ 你满足上面任一下条件，同时你有一个遥控器，你有一个接收机，一个BLHELI的电调，电机也焊好在电调上了。那么以下内容非常适合你看看。 </p>
+<p></p>
+<p>RX42BL接收接集成了两个标准的blheli电调，可以某宝输入型号找到购买链接。</p>
+<p>以下内容只是适用于blheli电调，不适用于blheli-s，也不是blheli32。油门的输入信号为PWM。它还支持PPM的输入，PPM设置流程和方法请参考<a class="link-info" href="https://github.com/bitdump/BLHeli/blob/master/SiLabs/BLHeli%20manual%20SiLabs%20Rev14.x.pdf" title="原文档">原文档</a>。 </p>
+<h3>1. 可以设置的参数</h3>
+<h3><img alt="" src="images/b/e2f9d5e3dae440b5811dcd0687689e7f.png"/></h3>
+<p>       一共有11个参数可以调，如上，绿色是默认值， 翻译如下：</p>
+<p></p>
+<p><img alt="" src="images/b/47abd84ac0b348b895ab11a7e18fbea9.png"/></p>
+<p>        如6 换向时序，一个般翻译为<strong>进角（换向时序）调整</strong> 对于工作异常的电机，调整进角参数可能解决问题。</p>
+<p>        请保存或打印这个表，调参的时候必须看着这个表才能进行调参。</p>
+<p>        调参之前一定要接上无刷电机，这样才会听到声音， 是电机发出“哔”的声音的。</p>
+<p></p>
+<h3>2. 电调上电时的正常解锁流程：</h3>
+<p><img alt="" src="images/b/e45a42c63d0641f296c2dbcabd3f727a.png"/></p>
+<p><br/>  </p>
+<p>                  举例子，  以正常的零油门(通常是3通摇杆最低）上电， 声音（“哔”）情况如下。</p>
+<p><img alt="" src="images/b/7bfaed0d4d0847a296c96f163fbe96de.png"/></p>
+<p>1. 开机时（Power UP），电调会发出 一个升调 三声“哔哔哔”。<br/> 2. 当油门升至零以上时(Throttle up)，会发出一声长低音。这表示启动序列开始。<br/> 3. 当油门再次降至零时(Zero Throttle)，会发出一声长高音。这表示启动序列结束。</p>
+<h3>3. 进入参数设置模（编程模式)</h3>
+<p>        如果在上一节的解锁过程（解锁流程结束之前）中检测到油门达到 100% ，ESC 就会进入编程模式,  流程如下：</p>
+<p>        </p>
+<p><img alt="" src="images/b/bcc58add3c1e423ea95c3a2d23f8b9ee.png"/></p>
+<p></p>
+<ol><li>开机（Power UP）时，电调会发出三声"哔"的提示音。</li><li>油门提升至零以上（Throttle up）时，将发出一声长低音"哔"，表示启动序列开始。</li><li>检测到全油门（Full Throttle 100%）时，会连续发出4声短促高音"哔"。</li><li>油门归零（Zero Throttle）时，将发出4组低音双响"哔哔"。</li><li>再次检测到全油门（Full Throttle）时，会发出4声升调"哔哔哔哔"，此时即进入编程模式。</li></ol>
+<p>编程模式下的参数通过声音（哔）告诉我们的，<strong>参数识别方法</strong>如下图：</p>
+<p><img alt="" src="images/b/7d058b58acca42efaac19c593d33fb10.png"/></p>
+<p>我解释一下上图的图，</p>
+<p>        </p>
+<p>        在功能1（function 1）中：</p>
+<ul><li> 第一个参数（Param value1）会发一个长"哔"音，接着是1个短的"哔"音， 重复三次 
+  <ul><li>第二个参数（Param value2）会发出一个长"哔"音， 接着是1个短的"哔-哔"音，重复三次</li></ul> </li></ul>
+<p>        在功能2（function 2）中：</p>
+<ul><li> 第一个参数（Param value1）会发出一个长的"哔-哔"音，接着是，一个短"哔"音，重复三次</li></ul>
+<p>        以此类推，当保持全油门时，电调会从功能1依次播放到功能11的提示音，对应参数设置表中的11个功能。</p>
+<p>        若在播放过程中检测到零油门，电调会发出四声升调"哔哔哔哔"音，表示参数已保存。</p>
+<p>       举例：</p>
+<p>         如果你想把转向改为双向，你应该在 听到 ，十个长  “哔” 跟着三个短  “哔“ 的时候，把油门从全油门打到零油门（油门摇杆从最高拉到最低），然后你听到 四个升调的 “哔哔哔哔”的声音，你设置的就保存成功了。</p>
+<p>        另外，还四个重要的补充，</p>
+<p>        1. 如果油门杆低于最大油门位置（但未归零， 如油门摇杆打到2/3时），当前参数将被跳过，编程将进入下一个参数。这样，​​无需听完所有蜂鸣声即可访问(听到)后续参数。通常，在选择参数之前，最好再次将油门调至最大，以确保选择了正确的参数。<br/>         2. 油门会在功能/参数蜂鸣声之间的1秒间隔内读取。<br/>         3. 如果编程的过程中，油门杆从未归零，ESC将加载默认值，会在最后一个功能的最后一个参数值之后重置。这是一种将所有参数恢复为默认值的便捷方法。<br/>         4. 如果在编程过程中断电，则不会更改已编程的值。意思是说，如果你不想修改，也不想被重置参数，你要在最后一个功能的最后一个参数值之前，拔掉电调的电池。</p>
+<p>    第一点很重要，要不然如上面的例子，顺序到10这个功能参数，得听很长。 使用第一点的操作办法，我们可以比较快速的跳到第10个功能参数进行调整</p>
+<h3><strong>      4. 典型应用示例</strong>  </h3>
+<h4>        4. 1 修改转向为双向（Rotation Direction -&gt;BiDirectional)</h4>
+<ol><li>进入编程模式</li><li>快速跳过前9个功能</li><li>在功能10听到 十长+三短 "哔"时</li><li>立即将油门从最高拉至最低</li><li>听到保存确认音即完成</li></ol>
+<h4>        4. 2 调转当前电调的转动方向为反向(Rotation Direction -&gt;Reverse)</h4>
+<h4></h4>
+<ol><li>进入编程模式</li><li>快速跳过前9个功能</li><li>在功能10听到 十长 + 2短 "哔"时</li><li>立即将油门从最高拉至最低</li><li>听到保存确认音即完成</li></ol>
+<p></p>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2025-06-11 11:19:27</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

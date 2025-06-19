@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows获取本地机器的全部网络配置信息</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>Windows获取本地机器的全部网络配置信息</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/3169102" target="_blank">https://blog.csdn.net/aerror/article/details/3169102</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-10-28 20:02:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 9121</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 3</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">windows</span>, <span class="tag">网络</span>, <span class="tag">null</span>, <span class="tag">buffer</span>, <span class="tag">interface</span>, <span class="tag">system</span></div>
+    
+    <div class="article-description"> Q:WINSOCK库的GetAddressByName 和gethostbyname 返回的信息无法满足我的要求,我想获取更详细的信息,我要知道一切信息,至少要像ipconfig /all 命令输出那样详细, 怎么办?A:使用windows SDK提供的IP Helper 库吧,它可以解决你上述的所有要求,使用它,你可以获取或配置本机的TCP/IP( Transmission Con</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p> Q:</p>
+<p>WINSOCK库的GetAddressByName 和gethostbyname 返回的信息无法满足我的要求,我想获取更详细的信息,我要知道一切信息,至少要像ipconfig /all 命令输出那样详细, 怎么办?</p>
+<p>A:</p>
+<p>使用windows SDK提供的IP Helper 库吧,它可以解决你上述的所有要求,使用它,你可以获取或配置本机的TCP/IP( Transmission Control Protocol/Internet Protocol )网络.</p>
+<p>它甚至可以帮你发ARP包,你只需要调用SendARP ()这个函数...</p>
+<p> </p>
+<table class="psdkRequirements"><tbody><tr><th> <p>Header</p></th><td> <p>Declared in Iphlpapi.h.</p></td></tr><tr><th> <p>Library</p></th><td> <p>Use Iphlpapi.lib.</p></td></tr></tbody></table>
+<p></p>
+<p>下面给出类似ipconfig /all的功能的示例</p>
+<div class="highlighter">
+<ol class="highlighter-cpp"><li><span class="preprocessor">#include "stdafx.h" </span></li><li class="alt"><span class="preprocessor">#include &lt;winsock2.h&gt; </span></li><li><span class="preprocessor">#include &lt;ws2tcpip.h&gt; </span></li><li class="alt"><span class="preprocessor">#include &lt;windows.h&gt; </span></li><li><span class="preprocessor">#include &lt;iphlpapi.h&gt; </span></li><li class="alt"><span class="preprocessor">#include &lt;comutil.h&gt; </span></li><li></li><li class="alt"><span class="datatypes">int</span>  IpConfigAll()</li><li>{<!-- --></li><li class="alt">    MIB_IPSTATS ipstats;</li><li>    GetIpStatistics(&amp;ipstats);</li><li class="alt">    printf(<span class="string">"number of interface: %d/nnumber of address: %d/n"</span>,</li><li>        ipstats.dwNumIf,ipstats.dwNumAddr);</li><li class="alt"></li><li></li><li class="alt">    PIP_ADAPTER_ADDRESSES AdapterAddresses = NULL;</li><li>    <span class="datatypes">ULONG</span> OutBufferLength = 0;</li><li class="alt">    <span class="datatypes">ULONG</span> RetVal = 0, i;    </li><li>    <span class="datatypes">int</span> j;</li><li class="alt"></li><li>    <span class="comment">// The size of the buffer can be different  </span></li><li class="alt">    <span class="comment">// between consecutive API calls. </span></li><li>    <span class="comment">// In most cases, i &lt; 2 is sufficient; </span></li><li class="alt">    <span class="comment">// One call to get the size and one call to get the actual parameters. </span></li><li>    <span class="comment">// But if one more interface is added or addresses are added,  </span></li><li class="alt">    <span class="comment">// the call again fails with BUFFER_OVERFLOW.  </span></li><li>    <span class="comment">// So the number is picked slightly greater than 2.  </span></li><li class="alt">    <span class="comment">// We use i &lt;5 in the example </span></li><li>    <span class="keyword">for</span> (i = 0; i &lt; 5; i++) {<!-- --></li><li class="alt">        RetVal = </li><li>            GetAdaptersAddresses(</li><li class="alt">                AF_INET, </li><li>                0,</li><li class="alt">                NULL, </li><li>                AdapterAddresses, </li><li class="alt">                &amp;OutBufferLength);</li><li>        </li><li class="alt">        <span class="keyword">if</span> (RetVal != ERROR_BUFFER_OVERFLOW) {<!-- --></li><li>            <span class="keyword">break</span>;</li><li class="alt">        }</li><li></li><li class="alt">        <span class="keyword">if</span> (AdapterAddresses != NULL) {<!-- --></li><li>            FREE(AdapterAddresses);</li><li class="alt">        }</li><li>        </li><li class="alt">        AdapterAddresses = (PIP_ADAPTER_ADDRESSES) </li><li>            MALLOC(OutBufferLength);</li><li class="alt">        <span class="keyword">if</span> (AdapterAddresses == NULL) {<!-- --></li><li>            RetVal = GetLastError();</li><li class="alt">            <span class="keyword">break</span>;</li><li>        }</li><li class="alt">    }</li><li>    </li><li class="alt">    <span class="keyword">if</span> (RetVal == NO_ERROR) {<!-- --></li><li>      <span class="comment">// If successful, output some information from the data we received </span></li><li class="alt">      PIP_ADAPTER_ADDRESSES AdapterList = AdapterAddresses;</li><li></li><li class="alt">      <span class="keyword">while</span> (AdapterList) {<!-- --></li><li>          printf(<span class="string">"interface(%d:%s) %d  %s:/n"</span>, </li><li class="alt">              AdapterList-&gt;IfType,</li><li>              AdapterList-&gt;AdapterName,</li><li class="alt">              AdapterAddresses-&gt;IfIndex,</li><li>              (<span class="keyword">const</span> <span class="datatypes">char</span>*)_bstr_t(AdapterList-&gt;FriendlyName));</li><li class="alt">        </li><li>        printf(<span class="string">"/tDescription: %ws/n"</span>, AdapterList-&gt;Description);</li><li class="alt">        printf(<span class="string">"/tDhcp Enabled: %s/n"</span>, AdapterList-&gt;Dhcpv4Enabled?<span class="string">"Yes"</span>:<span class="string">"No"</span>);</li><li>        printf(<span class="string">"/tOperStatus : %s/n"</span>, (AdapterList-&gt;OperStatus==IfOperStatusUp)?<span class="string">"Up"</span>:<span class="string">"Down"</span>);</li><li class="alt">        printf(<span class="string">"/tDnsSuffix: %ws/n"</span>, AdapterList-&gt;DnsSuffix?AdapterList-&gt;DnsSuffix:L<span class="string">"No"</span>);</li><li>        </li><li class="alt"></li><li>        printf(<span class="string">"/tUnicastAddress Address:/n"</span>);</li><li class="alt">        </li><li>        <span class="keyword">for</span>(PIP_ADAPTER_UNICAST_ADDRESS_LH paddr = AdapterList-&gt;FirstUnicastAddress;</li><li class="alt">            paddr!=NULL;paddr=paddr-&gt;Next)</li><li>        {<!-- --></li><li class="alt">            printf(<span class="string">"/t                  : %s/n"</span>, </li><li>                inet_ntoa( ((SOCKADDR_IN *)paddr-&gt;Address.lpSockaddr)-&gt;sin_addr));</li><li class="alt">        }</li><li></li><li class="alt">        printf(<span class="string">"/tAnycastAddress Address:/n"</span>); </li><li>        <span class="keyword">for</span>(PIP_ADAPTER_ANYCAST_ADDRESS_XP paddr = AdapterList-&gt;FirstAnycastAddress;</li><li class="alt">            paddr!=NULL;paddr=paddr-&gt;Next)</li><li>        {<!-- --></li><li class="alt">            printf(<span class="string">"/t                 : %s/n"</span>, </li><li>                inet_ntoa( ((SOCKADDR_IN *)paddr-&gt;Address.lpSockaddr)-&gt;sin_addr));</li><li class="alt">        }</li><li></li><li class="alt">        printf(<span class="string">"/tMulticast Address:/n"</span>);</li><li>        <span class="keyword">for</span>(PIP_ADAPTER_MULTICAST_ADDRESS_XP paddr = AdapterList-&gt;FirstMulticastAddress;</li><li class="alt">            paddr!=NULL;paddr=paddr-&gt;Next)</li><li>        {<!-- --></li><li class="alt">            printf(<span class="string">"/t                  : %s/n"</span>, </li><li>                inet_ntoa( ((SOCKADDR_IN *)paddr-&gt;Address.lpSockaddr)-&gt;sin_addr));</li><li class="alt">        }</li><li></li><li class="alt">        printf(<span class="string">"/tDMS server Address:/n"</span>);</li><li>        <span class="keyword">for</span>(PIP_ADAPTER_DNS_SERVER_ADDRESS_XP paddr = AdapterList-&gt;FirstDnsServerAddress;</li><li class="alt">            paddr!=NULL;paddr=paddr-&gt;Next)</li><li>        {<!-- --></li><li class="alt">            printf(<span class="string">"/t                  : %s/n"</span>, </li><li>                inet_ntoa( ((SOCKADDR_IN *)paddr-&gt;Address.lpSockaddr)-&gt;sin_addr));</li><li class="alt">        }</li><li>        </li><li class="alt"></li><li>    </li><li class="alt">        <span class="comment">//AdapterList-&gt;FirstGatewayAddress only support at vista. </span></li><li>        <span class="comment">// </span></li><li class="alt">        <span class="comment">//Get default gate way from regkey. </span></li><li>        <span class="comment">// </span></li><li class="alt">        <span class="comment">//HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Services/Tcpip/Parameters/Interfaces </span></li><li>        <span class="datatypes">HKEY</span> hk=NULL;</li><li class="alt">        <span class="datatypes">WCHAR</span> szSubKey[260] = L<span class="string">"SYSTEM//CurrentControlSet//Services//Tcpip//Parameters//Interfaces//"</span>;</li><li>        wcscat(szSubKey,_bstr_t(AdapterList-&gt;AdapterName));</li><li class="alt">        RegOpenKey(HKEY_LOCAL_MACHINE,szSubKey,&amp;hk);</li><li>        <span class="datatypes">WCHAR</span>  szGateWay[255]=L<span class="string">""</span>;</li><li class="alt">        <span class="datatypes">DWORD</span>  dwlen=255;</li><li>        <span class="datatypes">DWORD</span> lpType =REG_SZ;</li><li class="alt">        RegQueryValueEx(hk,L<span class="string">"DefaultGateway"</span>,NULL,&amp;lpType,(<span class="datatypes">LPBYTE</span>)szGateWay,&amp;dwlen);</li><li>        RegCloseKey(hk);</li><li class="alt"></li><li>        printf(<span class="string">"/tDMS default gateway:/n"</span>);</li><li class="alt">        printf(<span class="string">"/t                  : %s/n"</span>, (<span class="keyword">const</span> <span class="datatypes">char</span>*)_bstr_t(szGateWay));</li><li></li><li class="alt">        AdapterList = AdapterList-&gt;Next;</li><li>      }</li><li class="alt">    }</li><li>    <span class="keyword">else</span> </li><li class="alt">    { </li><li>      <span class="datatypes">LPVOID</span> MsgBuf;</li><li class="alt">      </li><li>      printf(<span class="string">"Call to GetAdaptersAddresses failed./n"</span>);</li><li class="alt">      <span class="keyword">if</span> (FormatMessage( </li><li>        FORMAT_MESSAGE_ALLOCATE_BUFFER | </li><li class="alt">        FORMAT_MESSAGE_FROM_SYSTEM | </li><li>        FORMAT_MESSAGE_IGNORE_INSERTS,</li><li class="alt">        NULL,</li><li>        RetVal,</li><li class="alt">        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), <span class="comment">// Default language </span></li><li>        (<span class="datatypes">LPTSTR</span>) &amp;MsgBuf,</li><li class="alt">        0,</li><li>        NULL )) {<!-- --></li><li class="alt">        printf(<span class="string">"/tError: %s"</span>, MsgBuf);</li><li>      }</li><li class="alt">      LocalFree(MsgBuf);</li><li></li><li class="alt">    }  </li><li>    <span class="keyword">if</span> (AdapterAddresses != NULL) {<!-- --></li><li class="alt">        FREE(AdapterAddresses);</li><li>    }</li><li class="alt"></li><li>    <span class="comment">//GetNetworkParams(x,x); </span></li><li class="alt">    <span class="comment">// </span></li><li>    <span class="comment">//TODO: </span></li><li class="alt"></li><li>    <span class="comment">// Declare and initialize variables. </span></li><li class="alt">    <span class="comment">// </span></li><li>    <span class="datatypes">DWORD</span> dwSize = 0;</li><li class="alt">    <span class="datatypes">DWORD</span> dwRetVal = 0;</li><li></li><li class="alt">    <span class="comment">//GetIpForwardTable </span></li><li>    <span class="comment">// </span></li><li class="alt">    <span class="comment">// </span></li><li>    dwSize = <span class="keyword">sizeof</span>(MIB_IPFORWARDTABLE)*(ipstats.dwNumRoutes+ipstats.dwNumIf);</li><li class="alt">    PMIB_IPFORWARDTABLE  pIpForwardTable = (PMIB_IPFORWARDTABLE )MALLOC(dwSize);</li><li>    <span class="keyword">if</span>(GetIpForwardTable(pIpForwardTable,&amp;dwSize,FALSE))</li><li class="alt">    {<!-- --></li><li>        printf(<span class="string">"GetIpForwardTable failed /n"</span>);</li><li class="alt">        FREE(pIpForwardTable);</li><li>        <span class="keyword">return</span> 1;</li><li class="alt">    }</li><li>    </li><li class="alt">    <span class="keyword">for</span>(i=0;i&lt;pIpForwardTable-&gt;dwNumEntries;i++)</li><li>    {<!-- --></li><li class="alt">        IN_ADDR inaddr;</li><li>        inaddr.S_un.S_addr= pIpForwardTable-&gt;table[i].dwForwardDest;</li><li class="alt"></li><li>        printf(<span class="string">"%X %s/n"</span>, pIpForwardTable-&gt;table[i].dwForwardIfIndex,</li><li class="alt">            inet_ntoa(inaddr));</li><li>    }</li><li class="alt"></li><li>    FREE(pIpForwardTable);</li><li class="alt"></li><li></li><li class="alt">    <span class="comment">/* variables used for GetIfTable and GetIfEntry */</span></li><li>    MIB_IFTABLE *pIfTable;</li><li class="alt">    MIB_IFROW *pIfRow;</li><li></li><li class="alt">    <span class="comment">// Allocate memory for our pointers. </span></li><li>    pIfTable = (MIB_IFTABLE *) MALLOC(<span class="keyword">sizeof</span> (MIB_IFTABLE));</li><li class="alt">    <span class="keyword">if</span> (pIfTable == NULL) {<!-- --></li><li>        printf(<span class="string">"Error allocating memory needed to call GetIfTable/n"</span>);</li><li class="alt">        <span class="keyword">return</span> 1;</li><li>    }</li><li class="alt">    <span class="comment">// Make an initial call to GetIfTable to get the </span></li><li>    <span class="comment">// necessary size into dwSize </span></li><li class="alt">    dwSize = <span class="keyword">sizeof</span> (MIB_IFTABLE);</li><li>    <span class="keyword">if</span> (GetIfTable(pIfTable, &amp;dwSize, FALSE) == ERROR_INSUFFICIENT_BUFFER) {<!-- --></li><li class="alt">        FREE(pIfTable);</li><li>        pIfTable = (MIB_IFTABLE *) MALLOC(dwSize);</li><li class="alt">        <span class="keyword">if</span> (pIfTable == NULL) {<!-- --></li><li>            printf(<span class="string">"Error allocating memory needed to call GetIfTable/n"</span>);</li><li class="alt">            <span class="keyword">return</span> 1;</li><li>        }</li><li class="alt">    }</li><li>    <span class="comment">// Make a second call to GetIfTable to get the actual </span></li><li class="alt">    <span class="comment">// data we want. </span></li><li>    <span class="keyword">if</span> ((dwRetVal = GetIfTable(pIfTable, &amp;dwSize, FALSE)) == NO_ERROR) {<!-- --></li><li class="alt">        printf(<span class="string">"/tNum Entries: %ld/n/n"</span>, pIfTable-&gt;dwNumEntries);</li><li>        <span class="keyword">for</span> (i = 0; i &lt; (<span class="datatypes">int</span>) pIfTable-&gt;dwNumEntries; i++) {<!-- --></li><li class="alt">            pIfRow = (MIB_IFROW *) &amp; pIfTable-&gt;table[i];</li><li>            printf(<span class="string">"/tIndex[%d]:/t %ld/n"</span>, i, pIfRow-&gt;dwIndex);</li><li class="alt">            printf(<span class="string">"/tInterfaceName[%d]:/t %ws"</span>, i, pIfRow-&gt;wszName);</li><li>            printf(<span class="string">"/n"</span>);</li><li class="alt">            printf(<span class="string">"/tDescription[%d]:/t "</span>, i);</li><li>            <span class="keyword">for</span> (j = 0; j &lt; (<span class="datatypes">int</span>) pIfRow-&gt;dwDescrLen; j++)</li><li class="alt">                printf(<span class="string">"%c"</span>, pIfRow-&gt;bDescr[j]);</li><li>            printf(<span class="string">"/n"</span>);</li><li class="alt">            printf(<span class="string">"/tType[%d]:/t "</span>, i);</li><li>            <span class="keyword">switch</span> (pIfRow-&gt;dwType) {<!-- --></li><li class="alt">            <span class="keyword">case</span> IF_TYPE_OTHER:</li><li>                printf(<span class="string">"Other/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">case</span> IF_TYPE_ETHERNET_CSMACD:</li><li class="alt">                printf(<span class="string">"Ethernet/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_TYPE_ISO88025_TOKENRING:</li><li>                printf(<span class="string">"Token Ring/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">case</span> IF_TYPE_PPP:</li><li class="alt">                printf(<span class="string">"PPP/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_TYPE_SOFTWARE_LOOPBACK:</li><li>                printf(<span class="string">"Software Lookback/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">case</span> IF_TYPE_ATM:</li><li class="alt">                printf(<span class="string">"ATM/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_TYPE_IEEE80211:</li><li>                printf(<span class="string">"IEEE 802.11 Wireless/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">case</span> IF_TYPE_TUNNEL:</li><li class="alt">                printf(<span class="string">"Tunnel type encapsulation/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_TYPE_IEEE1394:</li><li>                printf(<span class="string">"IEEE 1394 Firewire/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">default</span>:</li><li class="alt">                printf(<span class="string">"Unknown type %ld/n"</span>, pIfRow-&gt;dwType);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            }</li><li>            printf(<span class="string">"/tMtu[%d]:/t/t %ld/n"</span>, i, pIfRow-&gt;dwMtu);</li><li class="alt">            printf(<span class="string">"/tSpeed[%d]:/t %ld/n"</span>, i, pIfRow-&gt;dwSpeed);</li><li>            printf(<span class="string">"/tPhysical Addr:/t "</span>);</li><li class="alt">            <span class="keyword">if</span> (pIfRow-&gt;dwPhysAddrLen == 0)</li><li>                printf(<span class="string">"/n"</span>);</li><li class="alt">            <span class="keyword">for</span> (j = 0; j &lt; (<span class="datatypes">int</span>) pIfRow-&gt;dwPhysAddrLen; j++) {<!-- --></li><li>                <span class="keyword">if</span> (j == (pIfRow-&gt;dwPhysAddrLen - 1))</li><li class="alt">                    printf(<span class="string">"%.2X/n"</span>, (<span class="datatypes">int</span>) pIfRow-&gt;bPhysAddr[j]);</li><li>                <span class="keyword">else</span></li><li class="alt">                    printf(<span class="string">"%.2X-"</span>, (<span class="datatypes">int</span>) pIfRow-&gt;bPhysAddr[j]);</li><li>            }</li><li class="alt">            printf(<span class="string">"/tAdmin Status[%d]:/t %ld/n"</span>, i, pIfRow-&gt;dwAdminStatus);</li><li>            printf(<span class="string">"/tOper Status[%d]:/t "</span>, i);</li><li class="alt">            <span class="keyword">switch</span> (pIfRow-&gt;dwOperStatus) {<!-- --></li><li>            <span class="keyword">case</span> IF_OPER_STATUS_NON_OPERATIONAL:</li><li class="alt">                printf(<span class="string">"Non Operational/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_OPER_STATUS_UNREACHABLE:</li><li>                printf(<span class="string">"Unreasonable/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">case</span> IF_OPER_STATUS_DISCONNECTED:</li><li class="alt">                printf(<span class="string">"Disconnected/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_OPER_STATUS_CONNECTING:</li><li>                printf(<span class="string">"Connecting/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">case</span> IF_OPER_STATUS_CONNECTED:</li><li class="alt">                printf(<span class="string">"Connected/n"</span>);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            <span class="keyword">case</span> IF_OPER_STATUS_OPERATIONAL:</li><li>                printf(<span class="string">"Operational/n"</span>);</li><li class="alt">                <span class="keyword">break</span>;</li><li>            <span class="keyword">default</span>:</li><li class="alt">                printf(<span class="string">"Unknown status %ld/n"</span>, pIfRow-&gt;dwAdminStatus);</li><li>                <span class="keyword">break</span>;</li><li class="alt">            }</li><li>            printf(<span class="string">"/n"</span>);</li><li class="alt">        }</li><li>    } <span class="keyword">else</span> {<!-- --></li><li class="alt">        printf(<span class="string">"GetIfTable failed with error: /n"</span>, dwRetVal);</li><li>        <span class="keyword">if</span> (pIfTable != NULL) {<!-- --></li><li class="alt">            FREE(pIfTable);</li><li>            pIfTable = NULL;</li><li class="alt">        }  </li><li>        <span class="keyword">return</span> 1;</li><li class="alt">        <span class="comment">// Here you can use FormatMessage to find out why  </span></li><li>        <span class="comment">// it failed. </span></li><li class="alt">    }</li><li>    <span class="keyword">if</span> (pIfTable != NULL) {<!-- --></li><li class="alt">        FREE(pIfTable);</li><li>        pIfTable = NULL;</li><li class="alt">    }</li><li></li><li class="alt">    <span class="comment">//GetInterfaceInfo  </span></li><li>    <span class="comment">// </span></li><li class="alt"></li><li>    <span class="comment">//TODO: </span></li><li class="alt"></li><li>    <span class="keyword">return</span> 0;</li><li class="alt">}</li><li></li><li class="alt"></li><li><span class="datatypes">int</span> _tmain(<span class="datatypes">int</span> argc, _TCHAR* argv[])</li><li class="alt">{<!-- --></li><li>    IpConfigAll();</li><li class="alt">    <span class="keyword">return</span> 0;</li><li>}</li><li class="alt"></li><li></li></ol>
+</div>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-10-28 20:02:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMKD windbg+vmWare进行两机调试的加速工具的介绍及原理简单分析</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>VMKD windbg+vmWare进行两机调试的加速工具的介绍及原理简单分析</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/2863922" target="_blank">https://blog.csdn.net/aerror/article/details/2863922</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2019-07-03 19:26:56</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3394</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 3</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">vmware</span>, <span class="tag">工具</span>, <span class="tag">hook</span>, <span class="tag">resources</span>, <span class="tag">c</span>, <span class="tag">null</span></div>
+    
+    <div class="article-description">可以使用windbg+vmWare,通过虚拟COM口和NamePipe进行内核或用户级的双机调试,但是由于COM的速率最大限制只要115200，调试速度是相当慢的,如果你想使用如.dump这样转储命令,你可能需要等到几个小时或者更多.VMKD Virtual Machine KD Extensions 这个工具就是解决关于这个问题的.下载和使用方法: http://www.ny...</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p style="margin-left:0cm;"><span style="color:#000000;">可以使用windbg+vmWare,通过虚拟COM口和NamePipe进行内核或用户级的双机调试,但是由于COM的速率最大限制只要115200，调试速度是相当慢的,如果你想使用如.dump这样转储命令,你可能需要等到几个小时或者更多.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><a href="http://www.nynaeve.net/Programs/vmkd.zip" rel="nofollow"><u><span style="color:#800080;">VMKD</span></u></a><span style="color:#000000;"> Virtual Machine KD Extensions </span><span style="color:#000000;">这个工具就是解决关于这个问题的.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">下载和使用方法</span><span style="color:#000000;">: </span><a href="http://www.nynaeve.net/?page_id=168" rel="nofollow"><u><span style="color:#800080;">http://www.nynaeve.net/?page_id=168</span></u></a></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">原理介绍</span><span style="color:#000000;">:  </span><a href="http://www.nynaeve.net/?p=174" rel="nofollow"><u><span style="color:#800080;">http://www.nynaeve.net/?p=174</span></u></a><br/>  </p>
+<p style="margin-left:0cm;"><span style="color:#000000;">作者声明VMKD仅仅在  VMware Server 1.0.3 and 1.0.4上测试使用成功.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">很不幸我使用的说VMWARE station 6.0， 我试了一下果然不支持.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">这个东东挺不错的,于是调试和分析了一下kdvmware.sys和vmxpatch.dll，发现驱动是没有问题的，问题出现在vmxpatch.dll上，在这个DLL被vmxinject.exe注入到VMWARE-VMX.EXE中的DLLMain初始化过程中,它需要根据特征码找出VMWare后门处理函数的偏移和IsVmPriviligeMode这个函数的地址，然后内存补丁，Hook住这个后门处理函数. 结果是IsVmPriviligeMode这个函数的特征失效.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">我的解决方法是:</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">使用UltraEdit打开vmxpatch.dll,</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">查找:</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">A1 00 FF FF FF FF FF FF  FF FF 64 00 8B 00 0D 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">2C 00 00 00 00 00 00 00  8B 00 14 00 81 00 8B 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">82 00 FC 00 03 00 00 00  00 00 8B 00 15 00 FF FF </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">FF FF FF FF FF FF C1 00  E0 00 0C 00 56 00 8B 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">B4 00 10 00 54 00 C2 00  FF 00 FF 00 33 00 C9 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">85 00 F6 00 0F 00 94 00  C1 00 8A 00 C1 00 5E 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">C3 00</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">替换成:</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">56 00 E8 00 FF FF FF FF FF FF FF FF FF FF FF FF </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">FF FF FF FF FF FF FF FF C1 00 E0 00 0C 00 8B 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">B4 00 10 00 3C 00 C3 00 FF 00 FF 00 33 00 C9 00 </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">85 00 F6 00 0F 00 94 00 C1 00 8A 00 FF FF FF FF </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">FF FF                                       </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">保存.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">重新使用vmxinject.exe把vmxpatch.dll这个文件注入VMWARE-VMX.EXE,然后在虚拟的操作系统中，net start kdvmware，然后打开windbg, Ctrl+Break，工作正常, J.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">找Bug的过程中顺便分析了一下这个程序的一些原理,呵呵，原文长篇大论,看到我很头晕,有些意思，这里顺便简要说一下.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">这个工具实现的基本原理,</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">1. 利用驱动kdvmware.sys在ring0中Hook住KDCOM.DLL中的调试通信协议函数, "KdSendPacket","KdReceivePacket","KdSave","KdRestore"，绕开真正的COM通信,把发/送的数据直接复制到一个缓冲内存中, 利用VMWare的Backdoor的0x0B功能（osNotFound）在目标虚拟机操作系统和宿主机器之间进行通知,.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">kdvmware.sys中实现这个通知的代码如下:</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">                                         push    ebx</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:00011009                 mov     eax, 564D5868h   ;“VMHx”</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:0001100E                 xor     ebx, ebx</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:00011010                 mov     cx, 12h     ;osNotFound</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:00011014                 mov     dx, 5658h  ; “Vx”</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:00011018                 in      eax, dx         ; 返回eax = 564D5868h</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:00011019                 pop     ebx</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">.text:0001101A                 retn</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">2.一旦kdvmware.sys调用这个函数, vmxpatch.dll装好的钩子函数就会收到通知,在VMWARE-VMX.EXE的虚拟内存中查找内容为"KdVm Communications Back Channel Interf"...的地址(查找一次就可以，下次直接使用找好的地址),直接进行读写操作，这样就实现在host和vm之间的数据交换，然后vmxpatch.dll再处理一下和windbg的namepipe的数据转发, 这个整个windbg调试协议的通信就通了。windbg的读写namepipe的时候是不会限制速度的,没有疑问，这样肯定是比较COM口通信要快.</span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;"> </span></p>
+<p style="margin-left:0cm;"><span style="color:#000000;">另外,关于kdvmware.sys在内核级Hook的修改内存的保护属性,它没有使用设置CR0.wp这个标志位的方法，而是另一种方法,这里顺便贴一下.</span></p>
+<p style="margin-left:0cm;"> </p>
+<ol><li> </li><li>/**</li><li>    正规的方式来获取读的权限.</li><li>*/</li><li>NTSTATUS  EnableWritable(PVOID *dest,int len,PMDL *ppMdl, PVOID *lppv)</li><li> {<!-- --></li><li>     PMDL pMdl=NULL;</li><li>     pMdl = IoAllocateMdl(dest,len,FALSE,FALSE,NULL);</li><li>     *ppMdl =pMdl;</li><li>     if( !pMdl )</li><li>     {<!-- --></li><li>         return STATUS_INSUFFICIENT_RESOURCES;</li><li>     }</li><li>     </li><li>    </li><li>     MmProbeAndLockPages(pMdl,KernelMode,IoModifyAccess);</li><li> </li><li> </li><li>     PVOID pv = MmMapLockedPagesSpecifyCache(pMdl,KernelMode,  MmCached,NULL,0,NormalPagePriority);</li><li>     *lppv = pv;</li><li> </li><li>     if(!pv)</li><li>     {<!-- --></li><li>        IoFreeMdl(pMdl);</li><li>         return STATUS_ACCESS_VIOLATION;</li><li>     }</li><li> </li><li>    NTSTATUS status = MmProtectMdlSystemAddress(pMdl,PAGE_EXECUTE_READWRITE);</li><li> </li><li>    if(status!=STATUS_SUCCESS)</li><li>    {<!-- --></li><li>        MmUnmapLockedPages(pv,pMdl);</li><li>        MmUnlockPages(pMdl);</li><li>        IoFreeMdl(pMdl);</li><li>    }</li><li> </li><li>    return status;</li><li> </li><li> </li><li> }</li><li> </li><li>/**</li><li>    正规的方式来关闭写的权限</li><li>*/</li><li> </li><li>NTSTATUS __stdcall DisableWritable(PMDL pMdl,PVOID lpv)</li><li>{<!-- --></li><li>    if(lpv)</li><li>    {<!-- --></li><li>        MmUnmapLockedPages(lpv,pMdl);</li><li>        MmUnlockPages(pMdl);</li><li>        IoFreeMdl(pMdl);</li><li>    }</li><li>    return STATUS_SUCCESS;</li><li>}</li><li> </li><li> </li></ol>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2019-07-03 19:26:56</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

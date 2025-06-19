@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>当今最流行的推荐引擎算法有哪些？</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>当今最流行的推荐引擎算法有哪些？</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/140130616" target="_blank">https://blog.csdn.net/aerror/article/details/140130616</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-07-02 16:38:20</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 307</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">算法</span>, <span class="tag">python</span>, <span class="tag">人工智能</span></div>
+    
+    <div class="article-description">但事实上，推荐数据集与通常的计算机视觉数据集有很大不同，这使得使用现有的实现和工具变得更加复杂（例如，TensorFlow 或 PyTorch 等库中的许多优化器不支持稀疏更新动量，这是训练推荐深度模型的基石）。要训练解决项目冷启动（或用户冷启动）的模型，您需要一个数据集，其中包括项目（或用户的）的详细描述，例如电影的类型、预算、持续时间或任何可能有助于推荐的变量。由于推荐是使用用户对商品的反馈数据集计算得出的，因此它们无法推荐没有（或只有少量）反馈的商品，例如新商品。让我们看看每种方法的优点和缺点。</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p id="9361" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">我们通常将推荐引擎算法分为两类：<strong>协同过滤模型</strong>和<strong>基于内容的模型</strong>。它们根据所涉及的数据类型而有所不同。</span></span></p>
+<p id="777a" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">协同过滤模型使用用户对商品的反馈数据集（通常是星级或赞成/反对）来计算其预测。基于内容的模型仅使用商品的特征（例如产品的价格或颜色）。</span></span></p>
+<h2 id="ead8" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">协同过滤</span></span></h2>
+<p id="217b" style="margin-left:-.46em;"><span style="color:#242424;"><span style="background-color:#ffffff;">首先，我们深入研究<a class="af hk" href="https://en.wikipedia.org/wiki/Collaborative_filtering" rel="nofollow" title="协同过滤">协同过滤</a>模型。它们建立在用户/商品反馈数据集之上。这可能是<strong>显式反馈</strong>，例如星级或点赞/踩，也可能是<strong>隐式反馈</strong>，例如电视节目的观看集数。</span></span></p>
+<div>
+<div style="margin-left:auto;">
+<p class="img-center"><img alt="" class="bg c he hf" height="573" src="images/bn/9fdcdf517bbc30904485501f6ead3a23.png" width="1200"/></p>
+</div>
+</div>
+<p>协同过滤</p>
+<p id="eb55" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">我们根据这些模型处理数据的方式进一步对其进行分类。让我们看看每种方法的优点和缺点。</span></span></p>
+<h3 id="1baa" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">用户-用户</span></span></h3>
+<p id="63c6" style="margin-left:-.46em;"><span style="color:#242424;"><span style="background-color:#ffffff;">最常用的推荐算法遵循<em>“喜欢你的人也喜欢那个”的</em>逻辑。我们称之为<strong>“</strong><a class="af hk" href="https://medium.com/@tomar.ankur287/user-user-collaborative-filtering-recommender-system-51f568489727" rel="nofollow" title="用户-用户">用户-用户</a><strong>”</strong>算法，因为如果相似的用户之前喜欢过这个商品，它会向用户推荐这个商品。两个用户之间的相似度是根据他们在数据集中拥有的共同商品数量计算出来的。</span></span></p>
+<p id="a017" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">当用户数量远小于商品数量时，此算法非常有效。您可以想象一个拥有数百万种产品的中型在线商店。主要缺点是添加新用户的成本很高，因为它需要更新用户之间的所有相似性。</span></span></p>
+<h3 id="d142" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">商品-商品</span></span></h3>
+<p id="0bab" style="margin-left:-.46em;"><span style="color:#242424;"><span style="background-color:#ffffff;"><strong>“ </strong><a class="af hk" href="https://en.wikipedia.org/wiki/Item-item_collaborative_filtering" rel="nofollow" title="item-item">item-item</a><strong> ”</strong>算法使用相同的方法，但反转了用户和项目之间的视图。它遵循<em>“如果你喜欢这个，你可能也会喜欢那个”</em>的逻辑。它会推荐与你之前喜欢的项目相似的项目。和以前一样，两个项目之间的相似度是使用它们在数据集中拥有的共同用户数量来计算的。</span></span></p>
+<p id="1ac5" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">当商品数量远小于用户数量时，例如大型在线商店，此算法效果最佳。如果您的商品变化不大，此算法非常适合，因为您可以预先计算商品间相似性的完整表格，然后实时提供推荐。遗憾的是，更新此表格以添加新商品非常困难。</span></span></p>
+<h3 id="a1da" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">用户项目</span></span></h3>
+<p id="df80" style="margin-left:-.46em;"><span style="color:#242424;"><span style="background-color:#ffffff;">有多种形式的“用户-项目”推荐算法，它们结合了两种方法来生成推荐。最简单的算法是基于<a class="af hk" href="https://en.wikipedia.org/wiki/Matrix_factorization_%28recommender_systems%29" rel="nofollow" title="矩阵分解">矩阵分解</a>技术。</span></span></p>
+<p id="ddf0" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">目标是学习所有用户和所有项目的<strong>低维向量（“嵌入”）</strong>，这样将它们相乘就可以恢复用户是否喜欢某件商品。您可以将这些向量视为对某件商品具有某种特征的程度（如电影是一部戏剧）以及用户对商品中这种特征的喜爱程度的编码。</span></span></p>
+<p id="559f" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">这种分解最好使用<a class="af hk" href="https://medium.com/@m_n_malaeb/singular-value-decomposition-svd-in-recommender-systems-for-non-math-statistics-programming-4a622de653e9" rel="nofollow" title="SVD">SVD</a>进行训练，但由于该算法计算量非常大，我们通常更喜欢其他方法。对于中等规模的数据集， <a class="af hk" href="https://towardsdatascience.com/prototyping-a-recommender-system-step-by-step-part-2-alternating-least-square-als-matrix-4a76c58714a1" rel="nofollow" title="ALS">ALS</a>将提供合理的性能。对于大型数据集，只有<a class="af hk" href="https://ruder.io/optimizing-gradient-descent/" rel="nofollow" title="SGD">SGD</a>算法能够扩展，但速度会非常慢。</span></span></p>
+<p id="5791" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">一旦预先计算了用户嵌入和项目嵌入，就可以实时提供推荐。这种方法的另一个好处是，您可以使用嵌入来了解有关用户和项目的更多信息。例如，您可以根据用户或项目的偏好对其进行聚类。</span></span></p>
+<p id="cafe" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">用户-项目算法的缺点是在添加新项目或新用户后没有有效的方法来更新嵌入。</span></span></p>
+<h2 id="591f" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">基于内容</span></span></h2>
+<p id="6ba4" style="margin-left:-.46em;"><span style="color:#242424;"><span style="background-color:#ffffff;">所有之前的模型都存在所谓的<strong>冷启动问题</strong>。由于推荐是使用用户对商品的反馈数据集计算得出的，因此它们无法推荐没有（或只有少量）反馈的商品，例如新商品。同样，在开始对足够多的商品给出反馈之前，它们无法向新用户推荐任何东西。</span></span></p>
+<p id="35c5" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;"><strong>使用基于内容的模型</strong>可以缓解这些问题。该方法与以前的用户-用户或项目-项目算法相同，只是相似度仅使用基于内容的特征来计算。要训练解决项目冷启动（或用户冷启动）的模型，您需要一个数据集，其中包括项目（或用户的）的详细描述，例如电影的类型、预算、持续时间或任何可能有助于推荐的变量。</span></span></p>
+<div>
+<div style="margin-left:auto;">
+<p class="img-center"><img alt="" class="bg c he hf" height="1098" src="images/bn/a4fc11545098b7175945825030f5ae81.png" width="1200"/></p>
+</div>
+</div>
+<p>基于内容的模型</p>
+<p id="7b96" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">机器学习中模式识别的最新进展利用从原始图像或原始文本描述中提取的信息，为基于内容的模型带来了巨大的改进。网上可以找到大量计算机视觉或自然语言处理的工具和预训练的深度学习模型。</span></span></p>
+<p id="d20f" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">使用预训练模型的明显好处是您不需要庞大的数据集和昂贵的服务器来训练您的推荐引擎。</span></span></p>
+<h2 id="8a73" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">混合模型和深度学习</span></span></h2>
+<p id="1343" style="margin-left:-.46em;"><span style="color:#242424;"><span style="background-color:#ffffff;"><a class="af hk" href="http://crossingminds.com/" rel="nofollow" title="最现代的推荐引擎算法（以及我们在Crossing Minds">最现代的推荐引擎算法（以及我们在Crossing Minds</a>使用的算法）利用深度学习来<em>结合</em>协同过滤和基于内容的模型。<strong>混合深度学习算法</strong>使我们能够学习用户和项目之间更精细的交互。因为它们是非线性的，所以不太容易过度简化用户的品味。</span></span></p>
+<p id="a647" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">深度学习模型可以表示各种项目的复杂品味，甚至可以来自<strong>跨域数据集</strong>（例如涵盖音乐、电影和电视节目）。在混合深度学习算法中，用户和项目使用通过协同过滤方法学习的嵌入和基于内容的特征进行建模。一旦计算出嵌入和特征，就可以实时提供推荐。</span></span></p>
+<div>
+<div style="margin-left:auto;">
+<p class="img-center"><img alt="" class="bg c he hf" height="1200" src="images/bn/845b234f12d75e32bd8385de374727f3.png" width="1200"/></p>
+</div>
+</div>
+<p>混合模型</p>
+<p id="e12e" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">此类算法的学习方案接近传统的深度学习，即具有<strong>加速启发式的小批量 SGD</strong>。但事实上，推荐数据集与通常的计算机视觉数据集有很大不同，这使得使用现有的实现和工具变得更加复杂（例如，TensorFlow 或 PyTorch 等库中的许多优化器不支持稀疏更新动量，这是训练推荐深度模型的基石）。工程师和研究人员通常需要自己实现和训练更多的东西，这需要专家的时间和大量的计算资源。</span></span></p>
+<p id="09f9" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;">深度学习模型的另一个缺点是它们需要大量的<strong>超参数优化</strong>。与计算机视觉领域中大量的开源架构相比，推荐引擎几乎没有众所周知的架构或预训练模型。</span></span></p>
+<p id="7ecf" style="margin-left:0;"><span style="color:#242424;"><span style="background-color:#ffffff;"><strong>最初</strong><strong>由</strong><a class="af hk" href="https://crossingminds.com/" rel="nofollow" title="Crossing Minds">Crossing Minds</a><strong>的联合创始人</strong><a class="af hk" href="https://www.linkedin.com/in/emile-contal-72837652" rel="nofollow" title="Emile Contal">Emile Contal</a><strong>在</strong><a class="af hk" href="http://quora.com/" rel="nofollow" title="Quora上">Quora上</a><a class="af hk" href="https://www.quora.com/What-are-the-top-recommendation-engine-algorithms-used-nowadays-What-are-the-pros-cons-of-each-of-them-How-should-I-know-when-to-use-each-of-them" rel="nofollow" title="回答">回答</a><strong>。</strong></span></span></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2024-07-02 16:38:20</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

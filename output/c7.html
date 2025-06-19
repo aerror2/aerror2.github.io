@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何修改android的so文件进行api HOOK钩子补丁</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>如何修改android的so文件进行api HOOK钩子补丁</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/105861731" target="_blank">https://blog.csdn.net/aerror/article/details/105861731</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-04-30 15:49:01</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1116</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">linux</span>, <span class="tag">android</span></div>
+    
+    <div class="article-description">1. 准备工具和环境  1.1 android NDK  1.2 android SDK  1.3Synalyze It! Pro, 安装ELF语法  1.4 elf文件格式文档.2. 文件格式是 ELF, 组织如下实例:3.我们只需要做以下修改就可以，  3.1 在SHT_DYNAMIC这里增加我们的so，一般来说这个段都有一些...</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>1. 准备工具和环境</p>
+<p>    1.1 android NDK </p>
+<p>    1.2 android SDK </p>
+<p>    1.3 Synalyze It! Pro, 安装ELF语法</p>
+<p>    1.4 elf文件格式文档.</p>
+<p>2. 文件格式是 ELF, 组织如下</p>
+<p><img alt="" height="496" src="images/c7/c0b7e04a13ded51128eabf45535cbbdb.png" width="776"/></p>
+<p>实例:</p>
+<p><img alt="" height="1200" src="images/c7/55dd2c50abce35df9e392e2a018ff4db.png" width="1200"/></p>
+<p>3.我们只需要做以下修改就可以，</p>
+<p>    3.1  在SHT_DYNAMIC这里增加我们的so，一般来说这个段都有一些对齐的空位，我们不需要增加字节，这样就不重新计算各个偏移了，要不然很多段，这个计算还是比较麻烦的。如下图:</p>
+<p><img alt="" height="746" src="images/c7/336e3328cb33ffe73541b307920d1e56.png" width="1200"/></p>
+<p>   这个一个信息是8个字节，分两个整型吧， 第一个是tag这个查手册有以下字义，第二数的意义根据tag的不同来定义.</p>
+<p>  <img alt="" height="1200" src="images/c7/3576f14a07bafc8cb6f978074a539c0f.png" width="1200"/></p>
+<p>你可以使用readelf 来打印这个段出来：</p>
+<pre><code class="hljs language-javascript">Dynamic section at offset 0xefc contains 24 entries:
+  Tag        Type                         Name/Value
+ 0x00000003 (PLTGOT)                     0x1fdc
+ 0x00000002 (PLTRELSZ)                   48 (bytes)
+ 0x00000017 (JMPREL)                     0x28c
+ 0x00000014 (PLTREL)                     REL
+ 0x00000011 (REL)                        0x27c
+ 0x00000012 (RELSZ)                      16 (bytes)
+ 0x00000013 (RELENT)                     8 (bytes)
+ 0x6ffffffa (RELCOUNT)                   2
+ 0x00000006 (SYMTAB)                     0x114
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000005 (STRTAB)                     0x1c4
+ 0x0000000a (STRSZ)                      120 (bytes)
+ 0x00000004 (HASH)                       0x23c
+ 0x00000001 (NEEDED)                     Shared library: [libc.so]
+ 0x00000001 (NEEDED)                     Shared library: [libdl.so]
+ 0x0000001a (FINI_ARRAY)                 0x1ef0
+ 0x0000001c (FINI_ARRAYSZ)               8 (bytes)
+ 0x00000019 (INIT_ARRAY)                 0x1ef8
+ 0x0000001b (INIT_ARRAYSZ)               4 (bytes)
+ 0x00000010 (SYMBOLIC)                   0x0
+ 0x0000001e (FLAGS)                      SYMBOLIC BIND_NOW
+ 0x6ffffffb (FLAGS_1)                    Flags: NOW
+ 0x00000001 (NEEDED)                     Shared library: [ibdl.so] //这个就是我增加的
+ 0x00000000 (NULL)                       0x0
+</code></pre>
+<p>可以看到，我在图上增加的修改的数在readelf里，增加了:</p>
+<p>      0x00000001 (NEEDED)                     Shared library: [ibdl.so] </p>
+<p>      01 00 00 00  //表示NEEDED </p>
+<p>      70 00 00 00 //表示这个动态库名字在strtab中的偏移， (有多个的，这里是, 看图，sh_link是2,所以是下标2那个)，如图划了红线:</p>
+<p><img alt="" height="344" src="images/c7/d1570f9573700983c8763ce1b0015892.png" width="904"><br/>  </img></p>
+<p>     </p>
+<p> </p>
+<p>3.2  将对应的api的名字修改成我们的，如fopen 改成fopex, 这样的不增加文件内容，      <span style="color:#f33b45;">在 解析符号引用时，动态链接程序使用宽度优先算法检查符号表。就是说首先检查可执行程序自身的符号表，然后检查 DT_NEEDED 条目(按顺序) 的符号表，接着在第二级 DT_NEEDED 条目上搜索。共享目标文件必须对进程而言可 读，不需要其他权限。</span></p>
+<p><span style="color:#f33b45;">顺序：</span></p>
+<p>     1. in the executable,</p>
+<p>     2. in the shared libraries specified on the link command line, in order,</p>
+<p>     3. in the dependencies of the shared libraries specified on the link</p>
+<p>        command line,</p>
+<p>     4. in the dlopen()ed shared libraries, in the order in which they were</p>
+<p>        dlopen()ed.</p>
+<p> </p>
+<p>有一些符号没有版本的，这种的话直接改了就可以了，但有些符号是有版本的，如:</p>
+<pre><code class="hljs language-javascript">readelf  --dyn-syms   libtestmod.so 
+
+Symbol table '.dynsym' contains 13 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000000004a0     0 SECTION LOCAL  DEFAULT    9 
+     2: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND __gmon_start__
+     3: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _Jv_RegisterClasses
+     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND fopex@GLIBC_2.2.5 (2)
+     5: 0000000000000000     0 FUNC    WEAK   DEFAULT  UND __cxa_finalize@GLIBC_2.2.5 (2)
+     6: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND fclose@GLIBC_2.2.5 (2)
+     7: 00000000002008a8     0 NOTYPE  GLOBAL DEFAULT  ABS _end
+     8: 0000000000200898     0 NOTYPE  GLOBAL DEFAULT  ABS _edata
+     9: 0000000000200898     0 NOTYPE  GLOBAL DEFAULT  ABS __bss_start
+    10: 00000000000005cc    52 FUNC    GLOBAL DEFAULT   11 test_so_call
+    11: 00000000000004a0     0 FUNC    GLOBAL DEFAULT    9 _init
+    12: 0000000000000638     0 FUNC    GLOBAL DEFAULT   12 _fini
+
+
+Version symbols section '.gnu.version' contains 13 entries:
+ Addr: 00000000000003b8  Offset: 0x0003b8  Link: 3 (.dynsym)
+  000:   0 (*local*)       0 (*local*)       0 (*local*)       0 (*local*)    
+  004:   0 (*local*)       2 (GLIBC_2.2.5)   2 (GLIBC_2.2.5)   1 (*global*)   
+  008:   1 (*global*)      1 (*global*)      1 (*global*)      1 (*global*)   
+  00c:   1 (*global*)   
+
+
+Version needs section '.gnu.version_r' contains 1 entries:
+ Addr: 0x00000000000003d8  Offset: 0x0003d8  Link: 4 (.dynstr)
+  000000: Version: 1  File: libc.so.6  Cnt: 1
+  0x0010:   Name: GLIBC_2.2.5  Flags: none  Version: 2
+
+Displaying notes found at file offset 0x00000190 with length 0x00000024:
+  Owner                 Data size	Description
+  GNU                  0x00000014	NT_GNU_BUILD_ID (unique build ID bitstring)
+    Build ID: b735f8c89e4063c8985931547b23b321de943a22
+
+
+</code></pre>
+<p>fopex@GLIBC_2.2.5 (2) , <span style="color:#f33b45;">@GLIBC_2.2.5</span>表示这个是version string, <span style="color:#f33b45;"> (2)</span> 是（这个也是一个标识值，对于在version_info中对比Elf_Internal_Vernaux的vna_other值, 见上面Version needs section,  [ none  Version: 2]这个信息）， 具体可以看binutils的源代码的readelf.c, 这个是由SHT_GNU_versym段定义的，根据代码，只有外部的重态符号才有这个version strings，</p>
+<p>因此SHT_GNU_versym的version的数量是和dynamic sym的数量是一致的，这个的version的数据结构是：</p>
+<pre><code class="hljs language-javascript">typedef struct {
+  unsigned char		vs_vers[2];
+} ATTRIBUTE_PACKED  Elf_External_Versym;</code></pre>
+<p> </p>
+<p>0和1两个值是特别意义的，如上面发出来的，0是表示是local， 1表示global, 其它值的话就是在Version needs section中定义的version的值了。</p>
+<p> </p>
+<p>很明显一旦一个符号指定了一个version string的话，其实它就绑到一个so的(needed)了。</p>
+<p>所以我们为了 LINKER去我们的hook的so去找这个fopex符号的话，我们必须将这个version的值改成1(global).</p>
+<p>否则会这样报错：</p>
+<pre><code class="hljs language-javascript">/test: relocation error: /lib64/libtestmod.so: symbol fopex, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference</code></pre>
+<p>我们做以下修改：</p>
+<p><img alt="" height="628" src="images/c7/39c4ead3aeddcd30c13ac1943508baad.png" width="1200"/></p>
+<p>改完之后:</p>
+<p> </p>
+<pre><code class="hljs language-javascript">readelf  --dyn-syms   libtestmod.so 
+
+Symbol table '.dynsym' contains 13 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000000004a0     0 SECTION LOCAL  DEFAULT    9 
+     2: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND __gmon_start__
+     3: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _Jv_RegisterClasses
+     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND fopex
+     5: 0000000000000000     0 FUNC    WEAK   DEFAULT  UND __cxa_finalize@GLIBC_2.2.5 (2)
+     6: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND fclose@GLIBC_2.2.5 (2)
+     7: 00000000002008a8     0 NOTYPE  GLOBAL DEFAULT  ABS _end
+     8: 0000000000200898     0 NOTYPE  GLOBAL DEFAULT  ABS _edata
+     9: 0000000000200898     0 NOTYPE  GLOBAL DEFAULT  ABS __bss_start
+    10: 00000000000005cc    52 FUNC    GLOBAL DEFAULT   11 test_so_call
+    11: 00000000000004a0     0 FUNC    GLOBAL DEFAULT    9 _init
+    12: 0000000000000638     0 FUNC    GLOBAL DEFAULT   12 _fini</code></pre>
+<p> </p>
+<p>这样fopex如果在libc.so里找不到的话，链接程序会加载ibdl.so在ibdl.so里去找这个fopex, 结果找着了，于是我们的hook就成功了。</p>
+<p> </p>
+<p>测试，</p>
+<p>环境：</p>
+<p>要先设置一个交叉编译的环境，使用以下步骤:</p>
+<pre><code class="hljs language-javascript">#NDK_ROOT是你安装ndk的目录 。
+1.  export SYSROOT=$NDK_ROOT/platforms/android-21/arch-x86
+
+2. mkdir toolchain
+
+3. $NDK_ROOT/ools/make-standalone-toolchain.sh --arch=x86  --platform=android-21  --install-dir=tc_androidx86
+
+4. export PATH=$PATH:"$PWD/tc_androidx86/bin"</code></pre>
+<p>编写编译脚本：</p>
+<pre><code class="hljs language-javascript">GCC=$PWD/tc_androidx86/bin/i686-linux-android-gcc
+
+$GCC testhook.c -pie -fPIE -shared -o ibdl.so
+$GCC testmod.c  -pie -fPIE -shared -o libtestmod.so
+$GCC test.c -pie -fPIE -L.  -ltestmod -o test
+</code></pre>
+<p>代码：</p>
+<p>test.c</p>
+<pre><code class="hljs language-javascript">#include &lt;stdio.h&gt;
+#include "test.h"
+
+int main(int argc, char ** argv)
+{
+	
+	test_so_call("test");
+
+	return 0;
+}</code></pre>
+<p>testmod.c</p>
+<pre><code class="hljs language-javascript">#include &lt;stdio.h&gt;
+#include "test.h"
+
+void test_so_call(const char *sz)
+{
+	FILE *f = fopen(sz,"rb");
+	printf("%s %p\n", "adfsaf",f);
+	if(!f)
+		fclose(f);
+}
+</code></pre>
+<p>testhook.c</p>
+<pre><code class="hljs language-javascript">
+#include &lt;stdio.h&gt;
+
+#define EXPORT __attribute__((visibility("default")))
+
+EXPORT FILE *fopex(const char * filename , const char *mode)
+{
+	printf("fopex called\n");
+	return fopen(filename,mode);
+}</code></pre>
+<p> </p>
+<p>执行结果：</p>
+<pre><code class="hljs language-javascript">adb push libtestmod.so /lib/
+adb push ibdl.so /lib/
+adb push test /data/local
+adb shell chmod +x /lib/libtestmod.so 
+adb shell chmod +x /lib/ibdl.so 
+adb shell chmod +x /data/local/tes 
+
+$ adb shell /data/local/test
+fopex called
+adfsaf 0x0
+</code></pre>
+<p>成功！</p>
+<p>实际对于apk安装来说，ibdl.so这样的文件不会给正确安装，这样安装之后就会造成ibdl.so加载时缺失，由于libdl.so基本地每个so都是需要的，其实这个声明是多余的，这个so早就给加载了，就算没有给加载，hook的so里也会加载这个so,</p>
+<p>其实我们可以，直接把so改成libxy.so, 效果也是一样的。</p>
+<p>修改so的脚本：</p>
+<pre><code class="hljs language-javascript">
+function removeVersion()
+{
+
+
+#readelf    -S   "$1" | grep VERSYM 
+
+versymOff=`readelf    -S   "$1" | grep VERSYM | awk '{print $5}' | tr "[:lower:]" "[:upper:]"`
+
+
+#echo "obase=10;ibase=16;$versymOff" 
+
+versymOff=`echo "obase=10;ibase=16;$versymOff" | bc `
+
+#echo "$versymOff"
+
+readelf   --dyn-syms $1 |  grep -E "fclosx|closx|reax|opex|lstax|stax|fopex|lseex|freax|fwritx|writx|accesx|flocx|lseek6x|fstax"  | awk '{print "index="$1"; symbol="$8";"}' | tr -d ":@LIBC" | while read line; do 
+
+eval "$line"
+
+
+#echo "$index * 2 + $versymOff "
+
+offme=`echo "$index * 2 + $versymOff" | bc`
+
+echo "$offme"
+
+done  |  xargs  replver $1 $2
+
+
+}
+
+	
+
+
+for cc in Development Release ; do 
+
+
+	arrUnityPatchSearch=("fopen" "open" "fread" "read"  "fwrite" "write"  "lseek" "lseek64" "flock" "fclose"  "close" "access" "lstat" "stat" "fstat" "libdl.so" );
+
+
+	mydir=`pwd` 
+	
+	for patchArch in  armeabi-v7a  arm64-v8a x86 ; do
+	    cd il2cpp/${cc}/Libs/$patchArch
+	 	
+	  	hexstr=`xxd -p libu.so | tr -d '\n'`
+	  	for fn in ${arrUnityPatchSearch[*]} ; do 
+
+			pat=`echo -n "$fn" | xxd -p`
+			if [ "libdl.so" == "$fn" ]; then
+				rel=`echo -n "libhs.so" | xxd  -p`
+			else
+				rel=`echo -n "${fn%?}x" | xxd  -p`
+			fi
+
+			pat="00${pat}00"
+			rel="00${rel}00"
+			hexstr=`echo "$hexstr" | sed "s/${pat}/${rel}/g" `
+		done
+
+		echo  "$hexstr" | xxd -r -p &gt; libu2.so
+
+	    echo "il2cpp/${cc}/Libs/$patchArch"
+		removeVersion libu2.so libu3.so
+	  cd  "$mydir"
+	done 
+
+done</code></pre>
+<p>去掉LIBC的程序：</p>
+<pre><code class="hljs language-javascript">#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+	if(argc &lt; 4)
+		return -1;
+	
+	FILE *f = fopen(argv[1],"rb");
+
+	if(f)
+	{
+		fseek(f,0,SEEK_END);
+		int num = ftell(f);
+		printf("file size is %d\n",num);
+		char *szc = malloc(num);
+
+		fseek(f,0,SEEK_SET);
+
+		fread(szc,num,1,f);
+
+		fclose(f);
+
+		for(int i=3;i&lt;argc;i++)
+		{
+			int offset = atoi(argv[i]);
+			printf("offset is  %d\n",offset);
+			szc[offset] = 0;
+			szc[offset+1] = 0;
+			
+		}
+
+
+		remove(argv[2]);
+		f =  fopen(argv[2],"wb"); 
+		if(f)
+		{
+			fwrite(szc,num,f);
+
+			fclose(f);
+		}
+		else
+		{
+			printf("open target file failed %s\n",argv[2]);
+		}
+
+		free(szc);
+	}
+
+	return 0;
+}</code></pre>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2020-04-30 15:49:01</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

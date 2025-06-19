@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于windows xp sp2/sp3 中tcpip.sys对于Raw socket的限制</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>关于windows xp sp2/sp3 中tcpip.sys对于Raw socket的限制</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/2467775" target="_blank">https://blog.csdn.net/aerror/article/details/2467775</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-05-21 23:08:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 5831</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 6</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">socket</span>, <span class="tag">windows</span>, <span class="tag">xp</span>, <span class="tag">c</span>, <span class="tag">sockets</span>, <span class="tag">byte</span></div>
+    
+    <div class="article-description">WINDOWS XP SP2修改了TCPIP.SYS,增加了对于RAW SOCKET的发送和伪造源地的限制，详情如下 :1) 不能通过raw socket发送TCP报文。做此尝试时会得到10004号错误。2) 不能通过raw socket发送伪造源IP的UDP报文。3) 不能通过raw socket发送IP碎片。做此尝试时会得到10004号错误。不知微软在哪次对2000 SP4的修补中实现了类</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>WINDOWS XP SP2修改了TCPIP.SYS,增加了对于RAW SOCKET的发送和伪造源地的限制，详情如下 :</p>
+<p>1) 不能通过raw socket发送TCP报文。做此尝试时会得到10004号错误。<br/><br/>2) 不能通过raw socket发送伪造源IP的UDP报文。<br/><br/>3) 不能通过raw socket发送IP碎片。做此尝试时会得到10004号错误。<br/><br/>不知微软在哪次对2000 SP4的修补中实现了类似上述第三条的限制，只是要宽松一些:<br/><br/>3) 不能通过raw socket发送全部IP碎片，只有第一个碎片可被发送出去。试图发送<br/>   后续碎片时会得到10004号错误。<br/></p>
+<p>来自微软的说明：</p>
+<p>//What new functionality is added to this feature in Windows XP Service Pack 2?<br/>//Restricted traffic over raw sockets<br/>//Detailed description <br/>  A very small number of Windows applications make use of raw IP sockets, which provide an industry-standard way for applications to create TCP/IP packets with fewer integrity and security checks by the TCP/IP stack. The Windows implementation of TCP/IP still supports receiving traffic on raw IP sockets. However, the ability to send traffic over raw sockets has been restricted in two ways:<br/>//<br/>//TCP data cannot be sent over raw sockets.<br/>//<br/>//UDP datagrams with invalid source addresses cannot be sent over raw sockets. The IP source address for any outgoing UDP datagram must exist on a network interface or the datagram is dropped. <br/>//<br/>//Why is this change important? What threats does it help mitigate? <br/>//<br/>//This change limits the ability of malicious code to create distributed denial-of-service attacks and limits the ability to send spoofed packets, which are TCP/IP packets with a forged source IP address.<br/>// </p>
+<p>这个限制是能过一些判断和跳转实现的，跳转的地方如下:</p>
+<p>汇编代码来自对于WINDOWS XP SP2的 反汇编，这段代码使RAW SOCKET的SENTO失败:</p>
+<p>.text:00034007                         loc_34007:                              ; CODE XREF: IPTransmit(x,x,x,x,x,x,x,x,x,x)+213C4j<br/>.text:00034007 8B 45 B4                                mov     eax, [ebp+var_4C]<br/>.text:0003400A 89 50 0C                                mov     [eax+0Ch], edx<br/>.text:0003400D 8B 45 B4                                mov     eax, [ebp+var_4C]<br/>.text:00034010 88 58 1C                                mov     [eax+1Ch], bl<br/>.text:00034013 8B 4D AC                                mov     ecx, [ebp+var_54]<br/>.text:00034016 8A 41 09                                mov     al, [ecx+9]     ; &lt;---开始判断类型</p>
+<p>.text:00034019 3C 06                                   cmp     al, 6<br/>.text:0003401B 0F 84 A9 14 00 00                       jz      pos_to_drop_skip_packet &lt;--这里改为jmp 0003405D 即可绕过这个限制.<br/>.text:00034021 3C 04                                   cmp     al, 4<br/>.text:00034023 0F 84 A1 14 00 00                       jz      pos_to_drop_skip_packet<br/>.text:00034029 3C 29                                   cmp     al, 29h<br/>.text:0003402B 0F 84 99 14 00 00                       jz      pos_to_drop_skip_packet<br/>.text:00034031 FF 71 0C                                push    dword ptr [ecx+0Ch]<br/>.text:00034034 E8 D6 CD FD FF                          call    <a href="mailto:_GetAddrType@4" rel="nofollow">_GetAddrType@4</a>  ; GetAddrType(x)<br/>.text:00034039 84 C0                                   test    al, al<br/>.text:0003403B 74 20                                   jz      short loc_3405D ; &lt;---不检查，直接执行<br/>.text:0003403D 8B 45 AC                                mov     eax, [ebp+var_54]<br/>.text:00034040 FF 70 10                                push    dword ptr [eax+10h]<br/>.text:00034043 E8 C7 CD FD FF                          call    <a href="mailto:_GetAddrType@4" rel="nofollow">_GetAddrType@4</a>  ; GetAddrType(x)<br/>.text:00034048 3C 03                                   cmp     al, 3<br/>.text:0003404A 0F 85 7A 14 00 00                       jnz     pos_to_drop_skip_packet<br/>.text:00034050 8B 45 8C                                mov     eax, [ebp+var_74]<br/>.text:00034053 F6 40 0C 20                             test    byte ptr [eax+0Ch], 20h<br/>.text:00034057 0F 84 6D 14 00 00                       jz      pos_to_drop_skip_packet<br/>.text:0003405D<br/>.text:0003405D                         loc_3405D:                              ; CODE XREF: IPTransmit(x,x,x,x,x,x,x,x,x,x)+213FDj<br/>.text:0003405D 8B 45 AC                                mov     eax, [ebp+var_54] ; &lt;---不检查，直接执行<br/>.text:00034060 0F B6 00                                movzx   eax, byte ptr [eax]<br/>.text:00034063 83 E0 0F                                and     eax, 0Fh<br/>.text:00034066 C1 E0 02                                shl     eax, 2<br/>.text:00034069 8B F0                                   mov     esi, eax<br/>.text:0003406B 83 FE 14                                cmp     esi, 14h<br/>.text:0003406E 89 B5 64 FF FF FF                       mov     [ebp+var_9C], esi<br/>.text:00034074 0F 82 50 14 00 00                       jb      pos_to_drop_skip_packet<br/>.text:0003407A 76 67                                   jbe     short loc_340E3<br/>.text:0003407C 6A 10                                   push    10h             ; Priority<br/>.text:0003407E 8D 46 EC                                lea     eax, [esi-14h]<br/>.text:00034081 68 54 43 69 77                          push    77694354h       ; Tag<br/>.text:00034086 33 FF                                   xor     edi, edi<br/>.text:00034088 50                                      push    eax             ; NumberOfBytes<br/>.text:00034089 47                                      inc     edi<br/>.text:0003408A 53                                      push    ebx             ; PoolType<br/>.text:0003408B 89 7D 80                                mov     [ebp+var_80], edi<br/>.text:0003408E 89 45 88                                mov     [ebp+Length], eax<br/>.text:00034091 FF 15 AC F2 04 00                       call    ds:__imp__ExAllocatePoolWithTagPriority@16 ; ExAllocatePoolWithTagPriority(x,x,x,x)<br/>.text:00034097 3B C3                                   cmp     eax, ebx<br/>.text:00034099 89 45 A8                                mov     [ebp+VirtualAddress], eax<br/>.text:0003409C 75 0C                                   jnz     short loc_340AA<br/>.text:0003409E BE FE 2A 00 00                          mov     esi, 2AFEh<br/>.text:000340A3 56                                      push    esi<br/>.text:000340A4 57                                      push    edi<br/>.text:000340A5 E9 3C 14 00 00                          jmp     loc_354E6</p>
+<p>另外如果你要发送伪造的源地址，你需要关闭WINDOWS XP的个人防火墙方可.</p>
+<p>顺便做些对比: window 2003 sp1 对应代码如下:</p>
+<p>text:0003A088 F7 D0                                         not     eax<br/>.text:0003A08A 66 89 41 0A                                   mov     [ecx+0Ah], ax<br/>.text:0003A08E 38 1D B0 CC 08 00                             cmp     _RunningOnWorkstation, bl  &lt;---如果是工作站上运行的话也会有限制,不过你是server的话就没有问题....试过了，确实没有问题<br/>.text:0003A094 74 46                                         jz      short loc_3A0DC<br/>.text:0003A096 8B 4D AC                                      mov     ecx, [ebp+var_54]<br/>.text:0003A099 8A 41 09                                      mov     al, [ecx+9]<br/>.text:0003A09C 3C 06                                         cmp     al, 6<br/>.text:0003A09E 74 2C                                         jz      short loc_3A0CC<br/>.text:0003A0A0 3C 04                                         cmp     al, 4<br/>.text:0003A0A2 74 28                                         jz      short loc_3A0CC<br/>.text:0003A0A4 3C 29                                         cmp     al, 29h<br/>.text:0003A0A6 74 24                                         jz      short loc_3A0CC<br/>.text:0003A0A8 FF 71 0C                                      push    dword ptr [ecx+0Ch]<br/>.text:0003A0AB E8 0B A5 FE FF                                call    <a href="mailto:_GetAddrType@4" rel="nofollow">_GetAddrType@4</a>  ; GetAddrType(x)<br/>.text:0003A0B0 84 C0                                         test    al, al<br/>.text:0003A0B2 74 28                                         jz      short loc_3A0DC<br/>.text:0003A0B4 8B 45 AC                                      mov     eax, [ebp+var_54]<br/>.text:0003A0B7 FF 70 10                                      push    dword ptr [eax+10h]<br/>.text:0003A0BA E8 FC A4 FE FF                                call    <a href="mailto:_GetAddrType@4" rel="nofollow">_GetAddrType@4</a>  ; GetAddrType(x)<br/>.text:0003A0BF 3C 03                                         cmp     al, 3<br/>.text:0003A0C1 75 09                                         jnz     short loc_3A0CC<br/>.text:0003A0C3 8B 45 84                                      mov     eax, [ebp+var_7D+1]<br/>.text:0003A0C6 F6 40 0C 20                                   test    byte ptr [eax+0Ch], 20h<br/>.text:0003A0CA 75 10                                         jnz     short loc_3A0DC<br/>.text:0003A0CC<br/>.text:0003A0CC                               loc_3A0CC:                              ; CODE XREF: _IPTransmit(x,x,x,x,x,x,x,x,x,x)+13E69j<br/>.text:0003A0CC                                                                       ; _IPTransmit(x,x,x,x,x,x,x,x,x,x)+13E6Dj ...<br/>.text:0003A0CC FF 05 AC 04 06 00                             inc     dword_604AC<br/>.text:0003A0D2 BE 2A 2B 00 00                                mov     esi, 2B2Ah<br/>.text:0003A0D7 E9 C6 00 00 00                                jmp     loc_3A1A2<br/>.text:0003A0DC                               ; 哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪?<br/>.text:0003A0DC<br/>.text:0003A0DC                               loc_3A0DC:                              ; CODE XREF: _IPTransmit(x,x,x,x,x,x,x,x,x,x)+13E5Fj<br/>.text:0003A0DC                                                                       ; _IPTransmit(x,x,x,x,x,x,x,x,x,x)+13E7Dj ...<br/>.text:0003A0DC 8B 45 AC                                      mov     eax, [ebp+var_54]<br/>.text:0003A0DF 66 8B 95 36 FF FF FF                          mov     dx, [ebp-0CAh]<br/>.text:0003A0E6 33 C9                                         xor     ecx, ecx<br/>.text:0003A0E8 8A 08                                         mov     cl, [eax]<br/>.text:0003A0EA 66 89 50 02                                   mov     [eax+2], dx<br/>.text:0003A0EE 8B 45 84                                      mov     eax, [ebp+var_7D+1]<br/>.text:0003A0F1 8A 40 0A                                      mov     al, [eax+0Ah]<br/>.text:0003A0F4 8B 55 AC                                      mov     edx, [ebp+var_54]<br/>.text:0003A0F7 88 42 01                                      mov     [edx+1], al<br/>.text:0003A0FA 8B 45 AC                                      mov     eax, [ebp+var_54]<br/>.text:0003A0FD 66 89 58 0A                                   mov     [eax+0Ah], bx<br/>.text:0003A101 83 E1 0F                                      and     ecx, 0Fh<br/>.text:0003A104 8B C1                                         mov     eax, ecx<br/>.text:0003A106 C1 E0 02                                      shl     eax, 2<br/>.text:0003A109 50                                            push    eax<br/>.text:0003A10A FF 75 AC                                      push    [ebp+var_54]<br/>.text:0003A10D 53                                            push    ebx<br/>.text:0003A10E FF 15 38 01 06 00                             call    _tcpxsum_routine ; tcpxsum(x,x,x)<br/>.text:0003A114 8B 4D AC                                      mov     ecx, [ebp+var_54]<br/>.text:0003A117 8B 75 8C                                      mov     esi, [ebp+var_74]<br/>.text:0003A11A F7 D0                                         not     eax<br/>.text:0003A11C 66 89 41 0A                                   mov     [ecx+0Ah], ax<br/>.text:0003A120 E9 D8 C4 FE FF                                jmp     loc_265FD<br/>.text:0003A125                               ; 哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪?<br/>.text:0003A125<br/>.text:0003A125                               loc_3A125:                              ; CODE XREF: _IPTransmit(x,x,x,x,x,x,x,x,x,x)+13FE2j<br/>.text:0003A125 33 F6                                         xor     esi, esi<br/>.text:0003A127<br/>.text:0003A127                               loc_3A127:                              ; CODE XREF: _IPTransmit(x,x,x,x,x,x,x,x,x,x)+13FEDj<br/>.text:0003A127 56                                            push    esi             ; int<br/>.text:0003A128 6A 01                                         push    1               ; P<br/>.text:0003A12A FF 75 B4                                      push    [ebp+var_4C]    ; BytesCopied<br/>.text:0003A12D E8 EC B8 FE FF                                call    <a href="mailto:_FreeIPPacket@12" rel="nofollow">_FreeIPPacket@12</a> ; FreeIPPacket(x,x,x)<br/>.text:0003A132 39 5D B0                                      cmp     [ebp+var_50], ebx<br/>.text:0003A135 0F 84 F4 0C FE FF                             jz      loc_1AE2F<br/>.text:0003A13B FF 75 B0                                      push    [ebp+var_50]<br/>.text:0003A13E E9 85 03 00 00                                jmp     loc_3A4C8<br/></p>
+<p>WIN2003 ENT原版:</p>
+<p>text:00023BB0 loc_23BB0:                              ; CODE XREF: SendRSTFromTCB(x,x)+42A7j<br/>.text:00023BB0                 mov     eax, [ebp+4]<br/>.text:00023BB3                 mov     [eax+0Ch], edx<br/>.text:00023BB6                 mov     eax, [ebp+4]<br/>.text:00023BB9                 mov     [eax+1Ch], bl<br/>.text:00023BBC                 mov     eax, [ebp+Packet]<br/>.text:00023BBF                 movzx   eax, byte ptr [eax]<br/>.text:00023BC2                 and     eax, 0Fh<br/>.text:00023BC5                 shl     eax, 2<br/>.text:00023BC8                 cmp     eax, esi<br/>.text:00023BCA                 mov     [ebp+arg_54], eax<br/>.text:00023BCD                 jb      loc_2F98C<br/>.text:00023BD3                 ja      loc_23A81<br/>.text:00023BD9<br/>.text:00023BD9 loc_23BD9:                              ; CODE XREF: SendRSTFromTCB(x,x)-7C01j<br/>.text:00023BD9                 mov     eax, [ebp+arg_58]<br/>.text:00023BDC                 mov     eax, [eax+14h]<br/>.text:00023BDF                 mov     esi, [ebp+arg_54]<br/>.text:00023BE2                 push    10h             ; Priority<br/>.text:00023BE4                 push    [ebp+var_4C]    ; int<br/>.text:00023BE7                 add     eax, esi<br/>.text:00023BE9                 sub     [ebp+arg_5C], eax<br/>.text:00023BEC                 call    <a href="mailto:_TcpipBufferVirtualAddress@8" rel="nofollow">_TcpipBufferVirtualAddress@8</a> ; TcpipBufferVirtualAddress(x,x)<br/>.text:00023BF1                 cmp     eax, ebx<br/>.text:00023BF3                 jz      loc_2F9DB<br/>.text:00023BF9                 mov     ecx, [ebp+var_4C]<br/>.text:00023BFC                 mov     edi, [ecx]<br/>.text:00023BFE                 mov     ecx, [ecx+14h]<br/>.text:00023C01                 sub     ecx, esi<br/>.text:00023C03                 jz      loc_2F9CB<br/>.text:00023C09                 push    ecx             ; Length<br/>.text:00023C0A                 add     eax, esi<br/>.text:00023C0C                 push    eax             ; VirtualAddress<br/>.text:00023C0D                 push    _BufferPool     ; PoolHandle<br/>.text:00023C13                 lea     eax, [ebp+Buffer]<br/>.text:00023C19                 push    eax             ; Buffer<br/>.text:00023C1A                 lea     eax, [ebp+Status]<br/>.text:00023C1D                 push    eax             ; Status<br/>.text:00023C1E                 call    ds:__imp__NdisAllocateBuffer@20 ; NdisAllocateBuffer(x,x,x,x,x)<br/>.text:00023C24<br/>.text:00023C24 loc_23C24:                              ; CODE XREF: SendRSTFromTCB(x,x)+4321j<br/>.text:00023C24                                         ; SendRSTFromTCB(x,x)+432Dj<br/>.text:00023C24                 cmp     [ebp+Status], ebx<br/>.text:00023C27                 jnz     loc_2FA12<br/>.text:00023C2D                 mov     eax, [ebp+MemoryDescriptorList]<br/>.text:00023C30                 mov     ecx, [ebp+var_4C]<br/>.text:00023C33                 mov     [eax+1Ch], ecx<br/>.text:00023C36                 mov     eax, [ebp+Buffer]<br/>.text:00023C3C                 mov     ecx, [ebp+arg_58]<br/>.text:00023C3F                 mov     [ecx], eax<br/>.text:00023C41                 mov     [eax], edi<br/>.text:00023C43                 mov     edi, [ebp+Packet]<br/>.text:00023C46                 mov     [ecx+14h], ebx<br/>.text:00023C49                 cmp     [edi+4], bx<br/>.text:00023C4D                 jnz     short loc_23C71<br/>.text:00023C4F                 xor     eax, eax<br/>.text:00023C51                 inc     eax<br/>.text:00023C52                 mov     ecx, offset _IPIDCacheLine<br/>.text:00023C57                 lock xadd [ecx], eax<br/>.text:00023C5B                 mov     [edi+4], ax<br/>.text:00023C5F                 mov     edi, [ebp+Packet]<br/>.text:00023C62                 mov     ax, [edi+4]<br/>.text:00023C66                 mov     ch, al<br/>.text:00023C68                 mov     cl, ah<br/>.text:00023C6A                 mov     [edi+4], cx<br/>.text:00023C6E                 mov     edi, [ebp+Packet]<br/>.text:00023C71<br/>.text:00023C71 loc_23C71:                              ; CODE XREF: SendRSTFromTCB(x,x)-7A93j<br/>.text:00023C71                 mov     eax, [ebp+arg_5C]<br/>.text:00023C74                 add     esi, eax<br/>.text:00023C76                 mov     ax, si<br/>.text:00023C79                 mov     esi, [ebp+MemoryDescriptorList]<br/>.text:00023C7C                 mov     ch, al<br/>.text:00023C7E                 mov     cl, ah<br/>.text:00023C80                 mov     eax, [ebp+arg_68]<br/>.text:00023C83                 mov     [edi+2], cx<br/>.text:00023C87                 mov     al, [eax+0Ah]<br/>.text:00023C8A                 mov     ecx, [ebp+Packet]<br/>.text:00023C8D                 mov     [ecx+1], al<br/>.text:00023C90                 mov     eax, [ebp+Packet]<br/>.text:00023C93                 mov     [eax+0Ah], bx<br/>.text:00023C97                 jmp     loc_13544<br/>.text:00023C97 ; END OF FUNCTION CHUNK FOR <a href="mailto:_SendRSTFromTCB@8" rel="nofollow">_SendRSTFromTCB@8</a><br/>.text:00023C9C ; 哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪?<br/>.text:00023C9C ; START OF FUNCTION CHUNK FOR <a href="mailto:_IPTransmit@40" rel="nofollow">_IPTransmit@40</a><br/>.text:00023C9C<br/>.text:00023C9C loc_23C9C:                              ; CODE XREF: IPTransmit(x,x,x,x,x,x,x,x,x,x)+5Fj<br/>.text:00023C9C                 cmp     [ebp+50h+arg_C], 0FFFFh<br/>.text:00023CA3                 jg      loc_2F3EA<br/>.text:00023CA9                 jmp     loc_1330F<br/>.text:00023CAE ; 哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪?<br/>.text:00023CAE<br/>.text:00023CAE loc_23CAE:                              ; CODE XREF: IPTransmit(x,x,x,x,x,x,x,x,x,x)+1B5j<br/>.text:00023CAE                 mov     eax, [ebp+50h+arg_8]<br/>.text:00023CB1                 mov     esi, [eax]<br/>.text:00023CB3                 lea     eax, [ebp+50h+var_54]<br/>.text:00023CB6                 push    eax<br/>.text:00023CB7                 push    _IpHeaderPool<br/>.text:00023CBD                 mov     [ebp+50h+var_D4], ebx<br/>.text:00023CC3                 mov     [ebp+50h+var_9C], esi<br/>.text:00023CC6                 call    <a href="mailto:_MdpAllocate@8" rel="nofollow">_MdpAllocate@8</a>  ; MdpAllocate(x,x)<br/>.text:00023CCB                 cmp     eax, ebx<br/>.text:00023CCD                 mov     [ebp+50h+var_98], eax<br/>.text:00023CD0                 jz      loc_26B4C<br/>.text:00023CD6                 push    10h             ; Priority<br/>.text:00023CD8                 push    esi             ; int<br/>.text:00023CD9                 call    <a href="mailto:_TcpipBufferVirtualAddress@8" rel="nofollow">_TcpipBufferVirtualAddress@8</a> ; TcpipBufferVirtualAddress(x,x)<br/>.text:00023CDE                 jmp     loc_23B63<br/></p>
+<p><br/>如果你修改了tcpip.sys，记得也把它的checksum修正一下.</p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-05-21 23:08:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

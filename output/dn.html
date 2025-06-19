@@ -1,0 +1,777 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenWrt 添加cpu温度显示监控</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>OpenWrt 添加cpu温度显示监控</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/85220120" target="_blank">https://blog.csdn.net/aerror/article/details/85220120</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2018-12-23 01:32:02</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 26079</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 10</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
+    </div>
+    
+    
+    
+    <div class="article-description">opkg updateopkg install lm-sensors lm-sensors-detect 然后修改一下/usr/lib/lua/luci/view/admin_status/index.htm, 增加一个温度的显示&amp;lt;%# Copyright 2008 Steven Barth &amp;lt;steven@midlink.org&amp;gt; Copyright 20...</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>opkg update</p>
+<p>opkg install lm-sensors lm-sensors-detect</p>
+<p> </p>
+<p>然后修改一下/usr/lib/lua/luci/view/admin_status/index.htm, 增加一个温度的显示</p>
+<pre class="has"><code class="hljs language-javascript">&lt;%#
+ Copyright 2008 Steven Barth &lt;steven@midlink.org&gt;
+ Copyright 2008-2011 Jo-Philipp Wich &lt;jow@openwrt.org&gt;
+ Licensed to the public under the Apache License 2.0.
+-%&gt;
+
+&lt;%
+	local fs = require "nixio.fs"
+	local ipc = require "luci.ip"
+	local util = require "luci.util"
+	local stat = require "luci.tools.status"
+	local ver = require "luci.version"
+
+	local has_ipv6 = fs.access("/proc/net/ipv6_route")
+	local has_dhcp = fs.access("/etc/config/dhcp")
+	local has_wifi = ((fs.stat("/etc/config/wireless", "size") or 0) &gt; 0)
+	
+	local sysinfo = luci.util.ubus("system", "info") or { }
+	local boardinfo = luci.util.ubus("system", "board") or { }
+	local unameinfo = nixio.uname() or { }
+	local temperinfo = luci.util.exec("sensors  | grep -E 'temp1|temp2|Package|Core' | sed 's/temp2/&lt;br&gt;temp2/g' | sed 's/Package/&lt;br&gt;Package/g' | sed 's/Core/&lt;br&gt;Core/g' ")
+
+	local meminfo = sysinfo.memory or {
+		total = 0,
+		free = 0,
+		buffered = 0,
+		shared = 0
+	}
+
+	local swapinfo = sysinfo.swap or {
+		total = 0,
+		free = 0
+	}
+
+	local has_dsl = fs.access("/etc/init.d/dsl_control")
+
+	if luci.http.formvalue("status") == "1" then
+		local ntm = require "luci.model.network".init()
+		local wan = ntm:get_wannet()
+		local wan6 = ntm:get_wan6net()
+
+		local conn_count = tonumber(
+			fs.readfile("/proc/sys/net/netfilter/nf_conntrack_count") or "") or 0
+
+		local conn_max = tonumber(luci.sys.exec(
+			"sysctl -n -e net.nf_conntrack_max net.ipv4.netfilter.ip_conntrack_max"
+		):match("%d+")) or 4096
+
+		local rv = {
+			uptime     = sysinfo.uptime or 0,
+			localtime  = os.date(),
+			loadavg    = sysinfo.load or { 0, 0, 0 },
+			memory     = meminfo,
+			swap       = swapinfo,
+			connmax    = conn_max,
+			conncount  = conn_count,
+			wifinets   = stat.wifi_networks(),
+			temperinfo = luci.util.exec("sensors  | grep -E 'temp1|temp2|Package|Core' | sed 's/temp2/&lt;br&gt;temp2/g' | sed 's/Package/&lt;br&gt;Package/g' | sed 's/Core/&lt;br&gt;Core/g' ")
+		}
+
+		if wan then
+			local dev = wan:get_interface()
+			local link = dev and ipc.link(dev:name())
+			rv.wan = {
+				ipaddr  = wan:ipaddr(),
+				gwaddr  = wan:gwaddr(),
+				netmask = wan:netmask(),
+				dns     = wan:dnsaddrs(),
+				expires = wan:expires(),
+				uptime  = wan:uptime(),
+				proto   = wan:proto(),
+				i18n    = wan:get_i18n(),
+				ifname  = wan:ifname(),
+				link    = wan:adminlink(),
+				mac     = dev and dev:mac(),
+				type    = dev and dev:type(),
+				name    = dev and dev:get_i18n(),
+				ether   = link and link.type == 1
+			}
+		end
+
+		if wan6 then
+			local dev = wan6:get_interface()
+			local link = dev and ipc.link(dev:name())
+			rv.wan6 = {
+				ip6addr   = wan6:ip6addr(),
+				gw6addr   = wan6:gw6addr(),
+				dns       = wan6:dns6addrs(),
+				ip6prefix = wan6:ip6prefix(),
+				uptime    = wan6:uptime(),
+				proto     = wan6:proto(),
+				i18n      = wan6:get_i18n(),
+				ifname    = wan6:ifname(),
+				link      = wan6:adminlink(),
+				mac       = dev and dev:mac(),
+				type      = dev and dev:type(),
+				name      = dev and dev:get_i18n(),
+				ether     = link and link.type == 1
+			}
+		end
+
+		if has_dsl then
+			local dsl_stat = luci.sys.exec("/etc/init.d/dsl_control lucistat")
+			local dsl_func = loadstring(dsl_stat)
+			if dsl_func then
+				rv.dsl = dsl_func()
+			end
+		end
+
+		luci.http.prepare_content("application/json")
+		luci.http.write_json(rv)
+
+		return
+	end
+-%&gt;
+
+&lt;%+header%&gt;
+
+&lt;script type="text/javascript"&gt;//&lt;![CDATA[
+	function progressbar(v, m)
+	{
+		var vn = parseInt(v) || 0;
+		var mn = parseInt(m) || 100;
+		var pc = Math.floor((100 / mn) * vn);
+
+		return String.format(
+			'&lt;div style="width:100%%; max-width:200px; position:relative; border:1px solid #999999"&gt;' +
+				'&lt;div style="background-color:#CCCCCC; width:%d%%; height:15px"&gt;' +
+					'&lt;div style="position:absolute; left:0; top:0; text-align:center; width:100%%; color:#000000"&gt;' +
+						'&lt;small&gt;%s / %s (%d%%)&lt;/small&gt;' +
+					'&lt;/div&gt;' +
+				'&lt;/div&gt;' +
+			'&lt;/div&gt;', pc, v, m, pc
+		);
+	}
+
+	function labelList(items, offset) {
+		var rv = [ ];
+
+		for (var i = offset || 0; i &lt; items.length; i += 2) {
+			var label = items[i],
+			    value = items[i+1];
+
+			if (value === undefined || value === null)
+				continue;
+
+			if (label)
+				rv.push(E('strong', [label, ': ']));
+
+			rv.push(value, E('br'));
+		}
+
+		return rv;
+	}
+
+	function renderBox(title, active, childs) {
+		childs = childs || [];
+		childs.unshift(E('span', labelList(arguments, 3)));
+
+		return E('div', { class: 'ifacebox' }, [
+			E('div', { class: 'ifacebox-head center ' + (active ? 'active' : '') },
+				E('strong', title)),
+			E('div', { class: 'ifacebox-body left' }, childs)
+		]);
+	}
+
+	function renderBadge(icon, title) {
+		return E('span', { class: 'ifacebadge' }, [
+			E('img', { src: icon, title: title || '' }),
+			E('span', labelList(arguments, 2))
+		]);
+	}
+
+	XHR.poll(5, '&lt;%=REQUEST_URI%&gt;', { status: 1 },
+		function(x, info)
+		{
+			var us = document.getElementById('upstream_status_table');
+
+			while (us.lastElementChild)
+				us.removeChild(us.lastElementChild);
+
+			var ifc = info.wan || {};
+
+			us.appendChild(renderBox(
+				'&lt;%:IPv4 Upstream%&gt;',
+				(ifc.ifname &amp;&amp; ifc.proto != 'none'),
+				[ E('div', {}, renderBadge(
+					'&lt;%=resource%&gt;/icons/%s.png'.format((ifc &amp;&amp; ifc.type) ? ifc.type : 'ethernet_disabled'), null,
+					'&lt;%:Device%&gt;', ifc ? (ifc.name || ifc.ifname || '-') : '-',
+					'&lt;%:MAC-Address%&gt;', (ifc &amp;&amp; ifc.ether) ? ifc.mac : null)) ],
+				'&lt;%:Protocol%&gt;', ifc.i18n || E('em', '&lt;%:Not connected%&gt;'),
+				'&lt;%:Address%&gt;', (ifc.ipaddr) ? ifc.ipaddr : '0.0.0.0',
+				'&lt;%:Netmask%&gt;', (ifc.netmask &amp;&amp; ifc.netmask != ifc.ipaddr) ? ifc.netmask : '255.255.255.255',
+				'&lt;%:Gateway%&gt;', (ifc.gwaddr) ? ifc.gwaddr : '0.0.0.0',
+				'&lt;%:DNS%&gt; 1', (ifc.dns) ? ifc.dns[0] : null,
+				'&lt;%:DNS%&gt; 2', (ifc.dns) ? ifc.dns[1] : null,
+				'&lt;%:DNS%&gt; 3', (ifc.dns) ? ifc.dns[2] : null,
+				'&lt;%:DNS%&gt; 4', (ifc.dns) ? ifc.dns[3] : null,
+				'&lt;%:DNS%&gt; 5', (ifc.dns) ? ifc.dns[4] : null,
+				'&lt;%:Expires%&gt;', (ifc.expires &gt; -1) ? '%t'.format(ifc.expires) : null,
+				'&lt;%:Connected%&gt;', (ifc.uptime &gt; 0) ? '%t'.format(ifc.uptime) : null));
+
+			&lt;% if has_ipv6 then %&gt;
+			var ifc6 = info.wan6 || {};
+
+			us.appendChild(renderBox(
+				'&lt;%:IPv6 Upstream%&gt;',
+				(ifc6.ifname &amp;&amp; ifc6.proto != 'none'),
+				[ E('div', {}, renderBadge(
+					'&lt;%=resource%&gt;/icons/%s.png'.format(ifc6.type || 'ethernet_disabled'), null,
+					'&lt;%:Device%&gt;', ifc6 ? (ifc6.name || ifc6.ifname || '-') : '-',
+					'&lt;%:MAC-Address%&gt;', (ifc6 &amp;&amp; ifc6.ether) ? ifc6.mac : null)) ],
+				'&lt;%:Protocol%&gt;', ifc6.i18n ? (ifc6.i18n + (ifc6.proto === 'dhcp' &amp;&amp; ifc6.ip6prefix ? '-PD' : '')) : E('em', '&lt;%:Not connected%&gt;'),
+				'&lt;%:Prefix Delegated%&gt;', ifc6.ip6prefix,
+				'&lt;%:Address%&gt;', (ifc6.ip6prefix) ? (ifc6.ip6addr || null) : (ifc6.ipaddr || '::'),
+				'&lt;%:Gateway%&gt;', (ifc6.gw6addr) ? ifc6.gw6addr : '::',
+				'&lt;%:DNS%&gt; 1', (ifc6.dns) ? ifc6.dns[0] : null,
+				'&lt;%:DNS%&gt; 2', (ifc6.dns) ? ifc6.dns[1] : null,
+				'&lt;%:DNS%&gt; 3', (ifc6.dns) ? ifc6.dns[2] : null,
+				'&lt;%:DNS%&gt; 4', (ifc6.dns) ? ifc6.dns[3] : null,
+				'&lt;%:DNS%&gt; 5', (ifc6.dns) ? ifc6.dns[4] : null,
+				'&lt;%:Connected%&gt;', (ifc6.uptime &gt; 0) ? '%t'.format(ifc6.uptime) : null));
+			&lt;% end %&gt;
+
+			&lt;% if has_dsl then %&gt;
+				var ds = document.getElementById('dsl_status_table');
+
+				while (ds.lastElementChild)
+					ds.removeChild(ds.lastElementChild);
+
+				ds.appendChild(renderBox(
+					'&lt;%:DSL Status%&gt;',
+					(info.dsl.line_state === 'UP'), [ ],
+					'&lt;%:Line State%&gt;', '%s [0x%x]'.format(info.dsl.line_state, info.dsl.line_state_detail),
+					'&lt;%:Line Mode%&gt;', info.dsl.line_mode_s || '-',
+					'&lt;%:Line Uptime%&gt;', info.dsl.line_uptime_s || '-',
+					'&lt;%:Annex%&gt;', info.dsl.annex_s || '-',
+					'&lt;%:Profile%&gt;', info.dsl.profile_s || '-',
+					'&lt;%:Data Rate%&gt;', '%s/s / %s/s'.format(info.dsl.data_rate_down_s, info.dsl.data_rate_up_s),
+					'&lt;%:Max. Attainable Data Rate (ATTNDR)%&gt;', '%s/s / %s/s'.format(info.dsl.max_data_rate_down_s, info.dsl.max_data_rate_up_s),
+					'&lt;%:Latency%&gt;', '%s / %s'.format(info.dsl.latency_num_down, info.dsl.latency_num_up),
+					'&lt;%:Line Attenuation (LATN)%&gt;', '%.1f dB / %.1f dB'.format(info.dsl.line_attenuation_down, info.dsl.line_attenuation_up),
+					'&lt;%:Signal Attenuation (SATN)%&gt;', '%.1f dB / %.1f dB'.format(info.dsl.signal_attenuation_down, info.dsl.signal_attenuation_up),
+					'&lt;%:Noise Margin (SNR)%&gt;', '%.1f dB / %.1f dB'.format(info.dsl.noise_margin_down, info.dsl.noise_margin_up),
+					'&lt;%:Aggregate Transmit Power(ACTATP)%&gt;', '%.1f dB / %.1f dB'.format(info.dsl.actatp_down, info.dsl.actatp_up),
+					'&lt;%:Forward Error Correction Seconds (FECS)%&gt;', '%d / %d'.format(info.dsl.errors_fec_near, info.dsl.errors_fec_far),
+					'&lt;%:Errored seconds (ES)%&gt;', '%d / %d'.format(info.dsl.errors_es_near, info.dsl.errors_es_far),
+					'&lt;%:Severely Errored Seconds (SES)%&gt;', '%d / %d'.format(info.dsl.errors_ses_near, info.dsl.errors_ses_far),
+					'&lt;%:Loss of Signal Seconds (LOSS)%&gt;', '%d / %d'.format(info.dsl.errors_loss_near, info.dsl.errors_loss_far),
+					'&lt;%:Unavailable Seconds (UAS)%&gt;', '%d / %d'.format(info.dsl.errors_uas_near, info.dsl.errors_uas_far),
+					'&lt;%:Header Error Code Errors (HEC)%&gt;', '%d / %d'.format(info.dsl.errors_hec_near, info.dsl.errors_hec_far),
+					'&lt;%:Non Pre-emtive CRC errors (CRC_P)%&gt;', '%d / %d'.format(info.dsl.errors_crc_p_near, info.dsl.errors_crc_p_far),
+					'&lt;%:Pre-emtive CRC errors (CRCP_P)%&gt;', '%d / %d'.format(info.dsl.errors_crcp_p_near, info.dsl.errors_crcp_p_far),
+					'&lt;%:ATU-C System Vendor ID%&gt;', info.dsl.atuc_vendor_id,
+					'&lt;%:Power Management Mode%&gt;', info.dsl.power_mode_s));
+			&lt;% end %&gt;
+
+			&lt;% if has_wifi then %&gt;
+			var ws = document.getElementById('wifi_status_table');
+			if (ws)
+			{
+				while (ws.lastElementChild)
+					ws.removeChild(ws.lastElementChild);
+
+				for (var didx = 0; didx &lt; info.wifinets.length; didx++)
+				{
+					var dev = info.wifinets[didx];
+					var net0 = (dev.networks &amp;&amp; dev.networks[0]) ? dev.networks[0] : {};
+					var vifs = [];
+
+					for (var nidx = 0; nidx &lt; dev.networks.length; nidx++)
+					{
+						var net = dev.networks[nidx];
+						var is_assoc = (net.bssid != '00:00:00:00:00:00' &amp;&amp; net.channel &amp;&amp; !net.disabled);
+
+						var icon;
+						if (net.disabled)
+							icon = "&lt;%=resource%&gt;/icons/signal-none.png";
+						else if (net.quality &lt;= 0)
+							icon = "&lt;%=resource%&gt;/icons/signal-0.png";
+						else if (net.quality &lt; 25)
+							icon = "&lt;%=resource%&gt;/icons/signal-0-25.png";
+						else if (net.quality &lt; 50)
+							icon = "&lt;%=resource%&gt;/icons/signal-25-50.png";
+						else if (net.quality &lt; 75)
+							icon = "&lt;%=resource%&gt;/icons/signal-50-75.png";
+						else
+							icon = "&lt;%=resource%&gt;/icons/signal-75-100.png";
+
+						vifs.push(renderBadge(
+							icon,
+							'&lt;%:Signal%&gt;: %d dBm / &lt;%:Quality%&gt;: %d%%'.format(net.signal, net.quality),
+							'&lt;%:SSID%&gt;', E('a', { href: net.link }, [ net.ssid || '?' ]),
+							'&lt;%:Mode%&gt;', net.mode,
+							'&lt;%:BSSID%&gt;', is_assoc ? (net.bssid || '-') : null,
+							'&lt;%:Encryption%&gt;', is_assoc ? net.encryption : null,
+							'&lt;%:Associations%&gt;', is_assoc ? (net.num_assoc || '-') : null,
+							null, is_assoc ? null : E('em', net.disabled ? '&lt;%:Wireless is disabled%&gt;' : '&lt;%:Wireless is not associated%&gt;')));
+					}
+
+					ws.appendChild(renderBox(
+						dev.device, dev.up || net0.up,
+						[ E('div', vifs) ],
+						'&lt;%:Type%&gt;', dev.name.replace(/^Generic | Wireless Controller .+$/g, ''),
+						'&lt;%:Channel%&gt;', net0.channel ? '%d (%.3f &lt;%:GHz%&gt;)'.format(net0.channel, net0.frequency) : '-',
+						'&lt;%:Bitrate%&gt;', net0.bitrate ? '%d &lt;%:Mbit/s%&gt;'.format(net0.bitrate) : '-'));
+				}
+
+				if (!ws.lastElementChild)
+					ws.appendChild(E('&lt;em&gt;&lt;%:No information available%&gt;&lt;/em&gt;'));
+			}
+			&lt;% end %&gt;
+
+			var e;
+
+			if (e = document.getElementById('localtime'))
+				e.innerHTML = info.localtime;
+
+			if (e = document.getElementById('uptime'))
+				e.innerHTML = String.format('%t', info.uptime);
+
+			if (e = document.getElementById('loadavg'))
+				e.innerHTML = String.format(
+					'%.02f, %.02f, %.02f',
+					info.loadavg[0] / 65535.0,
+					info.loadavg[1] / 65535.0,
+					info.loadavg[2] / 65535.0
+				);
+
+			if (e = document.getElementById('memtotal'))
+				e.innerHTML = progressbar(
+					((info.memory.free + info.memory.buffered) / 1024) + " &lt;%:kB%&gt;",
+					(info.memory.total / 1024) + " &lt;%:kB%&gt;"
+				);
+
+			if (e = document.getElementById('memfree'))
+				e.innerHTML = progressbar(
+					(info.memory.free / 1024) + " &lt;%:kB%&gt;",
+					(info.memory.total / 1024) + " &lt;%:kB%&gt;"
+				);
+
+			if (e = document.getElementById('membuff'))
+				e.innerHTML = progressbar(
+					(info.memory.buffered / 1024) + " &lt;%:kB%&gt;",
+					(info.memory.total / 1024) + " &lt;%:kB%&gt;"
+				);
+
+			if (e = document.getElementById('swaptotal'))
+				e.innerHTML = progressbar(
+					(info.swap.free / 1024) + " &lt;%:kB%&gt;",
+					(info.swap.total / 1024) + " &lt;%:kB%&gt;"
+				);
+
+			if (e = document.getElementById('swapfree'))
+				e.innerHTML = progressbar(
+					(info.swap.free / 1024) + " &lt;%:kB%&gt;",
+					(info.swap.total / 1024) + " &lt;%:kB%&gt;"
+				);
+
+			if (e = document.getElementById('conns'))
+				e.innerHTML = progressbar(info.conncount, info.connmax);
+
+
+
+
+			if (e = document.getElementById('temperatue'))
+				e.innerHTML = String.format(
+					'%s',
+					info.temperinfo
+				);
+
+
+
+		}
+	);
+//]]&gt;&lt;/script&gt;
+
+&lt;h2 name="content"&gt;&lt;%:Status%&gt;&lt;/h2&gt;
+
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:System%&gt;&lt;/h3&gt;
+
+	&lt;div class="table" width="100%"&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Hostname%&gt;&lt;/div&gt;&lt;div class="td left"&gt;&lt;%=luci.sys.hostname() or "?"%&gt;&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Model%&gt;&lt;/div&gt;&lt;div class="td left"&gt;&lt;%=pcdata(boardinfo.model or "?")%&gt;&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Architecture%&gt;&lt;/div&gt;&lt;div class="td left"&gt;&lt;%=pcdata(boardinfo.system or "?")%&gt;&lt;/div&gt;&lt;/div&gt;
+		 &lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Temperatue%&gt;&lt;/div&gt;&lt;div class="td left" id="temperatue"&gt;&lt;%=temperinfo%&gt;&lt;/div&gt;&lt;/div&gt;
+	
+
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Firmware Version%&gt;&lt;/div&gt;&lt;div class="td left"&gt;
+			&lt;%=pcdata(ver.distname)%&gt; &lt;%=pcdata(ver.distversion)%&gt; /
+			&lt;%=pcdata(ver.luciname)%&gt; (&lt;%=pcdata(ver.luciversion)%&gt;)
+		&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Kernel Version%&gt;&lt;/div&gt;&lt;div class="td left"&gt;&lt;%=unameinfo.release or "?"%&gt;&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Local Time%&gt;&lt;/div&gt;&lt;div class="td left" id="localtime"&gt;-&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Uptime%&gt;&lt;/div&gt;&lt;div class="td left" id="uptime"&gt;-&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Load Average%&gt;&lt;/div&gt;&lt;div class="td left" id="loadavg"&gt;-&lt;/div&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:Memory%&gt;&lt;/h3&gt;
+
+	&lt;div class="table" width="100%"&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Total Available%&gt;&lt;/div&gt;&lt;div class="td left" id="memtotal"&gt;-&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Free%&gt;&lt;/div&gt;&lt;div class="td left" id="memfree"&gt;-&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Buffered%&gt;&lt;/div&gt;&lt;div class="td left" id="membuff"&gt;-&lt;/div&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;% if swapinfo.total &gt; 0 then %&gt;
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:Swap%&gt;&lt;/h3&gt;
+
+	&lt;div class="table" width="100%"&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Total Available%&gt;&lt;/div&gt;&lt;div class="td left" id="swaptotal"&gt;-&lt;/div&gt;&lt;/div&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Free%&gt;&lt;/div&gt;&lt;div class="td left" id="swapfree"&gt;-&lt;/div&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;% end %&gt;
+
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:Network%&gt;&lt;/h3&gt;
+
+	&lt;div id="upstream_status_table" class="network-status-table"&gt;
+		&lt;p&gt;&lt;em&gt;&lt;%:Collecting data...%&gt;&lt;/em&gt;&lt;/p&gt;
+	&lt;/div&gt;
+
+	&lt;div class="table" width="100%"&gt;
+		&lt;div class="tr"&gt;&lt;div class="td left" width="33%"&gt;&lt;%:Active Connections%&gt;&lt;/div&gt;&lt;div class="td left" id="conns"&gt;-&lt;/div&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;%
+	if has_dhcp then
+		include("admin_network/lease_status")
+	end
+%&gt;
+
+&lt;% if has_dsl then %&gt;
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:DSL%&gt;&lt;/h3&gt;
+
+	&lt;div id="dsl_status_table" class="network-status-table"&gt;
+		&lt;p&gt;&lt;em&gt;&lt;%:Collecting data...%&gt;&lt;/em&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;% end %&gt;
+
+&lt;% if has_wifi then %&gt;
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:Wireless%&gt;&lt;/h3&gt;
+
+	&lt;div id="wifi_status_table" class="network-status-table"&gt;
+		&lt;p&gt;&lt;em&gt;&lt;%:Collecting data...%&gt;&lt;/em&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="cbi-section"&gt;
+	&lt;h3&gt;&lt;%:Associated Stations%&gt;&lt;/h3&gt;
+
+	&lt;%+admin_network/wifi_assoclist%&gt;
+&lt;/div&gt;
+&lt;% end %&gt;
+
+&lt;%-
+	local incdir = util.libpath() .. "/view/admin_status/index/"
+	if fs.access(incdir) then
+		local inc
+		for inc in fs.dir(incdir) do
+			if inc:match("%.htm$") then
+				include("admin_status/index/" .. inc:gsub("%.htm$", ""))
+			end
+		end
+	end
+-%&gt;
+
+&lt;%+footer%&gt;
+</code></pre>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2018-12-23 01:32:02</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

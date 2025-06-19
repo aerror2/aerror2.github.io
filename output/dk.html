@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macbook pro/air 2013 late -2014 使用转接卡更换NVME SSD休眠不醒问题的解决办法</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>Macbook pro/air 2013 late -2014 使用转接卡更换NVME SSD休眠不醒问题的解决办法</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/91486841" target="_blank">https://blog.csdn.net/aerror/article/details/91486841</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2019-06-12 01:11:54</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 56155</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 200</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 98</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 26</div>
+    </div>
+    
+    
+    
+    <div class="article-description">、、1. 手上512GMBP 2013 late差不多满了，因为穷，所以在淘宝上买了一个NVME转Macbookpcie，然后再买一个NVME 2T的硬盘2. NVME因为需要最新的Firmware Rom支持，所以必须使用原装的硬盘（必须原装）安装Mac14以上，我安装了14.5.要不然识别不出来新安装的NVME硬盘3. 买之前就知道是会有休眠问题的，问了卖家推荐了一些型号说不...</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p> </p>
+<p>2021年1月更新， 发现升级 big sur 11.1之后，固件版本变成了429.0.0.0, 睡眠问题又回来了，每次都睡死，不醒。 于是我按老办法，把mbp114的nvme驱动刷到mpb111的429里，刷完之后，结果，睡眠问题又解决了，真是服了苹果，搞来搞去的。办法就是用ch341a来刷，参考最下面的说明。把文件换成bigsur的nvme驱动就好了。</p>
+<p> </p>
+<p>---------我是分隔线----</p>
+<p> </p>
+<p><span style="color:#f33b45;">Big Sur 出来了，有网友说需要刷回原版固件版本方可升级，我试了一下，升级中间会黑屏死机重启多次， 然后刷回原版也是如此，</span></p>
+<p><span style="color:#f33b45;">但是多次之后，也可以升级到Big Sur，据说下面的跟贴说，原盘的话会升到一个新的固件版本, 我确认了一下我的版本还是153.0.0.0.0, 看来是没有升级成功了，我的硬盘不是原装的，按之前的研究，这个无法升级是合理的，刷回的旧版，休眠问题回来了，mode 25 的情况下，一会就会睡死了。</span></p>
+<p><span style="color:#f33b45;">搞了一个原装的APPLE的SSD， 把Firmware的版本升到了427.0.0.0.0,  </span><span style="color:#f33b45;">休眠问题消失了，不会再睡死了，感谢苹果。</span></p>
+<p><span style="color:#86ca5e;">测试了2013-2014的两个MBP都是同样的结果。</span></p>
+<p><span style="color:#f33b45;">据说不需要原装的SSD也有可能升级固件成功，但是不同的牌子不一样的，有机率失败，大家可以试试，欢迎留言返馈。</span></p>
+<p><span style="color:#f33b45;">本文章的原来使用ch341a来夹芯片刷bios的办法可以废弃了，！！！大家只需要把固件升到427就好了！！！！！</span></p>
+<p><span style="color:#e579b6;">同时已经刷过BIOS的网友，如果无法升级固件，请尝试使用编程器恢复原来的没有修改的固件。如果你没有备份的话，又无法升级的话，这个有就比较悲剧了，我也不知道怎么办了，只能试试换个ssd看看，欢迎大家留言交流。</span></p>
+<p> </p>
+<p><span style="color:#f33b45;"> 下面介绍，如何升级Bigsur的固件，不使用下面的办法，可以使用全新安装或升级，也是可以刷到固件的。</span></p>
+<p> </p>
+<p> </p>
+<pre><code class="hljs language-javascript">sudo /usr/sbin/bless -firmware Desktop/Big\ Sur/MBP111.scap --verbose --recovery</code></pre>
+<p><code>新的文件在安装的app的下面的目录：</code></p>
+<p>先mount一下：</p>
+<p> <code>Install\ macOS\ Big\ Sur.app/Contents/SharedSupport/SharedSupport.dmg</code>.</p>
+<p>然后可以在下面的地方找到 一个zip文件：</p>
+<p> <code>/Volumes/Shared\ Support/com_apple_MobileAsset_MacSoftwareUpdate/ee3ab6c04234b360dd8fca93c0ae49f957bf0843.zip</code> </p>
+<p>解开这个zip,  就得到了新的firmware了：</p>
+<p><code>ee3ab6c04234b360dd8fca93c0ae49f957bf0843/AssetData/boot/EFI/EFIPayloads</code></p>
+<p><code>我的2013 late mbp 15, 所以是MBP111.scap </code></p>
+<p><code>2014的mbp是 MBP112.scap </code></p>
+<p>执行上面的bless的命令，然后关机（不是重启） ，然后马上开机。</p>
+<p>这个据说只能在原始的<span style="color:#f33b45;">固件才行，修改过补丁的不行。</span></p>
+<p>然后就开机的时候会看到logo和进度条，1-2分钟就可以升级完, 升级完会自动重启一下，然后就进入系统了。</p>
+<p> </p>
+<p>测试了手上另一台mbp 15 2014年的,是原装的硬盘，成功把固件升级到了427.0.0.0</p>
+<pre><code class="hljs language-javascript">admin@ADMINdeMacBook-Pro ~ % sudo /usr/sbin/bless -firmware ~/Downloads/MBP112.scap --verbose --recovery 
+EFI found at IODeviceTree:/efi
+Will need to copy 8523776 bytes to EFI system partition
+No auxiliary booter partition required
+System partition found
+Preferred system partition found: disk0s1
+Returning booter information dictionary:
+{
+    "Auxiliary Partitions" =     (
+    );
+    "Data Partitions" =     (
+        disk1s5
+    );
+    "Preboot Volumes" =     (
+        disk1s2
+    );
+    "System Partitions" =     (
+        disk0s1
+    );
+}
+Mounting at /Volumes/bless.fY7x
+Executing "/sbin/mount"
+Returned 0
+Creating /Volumes/bless.fY7x/EFI/APPLE/FIRMWARE if needed
+Deleting previous contents of /Volumes/bless.fY7x/EFI/APPLE/FIRMWARE
+Deleting /Volumes/bless.fY7x/EFI/APPLE/FIRMWARE/MBP112.scap (8520304 bytes)
+Opened dest at /Volumes/bless.fY7x/EFI/APPLE/FIRMWARE/MBP112.scap for writing
+preallocation not supported on this filesystem for /Volumes/bless.fY7x/EFI/APPLE/FIRMWARE/MBP112.scap
+
+/Volumes/bless.fY7x/EFI/APPLE/FIRMWARE/MBP112.scap created successfully
+No auxiliary booter partition required
+System partition found
+Preferred system partition found: disk0s1
+Returning booter information dictionary:
+{
+    "Auxiliary Partitions" =     (
+    );
+    "Data Partitions" =     (
+        disk1s1
+    );
+    "Preboot Volumes" =     (
+        disk1s2
+    );
+    "System Partitions" =     (
+        disk0s1
+    );
+}
+Bad path for boot item: /Users/admin/Downloads/MBP112.scap
+Relative path of /Volumes/bless.fY7x/EFI/APPLE/FIRMWARE/MBP112.scap is \EFI\APPLE\FIRMWARE\MBP112.scap
+IOMedia disk0s1 has UUID 492ABF07-D827-447A-A506-DA52C7BCA4CF
+Executing "/sbin/umount"
+Returned 0
+Write to RTC: 0
+Setting EFI NVRAM:
+{
+    "efi-apple-recovery" = "&lt;array&gt;&lt;dict&gt;&lt;key&gt;IOMatch&lt;/key&gt;&lt;dict&gt;&lt;key&gt;IOProviderClass&lt;/key&gt;&lt;string&gt;IOMedia&lt;/string&gt;&lt;key&gt;IOPropertyMatch&lt;/key&gt;&lt;dict&gt;&lt;key&gt;UUID&lt;/key&gt;&lt;string&gt;492ABF07-D827-447A-A506-DA52C7BCA4CF&lt;/string&gt;&lt;/dict&gt;&lt;/dict&gt;&lt;key&gt;BLLastBSDName&lt;/key&gt;&lt;string&gt;disk0s1&lt;/string&gt;&lt;/dict&gt;&lt;dict&gt;&lt;key&gt;IOEFIDevicePathType&lt;/key&gt;&lt;string&gt;MediaFilePath&lt;/string&gt;&lt;key&gt;Path&lt;/key&gt;&lt;string&gt;\\EFI\\APPLE\\FIRMWARE\\MBP112.scap&lt;/string&gt;&lt;/dict&gt;&lt;/array&gt;";
+}
+</code></pre>
+<p>稍后试一下非原装的升级。</p>
+<p>新的Big sur的Macbook pro 的固件我上传了在 <a href="https://download.csdn.net/download/aerror/13119980">https://download.csdn.net/download/aerror/13119980</a></p>
+<p><span style="color:#f33b45;">-----------上面这些更新于-2020.11.17------  我是分割线 ---------------以下是原文(已废弃，不建议采用)，升级big sur就好了，不需要再用编程器这样修改了。 --------- </span></p>
+<p><span style="color:#f33b45;">!!!!!!!!!!!</span><span style="color:#f33b45;">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></p>
+<p>1. 手上512GMBP 2013 late 差不多满了，因为穷，所以在淘宝上买了一个NVME转Macbook pcie，然后再买一个NVME 2T的硬盘</p>
+<p>2. NVME因为需要最新的Firmware Rom支持，所以必须使用原装的硬盘（必须原装）安装Mac 14以上，我安装了14.5.要不然识别不出来新安装的NVME硬盘</p>
+<p>3. 买之前就知道是会有休眠问题的，问了卖家推荐了一些型号说不会的，其中我是买了推荐的HP EX950 2T， 比intel足足贵了700元，结果然并卵，安装完系统测试了一下，发现也是有休眠问题的。测试办法如下：</p>
+<p>  </p>
+<pre class="has"><code class="hljs language-javascript">pmset -a hibernatemode 25
+pmset sleepnow 
+
+</code></pre>
+<p>   然后合上盖子，过上几分钟，发现就睡死了。根本醒不过来了。必须强行关机再开机, 确认了多次如此。 估计有人说2013 late的机子可以，可能是默认的hibernatemode 3 ，或者设置了hibernatemode 0, 要不就是插着电源。</p>
+<p>   同时还有副作用，就是开机会黑屏过10-20秒才看到苹果和进度条，开机速度超慢。</p>
+<p>4. 遍查了整个网络，找到了以下的资料：</p>
+<p><strong>Background</strong></p>
+<ul><li>2013-2014 MacBooks use a non-standard connector (12+16 pins) for the stock SSD that uses PCIe AHCI (OEM drives supposedly based on the Samsung XP941 or SM951)</li><li>Fortunately, there are a number of M.2 NVMe drives and an adapter available that allow for SSD upgrades in these MacBooks</li><li>macOS 10.13 “High Sierra” introduced boot support for NVMe drives that use 512 byte sectors (or LBAs) which opens up a variety of NVMe SSD upgrade options (Samsung, Intel, etc)</li><li>Unfortunately, the stock EFI firmware (or system ROM) in these MacBook comes with an NVMe driver that prevents the MacBook from waking up from hibernation (or deep sleep)</li><li>To address this hibernation issue, the system ROM can either be modified, or hibernation can be disabled on the MacBook by executing “pmset -a standby 0”</li><li>2015 MacBooks can also be upgraded using this guide and do not require firmware modifications or other changes as they presumably all use PCIe NVMe SSDs (like the Samsung PM951 and newer)</li><li>This guide has been successfully tested with a 13” MacBook Pro Late-2013 and an 11” MacBook Air Mid-2013</li></ul>
+<p>      证实了，只要是2013-2014的Macbook都会有问题的，任何型号的NVME转接的SSD都有问题，没有例外，原因是固件中的NVME驱动有问题会令到无法唤醒. </p>
+<p>     参考URL<a href="https://forums.macrumors.com/threads/upgrading-2013-2014-macbook-pro-ssd-to-m-2-nvme.2034976/page-87" rel="nofollow">https://forums.macrumors.com/threads/upgrading-2013-2014-macbook-pro-ssd-to-m-2-nvme.2034976/page-87</a></p>
+<p>     解决办法也给出了，就是使用2015的固件中NVME替换2013-2014的固件驱动，GUID为51116915-C34B-4D8E-86DB-6A70F2E60DAA， 然后使用编程器去先从MX25L6406EMI这芯片读出原来的Rom, 然后从Macos的安装包找出2015的NVME替换好了，再刷回MX25L6406EMI。</p>
+<p>    文中CH341A编程器淘宝有卖，好便宜，只需要20-30元不等，但是它是使用一个SPI to J6100 adapter，这个查了一下发现淘宝没有，只有ebay上有，韩国卖家，几百块，发货时间还要超长。。。</p>
+<p> </p>
+<p>5.   既然升级系统的时候可以升级固件，那么说明使用软件来刷也是可行的，就是前几天发的文章了，</p>
+<p>  </p>
+<pre class="has"><code class="hljs language-javascript">1. get the FirmwareUpdate.pkg file from the OS installer app's installESD.dmg
+2. extract the contents using pkgutil --expand /path/to/FirmwareUpdate.pkg &lt;path somewhere else&gt;/FirmwareUpdate
+3. in terminal, cd to the Scripts directory inside the expanded FirmwareUpdate pkg directory.
+4. with Scripts as your working directory, run these 2 commands, then reboot:
+sudo /usr/libexec/FirmwareUpdateLauncher -p "$PWD/Tools"
+sudo /usr/libexec/efiupdater -p "$PWD/Tools/EFIPayloads"
+5. at the reboot, firmware will be updated if there are any updates to be applied.</code></pre>
+<p>测试了一下，固件是可以刷的，但是必须满足以下所有条件：</p>
+<pre class="has"><code class="hljs language-javascript">1. 使用原装的硬盘
+
+2. 原装的固件
+
+3.固件版本必须大于等于当前的固件的版本</code></pre>
+<p>efiupdate只是把文件复制到efi分，然后设置了一些nvram的参数，然后是固件启动的时候从efi的指定地方来更新，但是很明显上面的测试表明了，这个固件的更新之前是有校验的上面三个条件都满足才给刷的，修改了的固件刷不了。</p>
+<p><a href="https://apple.stackexchange.com/questions/287644/do-macbooks-support-nvme-ssd-drives-via-the-use-of-a-sintech-adapter" rel="nofollow">https://apple.stackexchange.com/questions/287644/do-macbooks-support-nvme-ssd-drives-via-the-use-of-a-sintech-adapter</a></p>
+<p> 这里人下 Y.H. wong说</p>
+<p> </p>
+<pre class="has"><code class="hljs language-javascript">hat guide on MacRumors is really useful. I recently upgraded a 2014 MBPr board using most of its instructions, and it still works. Changes made: 1. No need for kapton tape. 2. I used a Sintech ST-NGFF2013-B. 3. I didn't turn off hibernation with pmset, I didn't buy a CH341A programmer either. I just looked up the MBP112 and MBP114 firmwares, transplanted the NVMe driver from MBP114 to MBP112, and flashed my Mac with /usr/libexec/efiupdater -p /path/to/EFIPayloads --force-update. Wakeup problem completely gone. – Y.H Wong Nov 4 '18 at 13:00
+@Y.HWong: Sounds like the easiest way to flash the firmware. Can you tell in more detail how you proceeded? May be even join the discussion at MacRumors. Thanks a lot! – Bernhard Fürst Feb 6 at 19:20</code></pre>
+<p>不知道他是怎么做到的，始终无法把修改后的固件成功刷上去，有点怀疑他可能是没有测试清楚 。</p>
+<p> </p>
+<p>6.  没有办法了，看到intel是有一个fpt.efi(Flash proramming tool)的，可以在Uefi的shell下执行来刷UEFI的BIOS/固件，但是只是对于PC的，工具和文档参考<a href="https://github.com/holoto/efi_shell_flash_bios/">https://github.com/holoto/efi_shell_flash_bios/</a></p>
+<p>     于是安装了refind,然后从clover那里找了一个shellx64.efi放到/EFI/tools/shell.efi下，然后下载了fpt.efi也放到这里，然后运气并不好，fpt.efi无法识别SPI的设备. </p>
+<p>     但是发现安装refind解决了一些问题：</p>
+<p>      1.启动不会黑屏20秒左右了，马上就可以启动看到启动菜单，把超时设置为0的话，马上就可以看到苹果和进度条了。</p>
+<p>     2.唤醒虽然还是有问题，但是表现有些不一样，唤醒的时候不会直接黑屏卡死，而是可以看到refind的启动菜单，然后自动重启，然后再重启开机，这个其实也还好，至少不需要手动长按关机再开机那么烦了。</p>
+<p>       这个两个问题的解决，我认为问题应该不只是固件的问题，还和启动的efi有关系，然后翻查了一下refind的文档，发现它在原装的硬件中唤醒表现竟然是和我的机器的表现是一致的，就是唤醒变成了自动重启两次。</p>
+<p>       新的希望又有了，看来唤醒这个只是refind没有做好，在白苹果还有一个选择就是refit这个工具，虽然很久没有更新了，但是工作方式有些不同，它是直接安装在系统盘的根目录的，而不是EFI的分区中，也没有使用nvram的变量。 据查在白苹里使用它是没有休眼唤醒的问题的。于是把refind删除了，安装了refit,  然而也是没有走到狗屎运. :(</p>
+<p>7. 好好的查了一下mx25L6406EMI-12G的datasheet, 知道它是8 SOP封装的，问了做硬件的朋友，他说其实可以焊几条线来用刷，但是不想动手电烙铁，上次拆硬盘的bios是拆得满头大汗，折腾许久，最后竟然还没有成功，所以有点信心不足. 于是在淘宝上再试试找那个连接线，也是没有找到，但是发现有一个sop 8的夹子，研究一下买家的评论图片，都是用来刷路由器，刷笔记本的，看来是一个可行，价格便宜又可以快速达成的办法。 于是拍了ch341a+夹子+一堆转接1.8v之类的一整套回来，花了50元左右，第二天就收到了。</p>
+<p>8. 买ch341a没有说明书, 我汗，看到有一个跳线写着3.3V5V的，从<a href="https://static6.arrow.com/aropdfconversion/cb5c77c505104f4e4cad1b3667abe88327b4ee44/mx25l6406e203v2064mb20v1.9.pdf" rel="nofollow">https://static6.arrow.com/aropdfconversion/cb5c77c505104f4e4cad1b3667abe88327b4ee44/mx25l6406e203v2064mb20v1.9.pdf</a></p>
+<p>先下载datasheet确认了这个mx25L6406EMI是3.3V的，然后小心翼翼用万用表量了一个8号脚是3.3V的， 然后把跳线插在编程那个两个脚上（板上好在有提示),</p>
+<p>夹子夹了第一次没有夹好，读不出来，夹第二次好了，测试一下，可以读, 一切正常, 两个红灯都亮起来了，如图:</p>
+<p> </p>
+<p><img alt="" class="has" src="images/dk/934e3c4d8d11f70de4da9c4150c8ea53.jpeg"/></p>
+<p><img alt="" class="has" src="images/dk/d698f04aa7ba198e844f393f0821849d.jpeg"/></p>
+<p> </p>
+<p>按上面的<a href="https://forums.macrumors.com/threads/upgrading-2013-2014-macbook-pro-ssd-to-m-2-nvme.2034976/page-87" rel="nofollow">https://forums.macrumors.com/threads/upgrading-2013-2014-macbook-pro-ssd-to-m-2-nvme.2034976/page-87</a></p>
+<p>一步一步都做，最后成功刷入固件。 开机问题好了，使用pmset -a hibernatemode 25来测试，唤醒问题也好了。</p>
+<p>一切完美解决。</p>
+<p> </p>
+<p>应要求补充一下翻译过来的操作步骤：</p>
+<p>1. 打开后盖，主板上找mx25L6406EMI-12G这个芯片，是8只脚的，写了mx25L6406EMI这些字在上面的， 照图夹好BIOS， 红线对齐第一只脚（芯片上有一个圆点标记的）</p>
+<p> </p>
+<p><img alt="" class="has" height="314" src="images/dk/52a37022b43ab0e3c954876d9a9a3b9f.png" width="640"/></p>
+<p>2. 安装flash rom 工具，使用brew安装 </p>
+<p>   </p>
+<pre class="has"><code class="hljs language-javascript"> brew install flashrom  </code></pre>
+<p>3. 开始读出原来的 bios ROM ，这个大小是8M的。输入以下命令:</p>
+<p> </p>
+<pre class="has"><code class="hljs language-javascript">flashrom -p ch341a_spi -r dump1.bin -c "MX25L6406E/MX25L6408E"</code></pre>
+<p><img alt="" class="has" height="742" src="images/dk/0fc6529ca02ccb3a18d51b9a2dcb02b2.jpeg" width="1059"/></p>
+<p>保险起见，执行3次，每次改改名，如下：</p>
+<pre class="has"><code class="hljs language-javascript">flashrom -p ch341a_spi -r dump2.bin -c "MX25L6406E/MX25L6408E"
+flashrom -p ch341a_spi -r dump3.bin -c "MX25L6406E/MX25L6408E"</code></pre>
+<p>然后可以md5看看hash是不是一致的</p>
+<p> </p>
+<pre class="has"><code class="hljs language-javascript">md5 *.bin</code></pre>
+<p><img alt="" class="has" height="742" src="images/dk/941ed50b7fcd3e7dba1f3d87788d641f.jpeg" width="1059"/></p>
+<p>要是读不出，或者是三次不一致，应该是没有夹好，重新夹一下。</p>
+<p>在读数据的时候，这个ch341a的红灯会亮起来</p>
+<p><img alt="" class="has" height="768" src="images/dk/7b9eed0e2f601d196e03ce8793d9df0f.jpeg" width="1024"/></p>
+<p> </p>
+<p>4. 从升级/安装包解压出2015的MBP固件中的NVME驱动</p>
+<p>    2013-2014 MacBook Pro (MacBookPro11,1),  用MacBookPro11,4 的 firmware</p>
+<p>    2013-2014 MacBook Air (MacBookAir6,1)，用 MacBookAir7,1的 firmware</p>
+<p> </p>
+<p> 4.1 双击装载 InstallESD.dmg ， 在macOS安装包的Contents/SharedSupport目录下.</p>
+<p><img alt="" class="has" height="699" src="images/dk/1578346dee71837a5eccd85a8787cfa7.jpeg" width="1125"/></p>
+<p>    4.2 在InstallESD.dmg image, 找到 Packages/FirmwareUpdate.pkg 这个安装包</p>
+<p> <img alt="" class="has" height="699" src="images/dk/465ebebf0fe1047023298b5e62fb237b.jpeg" width="1125"/></p>
+<p>   4.3 用Pacifist或The Archive Browser 打开 the FirmwareUpdate.pkg </p>
+<p><img alt="" class="has" height="665" src="images/dk/3c515ed1063b085c951106086c5ba821.jpeg" width="1182"/></p>
+<p> 4.4 打开Scripts</p>
+<p>  <img alt="" class="has" height="665" src="images/dk/6c5dc24b4d4868b2198c5e6d16371865.jpeg" width="1182"/></p>
+<p>4.5  从Tools/EFIPayloads 这里解压合适的firmware. </p>
+<p>MBA71_0177_B00.fd  是2015 MacBook Air   </p>
+<p>MBP114_0183_B00.fd  是 2015 MacBook Pro</p>
+<p><img alt="" class="has" height="665" src="images/dk/d3e0e6040a307250c14125ff2a5bd24c.jpeg" width="1182"/></p>
+<p>  4.6 上面的操作使用命令行也是可以，我是使用命令行来操作的</p>
+<p>  </p>
+<pre class="has"><code class="hljs language-javascript">xar -x Packages/FirmwareUpdate.pkg
+cat Scripts | cpio -i 
+</code></pre>
+<p>5. 修改dump1.bin 中的NVME驱动</p>
+<p>    5.1 用UEFITool 打开2015的固件，找到这个驱动，有查找菜单的，找GUID为 51116915-C34B-4D8E-86DB-6A70F2E60DAA 的就是了。   <img alt="" class="has" height="701" src="images/dk/a5ba7b34f5a3d657d3f0fb3cf399b57d.jpeg" width="1121"/></p>
+<p>5.2 右键  “Extract as is…” 把2015的驱动保存下来.<img alt="" class="has" height="701" src="images/dk/360ad69d996a8419ae6e6128faee0f68.jpeg" width="1121"/></p>
+<p>5.3 使用5.2这时保存下来的驱动去替换dump下来的rom里的nvme驱动,也是定位那个GUID,然后右键 "replace aS IS ...."</p>
+<p><img alt="" class="has" height="701" src="images/dk/a289b5535e476f01687760b45f034635.jpeg" width="1121"/></p>
+<p>5.4 替换的动作可以在UEFITool的界面如下图看到，保存这个文件为MBA71_0117_B00-Mod.rom ，</p>
+<p><img alt="" class="has" height="701" src="images/dk/1487ef3237abc9440089249ea6816c72.jpeg" width="1121"/></p>
+<p>5.5 可以再次打开这个修改后的文件,可以对比一下这个rom的驱动和2015的firmware中的驱动的信息是不是一致的。</p>
+<p><img alt="" class="has" height="701" src="images/dk/60a7ee0cd5ae456a4325bc6b37a73f21.jpeg" width="1121"/></p>
+<p>如果一致的，那么你这一步成功修改了你机器定制的rom了。</p>
+<p> </p>
+<p>6. 使用flashrom 把修改后的rom写入bios芯片里, flashrom写完之后会自己校验的。</p>
+<pre class="has"><code class="hljs language-javascript"> flashrom -p ch341a_spi -w MBA71_0117_B00-Mod.rom -c "MX25L6406E/MX25L6408E"</code></pre>
+<p><img alt="" class="has" height="742" src="images/dk/9f62a4c0b9c568a3d2cb65bd2d9264bf.jpeg" width="1059"/></p>
+<p> </p>
+<p>写完之后，拔出USB的ch341a编程,夹子松开移走，开机，应该一切都是完美的了，可以看到开机马上就看到进度条了，而不是原来的卡上个几十秒，可以使用上面说的方法测试休眠唤醒。</p>
+<p>祝好运.</p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2019-06-12 01:11:54</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

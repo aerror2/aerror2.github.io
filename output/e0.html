@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 AspNetDB.mdf</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>关于 AspNetDB.mdf</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/2413774" target="_blank">https://blog.csdn.net/aerror/article/details/2413774</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-05-08 04:19:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3636</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
+        
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">sql server</span>, <span class="tag">数据库</span>, <span class="tag">服务器</span>, <span class="tag">sqlserver</span>, <span class="tag">microsoft</span>, <span class="tag">存储</span></div>
+    
+    <div class="article-description">关于 AspNetDB.mdf由于没有aspnetdb.mdf数据库，因此得先建立一个，这个可以通过aspnet_regsql.exe完成，该程序位于C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/下。 1、运行它之后会弹出的窗口：按&quot;Next &gt;&quot;按钮 2、我们会发现除了有配置数据库外，还有删除数据库的功能，以后说不定可以派上用场，现在自然选Con</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<h3>关于 AspNetDB.mdf</h3>
+<div class="t_msgfont" id="postmessage_26039">
+  由于没有aspnetdb.mdf数据库，因此得先建立一个，这个可以通过aspnet_regsql.exe完成，该程序位于C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/下。 1、运行它之后会弹出的窗口：按"Next &gt;"按钮 2、我们会发现除了有配置数据库外，还有删除数据库的功能，以后说不定可以派上用场，现在自然选Configure SQL Server for application services，按"Next &gt;"按钮 3、现在进入数据库选择界面，如果SQLSERVER就安装在本地的话，可以不用改任何东西，直接按"Next &gt;"。这里的Database显示为 
+ ，表示默认数据库名为aspnetdb，你也可以根据自己的需要更改名称。 4、可以开始安装数据库了，当Finish按钮亮起时，表明数据库安装成功，一切顺利！ 这几天在学ASP.NET,可是在数据库连接时一直出现问题，原因就是在配置安全的时候发生如下错误：出现了如下错误选定的数据存储区出现问题，原因可能是服务器名称或凭据无效，或者权限不足。也可能是未启用角色管理器功能造成的。请单击下面的按钮，以重定向到可以选择新数据存储区的页。下面的消息可能会有助于诊断问题: 无法连接到 SQL Server 数据库。解决方法： 1、打开VS的命令提示，输入aspnet_regsql，用默认的数据库(aspnetdb)。 2、打开VS，依次：工具--&gt;选项--&gt;数据库工具--&gt;数据连接--&gt;SQL Server实例名称(默认为空)，改为你的服务器名称。 3、还是VS，工具--&gt;连接到数据库--&gt;服务器名(选择刚才的服务器)，选择 microsoft sql server,在服务器名称中填写"." (很重要呦^_^),然后按要求选择Windows或SQL Server身份验证，数据库选择刚才的aspnetdb。测试OK后，在高级里复制出语句 Data Source=Server;Initial Catalog=aspnetdb;User ID=sa 4、打开IIS:默认网站--&gt;属性--&gt;ASP.NET--&gt;编辑全局配置--&gt;常规--&gt;连接字符串管理器LocalSqlServer的连接字符串改为 
+ <img alt="" border="0" src="images/e0/5631054428f23ee3f12571892fc34c73.png">ata Source=Server;Initial Catalog=aspnetdb;User ID=sa 
+ <img alt="" border="0" src="images/e0/10cc0224e98e5331f88b4d321f1502df.png">assword=sa 。 5、还是在IIS:默认网站--&gt;属性--&gt;ASP.NET--&gt;编辑全局配置--&gt;身份验证--&gt;选定"启用角色管理" 表名：aspnet_Applications 说明：保存应用程序信息 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名 </td><td>类型</td><td>属性</td><td>说明 </td></tr><tr><td>ApplicationName</td><td>nvarchar(256)</td><td> </td><td>应用程序名</td></tr><tr><td>LoweredApplicationName</td><td>nvarchar(256)</td><td> </td><td>小写的应用程序名</td></tr><tr><td>ApplicationId </td><td>uniqueidentifier</td><td>PK</td><td>应用程序的id, GUID值 </td></tr><tr><td>Description</td><td>nvarchar(256)</td><td>nullable</td><td>应用程序的 描述</td></tr></tbody></table> 表名：aspnet_Paths 说明：路径信息 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名 </td><td>类型</td><td>属性</td><td>说明 </td></tr><tr><td>ApplicationId</td><td>uniqueidentifier</td><td>FK: appnet_Applications.ApplciationId </td><td>应用程序Id</td></tr><tr><td>PathId</td><td>uniqueidentifier</td><td>PK</td><td>路径Id</td></tr><tr><td>Path</td><td>nvarchar(256)</td><td> </td><td>路径信息 </td></tr><tr><td>LoweredPath </td><td>nvarchar(256)</td><td> </td><td>小写的路径信息 </td></tr></tbody></table> 表名：aspnet_Users 说明：用户信息 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名</td><td>类型</td><td>属性</td><td>说明</td></tr><tr><td>ApplicationId</td><td>uniqueidentifier</td><td> </td><td>应用程序Id</td></tr><tr><td>UserId </td><td>uniqueidentifier</td><td>PK</td><td>用户Id </td></tr><tr><td>UserName</td><td>nvarchar(256)</td><td> </td><td>用户名</td></tr><tr><td>LoweredUserName</td><td>nvarchar(256)</td><td> </td><td>小写的用户名</td></tr><tr><td>MobileAlias</td><td>nvarchar(16)</td><td> </td><td><font color="#000000">移动电话的pin码（未使用）</font></td></tr><tr><td>IsAnonymous</td><td>bit</td><td> </td><td>是否为匿名用户</td></tr><tr><td>LastActivityDate </td><td>datetime</td><td> </td><td>最后活动日期 </td></tr></tbody></table> 表名：aspnet_Membership 说明：成员信息 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名</td><td>类型</td><td>属性</td><td>说明</td></tr><tr><td>ApplicationId</td><td>uniqueidentifier</td><td>FK: appnet_Applications.ApplciationId </td><td>应用程序Id</td></tr><tr><td>UserId </td><td>uniqueidentifier</td><td>FK: aspnet_Users.UserID </td><td>用户Id </td></tr><tr><td>Password </td><td>nvarchar(128)</td><td> </td><td>密码 </td></tr><tr><td>PasswordFormat</td><td>int</td><td> </td><td>存储密码的格式 </td></tr><tr><td>PasswordSalt</td><td>nvarchar(128)</td><td> </td><td>密码的Hash值 </td></tr><tr><td>MobilePIN</td><td>nvarchar(16)</td><td> </td><td>手机PIN码</td></tr><tr><td>Email </td><td>nvarchar(256)</td><td> </td><td>电子邮件地址 </td></tr><tr><td>LoweredEmail</td><td>nvarchar(256)</td><td> </td><td>小写的电子邮件地址</td></tr><tr><td>PasswordQuestion</td><td>nvarchar(256)</td><td> </td><td>遗忘密码问题 </td></tr><tr><td>PasswordAnswer</td><td>nvarchar(128)</td><td> </td><td>遗忘密码答案</td></tr><tr><td>IsApproved</td><td>bit</td><td> </td><td> </td></tr><tr><td>IsLockedOut</td><td>bit</td><td> </td><td>是否锁住</td></tr><tr><td>CreateDate</td><td>datetime </td><td> </td><td>创建时间</td></tr><tr><td>LastLoginDate</td><td>datetime</td><td> </td><td>最后登录时间</td></tr><tr><td>LastPasswordChangedDate</td><td>datetime</td><td> </td><td>最后密码更改时间</td></tr><tr><td>LastLockoutDate</td><td>datetime</td><td> </td><td>最后一次锁帐号的时间</td></tr><tr><td>FailedPasswordAttemptCount</td><td>int</td><td> </td><td>密码失败尝试次数</td></tr><tr><td>FailedPasswordAttemptWindowStart</td><td>datetime</td><td> </td><td>密码失败尝试窗口打开时间</td></tr><tr><td>FailedPasswordAnswerAttemptCount</td><td>int</td><td> </td><td>遗失密码问题尝试次数</td></tr><tr><td>FailedPasswordAnswerAttemptWindowStart</td><td>datetime</td><td> </td><td>遗失密码问题输入窗口打开时间</td></tr><tr><td>Comment</td><td>ntext</td><td> </td><td>备注</td></tr></tbody></table> 表名：aspnet_Roles 说明：角色表 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名</td><td>类型</td><td>属性</td><td>说明</td></tr><tr><td>ApplicationId </td><td>uniqueidentifier</td><td>FK: appnet_Applications.ApplciationId </td><td>应用程序Id </td></tr><tr><td>RoleId</td><td>uniqueidentifier</td><td>PK </td><td>角色Id</td></tr><tr><td>RoleName</td><td>nvarchar(256)</td><td> </td><td>角色名称</td></tr><tr><td>LoweredRoleName</td><td>nvarchar(256)</td><td> </td><td>小的角色名称</td></tr><tr><td>Description</td><td>nvarchar(256)</td><td>nullable</td><td>描述</td></tr></tbody></table> 表名：aspnet_UsersInRoles 说明：用户角色关系表 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名 </td><td>类型 </td><td>属性 </td><td>说明</td></tr><tr><td>UserID</td><td>uniqueidentifier</td><td>FK: aspnet_Users.UserId </td><td>用户ID </td></tr><tr><td>RoleID</td><td>uniqueidentifier </td><td>FK: aspnet_Roles.RoleId </td><td>角色ID</td></tr></tbody></table> 表名：aspnet_Profile 说明：Profile对象存储表 
+ <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名 </td><td>类型 </td><td>属性 </td><td>说明 </td></tr><tr><td>UserId</td><td>uniqueidentifier </td><td>FK: aspnet_Users.UserId </td><td>用户ID</td></tr><tr><td>PropertyNames</td><td>ntext</td><td> </td><td>属性名称</td></tr><tr><td>PropertyValuesString</td><td>ntext</td><td> </td><td>字符串值</td></tr><tr><td>PropertyValuesBinary</td><td>image</td><td> </td><td>二进制值</td></tr><tr><td>LastUpdatedDate </td><td>datetime</td><td> </td><td>最后更新日期 </td></tr></tbody></table>
+</img></img></div>
+<div class="box postattachlist">
+<h5>附件</h5>
+<dl class="t_attachlist">
+<img alt="" border="0" class="absmiddle" src="images/e0/32268fb286bc1bcd63cc5de811713911.png">
+<a class="bold" href="http://www.chinamdj.com/attachment.php?aid=2464&amp;nothumb=yes" rel="nofollow noopener noreferrer" target="_blank">01.JPG</a>
+<em>(33.73 KB)</em>
+<dd>
+<p>2007-10-29 21:13 </p>
+<p><img alt="01.JPG" border="0" src="images/e0/15f856ae0450937adbdf111da13482a6.png"> </img></p>
+</dd>
+</img></dl>
+<dl class="t_attachlist">
+<img alt="" border="0" class="absmiddle" src="images/e0/32268fb286bc1bcd63cc5de811713911.png">
+<a class="bold" href="http://www.chinamdj.com/attachment.php?aid=2465&amp;nothumb=yes" rel="nofollow noopener noreferrer" target="_blank">02.JPG</a>
+<em>(41.88 KB)</em>
+<dd>
+<p>2007-10-29 21:13 </p>
+<p><img alt="02.JPG" border="0" src="images/e0/c940a636bf3524bf65f4e9389bf4b47e.png"> </img></p>
+</dd>
+</img></dl>
+<dl class="t_attachlist">
+<img alt="" border="0" class="absmiddle" src="images/e0/32268fb286bc1bcd63cc5de811713911.png">
+<a class="bold" href="http://www.chinamdj.com/attachment.php?aid=2466&amp;nothumb=yes" rel="nofollow noopener noreferrer" target="_blank">03.JPG</a>
+<em>(33.5 KB)</em>
+<dd>
+<p>2007-10-29 21:13 </p>
+<p><img alt="03.JPG" border="0" src="images/e0/3037e9ac4d7ea0c6a48e76e9952b6fc3.png"/> </p>
+</dd>
+</img></dl>
+<dl class="t_attachlist">
+<img alt="" border="0" class="absmiddle" src="images/e0/32268fb286bc1bcd63cc5de811713911.png"/>
+<a class="bold" href="http://www.chinamdj.com/attachment.php?aid=2467&amp;nothumb=yes" rel="nofollow noopener noreferrer" target="_blank">04.JPG</a>
+<em>(27.88 KB)</em>
+<dd>
+<p>2007-10-29 21:13 </p>
+<p><img alt="04.JPG" border="0" src="images/e0/c04c42795772d62c35474c5428fbe1ea.png"/> </p>
+</dd>
+</dl>  
+</div>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-05-08 04:19:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于MCP SSE 服务器的工作原理</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>关于MCP SSE 服务器的工作原理</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/146208818" target="_blank">https://blog.csdn.net/aerror/article/details/146208818</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-03-12 17:19:24</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1930</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 8</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 4</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">AI编程</span></div>
+    
+    <div class="article-description">2. MCP SSE Client会发起多个连接，但是第一个连接是http://yourhost:port/sse,  这个连接是沟通的第一步，它会使用chunked的回传数据，意思是不告诉client这个数据有多少，这样就它就可以一直连着了。但是sse的方式叫cursor 干始终不成功， 找了一轮，发现youtube的教程视频里主持，也没有搞定sse的服务器，balahblah说了一堆，就要move on ....于是研究了一下。跟着就是ping包的返回，防止client死了。</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>模型上下文协议（Model Context Protocol，简称MCP） 是<strong>一种全新的开放协议，专门用于标准化地为大语言模型（LLMs）提供应用场景和数据背景</strong>。 你可以把MCP想象成AI领域的“USB-C接口”，它能让不同的AI模型与外部工具和数据源轻松连接</p>
+<p>近来学习了一下，先是使用stdio的方式叫cursor做了一个，完全没有问题。但是sse的方式叫cursor 干始终不成功， 找了一轮，发现youtube的教程视频里主持，也没有搞定sse的服务器，balahblah说了一堆，就要move on ....于是研究了一下。</p>
+<p>1. 首先MCP SSE是基于http协议的一个应用,服务器和客户端主要通过json rc的方式进行沟通。</p>
+<p>2. MCP SSE Client会发起多个连接，但是第一个连接是http://yourhost:port/sse,  这个连接是沟通的第一步，它会使用chunked的回传数据，意思是不告诉client这个数据有多少，这样就它就可以一直连着了。 所以这个链接就是一个用来通知的链接。你现在就明白了为什么 ，就叫SSE（Server-Sent Events )。 它首先按以下格式信息给client, 然后就是定时的ping包了， 每次都只是一个chunk，估计后期server会有推送也会使用这个链接通知client.</p>
+<pre><code class="hljs language-javascript">event: 事件的名字
+data:  事件的数据
+</code></pre>
+<p>      2.1 第一个event是,这个直接返回，就是给client分配一个session_id, 方便后面多个连接过来服务器可以分清谁和谁。</p>
+<pre><code class="hljs language-javascript">
+51
+event: endpoint
+data: /messages/?session_id=07aa8f90d79a49eaad802693cdd05b5b</code></pre>
+<p>      client收到这个，就会以http://yourhost:port/messages/?session_id=07aa8f90d79a49eaad802693cdd05b5b ， 新发起一个连接去请求mcp sse server</p>
+<p>     2.2 第二个event是event: message, 这个data 是一个json来的，就是告诉client，当前mcp server的能力，还有服务器的基本信息。</p>
+<pre><code class="hljs language-javascript">124
+event: message
+data: {
+  "jsonrpc": "2.0",
+  "id": 0,
+  "result": {
+    "protocolVersion": "2024-11-05",
+    "capabilities": {
+      "experimental": {},
+      "prompts": {
+        "listChanged": false
+      },
+      "resources": {
+        "subscribe": false,
+        "listChanged": false
+      },
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "mem0-mcp",
+      "version": "1.3.0"
+    }
+  }
+}</code></pre>
+<p>     2.3 第三个event也是一个message , 用来告诉client 服务器提供的tools有哪些。</p>
+<pre><code class="hljs language-javascript">{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "tools": [
+      {
+        "name": "add_coding_preference",
+        "description": "Add a new coding preference to mem0. This tool stores code snippets, implementation details,\n    and coding patterns for future reference. Store every code snippet. When storing code, you should include:\n    - Complete code with all necessary imports and dependencies\n    - Language/framework version information (e.g., \"Python 3.9\", \"React 18\")\n    - Full implementation context and any required setup/configuration\n    - Detailed comments explaining the logic, especially for complex sections\n    - Example usage or test cases demonstrating the code\n    - Any known limitations, edge cases, or performance considerations\n    - Related patterns or alternative approaches\n    - Links to relevant documentation or resources\n    - Environment setup requirements (if applicable)\n    - Error handling and debugging tips\n    The preference will be indexed for semantic search and can be retrieved later using natural language queries.",
+        "inputSchema": {
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "title": "add_coding_preferenceArguments",
+          "type": "object"
+        }
+      },
+      {
+        "name": "get_all_coding_preferences",
+        "description": "Retrieve all stored coding preferences for the default user. Call this tool when you need \n    complete context of all previously stored preferences. This is useful when:\n    - You need to analyze all available code patterns\n    - You want to check all stored implementation examples\n    - You need to review the full history of stored solutions\n    - You want to ensure no relevant information is missed\n    Returns a comprehensive list of:\n    - Code snippets and implementation patterns\n    - Programming knowledge and best practices\n    - Technical documentation and examples\n    - Setup and configuration guides\n    Results are returned in JSON format with metadata.",
+        "inputSchema": {
+          "properties": {},
+          "title": "get_all_coding_preferencesArguments",
+          "type": "object"
+        }
+      },
+      {
+        "name": "search_coding_preferences",
+        "description": "Search through stored coding preferences using semantic search. This tool should be called \n    for EVERY user query to find relevant code and implementation details. It helps find:\n    - Specific code implementations or patterns\n    - Solutions to programming problems\n    - Best practices and coding standards\n    - Setup and configuration guides\n    - Technical documentation and examples\n    The search uses natural language understanding to find relevant matches, so you can\n    describe what you're looking for in plain English. Always search the preferences before \n    providing answers to ensure you leverage existing knowledge.",
+        "inputSchema": {
+          "properties": {
+            "query": {
+              "title": "Query",
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "title": "search_coding_preferencesArguments",
+          "type": "object"
+        }
+      }
+    ]
+  }
+}</code></pre>
+<p>跟着就是ping包的返回，防止client死了。</p>
+<pre><code class="hljs language-javascript">
+2d
+: ping - 2025-03-12 08:16:23.071429+00:00
+</code></pre>
+<p>3. endpoint请求</p>
+<p>   拿到endpont后，client 使用post的请求endpoint，  这个只处理请求，目前看 返回则在第一个http连接里。</p>
+<p>第二个链接 请求如下：， 这个调用initialize，对应上面的第一个message的event.</p>
+<pre><code class="hljs language-javascript">第二个链接, 这个只回复202 Accepted
+
+POST /messages/?session_id=9aa12073a4494d5580a5c30ed54c4bfd HTTP/1.1
+host: 10.0.105.64:8080
+connection: keep-alive
+content-type: application/json
+accept: */*
+accept-language: *
+sec-fetch-mode: cors
+user-agent: node
+accept-encoding: gzip, deflate
+content-length: 253
+
+{"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{"tools":true,"prompts":false,"resources":true,"logging":false,"roots":{"listChanged":false}},"clientInfo":{"name":"cursor-vscode","version":"1.0.0"}},"jsonrpc":"2.0","id":0}
+HTTP/1.1 202 Accepted
+
+date: Wed, 12 Mar 2025 08:08:32 GMT
+server: uvicorn
+content-length: 8
+
+Accepted
+
+</code></pre>
+<p>第三个链接，请求如下：</p>
+<pre><code class="hljs language-javascript">
+第三个链接,仅回复 202 Accepted
+
+POST /messages/?session_id=9aa12073a4494d5580a5c30ed54c4bfd HTTP/1.1
+host: 10.0.105.64:8080
+connection: keep-alive
+content-type: application/json
+accept: */*
+accept-language: *
+sec-fetch-mode: cors
+user-agent: node
+accept-encoding: gzip, deflate
+content-length: 54
+
+{"method":"notifications/initialized","jsonrpc":"2.0"}
+HTTP/1.1 202 Accepted
+date: Wed, 12 Mar 2025 08:08:32 GMT
+server: uvicorn
+content-length: 8
+
+Accepted
+</code></pre>
+<p>第四个链接，请求如下，请求tools/list, 服务器在第一个get的链接，通过event的方式返回了这个列表给mcp sse client</p>
+<pre><code class="hljs language-javascript">
+第四个链接,仅加复 202 Accepted
+
+
+POST /messages/?session_id=9aa12073a4494d5580a5c30ed54c4bfd HTTP/1.1
+host: 10.0.105.64:8080
+connection: keep-alive
+content-type: application/json
+accept: */*
+accept-language: *
+sec-fetch-mode: cors
+user-agent: node
+accept-encoding: gzip, deflate
+content-length: 46
+
+{"method":"tools/list","jsonrpc":"2.0","id":1}
+HTTP/1.1 202 Accepted
+date: Wed, 12 Mar 2025 08:08:32 GMT
+server: uvicorn
+content-length: 8
+
+Accepted</code></pre>
+<p>1-3完成就是属于初始化完成，mcp sse的client和server 连接起来了。</p>
+<p>然后后面使用mcp call 调用的，在cursor chat里输入</p>
+<p>call mcp tool search_coding_preferences about StdioServerTransport</p>
+<p>就是新起一个http短链接，post到endpoint,如下</p>
+<pre><code class="hljs language-javascript">POST /messages/?session_id=97a44bcff590415e99cf803350ffd542 HTTP/1.1
+host: 10.0.105.64:8080
+connection: keep-alive
+content-type: application/json
+accept: */*
+accept-language: *
+sec-fetch-mode: cors
+user-agent: node
+accept-encoding: gzip, deflate
+content-length: 143
+
+{"method":"tools/call","params":{"name":"search_coding_preferences","arguments":{"query":"about StdioServerTransport"}},"jsonrpc":"2.0","id":3}HTTP/1.1 202 Accepted
+date: Wed, 12 Mar 2025 09:10:43 GMT
+server: uvicorn
+content-length: 8
+
+HTTP/1.1 202 Accepted
+date: Wed, 12 Mar 2025 09:10:43 GMT
+server: uvicorn
+content-length: 8
+
+Accepted</code></pre>
+<p>第一个链接就是会有一个通知返回如下：</p>
+<pre><code class="hljs language-javascript">event: message
+data: {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"[]"}],"isError":false}}
+</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2025-03-12 17:19:24</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

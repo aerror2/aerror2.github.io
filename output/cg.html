@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>富斯/MC6接收机说明书</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>富斯/MC6接收机说明书</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/124298189" target="_blank">https://blog.csdn.net/aerror/article/details/124298189</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2022-04-20 15:09:42</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 12291</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 23</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 4</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">单片机</span></div>
+    
+    <div class="article-description">正面 反面1. PWM输出通道多达6个， 可以自由切换7种模式，自由选择无刷，有刷，差速，炫酷的RGB全彩灯带等，自由玩耍。2. 集成两个5A有刷电调，通过模式选择，可以双发，可差速，支持8250以下的空心杯有刷电机3. 支持16通(MC6/7C 14通)sbus(第15通是RSSI),9通ppm（第9通是RSSI）,可以接飞控，飞fpv. 4. 支持Failsafe失控保护，只需要直接在摇控器的Fail...</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p></p>
+<p></p>
+<p></p>
+<p>正面                                      反面</p>
+<p>1. PWM输出通道多达6个， 可以自由切换7种模式，自由选择无刷，有刷，差速，炫酷的RGB全彩灯带等，自由玩耍。</p>
+<p>2. 集成两个5A有刷电调，通过模式选择，可以双发，可差速，支持8250以下的空心杯有刷电机</p>
+<p>3. 支持16通(MC6/7C 14通)sbus(第15通是RSSI),9通ppm（第9通是RSSI）,可以接飞控，飞fpv.  </p>
+<p>4. 支持Failsafe失控保护，只需要直接在摇控器的Failsafe失控保护菜单设置（FLYSKY ONLY)。</p>
+<p>5. 集成RGB全彩 WS2812B灯带控制，可以通过摇控6个模式自由随时切换，流光溢彩，24位真彩彩虹，警灯模式.彩灯系统还可以在空中显示电池电量，左右舵方向指示，油门大小等。</p>
+<p>6. 附带1个5A的设备开关，使用第7通道控制，可以作为大功率设备开关，如大功率探照灯，水泵，反推装置，刹车等。 也可以作为简易航灯闪灯控制，舵量小于1200是关闭，大于1800是全开，1200-1800是闪灯模式，舵量越大，闪得越快。</p>
+<p></p>
+<ol><li><a name="_Toc27758"> 如何和遥控器对码？</a></li></ol>
+<p>FLLYSKY:</p>
+<p>   一 首先遥控器开机进入对码模式，</p>
+<p>      二 接收机上电，</p>
+<p>      三 静待45秒，即可自动完成对码。</p>
+<p style="margin-left:0;"><strong>MC6C/MC7C:</strong></p>
+<p>   一 关闭遥控器</p>
+<p>   二  接收机上电</p>
+<p>三 静待30秒，直到接收机进入每0.1秒1亮1灭慢闪</p>
+<p>四打开遥控器，接收块闪，然后常亮，对码完成</p>
+<p></p>
+<p><a name="_Toc22104">2.</a>如何切换对码另一个摇控器？</p>
+<p style="margin-left:0;"><strong>FLLYSKY:</strong></p>
+<p></p>
+<p>一. 关掉原来的摇控器，</p>
+<p>       二. 关掉接收机电源</p>
+<p>       三. 打开新的遥控器开机进入对码模式</p>
+<p>       四. 接收机上电，</p>
+<p>       五。 静待45秒，即可自动完成对码。</p>
+<p></p>
+<p style="margin-left:0;"><strong>MC6C/MC7C:</strong></p>
+<p>   一 关闭遥控器</p>
+<p>   二  接收机上电</p>
+<p>三 静待30秒，直到接收机进入每0.1秒1亮1灭慢闪（三合一版本，要等到每秒1亮1灭）</p>
+<p>四打开遥控器，接收块闪，然后常亮，对码完成</p>
+<p></p>
+<p><a name="_Toc13962">3.</a>如何切换或设置接收机的工作模式？</p>
+<p>    方法一.</p>
+<p>       1. 摇控器开机，接收机开机，等待连接成功</p>
+<p>        2. 关掉接收机</p>
+<p>        3. 操作非油门摇杆(即左手油门，操作右边摇杆，反之操作左边摇杆), 杆摇拉尽到左下，中下，右下，左中，右中，左上，和右上其中一个位置。</p>
+<p>        4. 保持摇杆位置不动，重新打开接收机，等7秒， 指标灯进入闪烁模式，继续10秒，每3秒一个周期，一个周期闪多少下，就是对应的模式的数字。</p>
+<p>        5. 闪烁完成后，会长亮，这时就可以松开摇杆回中，模式切换完成</p>
+<p>  </p>
+<p>各个每个摇杆位置对应的模式如下：</p>
+<p> FLYSKY:</p>
+<p>        左下， 模式1，6通PWM输出+RGB彩灯，默认模式。</p>
+<p>        中下， 模式2，两路有刷差速电调输出+4通PWM+RGB彩灯</p>
+<p>        右下， 模式3, 非差速有刷双电调输出+4通PWM+RGB彩灯</p>
+<p>        左中， 模式4，7通pwm输出，无彩灯</p>
+<p>        右中， 模式5，5通非差速有刷双电调输出，无彩灯</p>
+<p>        左上， 模式6，SBUS+PPM输出+RGB彩灯</p>
+<p>        右上， 模式7，5通有刷差速输出，无彩灯</p>
+<p>         中上， 模式8，5通无刷差速输出，无彩灯( 仅适用于，MC接收机)</p>
+<p>MC6C:</p>
+<p>   </p>
+<p><img alt="" height="1200" src="images/cg/7fcdc78b414c37132aa0e833d8dd3196.jpeg" width="1200"/></p>
+<p>  </p>
+<p></p>
+<p>方法二. (FLYSKY ONLY)</p>
+<p>      1. 进入设置菜单</p>
+<p></p>
+<p>      2. 进入系统设置(System)</p>
+<p>      3. 进入接收机设置(Rx Setup)</p>
+<p>      4. 进入i-Bus setup</p>
+<p>      5. 选择通道(channel), 通道1-7对应 模式1-7</p>
+<p>      6. 长按cancel</p>
+<p><a name="_Toc12429">4. </a>如何接线？</p>
+<p></p>
+<p>建议动手能力弱的使用转接板。标准1.25和2.54的2或3针插头，焊接简单，保证接收机的正负极和转接板对上，即可。发货时会拼好。要是散了，对照上面的标注接线。</p>
+<p></p>
+<p>自由模式接线较复杂，好处是轻。</p>
+<p>每个模式接线都不一样的，每个模式请按照下图表格中的进行接线，多条的，请先拧成一根，再进行焊接。</p>
+<p>      或者先焊12根引出线，然后再手拧接线。</p>
+<p>7种模式的接线见下面商品图</p>
+<p><img alt="" height="1032" src="images/cg/c16bd0e0a6acc92b473081418910e336.png" width="368"/></p>
+<p><img alt="" height="962" src="images/cg/91cc59e9579b76e650e06b51816fe0ed.png" width="444"/></p>
+<p></p>
+<p>第8模式 无刷差速，接线时，电调接第1和第3通，第四通变为副翼，控制为3和4通混控。</p>
+<p></p>
+<p><a name="_Toc21866">5. WS2812B LEd</a>灯条的如何接法？</p>
+<p>   A：要完整做这个彩灯系统，需要30颗ws2812B灯珠，建议买1米30颗的灯带。30个灯，设输入第一颗定义为1号灯，按顺序定义如下:</p>
+<p>      1-2   号灯： 两个红色示位灯，常亮，建议放在机翼最左边，机翼上下各放一颗，实践证明是必须的。</p>
+<p>      3-16  号灯:  14颗会流动的彩虹灯，放在机翼左右底部。</p>
+<p>      17-18 号灯:  两个绿色，常亮，建议放在机翼最左边，机翼上下各放一颗。</p>
+<p>      19    号灯： 黄色，机头示位灯，</p>
+<p>      20-29 号灯： 红或绿，指示电池电量，全绿表示满电，全红表示无电，电压显示范围为3.2-4.2伏，所以电压探针2s或以上应插电池平衡头的第二条黑线。</p>
+<p>      30    号灯： 白色尾灯，常闪， 建议安装在飞机的最尾部。</p>
+<p></p>
+<p>      请为WS2812B灯使用独立供电模块，仅接一条共用的地线和Din数据线到本接收机的第6口。</p>
+<p></p>
+<p><a name="_Toc17939">6. </a>如何切换RGB灯带的模式？</p>
+<p>   A: 选择带RGB灯带控制的模式后使用第6通道进行控制。以下是舵量对应的模式。以0-1000表示。</p>
+<p></p>
+<p>      0-50   - 关闭全部灯</p>
+<p>      50-150 -  显示飞机四个角的示位灯，即左红，右绿，前黄+闪烁的尾灯。</p>
+<p>      150-250 - 显示飞机四个角的示位灯，电量和油门灯</p>
+<p>      250-450 - 全部灯亮，警灯闪烁</p>
+<p>      450-650 - 全部灯亮，华尔兹拍子闪烁</p>
+<p>      650-1000 - 全部灯亮，流动的光，有电量，油门和左右方向指示。</p>
+<p></p>
+<p>    每个段位的中间值为速度调整值，举个例子，如650-1000这个段位中，设置舵量为950比700会流动/闪得更快。</p>
+<p></p>
+<p><a name="_Toc20105">7. </a>如何搞一个简易的灯光系统？</p>
+<p>   A： 可以使用5A的开关通道实现，这个通道使用第7通道控制，舵量小于1200是关闭，大于1800是全开，1200-1800是闪灯模式，舵量越大，闪得越快。</p>
+<p></p>
+<p></p>
+<p><a name="_Toc32072">8. </a>如何判断接收正当前的工作模式？</p>
+<p></p>
+<p>   A： 对频完成后，关闭摇控机，接收指示灯进入闪烁模式， 每三秒闪几下表示模式几，如闪2下，表示模式2</p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2022-04-20 15:09:42</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>php写的http协议</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>php写的http协议</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/8308318" target="_blank">https://blog.csdn.net/aerror/article/details/8308318</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2012-12-17 17:05:25</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 9019</div>
+        
+        
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">php http协议</span></div>
+    
+    <div class="article-description">这个协议纯自已手工打造，超级灵活，如，我可以用它来分析wireshark的截包用法请看 test函数.  用到请保留作者信息。 &lt;?php/** *  * @author aerror * */class HttpHeader{	public $method;	public $status_code;	public $chunked;	public $status_l</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>这个协议纯自已手工打造，超级灵活，如，我可以用它来分析wireshark的截包</p>
+<p>用法请看 test函数.  用到请保留作者信息。 </p>
+<p></p>
+<pre><code class="language-php hljs">&lt;?php
+/**
+ * 
+ * @author aerror
+ *
+ */
+class HttpHeader
+{
+	public $method;
+	public $status_code;
+	public $chunked;
+	public $status_line;
+	public $headers;
+	public $content_len;
+	public $header_len;
+	public $contentEncoding;
+	public function HttpHeader()
+	{
+		self::reset();
+	}
+	public function reset()
+	{
+		$this-&gt;headers = array();
+		$this-&gt;status_code=0;
+		$this-&gt;chunked=0;
+		$this-&gt;status_line="";
+		$this-&gt;content_len=0;
+		$this-&gt;header_len=0;
+		$this-&gt;contentEncoding = "";
+	}
+};
+
+class XAutoBuffer
+{
+	private $m_innerbuf="";
+	private $length=0;
+	private $each_inc_size=1024;
+	public function XAutoBuffer($initSize)
+	{
+		$this-&gt;m_innerbuf="";
+		$this-&gt;length = 0;
+	}
+
+	public function Append($buf, $offset, $len)
+	{
+		$this-&gt;m_innerbuf .= substr($buf, $offset,$len);
+
+		$this-&gt;length +=$len;
+	}
+
+	public function SetLength($val)
+	{
+	
+		$this-&gt;m_innerbuf = substr($this-&gt;m_innerbuf,0,$val);
+		$this-&gt;length = $val;
+	}
+
+	public function GetLength()
+	{
+		return $this-&gt;length;
+	}
+
+	public function GetBuffer()
+	{
+		return $this-&gt;m_innerbuf;
+	}
+
+	public function Clear()
+	{
+	    $this-&gt;m_innerbuf="";
+		$this-&gt;length =0;
+	}
+
+}
+
+
+class HttpContext
+{
+
+	public $m_header;
+	public $m_state;
+	public $m_bHeaderReceived;
+	public $m_cur_chunk_len;
+	public $m_cur_chunk_read;
+	public $m_chunk_hdr_offset;
+	public $header_origin;
+	public function HttpContext()
+	{
+		self::reset();
+	}
+
+	public function  reset()
+	{
+		$this-&gt;m_header = new HttpHeader();
+		$this-&gt;m_state = 0;
+		$this-&gt;m_bHeaderReceived=0;
+		$this-&gt;m_cur_chunk_len=0;
+		$this-&gt;m_cur_chunk_read=0;
+		$this-&gt;m_chunk_hdr_offset=0;
+		$this-&gt;header_origin=0;
+	}
+
+	public function  getHeaderValueByName($name)
+	{
+		foreach($this-&gt;m_header-&gt;headers as $p)
+		{
+
+			if($p['name'] == $name)
+			{
+				return $p['value'];
+			}
+		}
+		return null;
+	}
+};
+
+
+class HttpProtocolClient
+{
+
+	const		NEW_PACKET=0;
+	const		RECEIVING_HEADER=1;
+	const		RECEIVING_CONTENT=2;
+	const		RECEIVING_CHUNKED_LEN=3;
+	const		RECEIVING_CHUNKED_BODY=4;
+	const		PACKET_COMPLETE=5;
+	const		PACKET_PARSE_FAILED=6;
+	const MAX_HEADER_LEN				 =2048;
+	const HTTP_HEADER_END_STRING	=	 "\r\n\r\n";
+	const HTTP_HEADER_END_STRING_SIZE =4;
+	const HTTP_1_1_MAGIC			=	 "HTTP/1.";
+	const HTTP_1_1_MAGIC_LEN			 =7;
+	const HTTP_HEAD_CONNECTION   =     	"Connection";
+	const HTTP_TRANSFER_ENCODING	=	"Transfer-Encoding";
+	const HTTP_CONTENT_ENCODING	=	"Content-Encoding";
+	const HTTP_CONTENT_LENGTH	=	"Content-length";
+	const HTTP_CHUNKED			 = "chunked";
+	const HTTP_TEXT_HTML		=	 "text/html";
+	const HTTP_CHUNKED_END		= "0\r\n\r\n";
+	const HTTP_CRLF			= "\r\n";
+	const HTTP_CRLF_SIZE			= 2;
+	const XPROTO_FAILED					=-1;
+	const XPROTO_REMAIN_LENGTH_ERROR		=-2;
+	const XPROTO_XCMD_OUT_OF_RANGE		=-3;
+	const XPROTO_PACKET_LENGTH_OVERFLOW	=-4;
+	const XPROTO_PACKET_NOT_COMPLETED	=-5;
+	const XPROTO_PACKET_LESS_THAN_HDRLEN	=-6;
+	const XPROTO_DISPATCH_EXCEPTION		=-7;
+	const XPROTO_OUT_OF_MEMORY			=-8;
+	const XPROTO_GET_SEND_BUFF_FAILED	=-9;
+	const XPROTO_FROM_BUFF_FAILED		=-10;
+	const XPROTO_TO_BUFF_FAILED			=-11;
+	const XPROTO_XML_NODE_NOT_FOUND		=-12;
+	const XPROTO_TOO_LESS_HEADER_LINE	=-13;
+	const XPROTO_MAGIC_NOT_MATCH			=-14;
+	const XPROTO_TOO_LESS_HEADER_VALUE	=-15;
+	const XPROTO_PROTOCOL_STATE_WRONG	=-16;
+	const XPROTO_PARSE_HEADER_FAILED		=-17;
+	const XPROTO_MAX_HEADER_LEN			=-18;
+	const XPROTO_UNKOWN_CONTENT_TYPE		=-19;
+	const XPROTO_UNSUPPORT_TRANS_TYPE	=-20;
+
+
+	public static function strsnstr(
+			$dest1,$dst1Off, $dstlen1,
+			$dest2,$dst2Off, $dstlen2,
+			$src,$srclen)
+	{
+		$dlen = $dstlen1+ $dstlen2;
+		$p1  = 0;
+		$p2 = 0;
+		for($j=0;$j&lt;=$dlen-$srclen;$j++)
+		{
+
+				
+			$p1 =$dst1Off+$j;
+				
+
+			$match=1;
+			for($i=0;$i&lt;$srclen;$i++)
+			{
+
+				if(($j+$i) &lt; $dstlen1)
+				{
+					$p2 = $dest1[$dst1Off+$j+$i];
+				}
+				else
+				{
+					$p2 = $dest2[$dst2Off+$j+$i-$dstlen1];
+				}
+
+				if($p2!=$src[$i])
+				{
+					$match=0;
+					break;
+				}
+			}
+
+			if($match!=0)
+			{
+				return $p1;
+			}
+		}
+		return -1;
+	}
+
+
+	public static function HexStringnToIntegerA($lpHexString, $offset, $len)
+	{
+		$x=substr($lpHexString, $offset, $len);
+		return hexdec($x);
+	}
+
+
+
+
+	public static function parseHttp($ctx,  $inputBuf,$len, $buf )
+	{
+		$byteAvailable = $len;
+		$curOffset=0;
+
+		$res =0;
+		$phdr = null;
+
+		//uses state machine.
+		//
+		while($byteAvailable&gt;0)
+		{
+
+			switch($ctx-&gt;m_state)
+			{
+				case HttpProtocolClient::NEW_PACKET:
+					{
+						//new packet
+						//
+						$ctx-&gt;m_state =HttpProtocolClient::RECEIVING_HEADER;
+						continue;
+					}
+
+				case HttpProtocolClient::RECEIVING_HEADER:
+					{
+						$ptemp = 0;
+						if($buf-&gt;GetLength()&gt;=HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE)
+						{
+							$ptemp =self::strsnstr(
+									$buf-&gt;GetBuffer(),  //d1
+									$buf-&gt;GetLength()-HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE,//do1
+									HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE,//dl2
+									$inputBuf,
+									$curOffset,
+									$byteAvailable,
+									HttpProtocolClient::HTTP_HEADER_END_STRING,
+									HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE);
+						}
+						else
+						{
+							$ptemp =self::strsnstr(
+									$buf-&gt;GetBuffer(),
+									0,
+									$buf-&gt;GetLength(),
+									$inputBuf,
+									$curOffset,
+									$byteAvailable,
+									HttpProtocolClient::HTTP_HEADER_END_STRING,
+									HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE);
+						}
+							
+							
+						if($ptemp&lt;0)
+						{
+							if($byteAvailable+$buf-&gt;GetLength() &gt;HttpProtocolClient::MAX_HEADER_LEN )
+							{
+								$ctx-&gt;m_state =(HttpProtocolClient::PACKET_PARSE_FAILED);
+								return HttpProtocolClient::XPROTO_MAX_HEADER_LEN;
+							}
+
+							//header not completed.
+							//
+
+							$buf-&gt;Append($inputBuf,$curOffset,$byteAvailable);
+
+							//update pointers.
+							//
+
+							$curOffset+=$byteAvailable;
+							$byteAvailable = 0;
+
+							$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_HEADER);
+							return $len;
+						}
+
+						//head completed.
+						//
+						$hdrRemain = 0;
+						if($ptemp &lt; $buf-&gt;GetLength())
+						{
+							$hdrRemain = (int)(HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE-
+									($buf-&gt;GetLength() -$ptemp));
+						}
+						else
+						{
+							$hdrRemain = (int)(($ptemp-$buf-&gt;GetLength()) + HttpProtocolClient::HTTP_HEADER_END_STRING_SIZE);
+						}
+							
+						if($hdrRemain+$buf-&gt;GetLength() &gt; HttpProtocolClient::MAX_HEADER_LEN )
+						{
+							$ctx-&gt;m_state =(HttpProtocolClient::PACKET_PARSE_FAILED);
+							return HttpProtocolClient::XPROTO_MAX_HEADER_LEN;
+						}
+							
+							
+						$buf-&gt;Append($inputBuf,$curOffset,$hdrRemain);
+
+						//var_dump($buf);
+						//update pointers.
+						//
+						$curOffset+=$hdrRemain;
+						$byteAvailable-= $hdrRemain;
+
+						$ctx-&gt;m_bHeaderReceived = 1;
+						if(($res=HttpProtocolClient::ParseHeader($ctx,$buf-&gt;GetBuffer(),$buf-&gt;GetLength()))!=0)
+						{
+							$ctx-&gt;m_state =(HttpProtocolClient::PACKET_PARSE_FAILED);
+							return $res;
+						}
+
+						if($ctx-&gt;m_header-&gt;chunked!=0)
+						{
+
+							//very import to update the content pointer.
+							//
+							$ctx-&gt;m_chunk_hdr_offset = $buf-&gt;GetLength();
+							$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CHUNKED_LEN);
+								
+						}
+						else
+						{
+							//$ctx-&gt;m_header-&gt;all = pCurrentBuf-hdr_len;
+							$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CONTENT);
+							if($ctx-&gt;m_header-&gt;content_len ==0) //sometime head with content-length:0, suck!
+							{
+								$ctx-&gt;m_state =(HttpProtocolClient::PACKET_COMPLETE);
+								return $len-$byteAvailable;
+							}
+						}
+						continue;
+					}
+
+				case HttpProtocolClient::RECEIVING_CONTENT:
+					{
+						$phdr =$ctx-&gt;m_header;
+						if($phdr-&gt;content_len &gt;0)
+						{
+
+							$remainLen = $phdr-&gt;content_len + $phdr-&gt;header_len - $buf-&gt;GetLength();
+							if($byteAvailable &lt; $remainLen)
+							{
+								//not completed
+								//copy and return
+								//
+									
+								$buf-&gt;Append($inputBuf,$curOffset,$byteAvailable);
+
+								//should use this.buf
+								//
+									
+
+									
+								$byteAvailable =0;
+								$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CONTENT);
+								return $len;
+							}
+
+							$buf-&gt;Append($inputBuf,$curOffset,$remainLen);
+
+							$curOffset		+= $remainLen;
+							$byteAvailable	-= $remainLen;
+
+						}
+
+
+
+						$ctx-&gt;m_state =(HttpProtocolClient::PACKET_COMPLETE);
+						return $len-$byteAvailable;
+					}
+					//break;//case RECEIVING_CONTENT
+
+				case HttpProtocolClient::RECEIVING_CHUNKED_LEN:
+					{
+						/*0x48,0x54,0x54,0x50,0x2F,0x31,0x2E,0x31,0x20,0x32,0x30,0x30,0x20,0x4F,0x4B,0x0D,0x0A,0x53,0x65,0x72,0x76,0x65,0x72,0x3A,0x20,0x6E,0x67,0x69,0x6E,0x78,0x2F,0x30,
+						 0x2E,0x37,0x2E,0x36,0x32,0x0D,0x0A,0x44,0x61,0x74,0x65,0x3A,0x20,0x53,0x61,0x74,0x2C,0x20,0x32,0x35,0x20,0x4A,0x75,0x6E,0x20,0x32,0x30,0x31,0x31,0x20,0x31,0x33,
+						0x3A,0x30,0x36,0x3A,0x35,0x35,0x20,0x47,0x4D,0x54,0x0D,0x0A,0x43,0x6F,0x6E,0x74,0x65,0x6E,0x74,0x2D,0x54,0x79,0x70,0x65,0x3A,0x20,0x69,0x6D,0x61,0x67,0x65,0x2F,
+						0x67,0x69,0x66,0x0D,0x0A,0x54,0x72,0x61,0x6E,0x73,0x66,0x65,0x72,0x2D,0x45,0x6E,0x63,0x6F,0x64,0x69,0x6E,0x67,0x3A,0x20,0x63,0x68,0x75,0x6E,0x6B,0x65,0x64,0x0D,
+						0x0A,0x43,0x6F,0x6E,0x6E,0x65,0x63,0x74,0x69,0x6F,0x6E,0x3A,0x20,0x63,0x6C,0x6F,0x73,0x65,0x0D,0x0A,0x0D,0x0A,0x32,0x62,0x0D,0x0A,0x47,0x49,0x46,0x38,0x39,0x61,
+						0x01,0x00,0x01,0x00,0x80,0x00,0x00,0xFF,0xFF,0xFF,0x00,0x00,0x00,0x21,0xF9,0x04,0x01,0x00,0x00,0x00,0x00,0x2C,0x00,0x00,0x00,0x00,0x01,0x00,0x01,0x00,0x00,0x02,
+						0x02,0x44,0x01,0x00,0x3B,0x0D,0x0A,0x31,0x0D,0x0A,0x31,0x0D,0x0A,0x30,0x0D,0x0A,0x0D,0x0A*/
+
+						$ptemp = 0;
+							
+						$cur_chunk_hdr_len = (int)($buf-&gt;GetLength() - $ctx-&gt;m_chunk_hdr_offset);
+						$chunkHdr = $ctx-&gt;m_chunk_hdr_offset;
+							
+						if($cur_chunk_hdr_len &gt;=HttpProtocolClient::HTTP_CRLF_SIZE)
+						{
+							$ptemp =self::strsnstr(
+									$buf-&gt;GetBuffer(),
+									$buf-&gt;GetLength()-HttpProtocolClient::HTTP_CRLF_SIZE,
+									HttpProtocolClient::HTTP_CRLF_SIZE,
+									$inputBuf,
+									$curOffset,
+									$byteAvailable,
+									HttpProtocolClient::HTTP_CRLF,
+									HttpProtocolClient::HTTP_CRLF_SIZE);
+						}
+						else
+						{
+							$ptemp =self::strsnstr(
+									$buf-&gt;GetBuffer(),
+									$chunkHdr,
+									$cur_chunk_hdr_len,
+									$inputBuf,
+									$curOffset,
+									$byteAvailable,
+									HttpProtocolClient::HTTP_CRLF,
+									HttpProtocolClient::HTTP_CRLF_SIZE);
+						}
+
+							
+						if($ptemp&lt;0)
+						{
+							//chunked len not completed.
+							//
+							$buf-&gt;Append($inputBuf,$curOffset,$byteAvailable);
+
+							//update pointers.
+							//
+
+							$curOffset+=$byteAvailable;
+							$byteAvailable = 0;
+
+							$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CHUNKED_LEN);
+							return $len;
+						}
+
+						//head completed.
+						//
+						$hdrRemain = 0;
+						if($ptemp &lt; $buf-&gt;GetLength())
+						{
+							//partial header received.
+							//
+							$hdrRemain = (int)(HttpProtocolClient::HTTP_CRLF_SIZE-($buf-&gt;GetLength() -$ptemp));
+						}
+						else
+						{
+							$hdrRemain = (int)(($ptemp-$buf-&gt;GetLength())+HttpProtocolClient::HTTP_CRLF_SIZE);
+						}
+							
+						if($hdrRemain+$cur_chunk_hdr_len &gt;12 )
+						{
+							$ctx-&gt;m_state =(HttpProtocolClient::PACKET_PARSE_FAILED);
+							return HttpProtocolClient::XPROTO_MAX_HEADER_LEN;
+						}
+
+						$cur_chunk_hdr_len +=$hdrRemain;
+							
+						$buf-&gt;Append($inputBuf,$curOffset,$hdrRemain);
+						//calc again , because bufs will realloc.
+						//
+						$chunkHdr = $ctx-&gt;m_chunk_hdr_offset;
+
+						//update pointers.
+						//
+							
+						$curOffset+=$hdrRemain;
+						$byteAvailable-= $hdrRemain;
+
+							
+						$ctx-&gt;m_cur_chunk_len  = (int)HttpProtocolClient::HexStringnToIntegerA($buf-&gt;GetBuffer(),$chunkHdr,$cur_chunk_hdr_len);
+						$ctx-&gt;m_cur_chunk_read = 0;
+							
+						//skip the header before copy chunk body
+						//
+						$buf-&gt;SetLength($buf-&gt;GetLength()-$cur_chunk_hdr_len);
+
+						$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CHUNKED_BODY);
+							
+							
+					}//case RECEIVING_CHUNKED_LEN
+					break;
+
+				case HttpProtocolClient::RECEIVING_CHUNKED_BODY:
+					{
+						$remainLen = ($ctx-&gt;m_cur_chunk_len + HttpProtocolClient::HTTP_CRLF_SIZE)-$ctx-&gt;m_cur_chunk_read;
+							
+						if($byteAvailable &lt; $remainLen)
+						{
+							//not completed
+							//copy and return
+							//
+							$buf-&gt;Append($inputBuf,$curOffset,$byteAvailable);
+							$ctx-&gt;m_cur_chunk_read+=$byteAvailable;
+
+							$byteAvailable =0;
+							$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CHUNKED_BODY);
+							return $len;
+						}
+
+						//here should be a completed chunk body.
+						//
+						$buf-&gt;Append($inputBuf,$curOffset,$remainLen);
+						$ctx-&gt;m_cur_chunk_read+=$remainLen;
+						$buf-&gt;SetLength($buf-&gt;GetLength()-HttpProtocolClient::HTTP_CRLF_SIZE);//SKIP BODY CRLF
+						$curOffset += $remainLen;
+						$byteAvailable -= $remainLen;
+							
+						if($ctx-&gt;m_cur_chunk_len==0)
+						{
+
+							//chunk over.
+							//
+							$ctx-&gt;m_state =(HttpProtocolClient::PACKET_COMPLETE);
+
+							//must set content_len  before dispatch
+							//
+							$ctx-&gt;m_header-&gt;content_len = $buf-&gt;GetLength() - $ctx-&gt;m_header-&gt;header_len;
+
+							return $len-$byteAvailable;
+						}
+						else
+							//next chunk
+						{
+							$ctx-&gt;m_chunk_hdr_offset = $buf-&gt;GetLength();
+							$ctx-&gt;m_state =(HttpProtocolClient::RECEIVING_CHUNKED_LEN);
+						}
+					}//case RECEIVING_CHUNKED_BODY
+					break;
+				case HttpProtocolClient::PACKET_PARSE_FAILED:
+					{
+						return -1;
+					}
+				default:
+					return -2;
+			}
+				
+		}//while
+		return $len;
+	}
+	public static function ParseHeader( $ctx, $buf, $len)
+	{
+		$s = substr($buf,0,$len);
+		$lines = explode("\r\n",$s);
+		if(count($lines) &lt;= 0)
+		{
+			return -1;
+		}
+		$ctx-&gt;m_header-&gt;header_len = $len;
+		$ctx-&gt;m_header-&gt;status_line  = $lines[0];
+		$statu_values = explode(" ",$ctx-&gt;m_header-&gt;status_line);
+		
+		if(count($statu_values) &gt;2)
+		{
+			$ctx-&gt;m_header-&gt;status_code =$statu_values[1];
+			$ctx-&gt;m_header-&gt;method   = $statu_values[0];
+		}	
+		for($i=1;$i&lt;count($lines);$i++)
+		{
+			$idx = strpos($lines[$i],":");
+			if($idx &gt; 0)
+			{
+				$name = trim(substr($lines[$i], 0,$idx));
+				$value = trim(substr($lines[$i],$idx+1)); 
+
+				if(strcasecmp(HttpProtocolClient::HTTP_CONTENT_LENGTH,$name)==0)
+				{
+					$ctx-&gt;m_header-&gt;content_len = intval($value);
+				}
+				else if(strcasecmp(HttpProtocolClient::HTTP_TRANSFER_ENCODING, $name)==0 &amp;&amp; strcasecmp(HttpProtocolClient::HTTP_CHUNKED,$value)==0)
+				{
+					$ctx-&gt;m_header-&gt;chunked = 1;
+				}
+				else if(strcasecmp(HttpProtocolClient::HTTP_CONTENT_ENCODING, $name)==0 )
+				{
+					$ctx-&gt;m_header-&gt;contentEncoding = $value;
+				}
+				array_push($ctx-&gt;m_header-&gt;headers, array('name'=&gt;$name,'value'=&gt;$value));
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * return the uncomp$ressed content.
+	 *
+	 * */
+	public function uncompressContent( $ctx, $input) 
+	{
+
+// 		$content_len = input.GetLength()-$ctx-&gt;m_header-&gt;header_len;
+// 		if(content_len&lt;=0)
+// 		{
+// 			return null;
+// 		}
+// 		long t1  = System.currentTimeMillis();
+// 		byte []tmp = new byte[4096];
+// 		InputStream body=null;
+// 		$guess_ratio = 1;
+// 		if($ctx-&gt;m_header-&gt;contentEncoding.equals("gzip"))
+// 		{
+				
+// 			ByteArrayInputStream ins = new ByteArrayInputStream(input.GetBuffer(),
+// 					$ctx-&gt;m_header-&gt;header_len,
+// 					content_len);
+// 			body = new GZIPInputStream(ins);
+// 			guess_ratio = 5;
+				
+// 		}
+// 		else if($ctx-&gt;m_header-&gt;contentEncoding.equals("deflate"))
+// 		{
+// 			ByteArrayInputStream ins = new ByteArrayInputStream(input.GetBuffer(),
+// 					$ctx-&gt;m_header-&gt;header_len,
+// 					content_len);
+// 			body = new InflaterInputStream(ins);
+// 			guess_ratio = 5;
+// 		}
+// 		else if($ctx-&gt;m_header-&gt;contentEncoding.equals(""))
+// 		{
+// 			body = new ByteArrayInputStream(input.GetBuffer(),
+// 					$ctx-&gt;m_header-&gt;header_len,
+// 					content_len);
+// 			guess_ratio = 1;
+// 		}
+
+// 		if(body!=null)
+// 		{
+// 			XAutoBuffer ret = new XAutoBuffer(content_len*guess_ratio);
+// 			while(true)
+// 			{
+// 				$rn = body.read(tmp,0,tmp.length);
+// 				if(rn&lt;=0)
+// 				{
+// 					break;
+// 				}
+// 				ret.Append(tmp, 0, rn);
+// 			}
+// 			//			print("SEND_POST_MANUALLY_PROFILE","UNCOMP$resS_CONTENT("+$ctx-&gt;m_header-&gt;contentEncoding+"): "+ (System.currentTimeMillis()-t1)
+// 			//					+" zip size:"+content_len + " unzip size: " + ret.GetLength());
+// 			return ret;
+// 		}
+
+		return null;
+	}
+
+	public static function getContentLen($ctx, $input)
+	{
+		return input.GetLength() - $ctx-&gt;m_header-&gt;header_len;
+	}
+
+	public static function getContent($ctx, $input)
+	{
+
+// 		try {
+// 			return uncomp$ressContent(ctx,input);
+// 		} catch (IOException e) {
+// 			print("HTTP getContent", e.getMessage());
+// 		}
+
+		return $input;
+	}
+
+	public static function test()
+	{
+
+		$szChunked ="\x48\x54\x54\x50\x2F\x31\x2E\x31\x20\x32\x30\x30\x20\x4F\x4B\x0D\x0A\x53\x65\x72\x76\x65\x72\x3A\x20\x6E\x67\x69\x6E\x78\x2F\x30\x2E\x37\x2E\x36\x32\x0D\x0A\x44\x61\x74\x65\x3A\x20\x53\x61\x74\x2C\x20\x32\x35\x20\x4A\x75\x6E\x20\x32\x30\x31\x31\x20\x31\x33\x3A\x30\x36\x3A\x35\x35\x20\x47\x4D\x54\x0D\x0A\x43\x6F\x6E\x74\x65\x6E\x74\x2D\x54\x79\x70\x65\x3A\x20\x69\x6D\x61\x67\x65\x2F\x67\x69\x66\x0D\x0A\x54\x72\x61\x6E\x73\x66\x65\x72\x2D\x45\x6E\x63\x6F\x64\x69\x6E\x67\x3A\x20\x63\x68\x75\x6E\x6B\x65\x64\x0D\x0A\x43\x6F\x6E\x6E\x65\x63\x74\x69\x6F\x6E\x3A\x20\x63\x6C\x6F\x73\x65\x0D\x0A\x0D\x0A\x32\x62\x0D\x0A\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\xFF\xFF\xFF\x00\x00\x00\x21\xF9\x04\x01\x00\x00\x00\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3B\x0D\x0A\x31\x0D\x0A\x31\x0D\x0A\x30\x0D\x0A\x0D\x0A";
+
+		$szContentLenght="\x48\x54\x54\x50\x2F\x31\x2E\x31\x20\x32\x30\x30\x20\x4F\x4B\x0D\x0A\x53\x65\x72\x76\x65\x72\x3A\x20\x4D\x65\x64\x69\x61\x56\x2F\x30\x2E\x31\x2E\x35\x34\x0D\x0A\x44\x61\x74\x65\x3A\x20\x53\x61\x74\x2C\x20\x32\x35\x20\x4A\x75\x6E\x20\x32\x30\x31\x31\x20\x31\x34\x3A\x34\x34\x3A\x30\x38\x20\x47\x4D\x54\x0D\x0A\x43\x6F\x6E\x74\x65\x6E\x74\x2D\x54\x79\x70\x65\x3A\x20\x69\x6D\x61\x67\x65\x2F\x67\x69\x66\x0D\x0A\x43\x6F\x6E\x74\x65\x6E\x74\x2D\x4C\x65\x6E\x67\x74\x68\x3A\x20\x34\x33\x0D\x0A\x43\x6F\x6E\x6E\x65\x63\x74\x69\x6F\x6E\x3A\x20\x6B\x65\x65\x70\x2D\x61\x6C\x69\x76\x65\x0D\x0A\x53\x65\x74\x2D\x43\x6F\x6F\x6B\x69\x65\x3A\x20\x20\x76\x3D\x67\x24\x3C\x66\x46\x3C\x41\x41\x29\x63\x43\x40\x2A\x21\x2D\x29\x37\x40\x77\x67\x3B\x20\x65\x78\x70\x69\x72\x65\x73\x3D\x57\x65\x64\x6E\x65\x73\x64\x61\x79\x2C\x20\x30\x32\x2D\x4E\x6F\x76\x2D\x32\x30\x39\x39\x20\x32\x32\x3A\x34\x34\x3A\x30\x38\x20\x47\x4D\x54\x3B\x20\x70\x61\x74\x68\x3D\x2F\x3B\x20\x64\x6F\x6D\x61\x69\x6E\x3D\x2E\x6D\x65\x64\x69\x61\x76\x2E\x63\x6F\x6D\x0D\x0A\x43\x6F\x6E\x6E\x65\x63\x74\x69\x6F\x6E\x3A\x20\x43\x6C\x6F\x73\x65\x0D\x0A\x50\x72\x61\x67\x6D\x61\x3A\x20\x6E\x6F\x2D\x63\x61\x63\x68\x65\x0D\x0A\x50\x33\x50\x3A\x20\x43\x50\x3D\x22\x43\x55\x52\x61\x20\x41\x44\x4D\x61\x20\x44\x45\x56\x61\x20\x50\x53\x41\x6F\x20\x50\x53\x44\x6F\x20\x4F\x55\x52\x20\x42\x55\x53\x20\x55\x4E\x49\x20\x50\x55\x52\x20\x49\x4E\x54\x20\x44\x45\x4D\x20\x53\x54\x41\x20\x50\x52\x45\x20\x43\x4F\x4D\x20\x4E\x41\x56\x20\x4F\x54\x43\x20\x4E\x4F\x49\x20\x44\x53\x50\x20\x43\x4F\x52\x22\x0D\x0A\x43\x61\x63\x68\x65\x2D\x43\x6F\x6E\x74\x72\x6F\x6C\x3A\x20\x6E\x6F\x2D\x63\x61\x63\x68\x65\x2C\x20\x6D\x75\x73\x74\x2D\x72\x65\x76\x61\x6C\x69\x64\x61\x74\x65\x0D\x0A\x0D\x0A\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00\xFF\xFF\xFF\x21\xF9\x04\x01\x00\x00\x01\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x4C\x01\x00\x3B";
+		$ctx= new HttpContext();
+		$bufs  = new XAutoBuffer(4096);
+
+		$consumeLen = HttpProtocolClient::parseHttp($ctx,$szChunked,strlen($szChunked),$bufs);
+		if($consumeLen==strlen($szChunked) &amp;&amp; $ctx-&gt;m_state==HttpProtocolClient::PACKET_COMPLETE)
+		{
+			print("TEST HTTP PROTOCOL STAGE 1 OK\n");
+		}
+		else
+		{
+			print("TEST HTTP PROTOCOL STAGE 1 FAILED\n");
+		}
+		$ctx-&gt;reset();
+		$bufs-&gt;Clear();
+		$consumeLen = 0;
+	
+		for($i=0;$i&lt;strlen($szChunked);$i++)
+		{
+			$tmb = pack( "c", ord($szChunked[$i]) );
+			$consumeLen += HttpProtocolClient::parseHttp($ctx,$tmb,1,$bufs);
+		}
+
+		if($consumeLen==strlen($szChunked) &amp;&amp; $ctx-&gt;m_state==HttpProtocolClient::PACKET_COMPLETE)
+		{
+			print("TEST HTTP PROTOCOL STAGE 2 OK\n");
+		}
+		else
+		{
+			print("TEST HTTP PROTOCOL STAGE 2 FAILED\n");
+		}
+
+
+		$ctx-&gt;reset();
+		$bufs-&gt;Clear();
+		$consumeLen = 0;
+
+		$consumeLen = HttpProtocolClient::parseHttp($ctx,$szContentLenght,strlen($szContentLenght),$bufs);
+		if($consumeLen==strlen($szContentLenght) &amp;&amp; $ctx-&gt;m_state==HttpProtocolClient::PACKET_COMPLETE)
+		{
+			print("TEST HTTP PROTOCOL STAGE 3 OK\n");
+		}
+		else
+		{
+			print("TEST HTTP PROTOCOL STAGE 3 FAILED\n");
+		}
+
+		$ctx-&gt;reset();
+		$bufs-&gt;Clear();
+		$consumeLen = 0;
+		for($i=0;$i&lt;strlen($szContentLenght);$i++)
+		{
+			$tmb = pack ( "c", ord($szContentLenght[$i]) );
+			$consumeLen += HttpProtocolClient::parseHttp($ctx,$tmb,1,$bufs);
+		}
+		if($consumeLen==strlen($szContentLenght) &amp;&amp; $ctx-&gt;m_state==HttpProtocolClient::PACKET_COMPLETE)
+		{
+			print("TEST HTTP PROTOCOL STAGE 4 OK\n");
+		}
+		else
+		{
+			print("TEST HTTP PROTOCOL STAGE 4 FAILED\n");
+		}
+	}
+	
+	public static function test2()
+	{
+		$input = fopen("/tmp/httpdata.dump",'rb');
+		$filesize = fstat($input);
+		var_dump($filesize);
+		$filesize = $filesize["size"];
+		$data = fread($input,$filesize);
+		fclose($input);
+		
+		$ctx= new HttpContext();
+		$bufs  = new XAutoBuffer(4096);
+		
+		while($filesize&gt;0)
+		{
+			$consumeLen = HttpProtocolClient::parseHttp($ctx,$data,$filesize,$bufs);
+			$data = substr($data, $consumeLen);
+			$filesize -=$consumeLen;
+			
+			if($consumeLen&gt;=0 &amp;&amp; $ctx-&gt;m_state==HttpProtocolClient::PACKET_COMPLETE)
+			{
+				
+				echo " ok $consumeLen \n";
+				$ctx-&gt;reset();
+				$bufs-&gt;Clear();
+			}
+			else
+			{
+				echo "not ok  $consumeLen \n";
+				var_dump($ctx);
+				break;
+				
+			}
+		}
+	}
+
+};
+
+
+//HttpProtocolClient::test2();
+
+
+</code></pre>
+<br/>
+<br/>
+<p></p>
+<p><br/> </p>
+<p><br/> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2012-12-17 17:05:25</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

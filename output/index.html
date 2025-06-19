@@ -1,0 +1,2852 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSDN博客文章集合</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {  
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+        }
+        h1 {  
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        h2 {  
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        .search-box {  
+            margin-bottom: 20px;
+        }
+        .search-box input {  
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .article-list {  
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .article-item {  
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .article-item:hover {  
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .article-title {  
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .article-title a {  
+            text-decoration: none;
+            color: #0066cc;
+        }
+        .article-title a:hover {  
+            color: #004499;
+            text-decoration: underline;
+        }
+        .article-description {  
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .article-meta {  
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .meta-item {  
+            display: flex;
+            align-items: center;
+        }
+        .meta-item i {  
+            margin-right: 5px;
+        }
+        .article-tags {  
+            margin-top: 8px;
+        }
+        .tag {  
+            display: inline-block;
+            background-color: #e6f2ff;
+            color: #0066cc;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .publish-time {
+            color: #666;
+            font-size: 0.85em;
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <h1>CSDN博客文章集合</h1>
+    <h2>文章目录 (共 175 篇)</h2>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索文章..." onkeyup="searchArticles()">
+    </div>
+    <div class="article-list" id="articleList">
+
+        <div class="article-item">
+            <div class="article-title"><a href="a.html">如何正确的用Trae 打开 Unity 3D 项目</a></div>
+            <div class="article-description">如何正确的用Trae 打开 Unity 3D 项目</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-11 17:33:27</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 499</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 4</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 8</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">unity</span>
+                <span class="tag">3d</span>
+                <span class="tag">游戏引擎</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b.html">BLHeli电调使用遥控器摇杆进行参数设置指南</a></div>
+            <div class="article-description">介绍了RX42BL接收器集成标准BLHELI电调，使用遥控器进行参数修改的方法， 提供11个可调参数（如0-30度换向时序）</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-11 11:19:27</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 837</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 6</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c.html">使用mpu6500/6050, PID，互补滤波实现一个简单的飞行自稳控制系统</a></div>
+            <div class="article-description">使用mpu6500, PID，互补滤波实现一个简单的自稳控制系统</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-10 16:36:31</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 491</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 8</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 5</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">飞控</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d.html">使用pwm控制舵机来回摆动的中心位置</a></div>
+            <div class="article-description">本文实现了一个基于PWM控制的舵机摆动模拟器，使用tkinter创建可视化界面。通过PWM信号（1000-2000）控制舵机在±45度范围内摆动，其中1500对应中心位置。系统采用滑动条输入PWM值，实时计算目标角度并动态更新摆臂位置，同时显示红色虚线标记摆动范围。程序包含角度转换、边界检测和摆动速度控制功能，模拟了舵机根据PWM信号平滑移动到目标位置的过程。该模拟器可直观展示PWM与舵机角度间的映射关系。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-06 18:01:34</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 264</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">python</span>
+                <span class="tag">算法</span>
+                <span class="tag">linux</span>
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="e.html">使用pwm控制一个舵机摆动的速度</a></div>
+            <div class="article-description">控制舵机摆动速度的关键在于利用PWM间接调节。由于舵机角速度固定且与角度差成正比，可通过以下方法实现速度控制：1)初始化PWM与舵机角度同步；2)按指定速度定时计算角度增量并更新PWM值（如每0.02秒更新）；3)加入启动时间补偿。具体实现时，根据设定速度计算角度增量，进行边界检测和方向反转，最终转换为目标PWM值输出。示例代码展示了如何通过计算deltaAngle实现舵机匀速摆动，其中涉及角度到PWM的转换公式（1500+(angle/0.09)）。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-06 17:36:52</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 249</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="f.html">使用python写一个虚拟的舵机模拟器</a></div>
+            <div class="article-description">摘要：这是一个用Python tkinter开发的舵机摆动模拟器，用于调试舵机控制代码。模拟器包含一个SwingArm类模拟舵机运动（固定速度180度/秒），通过滑动条输入PWM信号（1000-2000对应-45°至45°）。GUI显示当前角度和摆臂位置，每50ms更新一次状态。使用前需安装python-tk，主要功能包括：PWM到角度转换、平滑角度过渡和实时可视化。该工具便于开发者测试舵机控制算法而无需实际硬件。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-06 16:17:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 303</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 8</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">python</span>
+                <span class="tag">开发语言</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="g.html">萝莉Loli双向有刷电调源代码 SDCC 版本</a></div>
+            <div class="article-description">本文介绍了基于STC15单片机的双路电机控制代码移植和优化过程。原始代码是为Keil51设计的，作者将其修改为可兼容SDCC编译器的版本，适用于macOS系统。主要修改包括：寄存器声明方式调整、IO引脚定义重映射、位操作优化为位域处理，并添加了Makefile和调试工具。代码实现了两路PWM电机控制，包含信号检测、混控算法、摩擦力补偿和死区处理等功能，通过10μs定时器中断实现100级分辨率的软件PWM控制。移植后的代码保留了原有功能，包括上电自检、失联保护、非线性映射补偿等特性，适用于机器人或遥控车等应用</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-06-02 14:13:41</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 178</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="h.html">Futaba乐迪小飞象Frsky7通多协议接收机KA6说明书</a></div>
+            <div class="article-description">支持FRSKY D8的遥控，如 DJT, DHT,XJT , TANDEM X12,X14,X18SE,X20, X20RS, XE,TWIN X LITE,Taranis,X-Lite s/pro,TARANIS X7,X9D, X9D plus, X9D Plus SE, horus x10 ,horus x10s。3. 对码时，要保持接收机和遥控器0.5米以上，SFHSS，乐迪和小飞象静待1分钟左右，Frsky D8 按下对码按钮，看到指示灯快闪然后保持长亮就对好码了。， FRSKY D8则将是。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-05-29 22:00:16</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 465</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 5</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">规格说明书</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="i.html">解决PIP 安装出错ERROR: cp310-cp310-manylinux_2_28_x86_64.whl is not a supported wheel</a></div>
+            <div class="article-description">把whl的文件名改一下。发现，刚好少了2_28。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-04-15 16:56:57</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 455</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">pip</span>
+                <span class="tag">python</span>
+                <span class="tag">开发语言</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="j.html">如何在huggingface安装指定的版本的transformer</a></div>
+            <div class="article-description">2.要安装指定版本，那么需要在 URL 加一个@加上commit id , 如。commit/后就是这个commit的id了。3. commit id 到。1.安装最新，一般是这样。，如下图复制链接地址。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-04-02 13:16:18</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 381</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">transformer</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">人工智能</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="k.html">如何在ms-swift 微调训练deepseekvl2时使用sageattention</a></div>
+            <div class="article-description">1.本质上sageattention是sdpa，SDPA的全称为Scaled Dot-Product Attention, 属于乘性注意力机制， 简单一句话来说就是，根据Query (Q)与Key之间的匹配度来对Value进行加权，而事实上不管是Query, Key还是Value都来自于输入，因此所谓的SDPA本质上是对输入信息信息进行重组。因此，deepseekvl2无法直接简单使用sageattion,我们需要改一下deepseek的开源代码，才有可能用上sageattion.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-28 11:22:07</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 476</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 9</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 4</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">深度学习</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">人工智能</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="l.html">Stable Diffusion API /sdapi/v1/txt2img的完整参数列表及其说明</a></div>
+            <div class="article-description">【代码】Stable Diffusion API /sdapi/v1/txt2img的完整参数列表及其说明。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-14 13:42:30</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 756</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 4</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stable diffusion</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="m.html">关于MCP SSE 服务器的工作原理</a></div>
+            <div class="article-description">2. MCP SSE Client会发起多个连接，但是第一个连接是http://yourhost:port/sse,  这个连接是沟通的第一步，它会使用chunked的回传数据，意思是不告诉client这个数据有多少，这样就它就可以一直连着了。但是sse的方式叫cursor 干始终不成功， 找了一轮，发现youtube的教程视频里主持，也没有搞定sse的服务器，balahblah说了一堆，就要move on ....于是研究了一下。跟着就是ping包的返回，防止client死了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-12 17:19:24</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1930</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 8</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 4</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">AI编程</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="n.html">JETFAY RX121BR 多协议小比例静改动接收机说明书</a></div>
+            <div class="article-description">0.3g3.3-6V内置12种无线协议,支持FUTABA,RADIOLINK,DUMBORC,FRSKY,FLYSKY,MC6C,WFLY2等，内置联动，多种控制方式，3通及以上都可全部控制。最大电流1.8A，一路有6个输出模式可选，可以输出多路标准PWM，电调PWM, SBUS和PPM。0402/0603LED, 总电流不可超600毫安，每路可接2-3个LED.电压，信号强度，丢包率，仅部分协议支持，如RADIOLINK,DUMBORC, FLYSKY,WLFY2等。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-10 23:57:20</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1038</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 29</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 9</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">json</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="o.html">shell使用指定任意字符串分割和截取</a></div>
+            <div class="article-description">【代码】shell使用指定任意字符串分割和截取。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-08 12:50:42</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 135</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">服务器</span>
+                <span class="tag">运维</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="p.html">VsCode/Cursor workbench.desktop.main.js 的入口</a></div>
+            <div class="article-description">这个也是main函数开始的，下面就是最后一行代码，表示export出rSo 函数作为它的名字公开为main, 和dll export表有点像了。nSO是一个类，应该是就是workbenchMain了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-06 13:04:42</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 512</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">vscode</span>
+                <span class="tag">javascript</span>
+                <span class="tag">ide</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="q.html">Visual Studio Code或Cursor的workbench.desktop.main.js的完整性校验的原理</a></div>
+            <div class="article-description">修改workbench.desktop.main.js，再打开app,就会提交安装似乎已经损坏的提示。它是使用sha256，然后base64来检查的。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-03-05 18:11:47</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 328</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">javascript</span>
+                <span class="tag">vscode</span>
+                <span class="tag">前端</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="r.html">搭建一个本地DeepSeek r1 14B配置低到惊喜！附超简单步骤</a></div>
+            <div class="article-description">发现只需要11G显存！只使用一张rtx3060 12G的就搞定了。速度和答案质量还不错，太令人惊喜了！7B只需要5GB的显存。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-02-13 11:40:28</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 362</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">人工智能</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="s.html">c语言使用通配符取一个目录下符合规则的所有文件的最简单办法</a></div>
+            <div class="article-description">其实很多种办法，可以使用dir相关的函数把文件都枚举出来，然后使用正则表达式，这个是我之前的做法。如此简单，没有想到吧？</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-02-06 10:32:34</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 145</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">c语言</span>
+                <span class="tag">算法</span>
+                <span class="tag">开发语言</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="t.html">使用deepseek写一个单击，双击和长按的检测函数</a></div>
+            <div class="article-description">DeepSeek好火，注册试用一下：提问：请使用c语言写一个函数，输入参数是是为： A为当前的输入量，1000-2000，根据它的变化， B为当前这个输入量的状态数据结构， 函数检查这个A，判断它的变化，从而判断用户是单击还双击，还是长按。具体当A变化量大于300时认为是开始了有效的点击，这时认为是按下按钮，记录变化前的值为C ，当A变回和C差值只有50左右时，认为释放按钮。已深度思考（用时 272 秒）</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-02-04 13:17:26</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 662</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 7</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 12</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">linux</span>
+                <span class="tag">运维</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="u.html">Macos编译openjdk因berkeley-db版本问题失败解决办法</a></div>
+            <div class="article-description">看来是优先使用/usr/local下的头文件了， 简单处理一下，看起来brew也有多份，直接删除一下/usr/local下的db.h及相关的头文件。原因是berkeley-db最新的版本这个get的定义是多一个DB_TXN的参数，看名字是用于事务处理的。一开始以为是版本低了，upgrade了一下没有解决，后来找了一下xcode目录下,也有一个db.h。同时get这个函数看起来也刚好是只有四个参数，打开看了一下，好像比较老的，然后再编译，顺利通过。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-02-03 11:16:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 648</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">macos</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="v.html">snappy简单测试</a></div>
+            <div class="article-description">snappy是一个比较快的压缩算法，没有cli， 需要自己写一个。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-24 11:30:46</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 169</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">xcode</span>
+                <span class="tag">macos</span>
+                <span class="tag">ide</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="w.html">cannot locate symbol “_ZTTNSt6__ndk114basic_ofstreamIcNS_11char_traitsIcEEEE“ 的解决办法</a></div>
+            <div class="article-description">使用clang++编译出来的android程序，实际真机运行出现 cannot locate symbol &amp;quot;_ZTTNSt6__ndk114basic_ofstreamIcNS_11char_traitsIcEEEE&amp;quot; referenced by。重新上传，运行ok.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-23 15:06:35</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 357</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">人工智能</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="x.html">Macos交叉编译android的cmix压缩算法</a></div>
+            <div class="article-description">LFLAGS和CC改一下，注释的是原来的内容。然后执行make就可以了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-23 13:10:21</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 771</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="y.html">Macos下交叉编译安卓的paq8px压缩算法 </a></div>
+            <div class="article-description">修改paq8px/CMakeLists.txt, 如下，去掉clang++不支持的-march=nocona和-floop-strip-mine。稍旧的ndk并不能编译成功，需要下载最新的ndkr27c, 最后是使用clang来编译。官方没有android的编译方法，自己编写脚本在macos下交叉编译.编译build.sh。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-23 10:56:01</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 717</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">macos</span>
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="z.html">从根源分析，调试，定位和解决MacOS ld: unsupported tapi file type ‘!tapi-tbd‘ in YAML file</a></div>
+            <div class="article-description">发现是最后一个spam是调用/usr/local/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/x86_64-apple-darwin20/14/collect2。这个anaconda的ld和系统的是不匹配的，但是它为了penv把这个替换了，结果collect2使用了它设置的工具链的ld. 然后引起这个问题。本文希望可以帮到需要的人，还是不人遇到这个的，可能原因不大一样，但是这个文章把debug和定位的方法和原理都告诉大家了，祝大好运！看起来好了，再试试编译。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-22 16:09:27</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 712</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 4</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">前端</span>
+                <span class="tag">javascript</span>
+                <span class="tag">macos</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="0.html">强制让cmake使用指定编译器如某个版本的gcc 和g++</a></div>
+            <div class="article-description">可以定义CC和CXX ,不过还是使用cmake本身的宏定义比较好。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-21 14:54:06</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 251</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">运维</span>
+                <span class="tag">服务器</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="1.html">STM32G031G6和STM32F031G6是两个型号，别弄错了啊！</a></div>
+            <div class="article-description">没有道理啊，查文档，对针针脚，查了STM32F031G6的。决定焊第二张，就留ｍｃｕ最简线路，又是一样，没有反应。９．难道ｍｃｕ坏的，焊第三张样板，就留ｍｃｕ最简线路，又是一样，没有反应。买的是STM32G031G6，画图画的是STM32F031G6。１．EDA选了STM32F031G6，画图，４层板，画得我眼都花了，14.我又看了一眼电路原理图，看了一下mcu上的丝标，呃。７．发现没有反应，以来没有焊好，补焊一轮，检查连通性，无果。４．终于等到，开工贴双面，眼又花了，花了数个小时。11.好吧，睡觉。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-18 12:47:55</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 252</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">嵌入式硬件</span>
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="2.html">IL2CPPDumper符号导入IDA的set_name错误解决</a></div>
+            <div class="article-description">结果，原来是我使用ida使用ida_py3.py是不行了，然后ida.py就好了。看来是python的版本问题。python 版本确实乱。乱到要出一个pyenv管理, anaconda, 很是奇怪的语言。把il2cpp的生成的符号信息导入ida中会有出现以下错误；调了半天，还改了ida_name.py，以为是可变参数问题。这个直接单独执行没有问题。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-14 15:07:51</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 381</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">汇编</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="3.html">Frida调试il2cpp的程序打印原生c#对象为json</a></div>
+            <div class="article-description">需要配合il2cpp原来程序里的一些json序列化的工具来进行，一般都可以找到，如下面的。MiniJSON.Json，像这个 Serialize到运行时对象就不行了。主要的思路是，输入一个对象，那么使用反射的GetType,  然后使用type的GetFields， 拿到Field的列表，然后遍历field列表。Field是一个抽象类的，这里我使用 RuntimeFieldInfo : RtFieldInfo里面的函数来实现。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-14 15:01:55</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 424</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">c#</span>
+                <span class="tag">json</span>
+                <span class="tag">java</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="4.html">使用命令行打开CygWin/mintty登录环境变量，并转到对应路径</a></div>
+            <div class="article-description">对于使用sublime text，我在当前编辑所在的文件的路径下打开一个cygwin的命行令窗口，进行命令行操作，这样就很方便了，直接打开，不用再自己cd到当前目录。上一篇使用oldpwd来转目录，也可解决问题，但是其实mintty有一个隐藏的--dir的参数，启动的时候指定即可，发文记录一下。这个打一个cygwin的窗口，登录/bin/sh ，初始化环境变量后，会cd的%cd%这个当前目录。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-12 16:21:40</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 258</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">windows</span>
+                <span class="tag">运维</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="5.html">万能无线航模模拟器加密狗说明书</a></div>
+            <div class="article-description">在对码模式下，按一下按键会切换一个协议，在12个协议不断循环，请一边按一边观察指示颜色和闪烁的摩斯电码，当你观察到对应的协议，就可以停止按键了，如你需要AHDFS2A富斯二代，你看到指示灯两个紫色就可以了。对码成功后，关闭遥控，加密狗重新上电后，长按按键，指示灯会循环切换模式，观察到需要的模式，如模式二，就是看到每三秒闪两下，松开按键，指标灯会自动快闪重启，切换模式就成功了。使用加密狗上的按钮，选择对应的模拟器的工作模式。对码成功后，关掉遥控，观察指标灯的每3秒闪多少下，就是模式几。具体看FAQ第二节。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-08 09:48:33</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 5501</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 37</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 33</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">网络</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="6.html">分享一个C语言写的自动递归创建多层级目录的mkdir</a></div>
+            <div class="article-description">效果就是和mkdir -p 一样了。使用标准的c语言库，可以跨平台使用。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-02 13:11:42</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 181</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">c语言</span>
+                <span class="tag">算法</span>
+                <span class="tag">数据结构</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="7.html">如何使用Sublime Text3和Keil uVision ５协同进行单片机开发</a></div>
+            <div class="article-description">本来一向使用SDCC,后来发现同一套代码工程Keil编译出来的代码小20%左右。但是Keil的IDE和编辑器相当难用，看着极不顺眼。后来发现VScode可以调用Keil来编译。我研究一下了，发现也是可行的。3. 需要安装cywin,然后在sublime上使用我上编文章的cywinmake的buildsystem。4. ctrl+b就可以使用keil来编译了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-01 13:01:12</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 290</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="8.html">windows 下如何在sublime Text调用cywin终端，然后执行make进行编译代码</a></div>
+            <div class="article-description">找到cywin的安装目录找到mintty.exe, sublime的菜单Tools新一个buildSysteｍ，回到工作目录，选择这个cywinmake为buildsystem,如上图。填写以上内容，然后保存为cywinmake.sublime-build。sublime会帮你新建个文件叫 ＊ｓｕｂｌｉｍｅ－ｂｕｉｌｄ。ctrl+B就可以编译了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2025-01-01 12:43:19</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 205</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">windows</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="9.html">要快速找到 A, B, C 使得 A×B×Cx4/13 最接近 D</a></div>
+            <div class="article-description">A取值范围 为(64, 128, 256,1024),B为（1-255），C为（1-256）D的取值范围是[0,66846720]</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-12-30 15:31:22</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 399</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 6</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">人工智能</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ba.html">计算intel hex文件占用空间大小</a></div>
+            <div class="article-description">只是需要使用sdcc的make的时候，最后打印一下hex文件占用flash的大小和百分比，试了srec_info ， python 的intelhex等，好像都不是需要的。没有办法，只好自己使用shell脚本写一个。保存为showsize.sh,使用例子如下。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-12-29 16:33:12</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 146</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bb.html">Frida转指针类型强转成float</a></div>
+            <div class="article-description">2.使用内存读写来转，速度应该感觉快些。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-12-26 15:48:44</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 202</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bc.html">arm64 取一个32位数除以10的余数计算</a></div>
+            <div class="article-description">【代码】arm64 取一个32位数除以10的余数计算。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-12-23 13:54:29</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 147</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">前端</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bd.html">推荐一个好用的lua反编译工具</a></div>
+            <div class="article-description">https://github.com/Aussiemon/ljd/</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-12-05 17:08:33</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 320</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">前端</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="be.html">使用命令行来刷写ELRS接收器的固件</a></div>
+            <div class="article-description">使用ExpressLRS Configurator的自带编译好的python命令。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-11-30 00:04:34</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 528</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bf.html">编译lz4-java</a></div>
+            <div class="article-description">这个项目上一个版本是2021年了，好久没有人维护了，我们需要升级一个lz4的到1.10.0, 以提升性能速度.1.下载ant1.10.15 ， 解压后，设path的bin下面，java安装1.8以上。3. 更新lz4的子模块。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-11-26 15:18:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 313</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">java</span>
+                <span class="tag">开发语言</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bg.html">如何使用gdb动态调试pyhon程序</a></div>
+            <div class="article-description">但凡安装了python，安装目录下都有一个, 不知道在什么地方可以find一下，然后source一下，或者加下.gdbinit里面。然后就可以使用py开头的命令了，如py-bt。然后gdb -p pid。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-11-15 17:08:53</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 274</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">运维</span>
+                <span class="tag">服务器</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bh.html">GDB像xxd一样查看内存数据</a></div>
+            <div class="article-description">希望可以像xxd一样，分两栏，左右是16进制，右边是ascii的字符串，自定义一个命令即可，如下。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-10-31 16:01:48</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 201</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">服务器</span>
+                <span class="tag">前端</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bi.html">MacOS如何读取磁盘原始的扇区内容，恢复误删除的数据</a></div>
+            <div class="article-description">按上面的原理，我们可以使用代码来一个一个扇区的查找我们丢失数据。我丢了一个android的签名keystore, 用遍了网上的工具都没有找到。我自己写了一个搜索扇区程序，尝试去恢复这个文件。这个就是读取 /dev/disk2这个磁盘每100这个sector, bs表示扇区大小是512.先使用diskutil list找到这磁盘的挂载。你需要把这个磁盘umount下来。然后umount它的挂载。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-10-30 14:41:07</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 572</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">macos</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bj.html">Arduino 1.8 无法启动，闪屏过后，卡死，不出主界面解决方案</a></div>
+            <div class="article-description">6.折腾了好久，我觉得可能是arduino ide2.x安装一些东西，而arduino 1.8.9也使用了这些东西，导致问题。7. 最后在C:\Users\youuser\appdata\Local找到两个ariduino开头的文件夹，有一个文件夹很大，先多东西，把他们都删除了，发现问题解决！4.发现安装了arduino ide2.x， 顺便卸载了，然后再重新安装Arduino 1.8.9，也是一直的现象, 无效。突然打不开了，闪屏过后，不出主界面，一直这样，任务栏有图标。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-10-19 20:34:02</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 618</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bk.html">Frida如何获取Vector3(3个float)结构体的返回值</a></div>
+            <div class="article-description">经过我多次尝试和想像，我发现是这可以这样获取的，就是使用replace, 然后返回值定义成一个结构体的数组。在frida的文档里，没有任何描述如何获取这样的返回值。这个也是没有人可以回答。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-09-23 13:59:37</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 289</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">笔记</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bl.html">USB HID 协议实现详解</a></div>
+            <div class="article-description">但是请求的时候，往往比较当前说明的长，这个没有像之前那先尝试再请求，这里代码直接取两者最小返回即可。要是有多个接口（复合型的设备），IDX就是多个报告的下标索引。bmRequest  =  80  -D7 == 方向是设备至主机？wIndex =  00 00 当有多个hid设备，此为下标索引。wValue == 00 01 , 根据表5， 1 为设备描述符。wLenght 09 00    第一次 请求 09 字节，根据report定义，定时或触发性发送数据。收到 9 字节，数据结构如表8，知道长度。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-08-25 23:13:46</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1851</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 16</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">网络</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bm.html">STM32F0XX TIM1 CH2 INPUT CAPTURE 输入捕获PPM信号</a></div>
+            <div class="article-description">按文档的例子和其它例子都很少使用timer1的，不知道为什么，但是我想使用它，方便端口重用，我一开始使用tim1 ch3,死活不工作，搞了几天，没有办法换了一个ch2， 结果同样的代码就工作了。不知道为什么，希望看到的高手告知。（使用f103，timer1 的ch3同样的代码也没有问题。分享PPM的代码如下，是捕捉航模的PPM信号。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-08-18 15:36:57</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 319</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bn.html">当今最流行的推荐引擎算法有哪些？</a></div>
+            <div class="article-description">但事实上，推荐数据集与通常的计算机视觉数据集有很大不同，这使得使用现有的实现和工具变得更加复杂（例如，TensorFlow 或 PyTorch 等库中的许多优化器不支持稀疏更新动量，这是训练推荐深度模型的基石）。要训练解决项目冷启动（或用户冷启动）的模型，您需要一个数据集，其中包括项目（或用户的）的详细描述，例如电影的类型、预算、持续时间或任何可能有助于推荐的变量。由于推荐是使用用户对商品的反馈数据集计算得出的，因此它们无法推荐没有（或只有少量）反馈的商品，例如新商品。让我们看看每种方法的优点和缺点。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-07-02 16:38:20</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 307</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">python</span>
+                <span class="tag">人工智能</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bo.html">MACOS VMWare Fusion无法将“Ethernet0”连接到虚拟网络“/dev/vmnet8”</a></div>
+            <div class="article-description">以为是vmware的，使用上面的命令把vmnet都停了，发现还在。ifconfig 看了一下，发信息多了一个bridge..到 系统偏好设置-&amp;gt;共享-&amp;gt;互联网共享 这个关掉。各项服务启动也是正常的，但是就是vm没有网络了。想了半天，原来是在wifi上打开了共享互联网。记录一下，备忘和帮忙遇到同样问题的人。一直好端端的，突然打开vm提示这个。启动vmware的那堆服务器。再打开vm， 发现不提示。查了一下，应该是网络有关。这个bridge不见了。开机vm的网络也正常了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-06-21 13:18:24</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1305</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 5</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">macos</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bp.html">小米poco x3 pro adbd 以root权限启动提供服务</a></div>
+            <div class="article-description">8. 在mout的目录下的apex/com.android.adbd，找到adbd,复制出来，上传到手机的/data/local, 并加上执行权限。4. fastboot flash recoery   twrp-3.7.1_12-0-vayu.img, 安装magisk, termux。6. 解压aosp_arm64-img-11718355.zip, 把system.img转成ext2,9.下载system_properties_arm64，上传到/data/local,并加上执行权限，</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-05-10 10:10:28</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 11052</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">运维</span>
+                <span class="tag">服务器</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bq.html">如何grep excel文件，在excel文件查找到字符串</a></div>
+            <div class="article-description">当我们遇到一堆excel文件，我们想通过关键字去定位一下它在那些excel文件中存在，怎么办？直接grep是肯定不行的。1. 安装 xls2txt或xlsx2csv，把excel转txt再用grep。2. 安装xlsxgrep。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-03-22 11:07:49</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 460</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">excel</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="br.html">开源BLHELI-S 代码详细解读(五）</a></div>
+            <div class="article-description">总体思想是根据电机运行状态计算前4次换相时间，然后根据前4次换相时间计算15度和7.5度电角度时间，换相之后延时7.5度电角度开始检测过零点，检测到过零点后延时15度电角度进行换相。我们继续来看calc_next_comm_timing, 每次操作完换相之后，这里都会调用，同时会设置timer3去等advance timing.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-03-01 13:28:33</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 613</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 4</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bs.html">如何编译BLHELI 及BLHELI_S</a></div>
+            <div class="article-description">开头改成SilabsPath和 RaisonancePath你安装所在路径。BLHELI_S目录下，修改一下MakeHesfiles.bat。3. BLHeli目录下修改MakeHesfiles.bat。开头，改成KeilPath你安装 的目录。就可以双击编译BLHELI_S了。下载Ride和RKit-51。就可以双击编译BLHELI了。这里只说silab的两个版本。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-02-27 23:58:45</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 620</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 4</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 4</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bt.html">开源BLHELI-S 代码详细解读(四）</a></div>
+            <div class="article-description">如Set_Pwm_C，   P1SKIP =  37h(00110111b), 即P1.3 P1.6和 P1.7会给外设使用，  根据优先度，PCA0的CEX0会使用P1.3(CpwmFET)输出 CEX1 会在P1.6(CcomFET)输出。这个 wait_before_zc_scan，其实比较简单，就是从把timer3的超时设置为Comm_Period4x_L和Comm_Period4x_H, 只有在STARTUP_PHASE和 SHL INITIAL_RUN_PHASE阶段才会设置。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-02-20 10:56:07</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 966</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 11</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 6</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bu.html">开源BLHELI-S 代码详细解读(三）</a></div>
+            <div class="article-description">如果不满足，则跳到run_to_wait_for_power_on_fail，这里上一篇有详细读了，是一些失败的检查，最坏会跳回init_no_signal。B. 否则就是在启动的阶段（STARTUP_PHASE），这里会将Startup_Zc_Timeout_Cntd减1(超时次数，wait_before_zc_scan会把它设置成2)，要是它还不是0，就跳到comp_check_timeout_extend_timeout,再调用setup_zc_scan_timeout。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-02-06 19:36:56</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1253</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 3</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 12</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 22</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bv.html">开源BLHELI-S 代码详细解读(二）</a></div>
+            <div class="article-description">DIR_CHANGE_BRAKE没有设置的话，就跳到run_to_wait_for_power_on，不是的话，清除DIR_CHANGE_BRAKE的标志，清除PGM_DIR_REV标志，要是RCP_DIR_REV有设置，那么设置PGM_DIR_REV，然后把当前的阶段设置回INITIAL_RUN_PHASE。run_to_wait_for_power_on_fail是由前面的wait_for_comp_out_low和wait_for_comp_out_high的异常读取触发的。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-02-04 17:28:14</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2567</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 4</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 24</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 24</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">无刷电调</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bw.html">开源BLHELI-S 代码详细解读(一）</a></div>
+            <div class="article-description">Pgm_Beacon_Delay会和Power_On_Wait_Cnt_H相减，要是借位，就会开始beep f4, beep一次Power_On_Wait_Cnt_H会减1，就是Power_On_Wait_Cnt_L是255的时候beep一次了。如果有信号（Rcp_Timeout_Cntd不是零），同时New_Rcp(油门)不是零跳到 wait_for_power_on_nonzero， 再检查一次Rcp_Timeout_Cntd是不是零，要是不是零，那就跳到init_start。这个代码在inc里。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-29 15:52:24</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3169</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 6</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 45</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 26</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bx.html">使用GDB动态补丁ARM64的程序 跳转到任意地址</a></div>
+            <div class="article-description">正常的 arm64跳转转令B,BL,BLX只有+-128M, 我们很多时候要跳到大于这个值的地址。我们在arm64下可以选的指令就只有br指令了。原来在ARM/Thumb中使用的 ldr pc, [pc, #?] ， 但arm64是不能这样了。但是它也需要给一个寄存器赋值一个64bit的地址， 可是arm的指令是固定的32bit的，即使给一个寄存器赋值一个64bit的值都麻烦。如 set *(int*)0xabc1234 = 0x58000070。补丁就是简单了，就是直接使用set命令就好了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-18 13:44:58</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 684</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 10</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">运维</span>
+                <span class="tag">服务器</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="by.html">GDB 调用无符号的任意函数</a></div>
+            <div class="article-description">我们知道有符号的函数调用很简单了，直接像写c语言一样传参调用即可。但是无符号的就不知道怎么弄了，查遍了整个网络我都没有查到怎么做。5. until命令执行完成，说明函数也执行完成了，因为是返回地址设置了。1. 保存好所有的现场，如寄存器，当前pc,  返回地址，堆栈等。例子是调用一个对象转json的无符号函数，然后打印它返回的结果。6. 如果有需要打印一些结果，如p/x x0.4. 使用until 命令到执行到的返回地址。2. 替换返回地址，为当前指令下一个地址。3. 设置pc去执行函数，</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-18 13:18:30</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 596</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 11</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 6</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">php</span>
+                <span class="tag">开发语言</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="bz.html">LUA 对象转excel</a></div>
+            <div class="article-description">因为是excel, 所以第一层要是数组，否则没有什么意义，这里使用开源的json.lua， 但是开源的，对于数字作下标的，或者是一个数组里，不意类型的key混合的情况无法转换，所以先进行了扫描判断是不是混合的key. 是的话，取消key,把key到结构里作为一个字段处理。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-17 09:18:43</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1106</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 9</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 11</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">lua</span>
+                <span class="tag">excel</span>
+                <span class="tag">junit</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b0.html">JS 解析RGB控制台终端输出有颜色的LOG</a></div>
+            <div class="article-description">RGB转consolecolor是自己了随便写的，差不多就算了。可以解析一下html的颜色输出log, 在终端打印成相近的颜色。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-11 17:56:23</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 495</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 7</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">javascript</span>
+                <span class="tag">前端</span>
+                <span class="tag">vue.js</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b1.html">FRIDA 调用原生函数时使用补丁也生效</a></div>
+            <div class="article-description">即，你补丁了一下函数，你去调用它，发现你使用frida打的补丁和hook不生效。1. 补丁函数必须使用。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-10 12:39:14</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 468</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 6</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b2.html">双向双路电调双流差速算法</a></div>
+            <div class="article-description">这个很简单，就是直接使用油门+转向混合就好，超限的截掉，算法如下。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-07 15:53:40</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 499</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 10</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 9</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">java</span>
+                <span class="tag">前端</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b3.html">如何绕过pairip的防护</a></div>
+            <div class="article-description">签名绕过的第二个办法是不要改dex, 改一下androidmanifest.xml, 把 com.pairip.application.Application改成android.app.Application. 原理很是com.pairip.application.Application继承android.app.Application， 只是多了一些签名验证，刚好我们不需要，使用基类跑就好了。然后libpairip会开线程，开定时检查一些gdb和frida之类的，检查到就会来个异常把进程搞死.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-06 17:16:08</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3188</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 6</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 12</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b4.html">三星galaxy s9 root教程</a></div>
+            <div class="article-description">11.  刷完后因为去掉了auto reboot, 是不会重启的，这个时候按 Volume down + blix + 电源键, 让它重启，这里很重要的一点，就是你必须在关键的一刻，你按键切换成 Volume Up +  blix + 电源键, 等到看到三星的logo，你松开电源键， 保持按住  Volume Up +  blix， 等几秒就看到twrp的界面。8.  按住音量 减（volume down) + blix + 电源键 ， 7秒后，进入刷机模式，按 volume up。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2024-01-06 17:05:06</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4009</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 7</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b5.html">超简单免费转换ape到flac</a></div>
+            <div class="article-description">4.到ape所在的目录，执行以下命令。3. 设置path到ffmpeg。1. 安装最新版的ffmpeg。2. 安装cywin环境。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-09-11 20:24:29</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 807</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">音视频</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b6.html">使用arduino Nano 自制nRF24LE1 的烧录器进行固件烧录</a></div>
+            <div class="article-description">4.解压program.zip得到一个烧录的命令行工具，执行命令进行write或dump。3.  实质是spi下载来的，接线， nRF24LE1是3.3设备，别接5v。也有专门usb编程器，比较贵，可以买个arduino nano自已做一个。需要自己数一下多少pin的，然后和arduino的脚接起来.2. 使用arduino编译烧录固件。1. 下载arduino的烧录固件。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-06-26 23:36:43</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1083</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b7.html">stm32flash碰到hex文件出错，读取超慢, 占用内存超多的问题解决</a></div>
+            <div class="article-description">这个问题是因为sdcc生成的hex的每行的地址并不是排序的好的，有些高的地址在前面，低的地址在后面，这样的话，stm32flash这个hex.c并不能处理这个情况。里面有一个逻辑是用来填补0xff的，当后面的地址比前面大，一减得负数，但是变量是无符号的，结果就变成了4.2G了，然后一碰到一次就申请4.2G内存，然后填充0xff, 结果读了一个几十k的hex耗时十分钟，还占用超多内存，然后内存还是错的。解决办法，可以使用srec_cat把hex处理一下，输出的文件的地址就是排序好了。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-06-24 20:47:22</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 462</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b8.html">MacOs 下用于性能优化的“perf“命令</a></div>
+            <div class="article-description">MacOs下面没有这个命令，但有类似的，也是非常方便，它就是 Instruments， 是xcode自带一个性能分析和自动化测试的工具。需要安装Xcode.以下使用例子。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-06-24 17:00:06</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1714</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">macos</span>
+                <span class="tag">xcode</span>
+                <span class="tag">ide</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="b9.html">一个TIMER软件模拟输出6个PWM</a></div>
+            <div class="article-description">51单片机的timer很少，往往16bit的timer只有一个，可以硬件输出的channel也不多。只能使用软件模拟了。pwm是1-20ms一个周期，要是设置一个固定的周期，中断间隔就必须比较小，如0.01ms , 这个精度已经不怎么样了，但是每秒还是需要100000次中断，对于51来说，这个压力很大，实测效果很差。1. pwm需要每20ms对pin脚操作两次，周期开始设置它为1，到达指定时间时设置它为0，这个宽度，在航模的信号里，是1-2ms之间。我们将6个通道，每个分时3ms给它做这第一项的两次设置。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-06-22 12:36:54</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 924</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">51单片机</span>
+                <span class="tag">嵌入式硬件</span>
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ca.html">高通Qualcomm处理器的手机或设备进EDL 9008模式的办法</a></div>
+            <div class="article-description">由于我们有很多基于 Qualcomm 的设备，其中一些设备可能会古怪地猜测如何进入 EDL 模式，或者如何正确进入。例如，对于 Alcatel，您必须先按住两个音量键，然后再按住其中一个，对于 CAT B35，您必须按住 * 和 #，对于 8110，您必须按住 Up 和 Down，在此期间您必须插入电缆。因此，一个非常简单的电缆模块（一个穷人的夹具）就派上用场了，它根本不需要焊接。1. 拿一根备用的 microUSB 数据线，剥去中间某处的绝缘层。3.将USB端连接到PC，按住剥开的线约5秒钟。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-01-18 16:57:40</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4480</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cb.html">一个无线鼠标的HID Report Desc</a></div>
+            <div class="article-description">【代码】一个无线鼠标的HID Report Desc。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2023-01-12 15:58:15</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 847</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cc.html">stm32 硬件spi半双工三线的一些研究心得</a></div>
+            <div class="article-description">这个根据工作原理分析了一下，为什么在这样，主要是因为我们的读的时候，要是这个速度高，我们的mcu还没有去禁用SPI停时钟这个太慢了，上面代码已经在判断到RXNE时马上disable SPI了，但是明显，这个还是不够快。a7105可以使用四线spi,或者3线spi, 但是之前都是使用3线的软件模拟的三线spi的，所以不想改其它代码了，就想可以提高一个spi的读写速度，原来软件方式的读写速度，在48Mhz的03x下面，大约速度是1.6mbs,使用硬件spi之后，最终大约速度为12mbs.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-09-04 21:52:42</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 7491</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 58</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 12</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cd.html">如何在windows下编译UEFITOOL</a></div>
+            <div class="article-description">UEFITOOL 编译</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-07-30 15:52:44</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 985</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">windows</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ce.html">富斯，迈克，天地飞4合1接收机说明书</a></div>
+            <div class="article-description">（上图，飞机用的接收机）（上图，车用的接收机） A:   一 首先遥控器开机进入对码模式，      二 接收机上电，      三 静待45秒，即可自动完成对码。   一 关闭遥控器   二  接收机上电三 静待40秒，直到接收机进入每1秒1亮1灭慢闪四打开遥控器，接收块闪，然后常亮，对码完成A： FLLYSKY，天地飞:一. 关掉原来的摇控器，       二. 关掉接收机电源       三. 打开新的遥控器开机进入对码模式       四. 接收机上电，       五。 静待45秒，即可自动完成对</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-06-21 11:41:36</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 14626</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 43</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 11</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cf.html">MC6C迈克/FLYSKY富斯/WFLY2天地飞二代接收机远程刷固件教程</a></div>
+            <div class="article-description">1. 安装ch341的驱动程序CH340/CH341 Windows串口驱动安装 - 南京沁恒微电子股份有限公司CH341SER.EXE - 南京沁恒微电子股份有限公司2.ch341的跳线跳到usb To ttl3.接收机飞线4.连接5v, RX, TX GND 到接收机的+,3, 1 ,G5.下载stm32isp程序安装6. 接上ch341到电脑7. 打开stm32isp程序8.输入密码，密码找卖家要，点击登录9.点击下载10. 拆除接收机飞线........</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-05-16 16:21:21</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3678</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">stm32</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cg.html">富斯/MC6接收机说明书</a></div>
+            <div class="article-description">正面 反面1. PWM输出通道多达6个， 可以自由切换7种模式，自由选择无刷，有刷，差速，炫酷的RGB全彩灯带等，自由玩耍。2. 集成两个5A有刷电调，通过模式选择，可以双发，可差速，支持8250以下的空心杯有刷电机3. 支持16通(MC6/7C 14通)sbus(第15通是RSSI),9通ppm（第9通是RSSI）,可以接飞控，飞fpv. 4. 支持Failsafe失控保护，只需要直接在摇控器的Fail...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-04-20 15:09:42</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 12291</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 23</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 4</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ch.html">自制2.4G ELRS接收机，不需要打板，容易制作</a></div>
+            <div class="article-description">制作难度：中等，主要是器件太小，焊接需要耐心一。硬件材料1.LoRa射频模块，sx1280 ： E28-2G4M12S2.MCU Wifi模块：ESP-01F3.各色硅胶软线若干4.1k电阻5. TTL转串口 CH341 （CH340或FTDI随便一个即可。）6. DC-DC3.3v降压模块7. LED灯一个。二。软件：1. EpressLRS Configuratorhttps://github.com/ExpressLRS/ExpressLRS-Configu..</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-01-03 10:54:52</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 10346</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 6</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 33</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 5</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">嵌入式硬件</span>
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ci.html">自制2.4G ELRS TX高频头, 内置于富斯i6</a></div>
+            <div class="article-description">制作难度：容易一。硬件材料：1.LoRa射频模块，sx1280 ： E28-2G4M27S2.MCU Wifi模块：ESP-WROOM323.各色硅胶软线若干4.1k电阻5.富斯FS I6摇控器6.JLink一个，刷写固件用7. 2.4G天线一个软件：1. EpressLRS Configuratorhttps://github.com/ExpressLRS/ExpressLRS-Configurator2.我写的的FSi6固件, ERFLY6,GitHub...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2022-01-03 10:01:54</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 9086</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 31</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 33</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 8</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cj.html">STM32 LL库使用SPI读写</a></div>
+            <div class="article-description">void Rfchip_Spi_Init(void){ LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5); LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_7); RFChip_Disable;}void Rf_Spi_Write_Byte(uint8_t dat){ LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5); LL_GPIO_Se...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-12-31 15:51:02</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3486</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">嵌入式硬件</span>
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ck.html">STM32 LL库 操作FLASH 保存数据</a></div>
+            <div class="article-description">#include &amp;quot;string.h&amp;quot;#include &amp;quot;stm32f1xx_ll_system.h&amp;quot;#define FLASH_PAGE_SIZE ((uint32_t)0x00000400)#define LL_FLASH_GET_FLAG(__FLAG__) (((__FLAG__) == FLASH_FLAG_OPTVERR) ? \                      (FLASH-&amp;gt;OBR &amp;amp; FLASH_OBR_OPT...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-12-31 15:50:09</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1989</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">嵌入式硬件</span>
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cl.html">STM32 使用 LL库进行I2C读写</a></div>
+            <div class="article-description">为什么要使用LL库，因为生成的固件大小可以小很多很多，MCU贵呀，可以省很多成本了。uint8_t i2c_read_len(I2C_TypeDef *I2Cx, uint8_t Addr , uint8_t Reg, uint8_t len,uint8_t *buf)；uint8_t i2c_write_len(I2C_TypeDef *I2Cx, uint8_t addr , uint8_t reg, uint8_t len,uint8_t *buf)；实现这两个函数，理论上全...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-12-31 15:46:45</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 6895</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 3</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 42</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 11</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cm.html">Freescale 飞思卡尔使用UART中断，单线UART</a></div>
+            <div class="article-description">1void setup_crsf_serial_port(uint32_t baud,crsf_read_cb_t read_cb){  if(g_crsf_read_callback==0)  {        g_crsf_read_callback = read_cb;      //uart_single_init(bdrate,DEFAULT_SYSTEM_CLOCK,bdrate);//Set single wire mode.      SIM-&amp;gt;SCGC4 |= S</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-12-31 15:46:27</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 549</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cn.html">MacOS Arduino开发环境搭建和编译minimosd-extra</a></div>
+            <div class="article-description">1.从arduino官方网站：https://www.arduino.cc/en/Main/Software下载mac平台的IDE2.安装Arduino Makefile ，  git clone https://github.com/sudar/Arduino-Makefile.git3. 下载minimosd-extra源代码git clone https://github.com/night-ghost/minimosd-extra.git4.下载Sing...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-11-10 14:21:27</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 461</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">macos</span>
+                <span class="tag">arduino</span>
+                <span class="tag">minimosd</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="co.html">STM32F103C6Tx CubeMx HAL I2c不工作原因</a></div>
+            <div class="article-description">发现使用STM32F103C8 i2c是可以工作了，要是cpu选STM32F103C6Tx发现生成代码i2c不工作，多次尝试和比较发现，STM32F103C6Tx生成的i2c的msp初始化gpio的时候少了一个速度的配置:  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;加上这行就正常工作了。汗。void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle){  GPIO_InitTyp...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-11-01 22:03:56</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2535</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 6</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 21</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 6</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">stm32</span>
+                <span class="tag">arm</span>
+                <span class="tag">嵌入式硬件</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cp.html">Light Room Classic 9.4 MacOS闪退解决办法</a></div>
+            <div class="article-description">好像没有打开Light Room Classic, 今天打开发现slpash 出现之后就直接闪退，百思不解，好像很久什么都没有干呀。试一下把网络禁了，发现不闪了。 哦。。。。。原来如此。好吧，tcpdump分析一下，看看闪退之前访问了什么网络。sudo tcpdump -i en0 port 53Password:tcpdump: verbose output suppressed, use -v or -vv for full protocol decodelistening on e</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-08-12 23:54:52</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2476</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cq.html">新唐n76e003单片机遥控PWM信号检测控制航灯系统</a></div>
+            <div class="article-description">第一次使用学习单片机编程, 使用了n76e003， 主要在检测pwm的信号问题上花了比较多的时间，最后是使用了timer2的0通道来捕捉上升缘，1通道来捕捉下降缘来检测pwm的宽度。接收机是0-2000us pwm输出，500-1000是基础的pwm, 就是说没有信号也定期输出500（舵机）或1000（油门），这样单片机可以检测到有无信号.timer0来控制led的开关和闪烁，timer0使用10khz， timer2使用16m的时钟.#include &amp;quot;N76E003.h&amp;quot;#incl.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-05-19 21:15:21</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1350</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 6</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">单片机</span>
+                <span class="tag">嵌入式</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cr.html">android root了之后， jdb任何app</a></div>
+            <div class="article-description">设置 ro.debuggable， 那么全部app都是可以debuggable的，不需要修改manifest.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-03-05 18:36:19</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 403</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cs.html">小米10 adbd 以root权限启动提供服务</a></div>
+            <div class="article-description">之前写了类似的文章，但是这个文章办法不适用于小米10, 原文参考：https://blog.csdn.net/aerror/article/details/103270830主要有几个问题:1. supolicy这个在小米10 中root之后运行不起来，直接segment fault.2. 小米的文件系统remont 成rw失败,提示1|vangogh:/data/local # mount -o remount,rw /                ...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2021-01-15 19:54:54</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2388</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 4</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+                <span class="tag">shell</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ct.html">编写ASCOM平台的驱动</a></div>
+            <div class="article-description">近来在玩天文，自己DIY了一个电动的调焦。ASCOM平台是一个天文的驱动和软件的开发标准，它是一个开源的开放平台。主要是使用了.net的技术。https://ascom-standards.org开发工具：1. Visual studion 2012/2013，太高的版本好像开发包不支持。2.Inno setup, 用来制作驱动的安装包，ascom的开发包，有自动生成这个安装脚本的工具，很方便3.开发文档：https://ascom-standards.org/Develop...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-12-10 10:24:51</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 5471</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 8</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 19</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 4</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">驱动程序</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cu.html">如何使用MacOs/IOS的私用不公开框架(PrivateFrameworks)</a></div>
+            <div class="article-description">我需要写个程序调用一下[PLSandboxHelper processCanReadSandboxForPath], 它是一个由AssetsLibraryServices.framework(/System/Library/PrivateFrameworks/AssetsLibraryServices.framework)提供的。有两个问题要解决：1. 没有这个的头文件， 编译就会不过2.Frameworks那里在 Link Binary With Library里没有列出PrivateFramew</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-10-30 10:49:53</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3593</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cv.html">如何修改macOS 照片应用的原图片的目录路径</a></div>
+            <div class="article-description">磁盘系统坏了，是因为使用了HFS+ FOR WINDOWS 在macos和windows两边进行读写修改之类的，结果悲剧了，整个 HFS+的分区都变了成可读，也无法使用“急救”来修复。挂之前的现象的是写大文件会给截断，如8G的文件，copy过去，结果就变成了2G， 太坑了。。。好在还能读，赶紧把最重要的图片放到另一个硬盘上。放完之后，打开“照片”应用，提交原文件不可用，无法打开云云，于是尝试使用sqite3修复一下.1. 先把照片应用都退出ps axe | grep -i ph..</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-10-29 17:59:41</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2703</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">其他</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cw.html">lldb调试objc程序使用正则表达式下断点</a></div>
+            <div class="article-description">ObjectC的函数名怪怪的，又空格，又+/-:号，又括号。下断点很麻烦。可以试试 -r选项 , 可以正则表达式来模糊下断点，还是比较方便了。如:(lldb) br set -r IPXReconnectManager initWithAsset:hostWindow:finishedBlock\]Breakpoint 18: 20 locations.(lldb) breakpoint listCurrent breakpoints:18: regex = &amp;#x27;IPXRec.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-10-28 17:44:19</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 483</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cx.html">Wacom 数位板 和冠 手绘笔 Photoshop MacOS 延时卡顿丢笔解决办法</a></div>
+            <div class="article-description">试了在macos的下面使用photoshop 笔画延时，经常画得快就偶尔丢几笔，直线变折线，查了以下：1. 关闭平滑2.关闭压力3.打开首选项－常规－性能,选择图形处理器设置－高级，将第一项改为正常或基本4. 关闭标尺5.点击画笔设置,勾选间距一栏，并将间距数值调整到40以上100以下...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-08-23 20:25:02</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 7033</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">其他</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cy.html">使用nghttp2实现IOS 的 APNS的推送测试例子</a></div>
+            <div class="article-description">能用代码就不废话#ifdef HAVE_CONFIG_H#  include #endif /* HAVE_CONFIG_H */#include #include # include #include #  include #  include &amp;lt;netdb..</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-08-22 17:28:55</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 828</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="cz.html">如何解开和反编译思科cisco的交换机固件</a></div>
+            <div class="article-description">下载固件，如image_tesla_hybrid_2.5.0.83_release_cisco_signed.bin1.下载安装 binwalkbrew install binwalk2.下载安装lzopbrew install loop3.使用binwalk解开文件binwalk -eM   image_tesla_hybrid_2.5.0.83_release_cisco_signed.bin4._image_tesla_hybrid_2.5.0.83_release</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-07-31 11:39:51</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2396</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 5</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">交换机</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c0.html">神牛TT685C闪光灯ETTL模式不同步解决方案</a></div>
+            <div class="article-description">相机闪光灯突然工作不正常了，虽然灯有闪但是闪了和没闪一样，严重曝光不足，遍查了网上也没发现解决方案。开机后按住 “Zm/C.Fn”按键 2 秒，进入 C.Fn 菜单。右上角显示 Ver 3.3 为版本号.发现 godox.com.cn/Downloads_s_Firmware.htmlTT685C_V3.4点击下载2019-05-071、解决与新相机EOS R、1500D、3000D的兼容问题。2、兼容神牛无线宾得(PENTAX)X系统。刚好是我的相机型号, 应该是要刷.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-06-24 22:57:56</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3967</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c1.html">编译php7 指定remi扩展目录和ini的配置目录</a></div>
+            <div class="article-description">安装了remi源的php74 , 想修改一下代码，使用回remi的配置和扩展,可以这样做：EXTENSION_DIR=/opt/remi/php74/root/usr/lib64/php/modules ./configure --prefix=/opt/remi/php74/root --with-config-file-path=/etc/opt/remi/php74/</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-06-09 14:27:36</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1091</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c2.html">小米10如何安装google play商店</a></div>
+            <div class="article-description">查了一下网上说可以安装gmail, 小米商店就会自动安装google play的， 但是发现gmail在小米商店已经提示说“因为软件本身问题不能给安装&amp;quot;， 查了一无果，于是用之前华为安装google的apk来进行安装.https://download.csdn.net/download/aerror/12467177...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-05-27 20:38:57</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 49147</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c3.html">GDB windows powershell 如何把一个命令输出结果赋值给一个变量</a></div>
+            <div class="article-description">找了一轮没有找到，发现可以使用$X=(...)这样来实现awk是安装了http://sourceforge.net/projects/gnuwin32/files/gawk/3.1.6-1/gawk-3.1.6-1-bin.zip/downloadPS C:\Users&amp;gt; $XXX=(adb shell ps  | findstr &amp;quot;hsalpha&amp;quot; | awk &amp;#x27;{print $2}&amp;#x27;)PS C:\Users&amp;gt; echo XXX7147PS C:\Users&amp;gt; $.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-05-16 16:02:12</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4668</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c4.html">关于Hook unistd中open, read, write, close的一些技巧</a></div>
+            <div class="article-description">open , read, write, close, flock, fileno, lseek, lseek64, 这些都是使用一个int的文件描述符的，对于我们hook的时候，一般来说，我们是想在open这里，我们去打开一个自己的文件，可能这个并不是一个真实的文件，如这个我们需要维护一个类的指针，我们必须用一个整数去关联这个这个指针，因为返回值，我们只能是整型，fd这个东西是一个整数，它有自己的规则，又是系统维护的，我们必须返回一个整数和系统不冲突或重复的，我们才能在后面的read, write这里判断出</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-05-12 15:26:12</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 986</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c5.html">使用shell将一个目录的所有文件移动以年月为名的文件夹中</a></div>
+            <div class="article-description">首先创建一个临时的目录：mkdir tempformv使用stat,cut和mkdir创建以月份为名的文件夹$stat -c &amp;quot;%y&amp;quot; * | cut -b1-7 | sort | uniq | while read line ;do mkdir tempformv/$line; done $ls tempformv/2010-05  2020-05生成要执行的命令...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-05-04 23:02:58</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 326</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c6.html">Linux如何自动挂载和卸载usb外部硬盘</a></div>
+            <div class="article-description">有一个usb外置的硬盘，想插电直接可以linux挂载，关电linux直接umount, 查了一下没有一个比较合适的解决方案。于是自己写了一脚本，然后使用crontab 每10秒运行一次。计划任务,增加每分钟的任务crontab -e#增加每分钟的任务* * * * * /etc/misc/usb_auto_check.sh &amp;amp;&amp;gt;&amp;gt;/var/log/usb_aut...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-05-03 13:27:56</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 402</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">shell</span>
+                <span class="tag">运维</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c7.html">如何修改android的so文件进行api HOOK钩子补丁</a></div>
+            <div class="article-description">1. 准备工具和环境  1.1 android NDK  1.2 android SDK  1.3Synalyze It! Pro, 安装ELF语法  1.4 elf文件格式文档.2. 文件格式是 ELF, 组织如下实例:3.我们只需要做以下修改就可以，  3.1 在SHT_DYNAMIC这里增加我们的so，一般来说这个段都有一些...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-04-30 15:49:01</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1116</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">android</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c8.html">MacOS IOS Mach-O修改补丁之增加外部未定义符号并调用</a></div>
+            <div class="article-description">1. Mach-O的文件的基本结果如下：2.例子文件所有头部：Mach header      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags   MH_MAGIC     ARM         V7  0x00      OBJECT     5       1960 SUBSE...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-04-13 18:03:32</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 686</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="c9.html">使用sql批量修改MacOs照片应用(Photos)上的照片时间</a></div>
+            <div class="article-description">1. cd ~/照片图库.photoslibrary2. sqlite33. .open Photos.sqliteACHANGE                                 ATRANSACTION                            ATRANSACTIONSTRING                      ZADDITIO...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2020-03-07 11:36:12</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1106</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="da.html">libpng error: iTXt: chunk data is too large error: PNG unsigned integer out of range</a></div>
+            <div class="article-description">使用png读某些png时，出现libpng error: iTXt: chunk data is too large error: PNG unsigned integer out of range这样的错误，发现是adobe 的XMP非常大引起的：$ xxd test.png00000000: 8950 4e47 0d0a 1a0a 0000 000d 4948 4452  .PNG.....</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-12-17 00:32:33</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 5560</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="db.html">如何在gdb里打印unicode 16(utf-16) C#的字符串</a></div>
+            <div class="article-description">使用调用unity3d的il2cpp的时候，往往需要看看一下字符，但是这个c#的字符串是一个对象来的，并且是一个16bit的方式一个字符的unicode编码。x/hs addr效果如下：(gdb) x/hs 0x779f8e8c0x779f8e8c:	u&amp;quot;I am the unicode strings&amp;quot;//断点Resources.Load之后，打印一下传入的文件的名字...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-12-11 16:05:35</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 560</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">gdb</span>
+                <span class="tag">c#</span>
+                <span class="tag">unicode</span>
+                <span class="tag">utf-16</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dc.html">X99 E5-2696V4 macOS Catalina 10.15.1 内核补丁</a></div>
+            <div class="article-description">//Kernel Patch 补丁//解决无法看到进度条，无法加载内核，或者启动的时候突然重启问题 FIND: 723CD077 500FB6C0 REPL:  6A3CD077 500FB6C0 // _xcpm_cpuid_set_info FIND:  C1E30848 63D389D0 48C1EA20 REPL: C1E308B8 00FF0000 31D29090 //_xc...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-30 00:19:09</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2168</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 7</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">黑苹果</span>
+                <span class="tag">黑屏</span>
+                <span class="tag">Catalina</span>
+                <span class="tag">MacOS 10.15.1</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dd.html">EOS 的Dpos共识算法</a></div>
+            <div class="article-description">1. BIOS过程  EOS是以OS设计的，所以它有一个BIOS过程，启动和上线这个EOS, 你就像开你的 pc一样，你先要经过BIOS, 经过一轮设置之后你才能进入正式的系统。   在BIOS过程，使用创世块中指定的初始帐号(eosio)进行产块，这个过程要一直持续到正式上线。  EOS的币不是像ETH和BTC一样是内置的，EOS一样也只是一个合约和...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-27 19:54:09</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 980</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">EOS</span>
+                <span class="tag">以太坊</span>
+                <span class="tag">DPOS</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="de.html">EOS帐号体系</a></div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-27 19:50:40</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 257</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">EOS</span>
+                <span class="tag">区块链</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="df.html">以太坊区块头部校验算法分析</a></div>
+            <div class="article-description">去年搞的。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-27 19:42:45</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 443</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">以太坊</span>
+                <span class="tag">区块链</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dg.html">以太坊代码流程分析</a></div>
+            <div class="article-description">去年研究的时候画的图，初始化，合约的执行流程，cpu挖矿的流程挖矿的循环:</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-27 19:38:05</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 154</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">以太坊</span>
+                <span class="tag">智能合约</span>
+                <span class="tag">挖矿</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dh.html">etc dao分叉分析</a></div>
+            <div class="article-description">分叉前: Height:  TimeStamp: 643 days 17 hrs ago (Jul-20-2016 01:20:38 PM +UTC) Transactions: 0 transactions and 0 contract internal transactions in this b...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-27 19:15:06</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 345</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">区块链</span>
+                <span class="tag">以太坊</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="di.html">Android 让adb以root的身份来运行</a></div>
+            <div class="article-description">1. 首先安装自己手机对应的root的image, 如twrp.img    //上传supersu 到   adb push SuperSU-v2.79-20161211114519.zip  /mnt/sdcard/supersu.zip adb reboot fastboot   //等重启好  fastboot flash recovery twrp-3.3.1-0...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-11-27 10:44:45</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3209</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 4</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dj.html">VMKD windbg+vmWare进行两机调试的加速工具的介绍及原理简单分析</a></div>
+            <div class="article-description">可以使用windbg+vmWare,通过虚拟COM口和NamePipe进行内核或用户级的双机调试,但是由于COM的速率最大限制只要115200，调试速度是相当慢的,如果你想使用如.dump这样转储命令,你可能需要等到几个小时或者更多.VMKD Virtual Machine KD Extensions 这个工具就是解决关于这个问题的.下载和使用方法: http://www.ny...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-07-03 19:26:56</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3394</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 3</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">vmware</span>
+                <span class="tag">工具</span>
+                <span class="tag">hook</span>
+                <span class="tag">resources</span>
+                <span class="tag">c</span>
+                <span class="tag">null</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dk.html">Macbook pro/air 2013 late -2014 使用转接卡更换NVME SSD休眠不醒问题的解决办法</a></div>
+            <div class="article-description">、、1. 手上512GMBP 2013 late差不多满了，因为穷，所以在淘宝上买了一个NVME转Macbookpcie，然后再买一个NVME 2T的硬盘2. NVME因为需要最新的Firmware Rom支持，所以必须使用原装的硬盘（必须原装）安装Mac14以上，我安装了14.5.要不然识别不出来新安装的NVME硬盘3. 买之前就知道是会有休眠问题的，问了卖家推荐了一些型号说不...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-06-12 01:11:54</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 56155</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 200</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 98</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 26</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dl.html">Linux Centos 7移动电信双线 策略路由</a></div>
+            <div class="article-description">安装了一条电信光纤 ADSL，一条移动的光纤 ADSL，想让电信IP走电信线路，移动IP走移动线路，同时移动的ip从电信线路过来的也正常。1. 首先从https://ip.cn/chnroutes.html下载移动的路由表wget http://f.ip.cn/rt/isproutes-cmcc.txt -o &amp;gt;/etc/misc/isproutes/ispr...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-06-06 21:25:26</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1924</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dm.html">如何手动更新mac的固件</a></div>
+            <div class="article-description">一种办法是买编程器，一种办法如下，不知道是不是一样的。@Y.H Wong2018-11-04 13:00:24That guide on MacRumors is really useful. I recently upgraded a 2014 MBPr board using most of its instructions, and it still works. C...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2019-06-02 10:13:22</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 8013</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 4</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dn.html">OpenWrt 添加cpu温度显示监控</a></div>
+            <div class="article-description">opkg updateopkg install lm-sensors lm-sensors-detect 然后修改一下/usr/lib/lua/luci/view/admin_status/index.htm, 增加一个温度的显示&amp;amp;lt;%# Copyright 2008 Steven Barth &amp;amp;lt;steven@midlink.org&amp;amp;gt; Copyright 20...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2018-12-23 01:32:02</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 26079</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 10</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="do.html">OpenWRT18 编译 cmake-3.13</a></div>
+            <div class="article-description">主要问题是 /usr/bin/ld: cannot find -ldl和 /usr/bin/ld: cannot find -lrt 1. opkg install gcc make  2. wget   cmake-3.13.tar.gz &amp;amp;amp;&amp;amp;amp;  tar -xzf cmake-3.13.tar.gz3. cd cmake-3.134. find . -...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2018-12-21 01:45:49</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1421</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dp.html">MacOs 双真机内核/驱动调试</a></div>
+            <div class="article-description">一直在想这个macos可以windows一样使用windbg通过串口，1394和usb进行调试，这样就方便多了。看到资料, MacOs是可以使用以太网卡来调试的：1. 先去developer.apple.com下载对应版本的KDK 2.安装KDK，文档和调试符号在/Library/Developer/KDKs/KDK_10.14.1_18B75.kdk/下. 3.安装的目录下有一个re...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2018-12-10 22:20:23</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1985</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dq.html">如何调试别人写的apk</a></div>
+            <div class="article-description">1. 新一个工程，package name和原apk的package一致2. 解压原来的apk, 得到class.dex3. 使用apktool d x.apk, 解压资源到 x目录4. 把res和assets复制到新的工程相应目录5. 新的工程加一个jni，写两个mk文件，一个是随便写个空函数，一个写原apk的so的prebuild. 6.  ndk-build NDK_DE</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2018-05-30 23:48:46</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2974</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 5</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">android</span>
+                <span class="tag">apk</span>
+                <span class="tag">调试</span>
+                <span class="tag">jni</span>
+                <span class="tag">gdb</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dr.html">删除android 开发路径下无用的图片资源的脚本</a></div>
+            <div class="article-description">find_not_ref(){        find res -name &amp;quot;*.$1&amp;quot;  | grep -E &amp;quot;(drawable|anim)&amp;quot; | sed -e &amp;quot;s/.*\/\([a-z0-9_]*\)\..*/\1/g&amp;quot; | sort | uniq  &amp;gt; /tmp/file.txt        while read line        do                j</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2018-05-30 23:48:04</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 750</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ds.html">EOS 共识算法 DPOS3.0 的改进</a></div>
+            <div class="article-description">   BP ： Block producer， 块产生者。         本文描述了一个DPoS的改进，它更强地保证了遵守DPoS3.0协议下的结点不会共识失败。我们定义共识失败为: 两个结点包括了两个不同的不可逆的链.       背景:       PoW , 如Bitcoin, 定义了一个 “最长链”规则的共识。使用这个规则，任何Block都不会被认为是不可逆的确认状态。 ...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2018-05-30 23:39:22</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1903</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">EOS</span>
+                <span class="tag">   共识算法</span>
+                <span class="tag">  DPOS </span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dt.html">MacOS 驱动调试笔记</a></div>
+            <div class="article-description">1. 10.13 不可以在system下看到系统层的log了，要用log 命令来看, 如       1.1. log show --predicate &amp;#x27;process=&amp;quot;kernel&amp;quot;&amp;#x27; #查看内核的已经记录的log       1.2. log stream   --predicate &amp;#x27;process=&amp;quot;kernel&amp;quot;&amp;#x27;  #查看即时的log        1.3. sudo</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2017-12-17 15:39:01</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4243</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">MacOS 驱动</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="du.html">X99安装MacOS 10.13无法启动的问题解决方案</a></div>
+            <div class="article-description">打算升级10.13,发现别人的x99都成功了，但是一直还是卡在内核一加载就卡死或者重启这一步。折腾了几天，分析了kernel和以前的补丁，终于找到了解决办法。是有我的cpu比较特殊，或者说比较稀少，需要多打一个msr相关的补丁，而这个旧的补丁的代码变了。使用otool分别分编译了一下10.12的kernel和10.13的kernel. 把这个补丁正确打上，启动起来了，一切完美。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2017-11-12 22:34:29</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2401</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">hackintosh 10.13</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dv.html">ntfs-3g MacOS High Sierra 10.13.1 brew编译失败解决方案</a></div>
+            <div class="article-description">升级10.13.1之后 ntfs-3g brew 安装失败，会有以下提示：Last 15 lines from /Users/dany/Library/Logs/Homebrew/ntfs-3g/02.make:clang -DHAVE_CONFIG_H -I. -I..     -DFUSE_USE_VERSION=26 -D_FILE_OFFSET_BITS=64 </div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2017-11-12 22:23:25</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2362</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 4</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">ntfs-3g macOS 10.13</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dw.html">以太坊的Ethash算法</a></div>
+            <div class="article-description">Ethash认真的阅读，理解，计算和调试了一番，顺便自己翻译了一下， 共同学习. 此规范是修订版23。Ethash 是 Ethereum 1.0 的计划的PoW算法。这是最新版本的Dagger-Hashimoto, 虽然它不能再恰当地被称为Dagger-Hashimoto, 因为这两种算法的许多原始特性已经在上个月的研究和开发中发生了翻天覆地的变化。请参见 https://github.com/e...</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2017-09-06 16:22:08</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 26157</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 6</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">以太坊</span>
+                <span class="tag">算法</span>
+                <span class="tag">ETHASH</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dx.html">区块链笔记分享:</a></div>
+            <div class="article-description">区块链笔记分享:技术和数学基础:    1. 高位的hash的逆向过程除了穷举，没有更有效的办法，这个过程在目前的计算能力下必然费时费力。   2. 不对称的加密，公钥和私钥的签名机制  PoW:   1. 记帐中调整once, 得到符合规则的所花费的工作。         2. 谁计算得越快，谁就争到记帐权，        3. 对于符号要求的ha</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2017-04-21 10:31:38</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1471</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">区块链</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dy.html">如何让unity总是生成typetree</a></div>
+            <div class="article-description">text:000000010187CE6F loc_10187CE6F:                          ; CODE XREF: __text:000000010187CD4Bj__text:000000010187CE6F                 mov     edi, [rbp-0BF4h]__text:000000010187CE75</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2017-04-07 13:06:39</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2001</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">unity3d</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="dz.html">macosx 交叉编译 valgrind For Android</a></div>
+            <div class="article-description">1. 安装NDK2.设置NDK_ROOT    export NDK_ROOT=PATH/TO/YOUR/ANDROID/NDK/ROOT3. 下载valgrind-3.11.0.tar.bz24. tar -xzf valgrind-3.11.0.tar.bz25. cd valgrind-3.11.06. 设置工具链 ：       ARCH_ABI=&amp;quot;ar</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2016-08-27 15:38:25</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2773</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">交叉编译</span>
+                <span class="tag">ndk</span>
+                <span class="tag">MacOSX</span>
+                <span class="tag">Valgrind</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d0.html">fbxsdk 的 JNI 库</a></div>
+            <div class="article-description">fbxsdk 的 JNI 库</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2016-08-03 00:28:14</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1531</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">fbxsdk JNI</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d1.html">OpenGL shader 内置函数 和 unity3d shaderlib 内置函数对照表</a></div>
+            <div class="article-description">-----opengl    ---shaderlabfract        fracmix                 lerptexture2D     tex2Dinversesqrt   rsqrtmodfood</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2016-06-16 21:04:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2519</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">unity3d</span>
+                <span class="tag">opengl</span>
+                <span class="tag">shader</span>
+                <span class="tag">函数</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d2.html">ILSpy For MacOsX</a></div>
+            <div class="article-description">ILSpy For MacOsX， 没有找到，只好自己动手改改了，需要的请到https://github.com/aerror2/ILSpy-For-MacOSX</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2015-11-28 18:44:20</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4991</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">ILSpy For MacOsX</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d3.html">破解Kaleidoscope-2.1.0-134，无限试用</a></div>
+            <div class="article-description">找到超时时间计算的地方，有很多处，大概几十外，大约类似以下的代码，作者应该是copy了很多份重复的代码，               10000C592 F2 0F 10 8D 40 FE FF FF                 movsd   xmm1, [rbp+var_1C0]__text:000000010000C59A F2 0F 59 0D 46 B4 1C 00</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2014-05-29 01:10:29</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3398</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">mac 软件破解</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d4.html">Mac os X  触摸板驱动程序开发。</a></div>
+            <div class="article-description">mac os 触摸板驱动开发。</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2014-03-04 00:29:42</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3636</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d5.html">使用twitter app原生接口登录(Native)</a></div>
+            <div class="article-description">/**  * 这个方法来自反编译的结果, 包括调用的activity和返回的结果的key值, 官方开发没有提及，稳定性没有保证.  * 直接像facebook的sdk一样，跨进程调用twitter官方app的AuthorizeAppActivity,由app进行授权和进行x_auth_reverse得到access_token和token_secret.  *   * @retur</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2013-05-02 20:44:11</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 6248</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d6.html">wiresharp截包pdml文件分析php程序</a></div>
+            <div class="article-description">&amp;lt;?phprequire_once &amp;#x27;XByteArray.php&amp;#x27;;require_once &amp;#x27;http.php&amp;#x27;;class MyPacket{		public $port_src  = 0;		public $ip_src    = 0;		public $port_dst  = 0;		public $ip_dst    = 0;		public $tcp_flags</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2013-05-02 14:35:38</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4552</div>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d7.html">一个for mac os x 的 usb无线驱动的开发流程</a></div>
+            <div class="article-description">继承IOEthenetController start的时候拿到usbiointerface和其它设备上下文 enable的时候准备好资源，设置好回调，发送设备开始命令在收接设置的data的时候，进行解码转成IONetworkInterface认识的m_buf_t结构在outputpacket的时候，把m_buf转成设备认识的数据结构，通过设置支持的命令发给设置做好设备关闭，打开，重置的接口。做好</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2012-12-17 17:21:05</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 10444</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">mac os x  驱动开发</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d8.html">php写的http协议</a></div>
+            <div class="article-description">这个协议纯自已手工打造，超级灵活，如，我可以用它来分析wireshark的截包用法请看 test函数.  用到请保留作者信息。 &amp;lt;?php/** *  * @author aerror * */class HttpHeader{	public $method;	public $status_code;	public $chunked;	public $status_l</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2012-12-17 17:05:25</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 9019</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">php http协议</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="d9.html">cocoa ios iphone  xcode 播放GIF动画</a></div>
+            <div class="article-description">使用imageio的这个自带的framework, 这个库也是apple的webkit所使用的，可以参考apple的opensource的webkit实现。 因此，这个 库从性能和蒹容性方面应该都是最佳选择以下是代码，比较简单 NSDictionary *gifLoopCount = [NSDictionary dictionaryWithObjectsAndKeys:</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2012-12-06 10:24:12</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 10270</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">cocoa</span>
+                <span class="tag">ios</span>
+                <span class="tag">iOS</span>
+                <span class="tag">IOS</span>
+                <span class="tag">iphone</span>
+                <span class="tag">iPhone</span>
+                <span class="tag">IPhone</span>
+                <span class="tag">IPHONE</span>
+                <span class="tag">opensource</span>
+                <span class="tag">xcode</span>
+                <span class="tag">Xcode</span>
+                <span class="tag">XCode</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ea.html">LZMA 算法 AS3 移植 实现</a></div>
+            <div class="article-description">使用方法如下：源代码打包上传，欢迎下载使用. 源代码下载地址 http://download.csdn.net/detail/aerror/3898251         public static function decode(src:ByteArray) : ByteArray        {            if (src == null || src.</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2011-12-09 00:52:35</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 11197</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">properties</span>
+                <span class="tag">null</span>
+                <span class="tag">function</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="eb.html">libpng使用例子</a></div>
+            <div class="article-description">本例使用libpng,将一系列单个的序列帧png文件合并成一个大的png, 去除无用的空白，计算每个系列的最小有效范围。请看源码吧，libpng用法有不明白的，可以参考一下，有抄到的到方请保留版权  //@author aerror //2011/12/02#include &amp;quot;stdafx.h&amp;quot;#include #include #include #incl</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2011-12-02 01:56:49</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 14229</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">compression</span>
+                <span class="tag">file</span>
+                <span class="tag">struct</span>
+                <span class="tag">output</span>
+                <span class="tag">null</span>
+                <span class="tag">list</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ec.html">排序组合，AS实现穷举算法</a></div>
+            <div class="article-description">原理如图:  算法如下: private function compoud(N:uint, C:uint):void		{						var pickIndex:int = 0;			var X:int=1;			var Y:int=1;			var P:int=1;			var i:int=0;			var arr:Array  = new</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2011-12-02 01:43:11</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 9314</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">function</span>
+                <span class="tag">string</span>
+                <span class="tag">ini</span>
+                <span class="tag">c</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ed.html">天神降临，大家过来膜拜吧! FLASH AS 3.0 A星(A*, A star) 寻路算法--史上最快,极限优化挑战!</a></div>
+            <div class="article-description">天神降临，大家过来膜拜吧! oh yeah!转载请声明出处，例子代码可以免费随意使用，但请保留或注明作者信息.  这里的算法说是终极优化, 我挑战了一下, http://eidiot.net/2007/04/17/a-star-pathfinding/最终结果比较他快三倍, 我站在高高处，藐视了 一下作者. 优化思路:             a.开包(open lis</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2011-11-29 14:58:47</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 18931</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 5</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 6</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">算法</span>
+                <span class="tag">flash</span>
+                <span class="tag">function</span>
+                <span class="tag">distance</span>
+                <span class="tag">优化</span>
+                <span class="tag">dictionary</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ee.html">sothink swf decompiler反编译的常见错误</a></div>
+            <div class="article-description">1.  当bytecode 出现new activation或者 dup的时候，会出出现下面语句.  1.1        loc_1;             //通常是loc_1=this或者loc_1=0, local=x1.2        loc_1 = new ObjX();             new ObjectX().x = 0;</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2011-11-25 23:09:45</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 14973</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">dictionary</span>
+                <span class="tag">xml</span>
+                <span class="tag">工作</span>
+                <span class="tag">each</span>
+                <span class="tag">工具</span>
+                <span class="tag">x86</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ef.html">AS3 XML 转JSON </a></div>
+            <div class="article-description">actionscript xml json 转换 </div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2010-09-21 00:10:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 12188</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">xml</span>
+                <span class="tag">json</span>
+                <span class="tag">object</span>
+                <span class="tag">file</span>
+                <span class="tag">function</span>
+                <span class="tag">string</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="eg.html">编写configure.ac/in文件加入mysql 的include和libs的路径自动检测或由用户指定.</a></div>
+            <div class="article-description">mysql不同linux下的安装路径不大相同，直接中包括，不同的版本下编译比较麻烦,装mysql也N种方法，还有x86和x64版本同时装的，搞得很混乱，参考了一下别人的检测做法,目前发现两种: 1. 装了mysql开发库之后（你Yum,build from source, emerge 等等），会顺便安装一个mysql_config的程序，它可以输出mysql的include和libs路径,  使用am工具可以在configure.ac写以下脚本，让用户自行给一个mysq</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2010-09-14 03:12:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 12524</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">mysql</span>
+                <span class="tag">include</span>
+                <span class="tag">path</span>
+                <span class="tag">socket</span>
+                <span class="tag">string</span>
+                <span class="tag">build</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="eh.html">LINUX 下的内存检测工具, 性能测试工具</a></div>
+            <div class="article-description">1.    valgrind ，使用例子,根据还有其它功能很强大，发掘中. . valgrind --tool=memcheck --leak-check=yes ./ProxyServer  检测内存泄漏    valgrind --tool=memcheck --leak-check=full --show-reachable=yes2.     gprof 使用方式:   在编译的时候要加上 -pg -g 的CFLAGS和CPPFLAGS.   然后运行，在当前目录, 生成记录文件，缺省叫gmon,使</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2010-09-14 03:03:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 10405</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">测试工具</span>
+                <span class="tag">linux</span>
+                <span class="tag">工具</span>
+                <span class="tag">多线程</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ei.html">GDB 使用笔记</a></div>
+            <div class="article-description">近来在搞LINUX, GDB边学边用，感觉这个工具比较不上ollydbg和windbg, 还算够用。做了一些笔记，防止忘了，命令行的东东比较容易忘一些.  1.ptype 打印类型结构信息  2.info register 打印寄存器信息  3. x/nfu addr   x addr   x Use the x command to examine memory.   n, f, and u are all optional parameters that specify how much memory </div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2010-09-14 02:56:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 8686</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">parameters</span>
+                <span class="tag">integer</span>
+                <span class="tag">zend</span>
+                <span class="tag">command</span>
+                <span class="tag">thread</span>
+                <span class="tag">汇编</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ej.html">LINUX SOCKET AIO 问题--感觉LINUX超级垃圾，无比失望ing</a></div>
+            <div class="article-description">写了代码，使用ace_proactor, 原来windows跑得非常漂亮，来到linux就时不时不工作，然后加asynce_connector后，发现完成不能工作，async_stream_write后，发现卡在那里，根本发不出去，多次分析后，发现，原来之前有aio_read没有完成，aio_write的请求就block那里了，write这个操作竟然一定要等前的aio_read完成之后，才可以执行</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2009-09-22 01:16:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 12877</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">linux</span>
+                <span class="tag">socket</span>
+                <span class="tag">server</span>
+                <span class="tag">stream</span>
+                <span class="tag">ibm</span>
+                <span class="tag">工作</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ek.html">网络通讯协议定义语言及代理代码生成器</a></div>
+            <div class="article-description">&amp;lt;!-- /* Font Definitions */ @font-face	{font-family:宋体;	panose-1:2 1 6 0 3 1 1 1 1 1;	mso-font-alt:SimSun;	mso-font-charset:134;	mso-generic-font-family:auto;	mso-font-pitch:variable;</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2009-08-22 10:35:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 10868</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">语言</span>
+                <span class="tag">网络</span>
+                <span class="tag">通讯</span>
+                <span class="tag">whitespace</span>
+                <span class="tag">struct</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="el.html">强大的 GNU AUTO MAKE工具集 </a></div>
+            <div class="article-description"> 一．功能简述快速方便帮助你生成在众多LINUX，BSD和UNIX下可移植的Makefile.in和configure脚本。完整文档参考:http://sources.redhat.com/automake/automake.html 二．工具集成员以使用的执行顺序为作生后顺序. 1.autoscan扫描的代码目录，自动把所有的库调用函数抽取出来生成检查的M4宏</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2009-03-20 20:32:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 8578</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">工具</span>
+                <span class="tag">makefile</span>
+                <span class="tag">file</span>
+                <span class="tag">编译器</span>
+                <span class="tag">unix</span>
+                <span class="tag">linux</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="em.html">使用photoshop 修复旧照片</a></div>
+            <div class="article-description">亲戚的老照片拿出来，只剩唯一一张了，想翻晒几份，好花，于是使用数码相机拍了下来，看着放假有空帮她修复一下.主要使用的工具是:1.印章工具2.修复画笔3.杂色，去除杂色4.复制粘贴5.橡皮擦一共修复了十几个小时，大部分的时间都是在使用印章工具，修复画笔修复的效果对于这么花的照片根本不起作用，很多细节根本看看不清了，只能使用补画的方式进行修复.确实是很细的活，花费很多的</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2009-01-28 19:07:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 9776</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">照片</span>
+                <span class="tag">工具</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="en.html">回顾 WINDOWS98 NEST V8086模式和中断服务调用</a></div>
+            <div class="article-description">新的一年到了,不禁回头望了一下，写些老掉牙的东西以作纪念。早在2004年,我当时正在写个wdm的驱动程序，因为软件的版本允许在windows 98, windows NT 4.0 , windows 2000和windows XP上运行，我不想每个写了一个wdm后，再实现一个相同功能的Vxd，在当时我的想法里，这是不利行维护，是不明智的行为，于是我决定让我的WDM程序可以在上面所说的所有win</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-12-31 00:30:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 9000</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">windows</span>
+                <span class="tag">buffer</span>
+                <span class="tag">struct</span>
+                <span class="tag">磁盘</span>
+                <span class="tag">ios</span>
+                <span class="tag">system</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="eo.html">VC2008/2005工程自动生成器</a></div>
+            <div class="article-description">我很喜欢使用VS2008的IDE环境,但是很多源代码都没有可以用于Visual studio IDE的工程文件,例如DDK的示例代码.于是我写了下面的工具,功能如下:1.扫描指定目录并递归其子目录的所有文件,生成一个xml的VCMakeTool类型的工程文件.使用方法：usage:  buildvcprojdirdestfilename</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-11-10 22:33:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 8897</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">encoding</span>
+                <span class="tag">build</span>
+                <span class="tag">ddk</span>
+                <span class="tag">filter</span>
+                <span class="tag">ide</span>
+                <span class="tag">path</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ep.html">公布之前关于C#写的SNIFFER的全部源代码</a></div>
+            <div class="article-description"> 你可以自由使用它,如果你将它用于商业用途,最好请来信告示知一下,请保留版权有关的信息. 下载地址http://download.csdn.net/source/643241</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-10-28 20:21:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 6181</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">c#</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="eq.html">Windows获取本地机器的全部网络配置信息</a></div>
+            <div class="article-description"> Q:WINSOCK库的GetAddressByName 和gethostbyname 返回的信息无法满足我的要求,我想获取更详细的信息,我要知道一切信息,至少要像ipconfig /all 命令输出那样详细, 怎么办?A:使用windows SDK提供的IP Helper 库吧,它可以解决你上述的所有要求,使用它,你可以获取或配置本机的TCP/IP( Transmission Con</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-10-28 20:02:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 9121</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">windows</span>
+                <span class="tag">网络</span>
+                <span class="tag">null</span>
+                <span class="tag">buffer</span>
+                <span class="tag">interface</span>
+                <span class="tag">system</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="er.html">j2me手机游戏开发之俄罗斯方块--附完整源代码</a></div>
+            <div class="article-description"> 原理比较简单的,就是一个基于Frame的游戏,主游戏画面设计如下: //FIELD: 22X17                      // ////////////////////////////////////// //1                                          1         0 // //2                    </div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-10-13 22:15:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 7656</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+                <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">j2me</span>
+                <span class="tag">手机游戏</span>
+                <span class="tag">exception</span>
+                <span class="tag">string</span>
+                <span class="tag">null</span>
+                <span class="tag">class</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="es.html">手机E680同时播放两个音乐完美解决方案-真!</a></div>
+            <div class="article-description">国庆这几天把我之前C#写的俄罗斯方块移植到了我的E680上,使用的是Moto的J2me开发包,在声音的播放方面遇到了不少奇奇怪怪的问题：1.声音时有时无，有时长时间没有问题，突然没有了声音,再也不出声了.2.延时时长时短.3.第三个Player无法出声.找了一下网上，发现这些都是手机的通病和老大难，而且每个厂家的实现都不一样，解决方案也不同。发现有人在blog上说:根据MO</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-10-07 01:11:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3765</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">手机</span>
+                <span class="tag">音乐</span>
+                <span class="tag">j2me</span>
+                <span class="tag">测试</span>
+                <span class="tag">video</span>
+                <span class="tag">blog</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="et.html">Windows串口调试通信协议KDCOM.DLL的反向分析及Asm和C源代码</a></div>
+            <div class="article-description">前段时间突然兴趣大发,把KDCOM.DLL用IDA进行了分析和阅读,并导出成asm文件，作了修改和编译使之可以编译后替换原先的kdcom.dll正常工作, 这之间最难的莫过于kdcom.dll无法进行调试和跟踪的问题了, 手段非常有限, 我暂时只知道使用一下Vmware的后门I/O port进行一些检测性的LOG,以致使由反向代码编译出的kdom.dll最终能正常工作花费了我极多的时间.事实上</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-09-21 21:08:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 7499</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 2</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">c</span>
+                <span class="tag">windows</span>
+                <span class="tag">exception</span>
+                <span class="tag">file</span>
+                <span class="tag">byte</span>
+                <span class="tag">transition</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="eu.html">FLEX ActionScript 游戏开发教程之[贪吃蛇]Step By Step</a></div>
+            <div class="article-description"> 我也是刚刚接触到Flex的游戏开发, 继j2me的手机游戏开发后,再现学现卖,发一个Flash版的贪吃蛇游戏开发的Step by Step教程,希望对新手有些帮助. :). Step 1.下载J2SE和Flex 3.1 SDK(http://download.macromedia.com/pub/flex/sdk/flex_sdk_3.zip,免费的,哈哈)，安装好Java，解压</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-09-21 20:42:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 5473</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 11</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 3</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">actionscript</span>
+                <span class="tag">flex</span>
+                <span class="tag">游戏</span>
+                <span class="tag">null</span>
+                <span class="tag">encoding</span>
+                <span class="tag">j2se</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ev.html">J2ME手机游戏贪吃蛇开发Step By Step</a></div>
+            <div class="article-description">呵呵，昨天晚上开始学习手机游戏编写，现在现学现卖，希望可以帮到一些初手.:). Step1.安装J2se SDK, j2sdk-1_4_2_08-windows-i586-p.exe/到C:/j2sdk1.4.2_08目录 Step2.我的电脑-&amp;gt;属性-&amp;gt;高级-&amp;gt;环境变量,设置PATH路径加上: C:/j2sdk1.4.2_08/bin; Step3.安装Motorola J2ME SDK f</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-09-21 17:15:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2309</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">j2me</span>
+                <span class="tag">手机游戏</span>
+                <span class="tag">motorola</span>
+                <span class="tag">integer</span>
+                <span class="tag">null</span>
+                <span class="tag">j2se</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ew.html">基于C#的网络SNIFFER网络IP层监听程序</a></div>
+            <div class="article-description">提供的功能:1.监听指定的网络接口的基于IP的网络包,如TCP,UDP,ICMP等2.基本C#的脚本自定义数据包解析器, 动态编辑，加载, 保存，编译和管理C#解析器代码。对于一些简单的协议直接可以使用自定义的解析器进行分析和处理.3.可方便的编辑，加载，保存,使用和管理协议过滤器.下载地址http://download.csdn.net/source/476261  </div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-31 12:22:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2035</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">网络</span>
+                <span class="tag">c#</span>
+                <span class="tag">脚本</span>
+                <span class="tag">tcp</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ex.html">关于windows xp sp2和windows 2003 sp1的最大连接数限制分析</a></div>
+            <div class="article-description">这个限制也是在tcpip.sys中限制的,windows xp sp2的版本代码如下,留意红色的代码:INIT:0005F660                         ; __stdcall InitTCPConn()INIT:0005F660                         _InitTCPConn@0  proc near               ; CO</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-21 23:13:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 2044</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">windows</span>
+                <span class="tag">xp</span>
+                <span class="tag">c</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ey.html">关于windows xp sp2/sp3 中tcpip.sys对于Raw socket的限制</a></div>
+            <div class="article-description">WINDOWS XP SP2修改了TCPIP.SYS,增加了对于RAW SOCKET的发送和伪造源地的限制，详情如下 :1) 不能通过raw socket发送TCP报文。做此尝试时会得到10004号错误。2) 不能通过raw socket发送伪造源IP的UDP报文。3) 不能通过raw socket发送IP碎片。做此尝试时会得到10004号错误。不知微软在哪次对2000 SP4的修补中实现了类</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-21 23:08:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 5831</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 6</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">socket</span>
+                <span class="tag">windows</span>
+                <span class="tag">xp</span>
+                <span class="tag">c</span>
+                <span class="tag">sockets</span>
+                <span class="tag">byte</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="ez.html">raw socket 编程</a></div>
+            <div class="article-description">Microsoft TCP/IP 组件包含“核心协议”、“服务”及两者之间的“接口”。传输驱动程序接口 (TDI) 与网络设备接口规范 (NDIS) 是公用的。 此外，还有许多用户模型应用程序的更高级接口。最常用的接口是 Windows Sockets、远程过程调用 (RPC) 和 NetBIOS。 Windows Sockets 是一个编程接口，它是在加州大学伯克利分校开发的套接字接口的基础</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-21 22:40:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1334</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 2</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">socket</span>
+                <span class="tag">sockets</span>
+                <span class="tag">tcp</span>
+                <span class="tag">microsoft</span>
+                <span class="tag">buffer</span>
+                <span class="tag">windows</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="e0.html">关于 AspNetDB.mdf</a></div>
+            <div class="article-description">关于 AspNetDB.mdf由于没有aspnetdb.mdf数据库，因此得先建立一个，这个可以通过aspnet_regsql.exe完成，该程序位于C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/下。 1、运行它之后会弹出的窗口：按&amp;quot;Next &amp;gt;&amp;quot;按钮 2、我们会发现除了有配置数据库外，还有删除数据库的功能，以后说不定可以派上用场，现在自然选Con</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-08 04:19:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 3636</div>
+                <div class="meta-item"><i class="far fa-comment"></i> 评论: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">sql server</span>
+                <span class="tag">数据库</span>
+                <span class="tag">服务器</span>
+                <span class="tag">sqlserver</span>
+                <span class="tag">microsoft</span>
+                <span class="tag">存储</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="e1.html">混合（本机和托管）程序集</a></div>
+            <div class="article-description"> 混合程序集能够同时包含非托管计算机指令和 MSIL 指令。这使它们可以调用 .NET 组件或被其调用，同时保留与完全非托管组件的兼容性。使用混合程序集，开发人员可以混合使用托管和非托管功能创作应用程序。这使得混合程序集成为将现有 Visual C++ 应用程序迁移到 .NET 平台的理想选择。例如，通过使用 /clr 编译器开关仅重新编译一个模块，就可将完全由非托管函数组成的现有应用程序</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-06 23:19:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 835</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">byte</span>
+                <span class="tag">webservice</span>
+                <span class="tag">.net</span>
+                <span class="tag">汇编</span>
+                <span class="tag">语言</span>
+                <span class="tag">平台</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="e2.html">使用非托管C++访问WEBSERVICE</a></div>
+            <div class="article-description">使用WebServices methods using sproxy.exe provided by Visual Studio 2003 来生成代理. Visual Studio 2005同样带有sproxy.exe 这个工具。但是Visual Studio 2008就没有了. 原因应该是样的:ATL Server: Visual C++ shared source softwareOv</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2008-05-06 03:44:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 4056</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">webservice</span>
+                <span class="tag">c++</span>
+                <span class="tag">server</span>
+                <span class="tag">application</span>
+                <span class="tag">soap</span>
+                <span class="tag">library</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="e3.html">关于打印机驱动程序32bit to 64bit移植的一些总结</a></div>
+            <div class="article-description">1.打印驱动可有user mode 或kernel mode两种模式,当然或者混合.2.kernel mode请指定为生成的类型是gid driver.3.user mode以实现约定函数的两个DLL提供，一个提供ddi, 另一个提供统一的用户配置界面.4.安装dll的inf和其它的inf有些不一样，请用infgate.exe进行检测,infchk.exe会提示你这样做.    d</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2007-08-19 15:22:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 1810</div>
+                <div class="meta-item"><i class="far fa-star"></i> 收藏: 1</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">64bit</span>
+                <span class="tag">dll</span>
+                <span class="tag">user</span>
+                <span class="tag">工作</span>
+                <span class="tag">windows</span>
+                <span class="tag">框架</span>
+            </div>
+        </div>
+
+        <div class="article-item">
+            <div class="article-title"><a href="e4.html">如何在windows vista64bit使用遗留的32bit的模块</a></div>
+            <div class="article-description">如果你的32bit模块是可执行文件，恭喜,  wow64可以完全运行你的程序。如果你的32bit模块是有源代码的，没有嵌入的x86也恭喜，你设置到64bit的编译环境编译到64bit就可以了，一只需要少少修改.如果你没有源代码，只有编译好了的dll,那就麻烦了，文档和实践都说明：1. 64bit的进程不能加载32bit的dll2.32bit的进程不能加载64bit的dll.我对</div>
+
+            <div class="article-meta">
+                <div class="meta-item"><i class="far fa-calendar-alt"></i> 2007-08-19 14:53:00</div>
+                <div class="meta-item"><i class="far fa-eye"></i> 浏览: 930</div>
+            </div>
+            <div class="article-tags">
+                <span class="tag">64bit</span>
+                <span class="tag">windows</span>
+                <span class="tag">socket</span>
+                <span class="tag">dll</span>
+                <span class="tag">通讯</span>
+                <span class="tag">文档</span>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="footer">
+        <p>版本信息: tdany.com | 生成时间: 2025-06-19 14:27:34</p>
+    </div>
+    
+    <script>
+        function searchArticles() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const articleList = document.getElementById('articleList');
+            const articles = articleList.getElementsByClassName('article-item');
+            
+            for (let i = 0; i < articles.length; i++) {
+                const article = articles[i];
+                const title = article.querySelector('.article-title').textContent;
+                const description = article.querySelector('.article-description')?.textContent || '';
+                const tags = Array.from(article.querySelectorAll('.tag')).map(tag => tag.textContent).join(' ');
+                
+                const searchContent = (title + ' ' + description + ' ' + tags).toUpperCase();
+                
+                if (searchContent.indexOf(filter) > -1) {
+                    article.style.display = "";
+                } else {
+                    article.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

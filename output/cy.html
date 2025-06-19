@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用nghttp2实现IOS 的 APNS的推送测试例子</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>使用nghttp2实现IOS 的 APNS的推送测试例子</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/108171590" target="_blank">https://blog.csdn.net/aerror/article/details/108171590</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-08-22 17:28:55</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 828</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
+        
+    </div>
+    
+    
+    
+    <div class="article-description">能用代码就不废话#ifdef HAVE_CONFIG_H#  include #endif /* HAVE_CONFIG_H */#include #include # include #include #  include #  include &lt;netdb..</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>能用代码就不废话</p>
+<p>调用例子和代码</p>
+<pre><code class="hljs language-javascript">//调用示例:
+int main(int argc , char**argv)
+{
+     testapns( "/path/to/your/ca",
+              "/path/yourkey_cert.pem",
+            "/path/yourkey_cert.pem",
+              "api.push.apple.com",
+              "/3/device/DB10092BAF5385B9AD58AB696DC7E8ECC6061F04AFD79E1387EB38D0E3712DCB",
+              "alert",
+             "com.company.game",
+            "10",
+            "0",
+           "{ \"aps\" : { \"alert\" : \"Hello\" } }"
+                                     
+             );
+
+      return 0;
+}</code></pre>
+<pre><code class="hljs language-javascript">
+#ifdef HAVE_CONFIG_H
+#  include &lt;config.h&gt;
+#endif /* HAVE_CONFIG_H */
+
+#include &lt;inttypes.h&gt;
+#include &lt;stdlib.h&gt;
+
+# include &lt;fcntl.h&gt;
+
+#include &lt;sys/types.h&gt;
+#  include &lt;sys/socket.h&gt;
+#  include &lt;netdb.h&gt;
+#  include &lt;netinet/in.h&gt;
+#include &lt;netinet/tcp.h&gt;
+#include &lt;arpa/inet.h&gt;
+
+#include &lt;poll.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;string.h&gt;
+#include &lt;errno.h&gt;
+
+#include &lt;nghttp2/nghttp2.h&gt;
+
+#include &lt;openssl/ssl.h&gt;
+#include &lt;openssl/err.h&gt;
+#include &lt;openssl/conf.h&gt;
+  #include &lt;unistd.h&gt;
+
+#include &lt;string&gt;
+
+#include &lt;iostream&gt;
+
+
+struct Connection {
+  SSL *ssl;
+  nghttp2_session *session;
+  /* WANT_READ if SSL/TLS connection needs more input; or WANT_WRITE
+     if it needs more output; or IO_NONE. This is necessary because
+     SSL/TLS re-negotiation is possible at any time. nghttp2 API
+     offers similar functions like nghttp2_session_want_read() and
+     nghttp2_session_want_write() but they do not take into account
+     SSL/TSL connection. */
+  int want_io;
+};
+
+
+struct XRequest {
+    const char *host;
+    /* In this program, path contains query component as well. */
+    const  char *path;
+    /* This is the concatenation of host and port with ":" inbetween. */
+    const  char *hostport;
+    /* Stream ID for this request. */
+    int32_t stream_id;
+    uint16_t port;
+    
+    const char *pdata;
+    const char *topic;
+    const char *pushtype;
+    const char *priority;
+    const char *expiration;
+    size_t nleft;
+    size_t nsize;
+};
+
+
+
+enum { IO_NONE, WANT_READ, WANT_WRITE };
+
+
+
+int get_cert_password_cb2(char *buf,int size, int rwflag, void *userdata)
+{
+
+    std::string password="123456";
+    //g_pConfigData-&gt;GetStr(CONF_KX_CERT_PASS, &amp;password);
+   // Capns_client::log-&gt;debug("desc=get_cert_password password=%s\n",password.c_str());
+
+    strcpy(buf,password.c_str());
+
+    return password.length();
+}
+
+
+static void die(const char *msg) {
+  fprintf(stderr, "FATAL: %s\n", msg);
+  exit(EXIT_FAILURE);
+}
+
+/*
+ * Prints error containing the function name |func| and error code
+ * |error_code| and exit.
+ */
+static void diec(const char *func, int error_code) {
+  fprintf(stderr, "FATAL: %s: error_code=%d, msg=%s\n", func, error_code,
+          nghttp2_strerror(error_code));
+  exit(EXIT_FAILURE);
+}
+
+
+static void dief(const char *func, const char *msg) {
+  fprintf(stderr, "FATAL: %s: %s\n", func, msg);
+  exit(EXIT_FAILURE);
+}
+
+/*
+ * The implementation of nghttp2_send_callback type. Here we write
+ * |data| with size |length| to the network and return the number of
+ * bytes actually written. See the documentation of
+ * nghttp2_send_callback for the details.
+ */
+static ssize_t send_callback(nghttp2_session *session, const uint8_t *data,
+                             size_t length, int flags, void *user_data) {
+  struct Connection *connection;
+  int rv;
+  (void)session;
+  (void)flags;
+
+  connection = (struct Connection *)user_data;
+  //connection-&gt;want_io = IO_NONE;
+  ERR_clear_error();
+  rv = SSL_write(connection-&gt;ssl, data, (int)length);
+  if (rv &lt;= 0) {
+    int err = SSL_get_error(connection-&gt;ssl, rv);
+    if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ) {
+      connection-&gt;want_io =
+          (err == SSL_ERROR_WANT_READ ? WANT_READ : WANT_WRITE);
+      rv = NGHTTP2_ERR_WOULDBLOCK;
+    } else {
+      rv = NGHTTP2_ERR_CALLBACK_FAILURE;
+    }
+  }
+  return rv;
+}
+
+/*
+ * The implementation of nghttp2_recv_callback type. Here we read data
+ * from the network and write them in |buf|. The capacity of |buf| is
+ * |length| bytes. Returns the number of bytes stored in |buf|. See
+ * the documentation of nghttp2_recv_callback for the details.
+ */
+static ssize_t recv_callback(nghttp2_session *session, uint8_t *buf,
+                             size_t length, int flags, void *user_data) {
+  struct Connection *connection;
+  int rv;
+  (void)session;
+  (void)flags;
+
+  connection = (struct Connection *)user_data;
+  connection-&gt;want_io = IO_NONE;
+  ERR_clear_error();
+  rv = SSL_read(connection-&gt;ssl, buf, (int)length);
+  if (rv &lt; 0) {
+    int err = SSL_get_error(connection-&gt;ssl, rv);
+    if (err == SSL_ERROR_WANT_WRITE || err == SSL_ERROR_WANT_READ) {
+      connection-&gt;want_io =
+          (err == SSL_ERROR_WANT_READ ? WANT_READ : WANT_WRITE);
+      rv = NGHTTP2_ERR_WOULDBLOCK;
+    } else {
+      rv = NGHTTP2_ERR_CALLBACK_FAILURE;
+    }
+  } else if (rv == 0) {
+    rv = NGHTTP2_ERR_EOF;
+  }
+  return rv;
+}
+
+static int on_frame_send_callback(nghttp2_session *session,
+                                  const nghttp2_frame *frame, void *user_data) {
+  size_t i;
+  (void)user_data;
+
+  switch (frame-&gt;hd.type) {
+  case NGHTTP2_HEADERS:
+    if (nghttp2_session_get_stream_user_data(session, frame-&gt;hd.stream_id)) {
+      const nghttp2_nv *nva = frame-&gt;headers.nva;
+      printf("[INFO] C ----------------------------&gt; S (HEADERS)\n");
+      for (i = 0; i &lt; frame-&gt;headers.nvlen; ++i) {
+        fwrite(nva[i].name, 1, nva[i].namelen, stdout);
+        printf(": ");
+        fwrite(nva[i].value, 1, nva[i].valuelen, stdout);
+        printf("\n");
+      }
+    }
+    break;
+  case NGHTTP2_RST_STREAM:
+    printf("[INFO] C ----------------------------&gt; S (RST_STREAM)\n");
+    break;
+  case NGHTTP2_GOAWAY:
+    printf("[INFO] C ----------------------------&gt; S (GOAWAY)\n");
+    break;
+  }
+  return 0;
+}
+
+static int on_frame_recv_callback(nghttp2_session *session,
+                                  const nghttp2_frame *frame, void *user_data) {
+  size_t i;
+  (void)user_data;
+
+  switch (frame-&gt;hd.type) {
+  case NGHTTP2_HEADERS:
+    if (frame-&gt;headers.cat == NGHTTP2_HCAT_RESPONSE) {
+      const nghttp2_nv *nva = frame-&gt;headers.nva;
+      struct XRequest *req;
+      req = (struct XRequest *)nghttp2_session_get_stream_user_data(session, frame-&gt;hd.stream_id);
+      if (req) {
+        printf("[INFO] C &lt;---------------------------- S (HEADERS)\n");
+        for (i = 0; i &lt; frame-&gt;headers.nvlen; ++i) {
+          fwrite(nva[i].name, 1, nva[i].namelen, stdout);
+          printf(": ");
+          fwrite(nva[i].value, 1, nva[i].valuelen, stdout);
+          printf("\n");
+        }
+      }
+    }
+    break;
+  case NGHTTP2_RST_STREAM:
+    printf("[INFO] C &lt;---------------------------- S (RST_STREAM)\n");
+    break;
+  case NGHTTP2_GOAWAY:
+    printf("[INFO] C &lt;---------------------------- S (GOAWAY)\n");
+    break;
+  }
+  return 0;
+}
+
+/*
+ * The implementation of nghttp2_on_stream_close_callback type. We use
+ * this function to know the response is fully received. Since we just
+ * fetch 1 resource in this program, after reception of the response,
+ * we submit GOAWAY and close the session.
+ */
+static int on_stream_close_callback(nghttp2_session *session, int32_t stream_id,
+                                    uint32_t error_code, void *user_data) {
+  struct XRequest *req;
+  (void)error_code;
+  (void)user_data;
+
+  req =  (struct XRequest *)nghttp2_session_get_stream_user_data(session, stream_id);
+  if (req) {
+    int rv;
+    rv = nghttp2_session_terminate_session(session, NGHTTP2_NO_ERROR);
+
+    if (rv != 0) {
+      diec("nghttp2_session_terminate_session", rv);
+    }
+  }
+  return 0;
+}
+
+/*
+ * The implementation of nghttp2_on_data_chunk_recv_callback type. We
+ * use this function to print the received response body.
+ */
+static int on_data_chunk_recv_callback(nghttp2_session *session, uint8_t flags,
+                                       int32_t stream_id, const uint8_t *data,
+                                       size_t len, void *user_data) {
+  struct XRequest *req;
+  (void)flags;
+  (void)user_data;
+
+  req =  (struct XRequest *)nghttp2_session_get_stream_user_data(session, stream_id);
+  if (req) {
+    printf("[INFO] C &lt;---------------------------- S (DATA chunk)\n"
+           "%lu bytes\n",
+           (unsigned long int)len);
+    fwrite(data, 1, len, stdout);
+    printf("\n");
+  }
+  return 0;
+}
+
+#define MAKE_NV(NAME, VALUE)                                                   \
+  {                                                                            \
+    (uint8_t *)NAME, (uint8_t *)VALUE, sizeof(NAME) - 1, sizeof(VALUE) - 1,    \
+        NGHTTP2_NV_FLAG_NONE                                                   \
+  }
+
+#define MAKE_NV_CS(NAME, VALUE)                                                \
+  {                                                                            \
+    (uint8_t *)NAME, (uint8_t *)VALUE, sizeof(NAME) - 1, strlen(VALUE),        \
+        NGHTTP2_NV_FLAG_NONE                                                   \
+  }
+
+
+ssize_t nghttp2_prd_callback(
+nghttp2_session *session, int32_t stream_id, uint8_t *buf, size_t length,
+uint32_t *data_flags, nghttp2_data_source *source, void *user_data)
+{
+    struct XRequest *req = (struct XRequest *)source-&gt;ptr;
+    
+      size_t n = std::min(req-&gt;nleft, length);
+      memcpy(buf,req-&gt;pdata+ req-&gt;nsize - req-&gt;nleft, n);
+      req-&gt;nleft -= n;
+      if (req-&gt;nleft == 0) {
+        *data_flags |= NGHTTP2_DATA_FLAG_EOF;
+      }
+      return n;
+}
+
+
+/*
+ * Update |pollfd| based on the state of |connection|.
+ */
+static void ctl_poll(struct pollfd *pollfd, struct Connection *connection) {
+  pollfd-&gt;events = 0;
+  if (nghttp2_session_want_read(connection-&gt;session) ||
+      connection-&gt;want_io == WANT_READ) {
+    pollfd-&gt;events |= POLLIN;
+  }
+  if (nghttp2_session_want_write(connection-&gt;session) ||
+      connection-&gt;want_io == WANT_WRITE) {
+    pollfd-&gt;events |= POLLOUT;
+  }
+}
+
+
+
+/*
+ * Submits the request |req| to the connection |connection|.  This
+ * function does not send packets; just append the request to the
+ * internal queue in |connection-&gt;session|.
+ */
+static void submit_request(struct Connection *connection, struct XRequest *req) {
+  int32_t stream_id;
+  /* Make sure that the last item is NULL */
+  const nghttp2_nv nva[] = {MAKE_NV(":method", "POST"),
+                            MAKE_NV_CS(":path", req-&gt;path),
+                            MAKE_NV(":scheme", "https"),
+                            MAKE_NV_CS(":authority", req-&gt;hostport),
+                            MAKE_NV("accept", "*/*"),
+                            MAKE_NV("user-agent", "nghttp2/" NGHTTP2_VERSION),
+              MAKE_NV_CS("apns-topic",req-&gt;topic),
+              MAKE_NV_CS("apns-priority",req-&gt;priority),
+              MAKE_NV_CS("apns-expiration",req-&gt;expiration),
+              MAKE_NV_CS("apns-push-type",req-&gt;pushtype),
+              MAKE_NV_CS("host",req-&gt;host)
+      
+  };
+    
+    nghttp2_data_provider *prd = new nghttp2_data_provider();
+    prd-&gt;source.ptr = req;
+    
+    prd-&gt;read_callback =nghttp2_prd_callback;
+    stream_id = nghttp2_submit_request(connection-&gt;session, NULL, nva,
+                                     sizeof(nva) / sizeof(nva[0]), prd, req);
+
+  if (stream_id &lt; 0) {
+    diec("nghttp2_submit_request", stream_id);
+  }
+
+  req-&gt;stream_id = stream_id;
+  printf("[INFO] Stream ID = %d\n", stream_id);
+}
+
+
+static void make_non_block(int fd) {
+  int flags, rv;
+  while ((flags = fcntl(fd, F_GETFL, 0)) == -1 &amp;&amp; errno == EINTR)
+    ;
+  if (flags == -1) {
+    dief("fcntl", strerror(errno));
+  }
+  while ((rv = fcntl(fd, F_SETFL, flags | O_NONBLOCK)) == -1 &amp;&amp; errno == EINTR)
+    ;
+  if (rv == -1) {
+    dief("fcntl", strerror(errno));
+  }
+}
+
+static void set_tcp_nodelay(int fd) {
+  int val = 1;
+  int rv;
+  rv = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &amp;val, (socklen_t)sizeof(val));
+  if (rv == -1) {
+    dief("setsockopt", strerror(errno));
+  }
+}
+
+
+
+/*
+ * Performs the network I/O.
+ */
+static void exec_io(struct Connection *connection) {
+  int rv;
+  rv = nghttp2_session_recv(connection-&gt;session);
+  if (rv != 0) {
+    diec("nghttp2_session_recv", rv);
+  }
+  rv = nghttp2_session_send(connection-&gt;session);
+  if (rv != 0) {
+    diec("nghttp2_session_send", rv);
+  }
+}
+
+
+int testapns( const std::string &amp;m_capath,
+              const std::string &amp;m_cerfile,
+              const std::string &amp;m_keyfile,
+              const std::string &amp;m_host,
+              const std::string &amp;urlpath,
+              const std::string &amp;pushtype,
+             const std::string &amp;topic,
+             const std::string &amp;priority,
+             const std::string &amp;expiration,
+            const std::string &amp;data
+                                     
+             )
+{
+    nfds_t npollfds = 1;
+    struct pollfd pollfds[1];
+
+    struct sockaddr_in   m_server_addr;
+    struct hostent       m_host_info;
+
+    int m_port;
+
+    int err;
+    int ret=0;
+    struct timeval tv;
+    time_t now=time(NULL);
+    #define ERR_STRING_LEN  256
+    char errString[ERR_STRING_LEN]={0};
+    #define GET_SSL_ERR_STRING  \
+    ERR_error_string_n(ERR_get_error(),errString,ERR_STRING_LEN-1)
+
+    int hostbuf_len=1024;
+    char *hostbuf=NULL;
+    bool retry=false;
+
+    /* Create an SSL_METHOD structure (choose an SSL/TLS protocol version) */
+    const SSL_METHOD * m_method = SSLv23_method();
+    if(!m_method)
+    {
+        return -1;
+    }
+
+
+    /* Create an SSL_CTX structure */
+    SSL_CTX *  m_ctx = SSL_CTX_new(m_method);
+    if(!m_ctx)
+    {
+        return -1;
+    }
+
+    SSL_CTX_set_default_passwd_cb(m_ctx,get_cert_password_cb2);
+
+
+    /* Load the CA from the Path */
+    if(SSL_CTX_load_verify_locations(m_ctx, NULL, m_capath.c_str()) &lt;= 0)
+    {
+     GET_SSL_ERR_STRING  ;
+     std::cout &lt;&lt; "err=failed_to_set_ca ssl_err= " &lt;&lt; errString &lt;&lt; "\n";
+     return -1;
+    }
+
+    /* Load the client certificate into the SSL_CTX structure */
+    if (SSL_CTX_use_certificate_file(m_ctx, m_cerfile.c_str(), SSL_FILETYPE_PEM) &lt;= 0) {
+        GET_SSL_ERR_STRING  ;
+        std::cout &lt;&lt; "SSL_CTX_use_certificate_filessl_err= " &lt;&lt; errString &lt;&lt; "\n";
+        return -1;
+    }
+
+    /* Load the private-key corresponding to the client certificate */
+    if (SSL_CTX_use_PrivateKey_file(m_ctx, m_keyfile.c_str(), SSL_FILETYPE_PEM) &lt;= 0) {
+     GET_SSL_ERR_STRING  ;
+     std::cout &lt;&lt; "SSL_CTX_use_PrivateKey_file = " &lt;&lt; errString &lt;&lt; "\n";
+     return -1;
+    }
+
+    /* Check if the client certificate and private-key matches */
+    if (!SSL_CTX_check_private_key(m_ctx)) {
+      GET_SSL_ERR_STRING  ;
+       std::cout &lt;&lt; "SSL_CTX_check_private_key = " &lt;&lt; errString &lt;&lt; "\n";
+       return -1;
+    }
+
+    /* Set up a TCP socket */
+    int m_sock = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if(m_sock == -1)
+    {
+        err=-1;
+        return -1;
+    }
+
+    memset (&amp;m_server_addr, '\0', sizeof(m_server_addr));
+    m_server_addr.sin_family      = AF_INET;
+    m_server_addr.sin_port        = htons(m_port);       /* Server Port number */
+
+    if((hostbuf=(char *)malloc(hostbuf_len))==NULL)
+    {
+        return -1;
+    }
+
+    struct hostent  *phost=NULL;
+    int ret1=0;
+    phost = gethostbyname(m_host.c_str());
+
+    m_server_addr.sin_addr = *(struct in_addr*)phost-&gt;h_addr_list[0];
+    char m_connect_ip[30];
+     inet_ntop(AF_INET, &amp;m_server_addr.sin_addr, m_connect_ip,sizeof(m_connect_ip));
+           m_connect_ip[15]='\0';
+    m_server_addr.sin_port = htons(443);
+    printf("host ip %s \n", m_connect_ip);
+
+
+    /* Establish a TCP/IP connection to the SSL client */
+    err = ::connect(m_sock, (struct sockaddr*) &amp;m_server_addr, sizeof(m_server_addr));
+    if(err == -1)
+    {
+        return -1;
+    }
+
+
+    /* An SSL structure is created */
+    SSL *m_ssl = SSL_new(m_ctx);
+    if(!m_ssl)
+    {
+        err=-1;
+        return -1;
+    }
+
+    /* Assign the socket into the SSL structure (SSL and socket without BIO) */
+    SSL_set_fd(m_ssl, m_sock);
+
+    /* Perform SSL Handshake on the SSL client */
+    err = SSL_connect(m_ssl);
+    if(err &lt;= 0)
+    {
+        GET_SSL_ERR_STRING  ;
+        err=-1;
+        return -1;
+    }
+
+    struct Connection connection;
+    connection.ssl = m_ssl;
+    nghttp2_session_callbacks *callbacks;
+    int rv = nghttp2_session_callbacks_new(&amp;callbacks);
+
+    nghttp2_session_callbacks_set_send_callback(callbacks, send_callback);
+
+     nghttp2_session_callbacks_set_recv_callback(callbacks, recv_callback);
+
+     nghttp2_session_callbacks_set_on_frame_send_callback(callbacks,
+                                                          on_frame_send_callback);
+
+     nghttp2_session_callbacks_set_on_frame_recv_callback(callbacks,
+                                                          on_frame_recv_callback);
+
+     nghttp2_session_callbacks_set_on_stream_close_callback(
+         callbacks, on_stream_close_callback);
+
+     nghttp2_session_callbacks_set_on_data_chunk_recv_callback(
+         callbacks, on_data_chunk_recv_callback);
+
+
+
+    rv = nghttp2_session_client_new(&amp;connection.session, callbacks, &amp;connection);
+
+    nghttp2_session_callbacks_del(callbacks);
+
+    if (rv != 0) {
+      diec("nghttp2_session_client_new", rv);
+    }
+
+    rv = nghttp2_submit_settings(connection.session, NGHTTP2_FLAG_NONE, NULL, 0);
+
+
+    connection.want_io = IO_NONE;
+
+     /* Here make file descriptor non-block */
+    make_non_block(m_sock);
+    set_tcp_nodelay(m_sock);
+
+    if (rv != 0) {
+      diec("nghttp2_submit_settings", rv);
+    }
+    struct XRequest req;
+    req.host = m_host.c_str();
+    req.path = urlpath.c_str();
+    req.hostport = m_host.c_str();
+    req.pdata = data.c_str();
+    req.nsize = req.nleft = strlen(req.pdata);
+    req.expiration = expiration.c_str();
+    req.priority = priority.c_str();
+    req.pushtype = pushtype.c_str();
+    req.topic = topic.c_str();
+    /* Submit the HTTP request to the outbound queue. */
+    submit_request(&amp;connection, &amp;req);
+
+
+    pollfds[0].fd = m_sock;
+    ctl_poll(pollfds, &amp;connection);
+
+    /* Event loop */
+    while (nghttp2_session_want_read(connection.session) ||
+         nghttp2_session_want_write(connection.session)) {
+    int nfds = poll(pollfds, npollfds, -1);
+    if (nfds == -1) {
+      dief("poll", strerror(errno));
+    }
+    if (pollfds[0].revents &amp; (POLLIN | POLLOUT)) {
+      exec_io(&amp;connection);
+    }
+    if ((pollfds[0].revents &amp; POLLHUP) || (pollfds[0].revents &amp; POLLERR)) {
+      die("Connection error");
+    }
+    ctl_poll(pollfds, &amp;connection);
+    }
+
+    nghttp2_session_del(connection.session);
+    SSL_shutdown(m_ssl);
+    SSL_free(m_ssl);
+    SSL_CTX_free(m_ctx);
+    shutdown(m_sock, SHUT_WR);
+    close(m_sock);
+    
+    return 0;
+
+}
+
+</code></pre>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2020-08-22 17:28:55</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

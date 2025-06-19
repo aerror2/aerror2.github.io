@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLEX ActionScript 游戏开发教程之[贪吃蛇]Step By Step</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>FLEX ActionScript 游戏开发教程之[贪吃蛇]Step By Step</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/2958514" target="_blank">https://blog.csdn.net/aerror/article/details/2958514</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-09-21 20:42:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 5473</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 11</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 3</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">actionscript</span>, <span class="tag">flex</span>, <span class="tag">游戏</span>, <span class="tag">null</span>, <span class="tag">encoding</span>, <span class="tag">j2se</span></div>
+    
+    <div class="article-description"> 我也是刚刚接触到Flex的游戏开发, 继j2me的手机游戏开发后,再现学现卖,发一个Flash版的贪吃蛇游戏开发的Step by Step教程,希望对新手有些帮助. :). Step 1.下载J2SE和Flex 3.1 SDK(http://download.macromedia.com/pub/flex/sdk/flex_sdk_3.zip,免费的,哈哈)，安装好Java，解压</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<div class="highlighter"></div>
+<p><br/><br/> 我也是刚刚接触到Flex的游戏开发, 继j2me的手机游戏开发后,再现学现卖,发一个Flash版的贪吃蛇游戏开发的Step by Step教程,希望对新手有些帮助. :).</p>
+<p align="left" style="FONT-SIZE: 14pt"> </p>
+<p align="left" style="FONT-SIZE: 14pt"><font face="Arial Black">Step 1.</font></p>
+<p align="left" style="FONT-SIZE: 14pt"><br/>下载J2SE和Flex 3.1 SDK(<a href="http://download.macromedia.com/pub/flex/sdk/flex_sdk_3.zip">http://download.macromedia.com/pub/flex/sdk/flex_sdk_3.zip</a>,免费的,哈哈)，安装好Java，解压 Flex SDK到路径G:/javaspace/flex_sdk_3</p>
+<p align="left" style="FONT-SIZE: 14pt"><br/><font face="Arial Black">Step 2.</font></p>
+<font face="Arial Black"></font>
+<p align="left" style="FONT-SIZE: 14pt"><br/>到我的电脑-&gt;属性-&gt;高级-&gt;环境变量,设置PATH路径加上: C:/j2sdk1.4.2_08/bin;G:/javaspace/flex_sdk_3/bin</p>
+<p align="left" style="FONT-SIZE: 14pt"><br/><font face="Arial Black">Step 3.</font></p>
+<font face="Arial Black"></font>
+<p align="left" style="FONT-SIZE: 14pt"><br/>创建G:/javaspace/workspace/SnakeGameFlash和G:/javaspace/workspace/SnakeGameFlash/asx两个目录.</p>
+<p align="left" style="FONT-SIZE: 14pt"><br/><font face="Arial Black">Step 4.</font></p>
+<p align="left" style="FONT-SIZE: 14pt"><br/>创建G:/javaspace/workspace/SnakeGameFlash/SnakeGame.mxml文件，内容如下:</p>
+<div class="highlighter">
+<ol class="highlighter-xml"><li><span class="tag">&lt;?</span><span class="tag-name">xml</span> <span class="attribute">version</span>=<span class="attribute-value">"1.0"</span> <span class="attribute">encoding</span>=<span class="attribute-value">"utf-8"</span><span class="tag">?&gt;</span></li><li class="alt"><span class="tag">&lt;</span><span class="tag-name">mx:Application</span>  <span class="attribute">name</span>=<span class="attribute-value">"SnakeGame"</span></li><li> <span class="attribute">xmlns:mx</span>=<span class="attribute-value">"http://www.adobe.com/2006/mxml"</span> </li><li class="alt"> <span class="attribute">xmlns:custom</span>=<span class="attribute-value">"asx.*"</span></li><li> <span class="attribute">width</span>=<span class="attribute-value">"600"</span> <span class="attribute">height</span>=<span class="attribute-value">"400"</span></li><li class="alt"> <span class="attribute">frameRate</span>=<span class="attribute-value">"8"</span> </li><li> <span class="attribute">creationComplete</span>=<span class="attribute-value">"creationCompleteHandler(event);"</span></li><li class="alt">  </li><li><span class="tag">&gt;</span></li><li class="alt">  <span class="tag">&lt;</span><span class="tag-name">mx:Script</span><span class="tag">&gt;</span></li><li>        <span class="cdata">&lt;![CDATA[</span></li><li class="alt"><span class="cdata"></span></li><li><span class="cdata"></span></li><li class="alt"><span class="cdata">            import flash.events.MouseEvent;</span></li><li><span class="cdata">            import mx.events.FlexEvent;</span></li><li class="alt"><span class="cdata">            import asx.SnakeMc;</span></li><li><span class="cdata">   </span></li><li class="alt"><span class="cdata">            private function creationCompleteHandler(event:FlexEvent):void</span></li><li><span class="cdata">            {<!-- --></span></li><li class="alt"><span class="cdata">        var mc:SnakeMc  = new SnakeMc();</span></li><li><span class="cdata">        swfldr.addChild(mc);       </span></li><li class="alt"><span class="cdata">            }</span></li><li><span class="cdata">    </span></li><li class="alt"><span class="cdata">        ]]&gt;</span></li><li>    <span class="tag">&lt;/</span><span class="tag-name">mx:Script</span><span class="tag">&gt;</span></li><li class="alt">  <span class="tag">&lt;</span><span class="tag-name">mx:SWFLoader</span> <span class="attribute">id</span>=<span class="attribute-value">"swfldr"</span> <span class="attribute">width</span>=<span class="attribute-value">"512"</span> <span class="attribute">height</span>=<span class="attribute-value">"280"</span><span class="tag">/&gt;</span></li><li><span class="tag">&lt;/</span><span class="tag-name">mx:Application</span><span class="tag">&gt;</span></li><li class="alt"></li><li></li></ol>
+</div>
+<p> </p>
+<p><font face="Arial Black">Step 5.</font></p>
+<p><br/>创建G:/javaspace/workspace/SnakeGameFlash/asx/SnakeBlock.as文件,内容如下:<br/><br/></p>
+<div class="highlighter">
+<ol class="highlighter-j"><li><span class="keyword">package</span> asx</li><li class="alt">{<!-- --></li><li> <span class="keyword">import</span> flash.display.Sprite;</li><li class="alt"></li><li> <span class="keyword">public</span> <span class="keyword">class</span> SnakeBlock <span class="keyword">extends</span> Sprite</li><li class="alt"> {<!-- --></li><li>  <span class="keyword">public</span> var r:uint=<span class="number">2</span>;</li><li class="alt">  <span class="keyword">public</span> var xx:uint=<span class="number">0</span>;</li><li>  <span class="keyword">public</span> var yy:uint=<span class="number">0</span>;</li><li class="alt">  <span class="keyword">public</span> function SnakeBlock()</li><li>  {<!-- --></li><li class="alt">   <span class="keyword">super</span>();</li><li>  }</li><li class="alt">  </li><li> }</li><li class="alt">}</li><li></li><li class="alt"></li></ol>
+</div>
+<p><font face="Arial Black">Step 6.</font><br/>创建G:/javaspace/workspace/SnakeGameFlash/asx/SnakeMc.as文件,内容如下:</p>
+<p> </p>
+<div class="highlighter">
+<ol class="highlighter-j"><li><span class="keyword">package</span> asx</li><li class="alt">{<!-- --></li><li></li><li class="alt"> <span class="keyword">import</span> flash.display.MovieClip;</li><li> <span class="keyword">import</span> flash.events.Event;</li><li class="alt"> <span class="keyword">import</span> flash.events.KeyboardEvent;</li><li> <span class="keyword">import</span> flash.text.TextField;</li><li class="alt"> <span class="keyword">import</span> flash.ui.Keyboard;</li><li></li><li class="alt"></li><li></li><li class="alt"></li><li> <span class="keyword">public</span> <span class="keyword">class</span> SnakeMc <span class="keyword">extends</span> MovieClip</li><li class="alt"> {<!-- --></li><li>   </li><li class="alt">  <span class="keyword">public</span> <span class="keyword">const</span> blocksize:uint = <span class="number">8</span>;</li><li>  <span class="keyword">public</span> <span class="keyword">const</span> blWidth:uint   = <span class="number">64</span></li><li class="alt">  <span class="keyword">public</span> <span class="keyword">const</span> blHeight:uint  = <span class="number">32</span>;</li><li>  <span class="keyword">public</span> <span class="keyword">const</span> numFood:uint = <span class="number">20</span>;</li><li class="alt">  <span class="keyword">public</span> var t:TextField = <span class="keyword">null</span>;</li><li>  <span class="keyword">public</span> var t2:TextField = <span class="keyword">null</span>;</li><li class="alt"></li><li>  <span class="keyword">public</span> var ss:SnakeBlock    = <span class="keyword">null</span>;</li><li class="alt">  <span class="keyword">public</span> var sa:Array     = <span class="keyword">new</span> Array();</li><li>  <span class="keyword">public</span> var kbq:Array    = <span class="keyword">new</span> Array();</li><li class="alt">  <span class="keyword">public</span> var rr:Array    = <span class="keyword">new</span> Array();</li><li>  <span class="keyword">public</span> var food:Array  = <span class="keyword">new</span> Array();</li><li class="alt">  <span class="keyword">public</span> var scores:uint  = <span class="number">0</span>;</li><li>  <span class="keyword">public</span> var bonus:uint   = <span class="number">0</span>;</li><li class="alt">  <span class="keyword">public</span> var tickcount:Number =<span class="number">0</span>;</li><li>  </li><li class="alt">  </li><li>  <span class="keyword">public</span> function CreateSprite(w:uint=<span class="number">0</span>):SnakeBlock</li><li class="alt">  {<!-- --></li><li>   var s:SnakeBlock = <span class="keyword">new</span> SnakeBlock();</li><li class="alt">   <span class="keyword">this</span>.addChild(s);</li><li>   with(s)</li><li class="alt">   {<!-- --></li><li>    <span class="keyword">if</span> (w==<span class="number">0</span>) <span class="comment">// blue snake color the other times  </span></li><li class="alt">     graphics.beginFill(<span class="number">0x555588</span>);</li><li>         <span class="keyword">else</span></li><li class="alt">     graphics.beginFill(<span class="number">255</span>&lt;&lt;<span class="number">16</span>); <span class="comment">// red food color first time  </span></li><li>                   </li><li class="alt">    graphics.lineTo((blocksize-<span class="number">1</span>),<span class="number">0</span> ); </li><li>    graphics.lineTo((blocksize-<span class="number">1</span>), (blocksize-<span class="number">1</span>)); </li><li class="alt">    graphics.lineTo(<span class="number">0</span>, (blocksize-<span class="number">1</span>)); </li><li>    graphics.endFill(); <span class="comment">// draw a square  </span></li><li class="alt">   }</li><li>   <span class="keyword">return</span> s;</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function AppendSprite(w:uint=<span class="number">0</span>):SnakeBlock</li><li>  {<!-- --></li><li class="alt">   var s:SnakeBlock = CreateSprite(w);</li><li>   sa.push(s);</li><li class="alt">   <span class="keyword">if</span>(sa.length&gt;<span class="number">1</span>)</li><li>   {<!-- --></li><li class="alt">    s.x = sa[sa.length-<span class="number">2</span>].x;</li><li>    s.y = sa[sa.length-<span class="number">2</span>].y;</li><li class="alt">    s.xx = sa[sa.length-<span class="number">2</span>].xx;</li><li>    s.yy = sa[sa.length-<span class="number">2</span>].yy;</li><li class="alt">    s.r = (sa[sa.length-<span class="number">2</span>].r+<span class="number">2</span>)%<span class="number">4</span>;</li><li>    UpdateSnakePos(s);</li><li class="alt">    s.r = sa[sa.length-<span class="number">2</span>].r;</li><li>   }</li><li class="alt">   <span class="keyword">else</span></li><li>   {<!-- --></li><li class="alt">    s.xx = s.x/blocksize;</li><li>    s.yy = s.y/blocksize</li><li class="alt">   }</li><li>   <span class="keyword">return</span> s;</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function UpdateSnakePos(s:SnakeBlock):<span class="keyword">void</span></li><li>  {<!-- --></li><li class="alt">   with(s)</li><li>   {<!-- --></li><li class="alt">    <span class="keyword">switch</span>(r)</li><li>          {<!-- --></li><li class="alt">          <span class="keyword">case</span> <span class="number">0</span>:</li><li>           x -=blocksize;</li><li class="alt">           xx--;</li><li>           <span class="keyword">break</span>;</li><li class="alt">          <span class="keyword">case</span> <span class="number">1</span>:</li><li>           y -=blocksize;</li><li class="alt">           yy--;</li><li>           <span class="keyword">break</span>;</li><li class="alt">          <span class="keyword">case</span> <span class="number">2</span>:</li><li>           x +=blocksize;</li><li class="alt">           xx++;</li><li>           <span class="keyword">break</span>;</li><li class="alt">          <span class="keyword">case</span> <span class="number">3</span>:</li><li>           y +=blocksize;</li><li class="alt">           yy++;</li><li>           <span class="keyword">break</span>;</li><li class="alt">          }</li><li>         </li><li class="alt">   }</li><li>  }</li><li class="alt">  </li><li>  <span class="keyword">public</span> function upateSnakesPos():<span class="keyword">void</span></li><li class="alt">  {<!-- --></li><li>   var i:<span class="keyword">int</span> =<span class="number">0</span>;</li><li class="alt">   <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;sa.length;i++)</li><li>   {<!-- --></li><li class="alt">    var s:SnakeBlock =sa[i];</li><li>    <span class="keyword">for</span>(var j:<span class="keyword">int</span>=<span class="number">0</span>;j&lt;rr.length;j++)</li><li class="alt">    {<!-- --></li><li>     <span class="keyword">if</span>(i==(rr[j]&gt;&gt;<span class="number">16</span>))</li><li class="alt">     {<!-- --></li><li>      s.r = (rr[j]<span class="number">0xffff</span>)%<span class="number">4</span>;</li><li class="alt">     }</li><li>    </li><li class="alt">    }</li><li>    UpdateSnakePos(s);</li><li class="alt">   }</li><li>   </li><li class="alt">   var tt:Array = <span class="keyword">new</span> Array();</li><li>   <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;rr.length;i++)</li><li class="alt">   {<!-- --></li><li>    var tmp:uint = (rr[i]&gt;&gt;<span class="number">16</span>);</li><li class="alt">    <span class="keyword">if</span>(tmp &lt;sa.length+<span class="number">10</span>)</li><li>    {<!-- --></li><li class="alt">     rr[i] =((tmp+<span class="number">1</span>)&lt;&lt;<span class="number">16</span>)|(rr[i]<span class="number">0xffff</span>);</li><li>     tt.push(rr[i]);</li><li class="alt">    }</li><li>   }</li><li class="alt">   rr = <span class="keyword">null</span>;</li><li>   rr = tt;</li><li class="alt">  }</li><li>  </li><li class="alt">  </li><li>  </li><li class="alt">  <span class="keyword">public</span> function onkeydown(evt:KeyboardEvent):<span class="keyword">void</span> </li><li>  {<!-- --></li><li class="alt">   </li><li>   <span class="keyword">if</span>(evt.keyCode==Keyboard.SPACE)</li><li class="alt">   {<!-- --></li><li>    <span class="keyword">if</span>(ss==<span class="keyword">null</span>)</li><li class="alt">    {<!-- --></li><li>     cleanup();</li><li class="alt">     ss=AppendSprite();</li><li>     <span class="keyword">for</span>(var i:uint;i&lt;<span class="number">0</span>;i++)</li><li class="alt">     {<!-- --></li><li>      AppendSprite();</li><li class="alt">     }</li><li>     genFood();   </li><li class="alt">    }</li><li>    </li><li class="alt">   }</li><li>   <span class="keyword">else</span> <span class="keyword">if</span>(ss!=<span class="keyword">null</span>)</li><li class="alt">   {<!-- --></li><li>    </li><li class="alt">    <span class="keyword">switch</span>(evt.keyCode)</li><li>    {<!-- --></li><li class="alt">     <span class="keyword">case</span> Keyboard.LEFT:</li><li>     <span class="keyword">case</span> <span class="number">65</span>:</li><li class="alt">      kbq.unshift(<span class="number">0</span>);</li><li>      <span class="keyword">break</span>;</li><li class="alt">     <span class="keyword">case</span> Keyboard.UP:</li><li>     <span class="keyword">case</span> <span class="number">87</span>:</li><li class="alt">      kbq.unshift(<span class="number">1</span>);</li><li>      <span class="keyword">break</span>;</li><li class="alt">     <span class="keyword">case</span> Keyboard.RIGHT:</li><li>     <span class="keyword">case</span> <span class="number">68</span>:</li><li class="alt">      kbq.unshift(<span class="number">2</span>);</li><li>      <span class="keyword">break</span>;</li><li class="alt">      </li><li>     <span class="keyword">case</span> Keyboard.DOWN:</li><li class="alt">     <span class="keyword">case</span> <span class="number">83</span>:</li><li>      kbq.unshift(<span class="number">3</span>);</li><li class="alt">      <span class="keyword">break</span>;</li><li>     <span class="keyword">default</span>:</li><li class="alt">      <span class="keyword">break</span>;  </li><li>      </li><li class="alt">    };</li><li>    </li><li class="alt">   }</li><li>   </li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function IntersectSnake(xx:<span class="keyword">int</span>, yy:<span class="keyword">int</span>):Boolean</li><li>  {<!-- --></li><li class="alt">   var i:uint=<span class="number">0</span>;</li><li>   <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;sa.length;i++)</li><li class="alt">   {<!-- --></li><li>    <span class="keyword">if</span>(xx==sa[i].xx &amp;&amp; yy==sa[i].yy)</li><li class="alt">    {<!-- --></li><li>     <span class="keyword">return</span> <span class="keyword">true</span>;</li><li class="alt">    }</li><li>   }</li><li class="alt">   <span class="keyword">return</span> <span class="keyword">false</span>;</li><li>  }</li><li class="alt">  </li><li>  <span class="keyword">public</span> function IsGameOver():Boolean</li><li class="alt">  {<!-- --></li><li>  </li><li class="alt">   </li><li>   <span class="keyword">if</span>(ss.xx&lt;<span class="number">0</span> || ss.xx &gt;blWidth-<span class="number">1</span> || ss.yy&lt;<span class="number">0</span> || ss.yy &gt;blHeight-<span class="number">1</span>)</li><li class="alt">   {<!-- --></li><li>    <span class="keyword">return</span> <span class="keyword">true</span>;</li><li class="alt">   }</li><li>   var i:uint =<span class="number">0</span>;</li><li class="alt">   <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;sa.length;i++)</li><li>   {<!-- --></li><li class="alt">    <span class="keyword">if</span>(ss.xx==sa[i].xx &amp;&amp; ss.yy==sa[i].yy)</li><li>    {<!-- --></li><li class="alt">     <span class="keyword">return</span> <span class="keyword">true</span>;</li><li>    }</li><li class="alt">   }</li><li>  </li><li class="alt">   </li><li>   <span class="keyword">return</span> <span class="keyword">false</span>;</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function getFood(xx:<span class="keyword">int</span>,yy:<span class="keyword">int</span>):SnakeBlock</li><li>  {<!-- --></li><li class="alt">   <span class="keyword">for</span>(var i:<span class="keyword">int</span>=<span class="number">0</span>;i&lt;food.length;i++)</li><li>   {<!-- --></li><li class="alt">    <span class="keyword">if</span>(food[i].xx ==xx &amp;&amp; food[i].yy ==yy)</li><li>    {<!-- --></li><li class="alt">     <span class="keyword">return</span> food[i]; </li><li>    }</li><li class="alt">   }</li><li>   <span class="keyword">return</span> <span class="keyword">null</span>;</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function genFood():<span class="keyword">void</span></li><li>  {<!-- --></li><li class="alt">   <span class="keyword">if</span>(food.length!=<span class="number">0</span>)</li><li>     <span class="keyword">return</span>;</li><li class="alt"></li><li>   <span class="keyword">for</span>(;food.length &lt;numFood;)</li><li class="alt">   {<!-- --></li><li>    </li><li class="alt">    var xx:<span class="keyword">int</span>= Math.random()*(blWidth-<span class="number">1</span>);</li><li>    var yy:<span class="keyword">int</span>= Math.random()*(blHeight-<span class="number">1</span>);</li><li class="alt">    </li><li>    <span class="keyword">if</span>(getFood(xx,yy) ==<span class="keyword">null</span> &amp;&amp;!IntersectSnake(xx,yy)  )</li><li class="alt">    {<!-- --></li><li>     var s:SnakeBlock =  CreateSprite(<span class="number">1</span>);</li><li class="alt">     s.x = xx*blocksize;</li><li>     s.y = yy*blocksize;</li><li class="alt">     s.xx = xx;</li><li>     s.yy = yy;</li><li class="alt">     food.push(s);</li><li>    }  </li><li class="alt">   }</li><li>   </li><li class="alt">  }</li><li>  </li><li class="alt">  </li><li>  <span class="keyword">public</span> function eatFood():<span class="keyword">void</span></li><li class="alt">  {<!-- --></li><li>   <span class="keyword">if</span>(ss!=<span class="keyword">null</span>)</li><li class="alt">   {<!-- --></li><li>   </li><li class="alt">    <span class="keyword">for</span>(var i:<span class="keyword">int</span>=<span class="number">0</span>;i&lt;food.length;i++)</li><li>    {<!-- --></li><li class="alt">     <span class="keyword">if</span>(food[i].xx ==ss.xx &amp;&amp; food[i].yy ==ss.yy)</li><li>     {<!-- --></li><li class="alt">      AppendSprite();</li><li>      <span class="keyword">if</span>(sa.length&gt;<span class="number">2</span>)</li><li class="alt">      {<!-- --></li><li>       bonus +=<span class="number">4</span>*(sa.length-<span class="number">2</span>);</li><li class="alt">       <span class="keyword">if</span>(tickcount&gt;<span class="number">0</span>)</li><li>       {<!-- --></li><li class="alt">        bonus +=sa.length/tickcount;</li><li>       }</li><li class="alt">      }</li><li>      </li><li class="alt">      scores += <span class="number">10</span>+bonus;</li><li>      t.text = <span class="string">"Score: "</span>+scores;</li><li class="alt">      </li><li>      <span class="keyword">this</span>.removeChild(food[i]);</li><li class="alt">      food.splice(i,<span class="number">1</span>);</li><li>      <span class="keyword">return</span>;</li><li class="alt">     }</li><li>    }</li><li class="alt">    </li><li>   }</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function cleanup():<span class="keyword">void</span></li><li>  {<!-- --></li><li class="alt">   <span class="keyword">while</span>(sa.length&gt;<span class="number">0</span>)</li><li>   {<!-- --></li><li class="alt">    <span class="keyword">this</span>.removeChild(sa.pop()); </li><li>   }</li><li class="alt">  </li><li>   <span class="keyword">while</span>(food.length&gt;<span class="number">0</span>)</li><li class="alt">   {<!-- --></li><li>    <span class="keyword">this</span>.removeChild(food.pop());</li><li class="alt">   }</li><li>   </li><li class="alt">   rr.length=<span class="number">0</span>;</li><li>   kbq.length=<span class="number">0</span>;</li><li class="alt">      </li><li></li><li class="alt">   ss   = <span class="keyword">null</span>;</li><li>   scores   = <span class="number">0</span>;</li><li class="alt">   bonus    = <span class="number">0</span>;</li><li>   tickcount  = <span class="number">0</span>;</li><li class="alt">   </li><li>   </li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function GameFrame():<span class="keyword">void</span></li><li>  {<!-- --></li><li class="alt">   <span class="keyword">if</span>(ss!=<span class="keyword">null</span>)</li><li>    {<!-- --></li><li class="alt">     tickcount++;</li><li>     <span class="keyword">if</span>(kbq.length&gt;<span class="number">0</span>)</li><li class="alt">       {<!-- --></li><li>        var c:uint=<span class="number">0</span>;</li><li class="alt">           c = kbq.pop(); <span class="comment">// pick the next turn in the queue (may be undefined if queue is empty) </span></li><li>           <span class="comment">// and check that it is not undefined and not a 180 degree turn </span></li><li class="alt">           <span class="comment">// (annoying to be able to turn into the snake with one key press) </span></li><li>           <span class="comment">// </span></li><li class="alt">           <span class="keyword">if</span> (c%<span class="number">2</span>!=ss.r%<span class="number">2</span>) </li><li>           { </li><li class="alt">          rr.push(c); <span class="comment">// change current direction to the new value </span></li><li>           }</li><li class="alt">       } </li><li>       </li><li class="alt">       upateSnakesPos();</li><li>       <span class="keyword">if</span>(IsGameOver())</li><li class="alt">       {<!-- --></li><li>        t.text = <span class="string">"Game Over/t-/tPress SPACE"</span>;</li><li class="alt">      ss = <span class="keyword">null</span>;</li><li>      t2.text = food.length.toString();</li><li class="alt">        <span class="keyword">return</span>;</li><li>       }</li><li class="alt">       eatFood();</li><li>       genFood();</li><li class="alt">       t2.text = food.length.toString();</li><li>         </li><li class="alt">    } </li><li>  }</li><li class="alt">  </li><li>  <span class="keyword">public</span> function onEnterFrame(evt:Event):<span class="keyword">void</span></li><li class="alt">  {<!-- --></li><li>    GameFrame();</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function onAddtoStage(evt:Event):<span class="keyword">void</span></li><li>  {<!-- --></li><li class="alt">   <span class="keyword">this</span>.stage.addEventListener(KeyboardEvent.KEY_DOWN,onkeydown);</li><li>   <span class="keyword">this</span>.addEventListener(Event.ENTER_FRAME,onEnterFrame); </li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> function SnakeMc()</li><li>  {<!-- --></li><li class="alt">   </li><li>   addEventListener(Event.ADDED_TO_STAGE ,onAddtoStage);</li><li class="alt">   <span class="keyword">super</span>();</li><li>   </li><li class="alt">     t    = <span class="keyword">new</span> TextField();</li><li>   t.x      = <span class="number">1</span>;</li><li class="alt">   t.y   = <span class="number">255</span>;</li><li>   t.width  = <span class="number">511</span>;</li><li class="alt">   t.height = <span class="number">16</span>;</li><li>   t.text = <span class="string">"Snake Game/t-/tPress SPACE"</span>;</li><li class="alt">   addChild(t);</li><li>   </li><li class="alt">   t2   = <span class="keyword">new</span> TextField();</li><li>   t2    = <span class="keyword">new</span> TextField();</li><li class="alt">   t2.x      = <span class="number">1</span>;</li><li>   t2.y   = <span class="number">271</span>;</li><li class="alt">   t2.width  = <span class="number">511</span>;</li><li>   t2.height = <span class="number">16</span>;</li><li class="alt">   t2.text = food.length.toString();</li><li>   addChild(t2);</li><li class="alt">   </li><li>   <span class="keyword">this</span>.graphics.beginFill(<span class="number">0xeeeeee</span>); </li><li class="alt">   <span class="keyword">this</span>.graphics.lineStyle(<span class="number">1</span>); </li><li>   <span class="keyword">this</span>.graphics.lineTo(<span class="number">511</span>, <span class="number">0</span>); </li><li class="alt">   <span class="keyword">this</span>.graphics.lineTo(<span class="number">511</span>, <span class="number">256</span>); </li><li>   <span class="keyword">this</span>.graphics.lineTo(<span class="number">0</span>, <span class="number">256</span>); </li><li class="alt"></li><li>  }</li><li class="alt">  </li><li>  </li><li class="alt"> }</li><li></li><li class="alt"></li><li>}</li><li class="alt"></li><li></li></ol>
+</div>
+<p><font face="Arial Black"></font> </p>
+<p><font face="Arial Black">Step 7.</font></p>
+<p><font face="Arial Black"></font><br/>创建G:/javaspace/workspace/SnakeGameFlash/build.bat文件(用把*.as和SnakeGame.mxml编译和生成Flash),内容如下:<br/></p>
+<div class="highlighter">
+<ol class="highlighter-c"><li>mxmlc --strict=<span class="keyword">true</span> --file-specs SnakeGame.mxml</li><li class="alt">pause</li><li></li></ol>
+</div>
+<p> </p>
+<p><font face="Arial Black">Step 8.</font></p>
+<p><br/>运行G:/javaspace/workspace/SnakeGameFlash/build.bat,生成SnakeGame.swf</p>
+<p> </p>
+<p><font face="Arial Black">Step 9</font> </p>
+<p> </p>
+<p>运行测试SnakeGame.swf.</p>
+<p>教程结束</p>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-09-21 20:42:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

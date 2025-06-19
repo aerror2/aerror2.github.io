@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源BLHELI-S 代码详细解读(五）</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>开源BLHELI-S 代码详细解读(五）</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/136353455" target="_blank">https://blog.csdn.net/aerror/article/details/136353455</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-03-01 13:28:33</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 613</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 4</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">单片机</span>, <span class="tag">嵌入式硬件</span></div>
+    
+    <div class="article-description">总体思想是根据电机运行状态计算前4次换相时间，然后根据前4次换相时间计算15度和7.5度电角度时间，换相之后延时7.5度电角度开始检测过零点，检测到过零点后延时15度电角度进行换相。我们继续来看calc_next_comm_timing, 每次操作完换相之后，这里都会调用，同时会设置timer3去等advance timing.</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>我们继续来看calc_next_comm_timing, 每次操作完换相之后，这里都会调用，同时会设置timer3去等advance timing.</p>
+<p>总体思想是根据电机运行状态计算前4次换相时间，然后根据前4次换相时间计算15度和7.5度电角度时间，换相之后延时7.5度电角度开始检测过零点，检测到过零点后延时15度电角度进行换相</p>
+<p>下图来自网络，我也没有清晰的，大家将就，原作者请@我，我加上版本信息。谢谢</p>
+<p></p>
+<p><img alt="" height="634" src="images/br/063c7ea1bb3900604eec03503912ef8c.png" width="552"/></p>
+<p></p>
+<pre><code class="hljs language-javascript">
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+;
+; Calculate next commutation timing routine
+;
+; No assumptions
+;
+; Called immediately after each commutation
+; Also sets up timer 3 to wait advance timing
+; Two entry points are used
+;
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+calc_next_comm_timing:		; Entry point for run phase
+	; Read commutation time
+	clr	IE_EA
+	clr	TMR2CN0_TR2		; Timer 2 disabled
+	mov	Temp1, TMR2L		; Load timer value
+	mov	Temp2, TMR2H	    ;  temp1, temp2取timer2当时的计数
+	mov	Temp3, Timer2_X     
+	jnb	TMR2CN0_TF2H, ($+4)	; Check if interrupt is pending， 检查timer2的中断溢出标志要是零的话跳走，temp3不加1
+	inc	Temp3			; If it is pending, then timer has already wrapped， 已经超时了，Temp3+1
+	setb	TMR2CN0_TR2		; Timer 2 enabled， 打开timer.
+	setb	IE_EA ;打开全部中断
+IF MCU_48MHZ &gt;= 1
+	clr	C 
+	mov	A, Temp3
+	rrc	A          
+	mov	Temp3, A   ;Temp3 = Temp3/2
+	mov	A, Temp2
+	rrc	A
+	mov	Temp2, A   ;Temp2 = Temp2/2
+	mov	A, Temp1
+	rrc	A
+	mov	Temp1, A    ;Temp1 = Temp1/2
+ENDIF
+	; Calculate this commutation time
+	mov	Temp4, Prev_Comm_L      ; temp4/5 赋为上次操作时间
+	mov	Temp5, Prev_Comm_H
+	mov	Prev_Comm_L, Temp1		; Store timestamp as previous commutation
+	mov	Prev_Comm_H, Temp2      ; 保存当前时间到上次操作时间到Pre_Comm_L/H
+	clr	C
+	mov	A, Temp1
+	subb	A, Temp4				; Calculate the new commutation time
+	mov	Temp1, A
+	mov	A, Temp2
+	subb	A, Temp5             ;当前时间减去上次时间，结果在temp1,和A.
+	jb	Flags1.STARTUP_PHASE, calc_next_comm_startup ;如果启动阶段，跳走。
+
+IF MCU_48MHZ &gt;= 1          
+	anl	A, #7Fh         ;如果48Mhz, 高位 &amp; 7Fh
+ENDIF
+	mov	Temp2, A         ;保存高位到Temp2
+	jnb	Flags1.HIGH_RPM, ($+5)	; Branch if high rpm ,
+	ajmp	calc_next_comm_timing_fast ; 是高rpm，跳到calc_next_comm_timing_fast
+
+	ajmp	calc_next_comm_normal  ； 如果不是高rpm，跳到calc_next_comm_normal
+
+calc_next_comm_startup:
+	mov	Temp6, Prev_Comm_X
+	mov	Prev_Comm_X, Temp3		; Store extended timestamp as previous commutation
+	mov	Temp2, A
+	mov	A, Temp3
+	subb	A, Temp6				; Calculate the new extended commutation time
+IF MCU_48MHZ &gt;= 1
+	anl	A, #7Fh    ;如果48Mhz, 高位 &amp; 7Fh
+ENDIF
+	mov	Temp3, A
+	jz	calc_next_comm_startup_no_X
+
+	mov	Temp1, #0FFh
+	mov	Temp2, #0FFh
+	ajmp	calc_next_comm_startup_average
+
+calc_next_comm_startup_no_X:
+	mov	Temp7, Prev_Prev_Comm_L
+	mov	Temp8, Prev_Prev_Comm_H
+	mov	Prev_Prev_Comm_L, Temp4
+	mov	Prev_Prev_Comm_H, Temp5
+	mov	Temp1, Prev_Comm_L		; Reload this commutation time	
+	mov	Temp2, Prev_Comm_H
+	clr	C
+	mov	A, Temp1
+	subb	A, Temp7				; Calculate the new commutation time based upon the two last commutations (to reduce sensitivity to offset)
+	mov	Temp1, A
+	mov	A, Temp2
+	subb	A, Temp8
+	mov	Temp2, A
+
+calc_next_comm_startup_average:
+	clr	C
+	mov	A, Comm_Period4x_H		; Average with previous and save
+	rrc	A
+	mov	Temp4, A
+	mov	A, Comm_Period4x_L
+	rrc	A
+	mov	Temp3, A
+	mov	A, Temp1			
+	add	A, Temp3
+	mov	Comm_Period4x_L, A
+	mov	A, Temp2
+	addc	A, Temp4
+	mov	Comm_Period4x_H, A
+	jnc	($+8)
+
+	mov	Comm_Period4x_L, #0FFh
+	mov	Comm_Period4x_H, #0FFh
+
+	ajmp	calc_new_wait_times_setup
+
+calc_next_comm_normal:
+	; Calculate new commutation time 
+	mov	Temp3, Comm_Period4x_L	; Comm_Period4x(-l-h) holds the time of 4 commutations
+	mov	Temp4, Comm_Period4x_H
+	mov	Temp5, Comm_Period4x_L	; Copy variables
+	mov	Temp6, Comm_Period4x_H
+	mov	Temp7, #4				; Divide Comm_Period4x 4 times as default
+	mov	Temp8, #2				; Divide new commutation time 2 times as default
+	clr	C
+	mov	A, Temp4
+	subb	A, #04h
+	jc	calc_next_comm_avg_period_div
+
+	dec	Temp7				; Reduce averaging time constant for low speeds
+	dec	Temp8
+
+	clr	C
+	mov	A, Temp4
+	subb	A, #08h
+	jc	calc_next_comm_avg_period_div
+
+	jb	Flags1.INITIAL_RUN_PHASE, calc_next_comm_avg_period_div	; Do not average very fast during initial run
+
+	dec	Temp7				; Reduce averaging time constant more for even lower speeds
+	dec	Temp8
+
+calc_next_comm_avg_period_div:
+	clr	C
+	mov	A, Temp6					
+	rrc	A					; Divide by 2
+	mov	Temp6, A	
+	mov	A, Temp5				
+	rrc	A
+	mov	Temp5, A
+	djnz	Temp7, calc_next_comm_avg_period_div
+
+	clr	C
+	mov	A, Temp3
+	subb	A, Temp5				; Subtract a fraction
+	mov	Temp3, A
+	mov	A, Temp4
+	subb	A, Temp6
+	mov	Temp4, A
+	mov	A, Temp8				; Divide new time
+	jz	calc_next_comm_new_period_div_done
+
+calc_next_comm_new_period_div:
+	clr	C
+	mov	A, Temp2					
+	rrc	A					; Divide by 2
+	mov	Temp2, A	
+	mov	A, Temp1				
+	rrc	A
+	mov	Temp1, A
+	djnz	Temp8, calc_next_comm_new_period_div
+
+calc_next_comm_new_period_div_done:
+	mov	A, Temp3
+	add	A, Temp1				; Add the divided new time
+	mov	Temp3, A
+	mov	A, Temp4
+	addc	A, Temp2
+	mov	Temp4, A
+	mov	Comm_Period4x_L, Temp3	; Store Comm_Period4x_X
+	mov	Comm_Period4x_H, Temp4
+	jnc	calc_new_wait_times_setup; If period larger than 0xffff - go to slow case
+
+	mov	Temp4, #0FFh
+	mov	Comm_Period4x_L, Temp4	; Set commutation period registers to very slow timing (0xffff)
+	mov	Comm_Period4x_H, Temp4
+
+calc_new_wait_times_setup:	
+	; Set high rpm bit (if above 156k erpm)
+	clr	C
+	mov	A, Temp4
+	subb	A, #2
+	jnc	($+4)
+
+	setb	Flags1.HIGH_RPM 		; Set high rpm bit
+	
+	; Load programmed commutation timing
+	jnb	Flags1.STARTUP_PHASE, calc_new_wait_per_startup_done	; Set dedicated timing during startup
+
+	mov	Temp8, #3
+	ajmp	calc_new_wait_per_demag_done
+
+calc_new_wait_per_startup_done:
+	mov	Temp1, #Pgm_Comm_Timing	; Load timing setting
+	mov	A, @Temp1				
+	mov	Temp8, A				; Store in Temp8
+	clr	C
+	mov	A, Demag_Detected_Metric	; Check demag metric
+	subb	A, #130
+	jc	calc_new_wait_per_demag_done
+
+	inc	Temp8				; Increase timing
+
+	clr	C
+	mov	A, Demag_Detected_Metric
+	subb	A, #160
+	jc	($+3)
+
+	inc	Temp8				; Increase timing again
+
+	clr	C
+	mov	A, Temp8				; Limit timing to max
+	subb	A, #6
+	jc	($+4)
+
+	mov	Temp8, #5				; Set timing to max
+
+calc_new_wait_per_demag_done:
+	; Set timing reduction
+	mov	Temp7, #2
+	; Load current commutation timing
+	mov	A, Comm_Period4x_H		; Divide 4 times
+	swap	A
+	anl	A, #00Fh
+	mov	Temp2, A
+	mov	A, Comm_Period4x_H
+	swap	A
+	anl	A, #0F0h
+	mov	Temp1, A
+	mov	A, Comm_Period4x_L
+	swap	A
+	anl	A, #00Fh
+	add	A, Temp1
+	mov	Temp1, A
+
+	clr	C
+	mov	A, Temp1
+	subb	A, Temp7
+	mov	Temp3, A
+	mov	A, Temp2				
+	subb	A, #0
+	mov	Temp4, A
+	jc	load_min_time			; Check that result is still positive
+
+	clr	C
+	mov	A, Temp3
+	subb	A, #1
+	mov	A, Temp4			
+	subb	A, #0
+	jnc	calc_new_wait_times_exit	; Check that result is still above minumum
+
+load_min_time:
+	mov	Temp3, #1
+	clr	A
+	mov	Temp4, A 
+
+calc_new_wait_times_exit:	
+	ljmp	wait_advance_timing
+
+
+; Fast calculation (Comm_Period4x_H less than 2)
+calc_next_comm_timing_fast:			
+	; Calculate new commutation time
+	mov	Temp3, Comm_Period4x_L	; Comm_Period4x(-l-h) holds the time of 4 commutations
+	mov	Temp4, Comm_Period4x_H
+	mov	A, Temp4				; Divide by 2 4 times
+	swap	A
+	mov	Temp7, A
+	mov	A, Temp3
+	swap A
+	anl	A, #0Fh
+	orl	A, Temp7
+	mov	Temp5, A
+	clr	C
+	mov	A, Temp3				; Subtract a fraction
+	subb	A, Temp5
+	mov	Temp3, A
+	mov	A, Temp4				
+	subb	A, #0
+	mov	Temp4, A
+	clr	C
+	mov	A, Temp1
+	rrc	A					; Divide by 2 2 times
+	clr	C
+	rrc	A
+	mov	Temp1, A
+	mov	A, Temp3				; Add the divided new time
+	add	A, Temp1
+	mov	Temp3, A
+	mov	A, Temp4
+	addc	A, #0
+	mov	Temp4, A
+	mov	Comm_Period4x_L, Temp3	; Store Comm_Period4x_X
+	mov	Comm_Period4x_H, Temp4
+	clr	C
+	mov	A, Temp4				; If erpm below 156k - go to normal case
+	subb	A, #2
+	jc	($+4)
+
+	clr	Flags1.HIGH_RPM 		; Clear high rpm bit
+
+	; Set timing reduction
+	mov	Temp1, #2
+	mov	A, Temp4				; Divide by 2 4 times
+	swap	A
+	mov	Temp7, A
+	mov	Temp4, #0
+	mov	A, Temp3
+	swap A
+	anl	A, #0Fh
+	orl	A, Temp7
+	mov	Temp3, A
+	clr	C
+	mov	A, Temp3
+	subb	A, Temp1
+	mov	Temp3, A
+	jc	load_min_time_fast		; Check that result is still positive
+
+	clr	C
+	subb	A, #1
+	jnc	calc_new_wait_times_fast_done	; Check that result is still above minumum
+
+load_min_time_fast:
+	mov	Temp3, #1
+
+calc_new_wait_times_fast_done:	
+	mov	Temp1, #Pgm_Comm_Timing	; Load timing setting
+	mov	A, @Temp1				
+	mov	Temp8, A				; Store in Temp8
+
+
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+;
+; Wait advance timing routine
+;
+; No assumptions
+; NOTE: Be VERY careful if using temp registers. They are passed over this routine
+;
+; Waits for the advance timing to elapse and sets up the next zero cross wait
+;
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+wait_advance_timing:	
+	jnb	Flags0.T3_PENDING, ($+5)
+	ajmp	wait_advance_timing
+
+	; Setup next wait time
+	mov	TMR3RLL, Wt_ZC_Tout_Start_L
+	mov	TMR3RLH, Wt_ZC_Tout_Start_H
+	setb	Flags0.T3_PENDING
+	orl	EIE1, #80h	; Enable timer 3 interrupts
+
+
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+;
+; Calculate new wait times routine
+;
+; No assumptions
+;
+; Calculates new wait times
+;
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+calc_new_wait_times:	
+	clr	C
+	clr	A
+	subb	A, Temp3				; Negate
+	mov	Temp1, A	
+	clr	A
+	subb	A, Temp4				
+	mov	Temp2, A	
+IF MCU_48MHZ &gt;= 1
+	clr	C
+	mov	A, Temp1				; Multiply by 2
+	rlc	A
+	mov	Temp1, A
+	mov	A, Temp2
+	rlc	A
+	mov	Temp2, A
+ENDIF
+	jnb	Flags1.HIGH_RPM, ($+6)	; Branch if high rpm
+	ljmp	calc_new_wait_times_fast
+
+	mov	A, Temp1				; Copy values
+	mov	Temp3, A
+	mov	A, Temp2
+	mov	Temp4, A
+	setb	C					; Negative numbers - set carry
+	mov	A, Temp2				
+	rrc	A					; Divide by 2
+	mov	Temp6, A
+	mov	A, Temp1
+	rrc	A
+	mov	Temp5, A
+	mov	Wt_Zc_Tout_Start_L, Temp1; Set 15deg time for zero cross scan timeout
+	mov	Wt_Zc_Tout_Start_H, Temp2
+	clr	C
+	mov	A, Temp8				; (Temp8 has Pgm_Comm_Timing)
+	subb	A, #3				; Is timing normal?
+	jz	store_times_decrease	; Yes - branch
+
+	mov	A, Temp8				
+	jb	ACC.0, adjust_timing_two_steps	; If an odd number - branch
+
+	mov	A, Temp1				; Add 7.5deg and store in Temp1/2
+	add	A, Temp5
+	mov	Temp1, A
+	mov	A, Temp2
+	addc	A, Temp6
+	mov	Temp2, A
+	mov	A, Temp5				; Store 7.5deg in Temp3/4
+	mov	Temp3, A
+	mov	A, Temp6			
+	mov	Temp4, A
+	jmp	store_times_up_or_down
+
+adjust_timing_two_steps:
+	mov	A, Temp1				; Add 15deg and store in Temp1/2
+	add	A, Temp1
+	mov	Temp1, A
+	mov	A, Temp2
+	addc	A, Temp2
+	mov	Temp2, A
+	clr	C
+	mov	A, Temp1
+	add	A, #1
+	mov	Temp1, A
+	mov	A, Temp2
+	addc	A, #0
+	mov	Temp2, A
+	mov	Temp3, #-1				; Store minimum time in Temp3/4
+	mov	Temp4, #0FFh
+
+store_times_up_or_down:
+	clr	C
+	mov	A, Temp8				
+	subb	A, #3					; Is timing higher than normal?
+	jc	store_times_decrease		; No - branch
+
+store_times_increase:
+	mov	Wt_Comm_Start_L, Temp3		; Now commutation time (~60deg) divided by 4 (~15deg nominal)
+	mov	Wt_Comm_Start_H, Temp4
+	mov	Wt_Adv_Start_L, Temp1		; New commutation advance time (~15deg nominal)
+	mov	Wt_Adv_Start_H, Temp2
+	mov	Wt_Zc_Scan_Start_L, Temp5	; Use this value for zero cross scan delay (7.5deg)
+	mov	Wt_Zc_Scan_Start_H, Temp6
+	ljmp	wait_before_zc_scan
+
+store_times_decrease:
+	mov	Wt_Comm_Start_L, Temp1		; Now commutation time (~60deg) divided by 4 (~15deg nominal)
+	mov	Wt_Comm_Start_H, Temp2
+	mov	Wt_Adv_Start_L, Temp3		; New commutation advance time (~15deg nominal)
+	mov	Wt_Adv_Start_H, Temp4
+	mov	Wt_Zc_Scan_Start_L, Temp5	; Use this value for zero cross scan delay (7.5deg)
+	mov	Wt_Zc_Scan_Start_H, Temp6
+	jnb	Flags1.STARTUP_PHASE, store_times_exit
+
+	mov	Wt_Comm_Start_L, #0F0h		; Set very short delays for all but advance time during startup, in order to widen zero cross capture range
+	mov	Wt_Comm_Start_H, #0FFh
+	mov	Wt_Zc_Scan_Start_L, #0F0h
+	mov	Wt_Zc_Scan_Start_H, #0FFh
+	mov	Wt_Zc_Tout_Start_L, #0F0h
+	mov	Wt_Zc_Tout_Start_H, #0FFh
+
+store_times_exit:
+	ljmp	wait_before_zc_scan
+
+
+calc_new_wait_times_fast:	
+	mov	A, Temp1				; Copy values
+	mov	Temp3, A
+	setb	C					; Negative numbers - set carry
+	mov	A, Temp1				; Divide by 2
+	rrc	A
+	mov	Temp5, A
+	mov	Wt_Zc_Tout_Start_L, Temp1; Set 15deg time for zero cross scan timeout
+	clr	C
+	mov	A, Temp8				; (Temp8 has Pgm_Comm_Timing)
+	subb	A, #3				; Is timing normal?
+	jz	store_times_decrease_fast; Yes - branch
+
+	mov	A, Temp8				
+	jb	ACC.0, adjust_timing_two_steps_fast	; If an odd number - branch
+
+	mov	A, Temp1				; Add 7.5deg and store in Temp1
+	add	A, Temp5
+	mov	Temp1, A
+	mov	A, Temp5				; Store 7.5deg in Temp3
+	mov	Temp3, A
+	ajmp	store_times_up_or_down_fast
+
+adjust_timing_two_steps_fast:
+	mov	A, Temp1				; Add 15deg and store in Temp1
+	add	A, Temp1
+	add	A, #1
+	mov	Temp1, A
+	mov	Temp3, #-1			; Store minimum time in Temp3
+
+store_times_up_or_down_fast:
+	clr	C
+	mov	A, Temp8				
+	subb	A, #3				; Is timing higher than normal?
+	jc	store_times_decrease_fast; No - branch
+
+store_times_increase_fast:
+	mov	Wt_Comm_Start_L, Temp3		; Now commutation time (~60deg) divided by 4 (~15deg nominal)
+	mov	Wt_Adv_Start_L, Temp1		; New commutation advance time (~15deg nominal)
+	mov	Wt_Zc_Scan_Start_L, Temp5	; Use this value for zero cross scan delay (7.5deg)
+	ljmp	wait_before_zc_scan
+
+store_times_decrease_fast:
+	mov	Wt_Comm_Start_L, Temp1		; Now commutation time (~60deg) divided by 4 (~15deg nominal)
+	mov	Wt_Adv_Start_L, Temp3		; New commutation advance time (~15deg nominal)
+	mov	Wt_Zc_Scan_Start_L, Temp5	; Use this value for zero cross scan delay (7.5deg)
+
+
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+;
+; Wait before zero cross scan routine
+;
+; No assumptions
+;
+; Waits for the zero cross scan wait time to elapse
+; Also sets up timer 3 for the zero cross scan timeout time
+;
+;**** **** **** **** **** **** **** **** **** **** **** **** ****
+wait_before_zc_scan:	
+	jnb	Flags0.T3_PENDING, ($+5)  ;jump if Flags0.T3_PENDING is zero
+	ajmp	wait_before_zc_scan
+
+	mov	Startup_Zc_Timeout_Cntd, #2
+setup_zc_scan_timeout:
+	setb	Flags0.T3_PENDING
+	orl	EIE1, #80h			; Enable timer 3 interrupts
+	mov	A, Flags1
+	anl	A, #((1 SHL STARTUP_PHASE)+(1 SHL INITIAL_RUN_PHASE))
+	jz	wait_before_zc_scan_exit		
+
+	mov	Temp1, Comm_Period4x_L	; Set long timeout when starting
+	mov	Temp2, Comm_Period4x_H
+	clr	C
+	mov	A, Temp2
+	rrc	A
+	mov	Temp2, A
+	mov	A, Temp1
+	rrc	A
+	mov	Temp1, A
+IF MCU_48MHZ == 0
+	clr	C
+	mov	A, Temp2
+	rrc	A
+	mov	Temp2, A
+	mov	A, Temp1
+	rrc	A
+	mov	Temp1, A
+ENDIF
+	jnb	Flags1.STARTUP_PHASE, setup_zc_scan_timeout_startup_done
+
+	mov	A, Temp2
+	add	A, #40h				; Increase timeout somewhat to avoid false wind up
+	mov	Temp2, A
+
+setup_zc_scan_timeout_startup_done:
+	clr	IE_EA
+	anl	EIE1, #7Fh			; Disable timer 3 interrupts
+	mov	TMR3CN0, #00h			; Timer 3 disabled and interrupt flag cleared
+	clr	C
+	clr	A
+	subb	A, Temp1				; Set timeout
+	mov	TMR3L, A
+	clr	A
+	subb	A, Temp2		
+	mov	TMR3H, A
+	mov	TMR3CN0, #04h			; Timer 3 enabled and interrupt flag cleared
+	setb	Flags0.T3_PENDING
+	orl	EIE1, #80h			; Enable timer 3 interrupts
+	setb	IE_EA
+
+wait_before_zc_scan_exit:          
+	ret
+</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2024-03-01 13:28:33</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

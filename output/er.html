@@ -1,0 +1,649 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>j2me手机游戏开发之俄罗斯方块--附完整源代码</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>j2me手机游戏开发之俄罗斯方块--附完整源代码</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/3071579" target="_blank">https://blog.csdn.net/aerror/article/details/3071579</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-10-13 22:15:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 7656</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 2</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">j2me</span>, <span class="tag">手机游戏</span>, <span class="tag">exception</span>, <span class="tag">string</span>, <span class="tag">null</span>, <span class="tag">class</span></div>
+    
+    <div class="article-description"> 原理比较简单的,就是一个基于Frame的游戏,主游戏画面设计如下: //FIELD: 22X17                      // ////////////////////////////////////// //1                                          1         0 // //2                    </div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p> 原理比较简单的,就是一个基于Frame的游戏,</p>
+<p>主游戏画面设计如下:</p>
+<p> //FIELD: 22X17                      //<br/> //<br/> //1                                          1         0 //<br/> //2                                          2  TETRIS 0 //<br/> //3                                          3  DANY   0 //<br/> //4 ____________________4________0 //<br/> //5                                          5 NEXT:   0 //<br/> //6                                          6         0 //<br/> //7                                          7 1 2 3 4 0 //<br/> //8                                          8 2     2 0 //<br/> //9                                          9 3     3 0 //<br/> //0                                          0 1 2 3 4 0 //<br/> //1   PRESS ANY KEY        1         0 //<br/> //2     TO  START                2 SCORE:  0 //<br/> //3                                          3 9000000 0 //<br/> //4                                          4 LEVEL:  0 //<br/> //5                                          5 1       0 //<br/> //6                                          6 LINES:  0 //<br/> //7                                          7 00:00   0 //<br/> //8                                          8 RECORD: 0 //<br/> //9                                          9 999999  0 //<br/> //0                                          0PRESS ESC0 //<br/> //1                                          1 TO MENU 0 //<br/> //2 1 2 3 4 5 6 7 8 9 0 2 2 3 4 5 6 //<br/> //</p>
+<p> </p>
+<p>所有的数据处理和绘图都基本于在Frame里完成.主流程如下:</p>
+<p> </p>
+<p> </p>
+<p><br/>// <br/>//生成实例 <br/>// <br/>CGameField gamefiled = new CGameField();<br/>CJ2meGameDrawer drawer = new CJ2meGameDrawer();<br/>CJ2meGameSoundPlayer player = new CJ2meGameSoundPlayer();</p>
+<p>// <br/>//初始化和设置环境 <br/>// <br/>gamefiled.setup(width, height,drawer,player);</p>
+<p><br/>// <br/>//在重绘事件发生时调OnFrame处理 <br/>// </p>
+<p>void OnPaint(Graphics g)<br/>{<!-- --><br/>  gamefiled.OnFrame();<br/>}</p>
+<p><br/>游戏很简单的,其中有些难点问题，其它文章都在提及.</p>
+<p>完整源代码及编译脚本和图片声音资源:</p>
+<p>下载地址:</p>
+<p><a href="http://download.csdn.net/source/682898">http://download.csdn.net/source/682898</a></p>
+<p>源代码文件是从moto的sdk的某个文件复制了一些import和一个空的midlet类进行修改的,呵呵,保留了它的版本信息</p>
+<p> </p>
+<p>(上传的文件给删除了，我....贴一下源码.)</p>
+<p> </p>
+<p> </p>
+<p>package com.Tetris;</p>
+<p>import javax.microedition.lcdui.*;<br/>import javax.microedition.media.Manager;<br/>import javax.microedition.midlet.*;</p>
+<p>import java.io.IOException;<br/>import java.io.InputStream;<br/>import java.util.Random;</p>
+<p>import javax.microedition.lcdui.game.Sprite;</p>
+<p><br/>import javax.microedition.media.MediaException;<br/>import javax.microedition.media.Player;<br/>import javax.microedition.media.control.StopTimeControl;<br/>import javax.microedition.media.control.VolumeControl;<br/>import javax.microedition.rms.RecordStore;</p>
+<p>import javax.microedition.media.PlayerListener;</p>
+<p> </p>
+<p>public class TetrisGame extends MIDlet implements CommandListener {<!-- --></p>
+<p> private Display display;</p>
+<p> public static final Command exitCommand = new Command("Exit", Command.EXIT,<br/>   1);</p>
+<p> public TetrisGame() {<!-- --><br/> }</p>
+<p> public void commandAction(Command c, Displayable d) {<!-- --><br/>  if (c == exitCommand) {<!-- --><br/>   exitMIDlet();<br/>  }<br/> }</p>
+<p> protected void destroyApp(boolean unconditional)<br/>   throws MIDletStateChangeException {<!-- --><br/>  exitMIDlet();<br/> }</p>
+<p> public void exitMIDlet() {<!-- --><br/>  notifyDestroyed();<br/> }</p>
+<p> public Display getDisplay() {<!-- --><br/>  return display;<br/> }</p>
+<p> protected void initMIDlet() {<!-- --><br/>  Canvas c = new TetrisCanvas();<br/> <br/>  c.addCommand(exitCommand);<br/>  c.setCommandListener(this);<br/>  getDisplay().setCurrent(c);<br/>  //System.out.println("hasRepeatEvents "+c.hasRepeatEvents());<br/> }</p>
+<p> protected void pauseApp() {<!-- --><br/> }</p>
+<p> protected void startApp() throws MIDletStateChangeException {<!-- --><br/>  if (display == null) {<!-- --><br/>   display = Display.getDisplay(this);<br/>   initMIDlet();<br/>  }<br/> }<br/> </p>
+<p> class TetrisCanvas extends Canvas implements Runnable {<!-- --></p>
+<p>  private static final int SLEEP_INITIAL = 100;<br/>  private Graphics graphics=null;<br/>  private int sleepTime = SLEEP_INITIAL;</p>
+<p>  private volatile Thread thread;<br/>  private boolean bDownPressed=false;<br/>  private boolean bLeftPressed=false;<br/>  private boolean bRightPressed=false;<br/>  private boolean bOnkeyDown=false;<br/>  <br/>  CGameField  gamefield ;<br/>  CGameJ2meDrawer gamedrawer ;<br/>  CGameJ2meSoundPlayer soundPlayer;<br/>  public TetrisCanvas() {<!-- --><br/>   //System.out.println("TetrisCanvas() "+ Thread.currentThread());<br/>   this.setFullScreenMode(true);<br/>   if(gamefield ==null||gamedrawer==null)<br/>   {<!-- --><br/>    gamefield = new CGameField();<br/>    try {<!-- --><br/>     gamedrawer = new CGameJ2meDrawer();<br/>     soundPlayer = new CGameJ2meSoundPlayer();<br/>     gamefield.Setup(this.getWidth(), this.getHeight(), gamedrawer,soundPlayer);<br/>     gamedrawer.setup(graphics);<br/>     soundPlayer.setup();<br/>     <br/>     <br/>    } catch (Exception e1) {<!-- --><br/>     // TODO Auto-generated catch block<br/>     e1.printStackTrace();<br/>    }  <br/>   }<br/>  }<br/>  <br/>  protected void keyPressed(int keyCode)<br/>  {<!-- --><br/>   //System.out.println("keyPressed: "+ keyCode);<br/>   int gameaction = getGameAction(keyCode);<br/>   if(gameaction==GAME_B)<br/>   {<!-- --><br/>    exitMIDlet();<br/>   }<br/>   else<br/>   {<!-- --><br/>  <br/>    switch(gameaction)<br/>    {<!-- --><br/>    case LEFT:<br/>     bLeftPressed = true;<br/>     bOnkeyDown  = true;<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Left);<br/>     break;<br/>    case RIGHT:<br/>     bRightPressed = true;<br/>     bOnkeyDown  = true;<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Right);<br/>     break;<br/>    case UP:<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Up);<br/>     break;<br/>    case DOWN:<br/>     bDownPressed = true;<br/>     bOnkeyDown  = true;<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Down);<br/>     break;<br/>    case GAME_A:<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Escape);<br/>     break;<br/>    case FIRE:<br/>    case GAME_C:<br/>    case GAME_D:<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Rotate);<br/>     break;<br/>    default:<br/>     gamefield.OnKeyDown(TETRIS_KEYCODE.Unk);<br/>     break;<br/>    }<br/>   }<br/>   <br/>   if(gamefield.bExit)<br/>   {<!-- --><br/>    exitMIDlet();<br/>   }<br/>  }<br/>  <br/>  protected void pointerPressed(int x, int y) <br/>  {<!-- --><br/>   gamefield.OnPointerPressed(x,y);<br/>   if(gamefield.bExit)<br/>   {<!-- --><br/>    exitMIDlet();<br/>   }<br/>  }<br/>        <br/>  protected void keyReleased(int keyCode)<br/>  {<!-- --><br/>   //System.out.println("keyReleased: "+ keyCode);<br/>   int gameaction = getGameAction(keyCode);<br/>   switch(gameaction)<br/>   {<!-- --><br/>   case LEFT:<br/>    bLeftPressed = false;<br/>    break;<br/>   case RIGHT:<br/>    bRightPressed = false;<br/>    break;<br/>   case DOWN:<br/>    bDownPressed = false;<br/>    break;<br/>   }<br/>  }<br/>  <br/>  // The game loop.</p>
+<p>  public void run() {<!-- --><br/>   //System.out.println("run: "+ Thread.currentThread());<br/>   while(true) //(thread == Thread.currentThread()) <br/>   {<!-- --><br/>    <br/>    this.repaint();<br/>    try {<!-- --><br/>     Thread.sleep(sleepTime);<br/>    } catch (InterruptedException e) {<!-- --><br/>    }<br/>   }<br/>  }</p>
+<p>  // When the canvas is shown, start a thread to<br/>     // run the game loop.</p>
+<p>     protected void showNotify()<br/>     {<!-- --><br/>         thread = new Thread(this);<br/>         thread.start();<br/>     }<br/>     // When the game canvas is hidden, stop the thread.<br/>     //<br/>     protected void hideNotify()<br/>     {<!-- --><br/>         thread = null;<br/>     }</p>
+<p>     <br/>  protected void paint(Graphics arg0) {<!-- --><br/>   <br/>  <br/>   <br/>   if(arg0!=null &amp;&amp; gamedrawer!=null &amp;&amp; gamefield!=null)<br/>   {<!-- --><br/>    <br/>    gamedrawer.graphics = arg0;<br/>    <br/>    if(!bOnkeyDown)<br/>    {<!-- --><br/>     if(bLeftPressed)<br/>     {<!-- --><br/>      gamefield.OnKeyDown(TETRIS_KEYCODE.Left);<br/>     }<br/>     else if(bRightPressed)<br/>     {<!-- --><br/>      gamefield.OnKeyDown(TETRIS_KEYCODE.Right);<br/>     }<br/>     <br/>     if(bDownPressed)<br/>     {<!-- --><br/>      gamefield.OnKeyDown(TETRIS_KEYCODE.Down);<br/>      gamefield.OnKeyDown(TETRIS_KEYCODE.Down);<br/>     }<br/>    }<br/>    else<br/>    {<!-- --><br/>     bOnkeyDown=false;<br/>    }<br/>    <br/>    gamefield.OnGameFrame();<br/>   }<br/>  }</p>
+<p><br/> }<br/>}</p>
+<p><br/>//class EffectSoundEvent<br/>//{<!-- --><br/>// public long effetDuraction;<br/>// public long effetStartTime;<br/>// public int  key;<br/>//};</p>
+<p>class EffetSoundPlayer implements PlayerListener<br/>{<!-- --></p>
+<p>//    START <br/>//    50   FELL          0<br/>//    242  LINEFULL      2000<br/>//    750  LEVELUP       4000<br/>//    3982 GAMEOVER      6000<br/>//    11620 GAMEWIN      16000<br/> long []effetStartTime={<!-- --><br/>    500000,<br/>   2000000,<br/>   4000000,<br/>   6000000,<br/>  11000000,<br/> };<br/> <br/> long []effetDuraction={<!-- --><br/>   50,<br/>   242,<br/>   750,<br/>   3982,<br/>   11620,<br/>  };</p>
+<p>  public Player  player=null;<br/>  public boolean bEffectEnabled=true;<br/>  public int  currentKey=0;<br/>  long           stoptick = 0;<br/>  public void Setup()<br/>  {<!-- --><br/>  <br/>   //System.out.println("create player " + iKey);<br/> <br/>   try {<!-- --><br/>    player = Manager.createPlayer(getClass().getResourceAsStream(<br/>      "/audio/effects.wav"), "audio/x-wav");<br/>    player.addPlayerListener(this);<br/>   <br/>    player.setLoopCount(1);<br/>    player.realize(); // realize<br/>    player.prefetch(); // prefetch<br/>   } catch (IOException e) {<!-- --><br/>    // TODO Auto-generated catch block<br/>    e.printStackTrace();<br/>   } catch (MediaException e) {<!-- --><br/>    // TODO Auto-generated catch block<br/>    e.printStackTrace();<br/>   }<br/>  }<br/>  <br/>   public void playSound(int iKey) throws Exception {<!-- --></p>
+<p>  <br/>  if(!bEffectEnabled || iKey&lt;0||iKey&gt;=effetStartTime.length) <br/>   return;<br/>  <br/>  //System.out.println(""+CGameField.nFrame+ " playSound key: " + iKey);<br/>   <br/>  currentKey = iKey;<br/>  long st = effetStartTime[iKey];<br/>  stoptick = System.currentTimeMillis() + effetDuraction[iKey]+1000;<br/>  player.setMediaTime(st);<br/>//  long act = player.setMediaTime(st);<br/>  //System.out.println(""+CGameField.nFrame+ " exp set: " + st + " actual: "+act);<br/>  <br/>  <br/>  if(player.getState()==Player.PREFETCHED)<br/>  {<!-- --><br/>   player.start(); // and start <br/>  }</p>
+<p>  <br/> }<br/>   <br/> public void tryToStop()<br/> {<!-- --><br/>  if(player!=null <br/>    &amp;&amp;player.getState()==Player.STARTED<br/>    &amp;&amp;System.currentTimeMillis()&gt;=stoptick )<br/>  {<!-- --><br/>   try {<!-- --><br/>    player.stop();<br/>   } catch (MediaException e) {<!-- --><br/>    // TODO Auto-generated catch block<br/>    e.printStackTrace();<br/>   }<br/>  }<br/> }<br/> <br/>  public void playerUpdate(Player player, String event, Object eventData) {<!-- --><br/> <br/>     //System.err.println(""+CGameField.nFrame+" event:" + event);<br/> <br/>     if(event.equals(STARTED))<br/>  {<!-- --><br/>     //  long cur = player.getMediaTime();<br/>       //System.err.println("current :"+cur);<br/>       stoptick = System.currentTimeMillis() + effetDuraction[currentKey]+50;<br/>//      StopTimeControl sc = (StopTimeControl)player.getControl("StopTimeControl");<br/>      //System.err.println("current :"+sc);<br/>      //sc.setStopTime(cur+effetDuraction[currentKey]*1000);<br/>  }</p>
+<p>     if (event.equals(END_OF_MEDIA)) {<!-- --><br/>      <br/>     }<br/> }<br/> <br/>}</p>
+<p><br/>class CGameJ2meSoundPlayer extends CGameSoundPlayer<br/>{<!-- --><br/> EffetSoundPlayer effectPlayer = new EffetSoundPlayer();<br/> boolean bmgEnable = true;<br/> Player bgmPlayer = null;</p>
+<p><br/> public void setup()<br/>    {<!-- --><br/>     try {      <br/>      try {<!-- --><br/>       <br/>       InputStream is = getClass().getResourceAsStream("/audio/bgm.wav");<br/>       bgmPlayer = Manager.createPlayer(is, "audio/x-wav");<br/>       bgmPlayer.realize();<br/>       bgmPlayer.prefetch();<br/>       bgmPlayer.setLoopCount(-1);<br/>       VolumeControl vc = (VolumeControl) bgmPlayer.getControl("VolumeControl");<br/>       vc.setLevel(5);<br/>       effectPlayer.Setup();<br/>       <br/>   } catch (MediaException e) {<!-- --><br/>    // TODO Auto-generated catch block<br/>    e.printStackTrace();<br/>   }<br/>  } catch (IOException e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/>    }</p>
+<p><br/> public void PlayEffectSound(int soundKey)<br/> {<!-- --><br/>  try {<!-- --><br/>   effectPlayer.playSound(soundKey);<br/>  } catch (Exception e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/> }<br/> public void StopEffectSound()<br/> {<!-- --><br/>  try {<!-- --><br/>   effectPlayer.player.stop();<br/>  } catch (MediaException e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/> }<br/> <br/> public void ControlEffectSound()<br/> {<!-- --><br/>  try {<!-- --><br/>   effectPlayer.tryToStop();<br/>  } catch (Exception e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/> }</p>
+<p> public void SetVolume(int level)<br/> {<!-- --><br/>  VolumeControl vc = (VolumeControl) bgmPlayer.getControl("VolumeControl");<br/>  vc.setLevel(level);<br/>  vc = (VolumeControl) effectPlayer.player.getControl("VolumeControl");<br/>  vc.setLevel(level);<br/> }<br/> <br/> <br/> <br/> public void PlayBackgroundMusic()<br/> {<!-- --><br/>  if(bmgEnable)<br/>  {<!-- --><br/>   try {<!-- --><br/>    if(bgmPlayer.getState()==Player.PREFETCHED )<br/>     bgmPlayer.start();<br/>   } catch (MediaException e) {<!-- --><br/>    // TODO Auto-generated catch block<br/>    e.printStackTrace();<br/>   }<br/>  }<br/> }<br/> <br/> public void StopBackgroundMusic()<br/> {<!-- --><br/>  try {<!-- --><br/>   if(bgmPlayer.getState()==Player.STARTED )<br/>    bgmPlayer.stop();<br/>  } catch (MediaException e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/> }<br/> <br/> public void EnableBgMusic(boolean val)<br/> {<!-- --><br/>  bmgEnable = val;<br/> }<br/> <br/> public void EnableEffectSound(boolean val)<br/> {<!-- --><br/>  effectPlayer.bEffectEnabled = val;<br/> }<br/> </p>
+<p>}</p>
+<p><br/>class GIFPlayer {<!-- --></p>
+<p> //   private GifDecoder d;<br/> private Sprite sp;<br/>    private int ind;<br/>    private int count;<br/>    private long delay;<br/>    private long start;<br/>    private int  left=0;<br/>    private int  top=0;<br/>    <br/>    public boolean isPlaying=false;<br/>    private long stopTime=0;<br/>    <br/>    public void Setup(String lpszfilename,int w, int h,int _delay) {<!-- --><br/>        start = System.currentTimeMillis();<br/>        <br/>        try {<!-- --><br/>         Image img = Image.createImage(lpszfilename);<br/>         if(img !=null)<br/>         {<!-- --><br/>          sp = new Sprite(img,w,h);<br/>         }<br/>  } catch (IOException e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/>        <br/>//        System.out.println("setup  "+ lpszfilename<br/>//          + " "+ (System.currentTimeMillis() - start));<br/>        ind = 0;<br/>        count = sp.getRawFrameCount();<br/>        delay = _delay;<br/>       <br/>    }<br/>    <br/>    public void Start(int x, int y, long duration)<br/>    {<!-- --><br/>     ind = 0;<br/>     isPlaying = true;<br/>     left = x;<br/>     top  = y;<br/>     stopTime =  System.currentTimeMillis()+duration;<br/>     sp.setRefPixelPosition(left,top);<br/>    }<br/>    <br/>    public void Stop()<br/>    {<!-- --><br/>     isPlaying = false;<br/>     ind = 0;<br/>    }</p>
+<p>    public void DrawFrame(Graphics g) {<!-- --><br/>     if(!isPlaying) return;<br/>     <br/>     long now= System.currentTimeMillis();<br/>        if (now - start &gt;= delay) {<!-- --><br/>            start = System.currentTimeMillis();<br/>            <br/>            //System.out.println("frame = " + ind + "  delay = " + delay);<br/>            ind++;<br/>            if (ind &gt;= count) {<!-- --><br/>                ind = 0;<br/>            }<br/>            if(now&gt;stopTime)<br/>            {<!-- --><br/>             isPlaying=false;<br/>             ind = 0;<br/>            }<br/>            sp.nextFrame();<br/>            sp.paint(g);<br/>            <br/>        }<br/>    <br/>    }</p>
+<p>}</p>
+<p><br/>class CGameJ2meDrawer extends CGameDrawerBase<br/>{<!-- --><br/> public Graphics graphics; <br/> public Sprite   sp;<br/> public Sprite   sphl;<br/> public Image bkbmp;<br/> public Sprite AlphabetSpW;<br/> public Sprite AlphabetSpX;<br/> public Sprite AlphabetSpHL;<br/> public Sprite AlphabetSpTT;<br/> public Image    frmbmp;<br/> <br/> private GIFPlayer[] gifPlayers = new  GIFPlayer[3];<br/> String  [] gifFiles={<!-- --><br/>   "levelup.png",<br/>   "gameover.png",<br/>   "gamewin.png",<br/> };<br/> int     [][]gifFrameSize=<br/> {<!-- --><br/>   {70,70},<br/>   {60,60},<br/>   {70,110},<br/> };</p>
+<p><br/>    CGameJ2meDrawer()<br/>    {<!-- --><br/>     super();<br/>    }<br/>    <br/>    public void setup(Graphics g)<br/>    {<!-- --><br/>     graphics = g;<br/>     try {<!-- --><br/>      <br/>      String filename = "/img/"+CGameField.nSquareSize+".png";<br/>   Image img = Image.createImage(filename);<br/>   sp = new Sprite(img,CGameField.nSquareSize,CGameField.nSquareSize);<br/>   filename = "/img/"+CGameField.nSquareSize+"hl.png";<br/>   sphl = new Sprite(Image.createImage(filename),CGameField.nSquareSize,CGameField.nSquareSize);<br/>   <br/>   <br/>   bkbmp = Image.createImage("/img/bk320.PNG");<br/>    <br/>   <br/>   <br/>   filename = "/img/Alphabetx.png";<br/>   AlphabetSpX = new Sprite(Image.createImage(filename),TETRIS_FONT.NormalSize,TETRIS_FONT.NormalSize);<br/>   <br/>   filename = "/img/Alphabetw.PNG";<br/>   AlphabetSpW = new Sprite(Image.createImage(filename),TETRIS_FONT.NormalSize,TETRIS_FONT.NormalSize);<br/>   <br/>   filename = "/img/Alphabethl.png";<br/>   AlphabetSpHL = new Sprite(Image.createImage(filename),TETRIS_FONT.NormalSize,TETRIS_FONT.NormalSize);<br/>   <br/>   filename = "/img/AlphabetTitle.png";<br/>   AlphabetSpTT = new Sprite(Image.createImage(filename),TETRIS_FONT.LargeSize,<br/>     TETRIS_FONT.LargeSize);<br/>   <br/>   frmbmp = Image.createImage("/img/frm.png");<br/>   <br/>   for(int i=0;i&lt;3;i++)<br/>   {<!-- --><br/>    gifPlayers[i] = new GIFPlayer();<br/>    gifPlayers[i].Setup("/img/"+gifFiles[i],gifFrameSize[i][1],gifFrameSize[i][0],40);<br/>   }<br/>   <br/>  } catch (IOException e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/>    }</p>
+<p>    public  void DrawLine(Color color, Point pt1, Point pt2)<br/>    {<!-- --><br/>     graphics.setColor(color.rgb);<br/>     graphics.drawLine(pt1.X,pt1.Y,pt2.X,pt2.Y);<br/>    }</p>
+<p>    public void DrawStringCenterVH(String s, int font, Point centerPt) {<!-- --><br/>     if(s.length()==0) return ;<br/>     int nSize =TETRIS_FONT.NormalSize;<br/>     if(font == TETRIS_FONT.Title)<br/>      nSize =TETRIS_FONT.LargeSize;<br/>     <br/>     int sWidth = s.length()*nSize;<br/>     int sHeith = nSize;<br/>     Point leftTop = new Point(centerPt.X-sWidth/2,centerPt.Y-sHeith/2);<br/>     <br/>     DrawString(s,font,leftTop);<br/>          <br/> }<br/>    <br/>    public void DrawGameMenuFrame(Rectangle rect)<br/> {<!-- --><br/>  int nX =rect.Width/20;<br/>  int nY =rect.Height/20;<br/>  for(int i=0;i&lt;nX;i++)<br/>  {<!-- --><br/>   for(int j=0;j&lt;nY;j++)<br/>   {<!-- --><br/>    graphics.drawImage(frmbmp,rect.X+i*20,rect.Y+j*20,0);<br/>   }<br/>  }</p>
+<p> }<br/>    <br/>    public void DrawString(String s, int font, Point pt)<br/>    {<!-- --></p>
+<p>     s=s.toUpperCase();<br/>     Sprite sp;<br/>     int nSize =TETRIS_FONT.NormalSize;<br/>     <br/>     if(font == TETRIS_FONT.Plain) <br/>      sp= AlphabetSpW;<br/>     if(font ==  TETRIS_FONT.HightLight)<br/>      sp= AlphabetSpHL;<br/>     else if(font ==  TETRIS_FONT.Warning)<br/>      sp= AlphabetSpX;<br/>     else if(font == TETRIS_FONT.Title)<br/>     {<!-- --><br/>      sp = AlphabetSpTT;<br/>      nSize = TETRIS_FONT.LargeSize;<br/>     }<br/>     else<br/>      sp= AlphabetSpW;<br/>     int  npos=0;<br/>     for(int i=0;i&lt;s.length();i++,npos++)<br/>     {<!-- --><br/>      <br/>      char c =s.charAt(i);<br/>      if(c&gt;='0'&amp;&amp;c&lt;='9' )<br/>      {<!-- --><br/>       sp.setFrame(c-'0');<br/>      }<br/>      else if(c&gt;='A' &amp;&amp; c&lt;='Z')<br/>      {<!-- --><br/>       sp.setFrame(10+c-'A');<br/>      }<br/>      else if(c==':')<br/>      {<!-- --><br/>       sp.setFrame(36);<br/>      }<br/>      else if(c=='-')<br/>      {<!-- --><br/>       sp.setFrame(37);<br/>      }<br/>      else if(c==' ')<br/>      {<!-- --><br/>       sp.setFrame(38);<br/>      }<br/>      else if(c=='.')<br/>      {<!-- --><br/>       sp.setFrame(39);<br/>      }<br/>      else if(c=='?')<br/>      {<!-- --><br/>       sp.setFrame(40);<br/>      }<br/>      else if(c=='!')<br/>      {<!-- --><br/>       sp.setFrame(41);<br/>      }<br/>      else if(<a href="mailto:c=='@'">c=='@'</a>)<br/>      {<!-- --><br/>       sp.setFrame(42);<br/>      }<br/>      else if(c=='%')<br/>      {<!-- --><br/>       sp.setFrame(43);<br/>      }<br/>//      else if(c=='/n')<br/>//      {<!-- --><br/>//       pt.Y+=(nSize+2);<br/>//       npos=-1;<br/>//       continue;<br/>//      }<br/>      else <br/>      {<!-- --><br/>       continue;<br/>      }<br/>      sp.setRefPixelPosition(pt.X+nSize*npos,pt.Y);<br/>      sp.paint(graphics);<br/>     }<br/>     //adrawString(s,pt.X,pt.Y,0);<br/>    }<br/>    public void clear(Color bkcolor)<br/>    {<!-- --></p>
+<p>     graphics.drawImage(bkbmp,0,0,0);<br/>    <br/>    }</p>
+<p>    public void DrawSquare(CSquare q)<br/>    {<!-- --><br/>        if (!q.IsHide)<br/>        {<!-- --><br/>         Sprite p = sp;<br/>         if(q.HightLight)<br/>          p = sphl;<br/>          <br/>         p.setFrame(q.color);<br/>         p.setRefPixelPosition(q.getAbsX(),q.getAbsY());<br/>         p.paint(graphics);<br/>        }<br/>    }</p>
+<p>    public void Flip()<br/>    {<!-- --><br/>       // back.DrawFast(0, 0, surfaceAnimation, new Rectangle(0, 0, 400, 600), DrawFastFlags.DoNotWait | DrawFastFlags.SourceColorKey);<br/>    }</p>
+<p>    <br/>    public void PlayGif(int gifKey, int x, int y,long duration)<br/> {<!-- --><br/>     System.out.println("PlayGif " +gifKey );<br/>  if(gifKey&lt;0 || gifKey&gt;2)<br/>   return;<br/>  <br/>  gifPlayers[gifKey].Start(x,y,duration);<br/> }<br/> <br/> public void StopGif(int gifKey)<br/> {<!-- --><br/>  if(gifKey&lt;0 || gifKey&gt;2)<br/>   return;<br/>  gifPlayers[gifKey].Stop();<br/> }<br/> <br/> public int GetGifState(int gifKey)<br/> {<!-- --><br/>  if(gifKey&lt;0 || gifKey&gt;2)<br/>   return GIF_STOPPED;<br/>  return gifPlayers[gifKey].isPlaying?GIF_STARTED: GIF_STOPPED;</p>
+<p> }</p>
+<p> public void DrawGifFrame(int gifKey)<br/> {<!-- --><br/>  if(gifKey&lt;0 || gifKey&gt;2 ||(gifPlayers[gifKey]==null))<br/>   return ;<br/>  gifPlayers[gifKey].DrawFrame(graphics);<br/>  <br/> }<br/>}</p>
+<p> </p>
+<p> </p>
+<p>class CSquare {<!-- --></p>
+<p> private int absX;<br/> private int absY;<br/> private int X;<br/> private int Y;<br/> <br/> private int OabsX;<br/> private int OabsY;<br/> private int OX;<br/> private int OY;<br/> </p>
+<p> public int color;<br/> <br/> public boolean IsHide;<br/> public boolean HightLight;<br/> public CSquare() {<!-- --><br/>  absX =  absY=0;<br/>  X = Y = color = 0;<br/>  OabsX = OabsY=OX=OY;<br/>  IsHide = true;<br/>  HightLight = false;<br/> }</p>
+<p> public void Assign(CSquare q) {<!-- --><br/>  X = q.X;<br/>  Y = q.Y;<br/>  absX = q.absX;<br/>  absY = q.absY;<br/>  OabsX = q.OabsX;  <br/>  OabsY = q.OabsY;<br/>  OX = q.OX;<br/>  OY = q.OY;<br/>  <br/>  color = q.color;<br/>  IsHide = q.IsHide;<br/>  HightLight= q.HightLight;<br/> }<br/> <br/> public void Setup(int _x, int _y, int _absx, int _absy)<br/> {<!-- --><br/>  X = _x;<br/>  Y = _y;<br/>  absX = _absx;<br/>  absY = _absy;<br/>  OabsX = absX;  <br/>  OabsY = absY;<br/>  OX = X;<br/>  OY = Y;<br/> }<br/> <br/> public int getX()<br/> {<!-- --><br/>  return X;<br/> }<br/> public int getY()<br/> {<!-- --><br/>  return Y;<br/> }<br/> <br/> public void setX(int _x)<br/> {<!-- --><br/>  X = _x;<br/>  absX = OabsX+(X-OX)*CGameField.nSquareSize;<br/> }<br/> <br/> public void setY(int _y)<br/> {<!-- --><br/>  Y = _y;<br/>  absY = OabsY-(Y-OY)*CGameField.nSquareSize;<br/> }<br/> <br/> public int getAbsX()<br/> {<!-- --><br/>  return absX;<br/> }<br/> <br/> public void setAbsX(int _absX)<br/> {<!-- --><br/>  int nGrids = (_absX-OabsX)/CGameField.nSquareSize;<br/>  X  = OX+ nGrids;<br/>  absX = _absX;<br/> }<br/> <br/> public int getAbsY()<br/> {<!-- --><br/>  return absY;<br/> }<br/> <br/> public void setAbsY(int _absY)<br/> {<!-- --></p>
+<p>  int nGrids = -(_absY-OabsY)/CGameField.nSquareSize;<br/>  Y =OY+ nGrids;<br/>  absY = _absY;<br/> }<br/> <br/> public void IncGridX()<br/> {<!-- --><br/>  setX(X+1);<br/> }<br/> <br/> public void DecGridX()<br/> {<!-- --><br/>  setX(X-1);<br/> }<br/> <br/> public void IncGridY()<br/> {<!-- --><br/>  setY(Y+1);<br/> }<br/> <br/> public void DecGridY()<br/> {<!-- --><br/>  setY(Y-1);<br/> }<br/> <br/> </p>
+<p>}</p>
+<p>class Rectangle {<!-- --><br/> public int X=0;</p>
+<p> public int Y=0;</p>
+<p> public int Width=0;</p>
+<p> public int Height=0;<br/> Rectangle()<br/> {<!-- --><br/> <br/> }<br/> Rectangle(int _x,int _y,int _w,int _h)<br/> {<!-- --><br/>  Width = _w;<br/>  Height = _h;<br/>  X = _x;<br/>  Y = _y;<br/> }<br/> public boolean isPointInside(int _x,int _y)<br/> {<!-- --><br/>  if(_x&gt;X &amp;&amp; _x &lt;X+Width<br/>    &amp;&amp;_y&gt;Y &amp;&amp; _y&lt;Y+Height<br/>    )<br/>  {<!-- --><br/>   return true;<br/>  }<br/>  return false;<br/> }<br/>}</p>
+<p>class Color {<!-- --><br/> public static Color Black = new Color(0);</p>
+<p> public static Color Red = new Color(0xff0000);</p>
+<p> public static Color Green = new Color(0xff00);</p>
+<p> public static Color Blue = new Color(0xff);</p>
+<p> public static Color White = new Color(0xffffffff);</p>
+<p> public static Color Tomato = new Color(0x00e70f0f);</p>
+<p> public static Color Violet = new Color(0x000080c0);<br/> <br/> public static Color DarkBlue = new Color(0x002F5E);<br/> <br/> public int rgb;</p>
+<p> Color(int _v) {<!-- --><br/>  rgb = _v;<br/> }<br/>}</p>
+<p>class Point {<!-- --><br/> public int X;</p>
+<p> public int Y;</p>
+<p> Point(int _x, int _y) {<!-- --><br/>  X = _x;<br/>  Y = _y;<br/> }<br/>}</p>
+<p>class CGameSoundPlayer<br/>{<!-- --><br/> static final int nosoundEffect = -1;//0<br/> static final int soundFell = 0;//0<br/> static final int soundLinefull = 1;//0<br/> static final int soundLevelup = 2;//0<br/> static final int soundGameover = 3;//0<br/> static final int soundGamewon = 4;//0<br/> <br/> public void ControlEffectSound()<br/> {<!-- --><br/>  <br/> }<br/> </p>
+<p> public void PlayEffectSound(int soundKey)<br/> {<!-- --><br/>  <br/> }<br/> <br/> public void StopEffectSound()<br/> {<!-- --><br/>  <br/> }<br/> <br/> public void PlayBackgroundMusic()<br/> {<!-- --><br/> <br/> }<br/> <br/> public void StopBackgroundMusic()<br/> {<!-- --><br/> <br/> }<br/> <br/> </p>
+<p><br/> public void SetVolume(int level)<br/> {<!-- --><br/>  <br/> }<br/> <br/> public void EnableBgMusic(boolean val)<br/> {<!-- --><br/>  <br/> }<br/> <br/> public void EnableEffectSound(boolean val)<br/> {<!-- --><br/>  <br/> }<br/> </p>
+<p>}</p>
+<p>class CGameDrawerBase {<!-- --><br/> <br/> static final int NoneGif = -1;<br/> static final int LevelUpGif = 0;<br/> static final int GameOverGif =1;<br/> static final int GameWonGif = 2;<br/> static final int GIF_STOPPED = 0;<br/> static final int GIF_STARTED = 1;<br/> <br/> <br/> <br/> public void clear(Color bkcolor) {<!-- --><br/> }</p>
+<p> public void DrawLine(Color color, Point pt1, Point pt2) {<!-- --><br/> }</p>
+<p> public void DrawString(String s, int font, Point pt) {<!-- --><br/> }</p>
+<p> public void DrawStringCenterVH(String s, int font, Point centerPt) {<!-- --><br/> }<br/> <br/> public void DrawSquare(CSquare q) {<!-- --><br/> }</p>
+<p> public void Flip() {<!-- --><br/> }</p>
+<p> public void DrawGameMenuFrame(Rectangle rect)<br/> {<!-- --><br/>  <br/> }<br/> <br/> public void PlayGif(int gifKey, int x, int y,long duration)<br/> {<!-- --><br/>  <br/> }<br/> <br/> public void StopGif(int gifKey)<br/> {<!-- --><br/>  <br/> }<br/> <br/> public int GetGifState(int gifKey)<br/> {<!-- --><br/>  return GIF_STOPPED;<br/> }</p>
+<p> public void DrawGifFrame(int gifKey)<br/> {<!-- --><br/>  <br/> }<br/> <br/>}</p>
+<p>//static final int STATE_KNEEL = 8;</p>
+<p>class BLOCK_TYPE {<!-- --><br/> static final int undefine = 0;//0</p>
+<p> static final int square = 1; //1</p>
+<p> static final int line = 2; //2</p>
+<p> static final int L = 3;//3</p>
+<p> static final int J = 4;//4</p>
+<p> static final int S = 5;//5</p>
+<p> static final int Z = 6;//6</p>
+<p> static final int T = 7;//7<br/>}</p>
+<p>class TETRIS_KEYCODE {<!-- --><br/> static final int Unk = 0;</p>
+<p> static final int Up = 1;</p>
+<p> static final int Down = 2;</p>
+<p> static final int Left = 3;</p>
+<p> static final int Right = 4;</p>
+<p> static final int Rotate = 5;</p>
+<p> static final int Escape = 6;</p>
+<p> static final int Start   = 7;<br/>}</p>
+<p>class TETRIS_FONT<br/>{<!-- --><br/> static final int Plain       = 0;<br/> static final int Warning     = 1;<br/> static final int Title     = 2;<br/> static final int HightLight  = 4;<br/> static final int NormalSize  =9;<br/> static final int LargeSize   =12;<br/> <br/>}</p>
+<p>class CTetrisMenu<br/>{<!-- --><br/> public  int    ID=0;<br/> private String Title="";<br/> private String []Options;<br/> private String []Hints; <br/> public CTetrisMenu parent=null;<br/> private int    IndexCurSel;<br/> private boolean bdone=false;<br/> private boolean bhorizOpts = false;<br/> private Rectangle FrameRect =null;;<br/> private Rectangle titleRect =null;<br/> private Rectangle []hintRects =null;<br/> <br/> private Rectangle []optRects =null;<br/> <br/> CTetrisMenu(int id, String _Title, String [] _options, String [] _Hints,Rectangle _rect, boolean hozi)<br/> {<!-- --><br/>  ID = id;<br/>  Options = _options;<br/>  Title   = _Title;<br/>  Hints   = _Hints;<br/>  IndexCurSel = 0;<br/>  FrameRect   = _rect;<br/>  bhorizOpts = hozi;<br/>  <br/>  int curY= FrameRect.Y+6;<br/>  if(Title!=null&amp;&amp;Title.length()&gt;0)<br/>  {<!-- --><br/>   titleRect = new Rectangle(FrameRect.X + FrameRect.Width/2 - Title.length()*TETRIS_FONT.LargeSize/2,<br/>     curY,<br/>     Title.length()*TETRIS_FONT.LargeSize,<br/>     TETRIS_FONT.LargeSize+6);<br/>   curY+=TETRIS_FONT.LargeSize+12;<br/>  }<br/>  <br/>  if(Hints!=null &amp;&amp; Hints.length&gt;0)<br/>  {<!-- --><br/>   hintRects = new Rectangle[Hints.length];<br/>   for(int i=0;i&lt;Hints.length;i++)<br/>   {<!-- --><br/>    hintRects[i]=new Rectangle(<br/>      FrameRect.X + FrameRect.Width/2 - Hints[i].length()*TETRIS_FONT.NormalSize/2,<br/>      curY,<br/>      Hints[i].length()*TETRIS_FONT.NormalSize,<br/>      TETRIS_FONT.NormalSize+4);<br/>    curY+=TETRIS_FONT.NormalSize+4;<br/>   }<br/>  }<br/>  <br/>  <br/>  if(_options!=null &amp;&amp; _options.length&gt;0)<br/>  {<!-- --><br/>   if(!bhorizOpts)<br/>   {<!-- --><br/>    optRects = new Rectangle[_options.length];<br/>    for(int i=0;i&lt;_options.length;i++)<br/>    {<!-- --><br/>     optRects[i]=new Rectangle(<br/>       FrameRect.X + FrameRect.Width/2 - _options[i].length()*TETRIS_FONT.NormalSize/2,<br/>       curY,<br/>       _options[i].length()*TETRIS_FONT.NormalSize,<br/>       TETRIS_FONT.NormalSize+4);<br/>     curY+=TETRIS_FONT.NormalSize+4;<br/>    }<br/>   }<br/>   else<br/>   {<!-- --><br/>    int gridWidth = FrameRect.Width/_options.length;<br/>    optRects = new Rectangle[_options.length];<br/>    for(int i=0;i&lt;_options.length;i++)<br/>    {<!-- --><br/>     optRects[i]=new Rectangle(<br/>       FrameRect.X+gridWidth*i+gridWidth/2-_options[i].length()*TETRIS_FONT.NormalSize/2,<br/>       curY,<br/>       _options[i].length()*TETRIS_FONT.NormalSize,<br/>       TETRIS_FONT.NormalSize+4<br/>       );<br/>     <br/>    }<br/>   }<br/>  }<br/>  <br/> }<br/> <br/> public void reset()<br/> {<!-- --><br/>  bdone=false;<br/> }<br/> <br/> public void DoKeyPressed(int keycode)<br/> {<!-- --><br/>  if(bdone) return;<br/>  //System.out.println("DoKeyPressed "+keycode);<br/>  <br/>  if(keycode==TETRIS_KEYCODE.Down||keycode==TETRIS_KEYCODE.Right)<br/>  {<!-- --><br/>   IndexCurSel++;<br/>   if(IndexCurSel&gt;=Options.length)<br/>    IndexCurSel=0;<br/>  }<br/>  else if(keycode==TETRIS_KEYCODE.Up||keycode==TETRIS_KEYCODE.Left)<br/>  {<!-- --><br/>   IndexCurSel--;<br/>   if(IndexCurSel&lt;0)<br/>   {<!-- --><br/>    IndexCurSel=Options.length-1;<br/>   }<br/>  }<br/>  else if(keycode==TETRIS_KEYCODE.Rotate)<br/>  {<!-- --><br/>   bdone = true;<br/>  }<br/> }<br/> <br/> public void DoPointerPressed(int x, int y)<br/> {<!-- --><br/>  if(optRects!=null)<br/>  for(int i=0;i&lt;optRects.length;i++)<br/>  {<!-- --><br/>   if(optRects[i].isPointInside(x,y))<br/>   {<!-- --><br/>    //System.out.println("inside "+i);<br/>    IndexCurSel = i;<br/>    bdone = true;     <br/>    return;<br/>   }<br/>  }<br/> }<br/> <br/> public void SetCurSel(int i)<br/> {<!-- --><br/>  IndexCurSel = i;<br/> }<br/> public int GetCurSel()<br/> {<!-- --><br/>  return IndexCurSel;<br/> }<br/> <br/> public void Draw(CGameDrawerBase drawer)<br/> {<!-- --><br/>  drawer.DrawGameMenuFrame(FrameRect);<br/> <br/>  if(Title!=null&amp;&amp;Title.length()&gt;0)<br/>  {<!-- --><br/>   drawer.DrawStringCenterVH(Title,TETRIS_FONT.Title,<br/>     new Point(titleRect.X+titleRect.Width/2,<br/>       titleRect.Y+titleRect.Height/2)<br/>       );<br/>  }<br/>  <br/>  if(Hints!=null )<br/>  {<!-- --><br/>   for(int i=0;i&lt;Hints.length;i++)<br/>   {<!-- --><br/>    Point pt0 = new Point(hintRects[i].X+hintRects[i].Width/2,<br/>      hintRects[i].Y+hintRects[i].Height/2);<br/>      <br/>    drawer.DrawStringCenterVH(Hints[i],TETRIS_FONT.Warning,pt0);<br/>   <br/>   }<br/>  }<br/>  <br/>  if(Options!=null)<br/>  {<!-- --><br/>   for(int i=0;i&lt;Options.length;i++)<br/>   {<!-- --><br/>    Point pt0 = new Point(optRects[i].X+optRects[i].Width/2,<br/>      optRects[i].Y+optRects[i].Height/2);<br/>      <br/>    if(GetCurSel()!=i)<br/>     drawer.DrawStringCenterVH(Options[i],TETRIS_FONT.Plain,pt0);<br/>    else <br/>     drawer.DrawStringCenterVH(Options[i],TETRIS_FONT.HightLight,pt0);<br/>   }<br/>  }<br/> }<br/> <br/> public boolean IsDone()<br/> {<!-- --><br/>  return bdone;<br/> }<br/>}</p>
+<p> </p>
+<p>class CBlock {<!-- --><br/> public CSquare[] qs = new CSquare[4];</p>
+<p> public int Type = BLOCK_TYPE.undefine;</p>
+<p> public int orientation = -1; //0-3</p>
+<p> public float Speed = 0;</p>
+<p> private long LastTick = 0;</p>
+<p> int LastDeltaY = 0;</p>
+<p> public long StopTick = 0;</p>
+<p> public CBlock() {<!-- --><br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   qs[i] = new CSquare();<br/>   qs[i].IsHide = false;<br/>  }<br/>  orientation = 0;<br/>  Speed = 0;<br/>  LastTick = 0;<br/>  LastDeltaY = 0;<br/>  StopTick = 0;</p>
+<p> }</p>
+<p> public void Resume() {<!-- --><br/>  LastTick = System.currentTimeMillis();<br/>  <br/> }</p>
+<p> public void Create(int _type, int orient, int x, int y , int _absx,int absy) {<!-- --><br/>  LastTick = System.currentTimeMillis();<br/>  LastDeltaY = 0;<br/>  StopTick = 0;</p>
+<p>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   qs[i].Setup(x,y,_absx,absy);<br/>  }<br/>  <br/>  Random rand = new Random();</p>
+<p>  if (orient &lt; 0 || orient &gt; 3) {<!-- --><br/>   orientation = (int) (rand.nextFloat() * 3);<br/>  } else {<!-- --><br/>   orientation = orient;<br/>  }</p>
+<p>  if (_type &lt;= BLOCK_TYPE.undefine || _type &gt; BLOCK_TYPE.T) {<!-- --></p>
+<p><br/>   int tt = (int) (rand.nextFloat() * 7) + 1;</p>
+<p>   Type = (int) tt;</p>
+<p>  } else {<!-- --><br/>   Type = _type;<br/>  }</p>
+<p>  CreateInternal(x, y);</p>
+<p> }</p>
+<p> private void CreateInternal(int x, int y) {<!-- --><br/>  int index = -1;</p>
+<p>  switch (Type) {<!-- --><br/>  case BLOCK_TYPE.square:<br/>   CreateTypeSquare(x, y);<br/>   index = 0;<br/>   break;<br/>  case BLOCK_TYPE.line:<br/>   CreateTypeLine(x, y);<br/>   index = 1;<br/>   break;<br/>  case BLOCK_TYPE.L:<br/>   CreateTypeL(x, y);<br/>   index = 2;<br/>   break;<br/>  case BLOCK_TYPE.J:<br/>   CreateTypeJ(x, y);<br/>   index = 3;<br/>   break;<br/>  case BLOCK_TYPE.S:<br/>   CreateTypeS(x, y);<br/>   index = 4;<br/>   break;<br/>  case BLOCK_TYPE.Z:<br/>   CreateTypeZ(x, y);<br/>   index = 5;<br/>   break;<br/>  case BLOCK_TYPE.T:<br/>   CreateTypeT(x, y);<br/>   index = 6;<br/>   break;<br/>  default:<br/>   CreateTypeL(x, y);<br/>   index = 2;<br/>   break;<br/>  }</p>
+<p>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   qs[i].color = index;</p>
+<p>  }</p>
+<p> }</p>
+<p> public void UpdateLocation(CGameField gamefield, long curTick) {<!-- --><br/>  if (LastTick &gt; 0 &amp;&amp; curTick &gt; LastTick) {<!-- --><br/>   int deltaY = (int) (Speed * (curTick - LastTick) / 1000)<br/>     - LastDeltaY;<br/>   LastDeltaY += deltaY;<br/>   if (deltaY &gt; 0) {<!-- --><br/>    for (int i = 0; i &lt; deltaY; i++) {<!-- --><br/>     Down(gamefield);<br/>    }<br/>   }<br/>  }<br/> }<br/> <br/> public void AbsUpdateLocation(CGameField gamefield, long curTick) {<!-- --><br/>  if (LastTick &gt; 0 &amp;&amp; curTick &gt; LastTick) {<!-- --><br/>   int deltaY = (int) (Speed * CGameField.nSquareSize*(float)(curTick - LastTick) / 1000)<br/>     - LastDeltaY;<br/>   <br/>   LastDeltaY += deltaY;<br/>  <br/>   for (int i = 0; i &lt; deltaY; i++) {<!-- --><br/>    absDown(gamefield);<br/>   }<br/>  <br/>  }<br/> }</p>
+<p> public void Draw(CGameDrawerBase drawer) {<!-- --><br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   drawer.DrawSquare(qs[i]);<br/>  }<br/> }</p>
+<p> public void Left(CGameField gamefield) {<!-- --><br/>  CBlock tmp = new CBlock();<br/>  tmp.Type = Type;<br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   tmp.qs[i].Assign(qs[i]);<br/>  }<br/>  tmp.Left();<br/>  if (gamefield.Intersected(tmp)) {<!-- --><br/>   return;<br/>  }<br/>  Left();<br/> }</p>
+<p> public void Right(CGameField gamefield) {<!-- --><br/>  CBlock tmp = new CBlock();<br/>  tmp.Type = Type;<br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   tmp.qs[i].Assign(qs[i]);<br/>  }<br/>  tmp.Right();<br/>  if (gamefield.Intersected(tmp)) {<!-- --><br/>   return;<br/>  }<br/>  Right();<br/> }</p>
+<p><br/> public void Down(CGameField gamefield) {<!-- --><br/>  CBlock tmp = new CBlock();<br/>  tmp.Type = Type;<br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   tmp.qs[i].Assign(qs[i]);<br/>  }<br/>  tmp.Down();<br/>  if (gamefield.Intersected(tmp)) {<!-- --><br/>   return;<br/>  }<br/>  Down();<br/> }<br/> <br/> public void absDown(CGameField gamefield) {<!-- --><br/>//  CBlock tmp = new CBlock();<br/>//  tmp.Type = Type;<br/>//  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>//   tmp.qs[i].Assign(qs[i]);<br/>//  }<br/>//  tmp.absDown();<br/>//  if (gamefield.Intersected(tmp)) {<!-- --><br/>//   return;<br/>//  }<br/>  absDown();<br/>  if(gamefield.Intersected(this))<br/>  {<!-- --><br/>   absUp();<br/>  }<br/> }</p>
+<p> public void Rotate(CGameField gamefield) {<!-- --><br/>  CBlock tmp = new CBlock();<br/>  tmp.Type = Type;<br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   tmp.qs[i].Assign(qs[i]);<br/>  }</p>
+<p>  tmp.Rotate();<br/>  if (tmp.MaxX() &gt; CGameField.HSquareNumber - 1 || tmp.MinX() &lt; 0<br/>    || gamefield.Intersected(tmp)) {<!-- --><br/>   return;<br/>  }<br/>  Rotate();<br/> }</p>
+<p> public void Rotate() {<!-- --><br/>  int minx = MinX();<br/>  int miny = MinY();<br/>  orientation = orientation % 4;<br/>  ++orientation;<br/>  CreateInternal(minx, miny);<br/>  int maxX = MaxX();<br/>  if (maxX &gt; CGameField.HSquareNumber - 1) {<!-- --><br/>   int iback = maxX - (CGameField.HSquareNumber - 1);<br/>   for (int i = 0; i &lt; iback; i++) {<!-- --><br/>    Left();<br/>   }<br/>  }</p>
+<p> }</p>
+<p> public void Left() {<!-- --><br/>  if (MinX() &gt; 0) {<!-- --><br/>   for (int i = 0; i &lt; 4; i++) {<!-- --><br/>    qs[i].DecGridX();<br/>    <br/>   }<br/>  }<br/> }</p>
+<p> public void Right() {<!-- --><br/>  if (MaxX() &lt; (CGameField.HSquareNumber - 1)) {<!-- --><br/>   for (int i = 0; i &lt; 4; i++) {<!-- --><br/>    qs[i].IncGridX();<br/>   }<br/>  }<br/> }</p>
+<p> public void Down() {<!-- --><br/>  if (MinY() &gt; 0) {<!-- --><br/>   for (int i = 0; i &lt; 4; i++) {<!-- --><br/>    //qs[i].Y -= 1;<br/>    qs[i].DecGridY();<br/>   }<br/>  }<br/> }<br/> <br/> public void absDown()<br/> {<!-- --><br/>  if (MinY() &gt; 0) {<!-- --><br/>   for (int i = 0; i &lt; 4; i++) {<!-- --><br/>    //qs[i].Y -= 1;<br/>    qs[i].setAbsY(qs[i].getAbsY()+1);<br/>   }<br/>  }<br/> }</p>
+<p> void Up() {<!-- --><br/>  if (MaxY() &lt; (CGameField.VSquareNumber - 1)) {<!-- --><br/>   for (int i = 0; i &lt; 4; i++) {<!-- --><br/>    //qs[i].Y += 1;<br/>    qs[i].IncGridY();<br/>   }<br/>  }<br/> }</p>
+<p> void absUp() {<!-- --><br/>  if (MaxY() &lt; (CGameField.VSquareNumber - 1)) {<!-- --><br/>   for (int i = 0; i &lt; 4; i++) {<!-- --><br/>    qs[i].setAbsY(qs[i].getAbsY()-1);<br/>   }<br/>  }<br/> }<br/> <br/> public int MinX() {<!-- --><br/>  int min = qs[0].getX();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (min &gt; qs[i].getX()) {<!-- --><br/>    min = qs[i].getX();<br/>   }<br/>  }<br/>  return min;<br/> }</p>
+<p> public int MaxX() {<!-- --><br/>  int max = qs[0].getX();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (max &lt; qs[i].getX()) {<!-- --><br/>    max = qs[i].getX();<br/>   }<br/>  }<br/>  return max;<br/> }</p>
+<p> public int MinY() {<!-- --><br/>  int min = qs[0].getY();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (min &gt; qs[i].getY()) {<!-- --><br/>    min = qs[i].getY();<br/>   }<br/>  }<br/>  return min;<br/> }</p>
+<p> public int MaxY() {<!-- --><br/>  int max = qs[0].getY();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (max &lt; qs[i].getY()) {<!-- --><br/>    max = qs[i].getY();<br/>   }<br/>  }<br/>  return max;<br/> }<br/> <br/> public int AbsMinX() {<!-- --><br/>  int min = qs[0].getAbsX();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (min &gt; qs[i].getAbsX()) {<!-- --><br/>    min = qs[i].getAbsX();<br/>   }<br/>  }<br/>  return min;<br/> }</p>
+<p> public int AbsMaxX() {<!-- --><br/>  int max = qs[0].getAbsX();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (max &lt; qs[i].getAbsX()) {<!-- --><br/>    max = qs[i].getAbsX();<br/>   }<br/>  }<br/>  return max;<br/> }</p>
+<p> public int AbsMinY() {<!-- --><br/>  int min = qs[0].getAbsY();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (min &gt; qs[i].getAbsY()) {<!-- --><br/>    min = qs[i].getAbsY();<br/>   }<br/>  }<br/>  return min;<br/> }</p>
+<p> public int AbsMaxY() {<!-- --><br/>  int max = qs[0].getAbsY();<br/>  for (int i = 1; i &lt; 4; i++) {<!-- --><br/>   if (max &lt; qs[i].getAbsY()) {<!-- --><br/>    max = qs[i].getAbsY();<br/>   }<br/>  }<br/>  return max;<br/> }<br/> <br/> public int absWidth()<br/> {<!-- --><br/>  return AbsMaxX()-AbsMinX();<br/> }<br/> <br/> public int absHeight()<br/> {<!-- --><br/>  return AbsMaxY()-AbsMinY();<br/> }<br/> <br/> public void CenterAbs(Rectangle rect)<br/> {<!-- --><br/>  int curCenterX =  AbsMinX() +absWidth()/2;<br/>  int curCenterY =     AbsMinY() +absHeight()/2;<br/>  int offsetX =(rect.X+  rect.Width/2)-curCenterX;<br/>  int offsetY = (rect.Y+  rect.Height/2)-curCenterY;<br/>  for(int i=0;i&lt;4;i++)<br/>  {<!-- --><br/>   qs[i].setAbsX(qs[i].getAbsX()+offsetX);<br/>   qs[i].setAbsY(qs[i].getAbsY()+offsetY);<br/>  }<br/>  <br/> }</p>
+<p> private void CreateTypeSquare(int X, int Y) {<!-- --><br/>  /*<br/>   @ @<br/>   @ @<br/>   */<br/>  qs[0].setX ( X);<br/>  qs[0].setY ( Y);<br/>  qs[1].setX ( X + 1);<br/>  qs[1].setY ( Y);<br/>  qs[2].setX ( X + 1);<br/>  qs[2].setY ( Y + 1);<br/>  qs[3].setX ( X);<br/>  qs[3].setY ( Y + 1);<br/> }</p>
+<p> private void CreateTypeLine(int X, int Y) {<!-- --></p>
+<p>  if (orientation % 2 == 0) {<!-- --><br/>   /*<br/>    @<br/>    @<br/>    @<br/>    @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X);<br/>   qs[1].setY ( Y + 1);<br/>   qs[2].setX ( X);<br/>   qs[2].setY ( Y + 2);<br/>   qs[3].setX ( X);<br/>   qs[3].setY ( Y + 3);<br/>  } else {<!-- --><br/>   /*<br/>    @ @ @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y);<br/>   qs[2].setX ( X + 2);<br/>   qs[2].setY ( Y);<br/>   qs[3].setX ( X + 3);<br/>   qs[3].setY ( Y);<br/>  }<br/> }</p>
+<p> private void CreateTypeL(int X, int Y) {<!-- --></p>
+<p>  int r = orientation % 4;<br/>  switch (r) {<!-- --><br/>  case 0:<br/>   /* <br/>    @<br/>    @<br/>    @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y);<br/>   qs[2].setX ( X);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X);<br/>   qs[3].setY ( Y + 2);<br/>   break;<br/>  case 1:<br/>   /* <br/>    @ @ @<br/>    @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y + 1);<br/>   break;<br/>  case 2:<br/>   /* <br/>    @ @ <br/>    @<br/>    @<br/>    */<br/>   qs[0].setX ( X + 1);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 2);<br/>   qs[3].setX ( X);<br/>   qs[3].setY ( Y + 2);</p>
+<p>   break;<br/>  case 3:<br/>   /* <br/>    @ <br/>    @ @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y);</p>
+<p>   qs[2].setX ( X + 2);<br/>   qs[2].setY ( Y);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y + 1);<br/>   break;<br/>  }<br/> }</p>
+<p> private void CreateTypeJ(int X, int Y) {<!-- --><br/>  int r = orientation % 4;<br/>  switch (r) {<!-- --><br/>  case 0:</p>
+<p>   /*<br/>    @<br/>    @<br/>    @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 1);<br/>   qs[3].setY ( Y + 2);<br/>   break;<br/>  case 1:<br/>   /*<br/>    @  <br/>    @ @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y);<br/>   break;<br/>  case 2:<br/>   /*<br/>    @ @<br/>    @  <br/>    @ <br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X);<br/>   qs[2].setY ( Y + 2);<br/>   qs[3].setX ( X + 1);<br/>   qs[3].setY ( Y + 2);</p>
+<p>   break;<br/>  case 3:<br/>   /*<br/>    @ @ @  <br/>    @ <br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y + 1);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 2);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y);<br/>   break;<br/>  }<br/> }</p>
+<p> private void CreateTypeZ(int X, int Y) {<!-- --><br/>  int r = orientation % 2;<br/>  switch (r) {<!-- --><br/>  case 0:<br/>   /*<br/>    @ @<br/>    @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y + 1);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y);<br/>   break;<br/>  case 1:<br/>   /*<br/>    @ <br/>    @ @<br/>    @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 1);<br/>   qs[3].setY ( Y + 2);<br/>   break;<br/>  }<br/> }</p>
+<p> private void CreateTypeS(int X, int Y) {<!-- --><br/>  int r = orientation % 2;<br/>  switch (r) {<!-- --><br/>  case 0:<br/>   /*<br/>    @ @<br/>    @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y + 1);<br/>   break;<br/>  case 1:<br/>   /*<br/>    @ <br/>    @ @<br/>    @<br/>    */<br/>   qs[0].setX ( X + 1);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X);<br/>   qs[3].setY ( Y + 2);<br/>   break;<br/>  }<br/> }</p>
+<p> private void CreateTypeT(int X, int Y) {<!-- --></p>
+<p>  int r = orientation % 4;</p>
+<p>  switch (r) {<!-- --></p>
+<p>  case 0:<br/>   /* <br/>    @ @ @<br/>    @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y + 1);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y + 1);</p>
+<p>   break;<br/>  case 1:<br/>   /* <br/>    @ <br/>    @ @<br/>    @ <br/>    */<br/>   qs[0].setX ( X + 1);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 1);<br/>   qs[3].setY ( Y + 2);<br/>   break;<br/>  case 2:<br/>   /* <br/>    @<br/>    @ @ @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X + 1);<br/>   qs[1].setY ( Y);<br/>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X + 2);<br/>   qs[3].setY ( Y);<br/>   break;<br/>  case 3:<br/>   /* <br/>    @<br/>    @ @<br/>    @<br/>    */<br/>   qs[0].setX ( X);<br/>   qs[0].setY ( Y);<br/>   qs[1].setX ( X);<br/>   qs[1].setY ( Y + 1);</p>
+<p>   qs[2].setX ( X + 1);<br/>   qs[2].setY ( Y + 1);<br/>   qs[3].setX ( X);<br/>   qs[3].setY ( Y + 2);<br/>   break;<br/>  }<br/> }</p>
+<p>}</p>
+<p> </p>
+<p><br/>abstract class BaseRMS {<!-- --></p>
+<p> private String rmsName;<br/> <br/> private RecordStore recordStore;<br/> <br/> BaseRMS(String _rmsName)<br/> {<!-- --><br/>   rmsName = _rmsName;<br/> }</p>
+<p> public void open() throws Exception {<!-- --></p>
+<p>  // 如果load RecordStore失败则重新生成一个RecordStore<br/>  try {<!-- --><br/>   recordStore = RecordStore.openRecordStore(this.rmsName,true);<br/>   if(recordStore.getNumRecords()&gt;0){<!-- --><br/>    loadData();<br/>  } else {<!-- --><br/>   createDefaultData();<br/>  }<br/>  }catch(Exception e){<!-- --><br/>    throw new Exception(this.rmsName + "::open::" + e);<br/>  }<br/>  </p>
+<p> }</p>
+<p> public void close() throws Exception {<!-- --><br/>  if (recordStore != null) {<!-- --><br/>   try {<!-- --><br/>    recordStore.closeRecordStore();<br/>   } catch (Exception e) {<!-- --><br/>    throw new Exception(this.rmsName + "::close::" + e);<br/>   }<br/>  }<br/> }</p>
+<p> public RecordStore getRecordStore() {<!-- --><br/>  return this.recordStore; // 返回整块记录<br/> }</p>
+<p> public String getRMSName() {<!-- --><br/>  return this.rmsName;<br/> }</p>
+<p> abstract void loadData() throws Exception;</p>
+<p> abstract void createDefaultData() throws Exception;</p>
+<p> abstract void updateData() throws Exception;</p>
+<p>}</p>
+<p><br/>class CGameRecords extends BaseRMS {<!-- --></p>
+<p> private String[] names = new String[8];</p>
+<p> private int[] values = new int[8];</p>
+<p> public CGameRecords(String rmsName) {<!-- --><br/>  super(rmsName);<br/>  initValues(); // 这个是初始数据<br/> }</p>
+<p> private void initValues() {<!-- --><br/>  names[0] = "DANY";<br/>  names[1] = "NICOLE";<br/>  names[2] = "NICOLE";<br/>  names[3] = "DANY";<br/>  names[4] = "NICOLE";<br/>  names[5] = "NICOLE";<br/>  names[6] = "DANY";<br/>  names[7] = "NICOLE";<br/>//  names[8] = "NICOLE";<br/>//  names[9] = "DANY";<br/>  <br/>  values[0] = 140;<br/>  values[1] = 100;<br/>  values[2] = 80;<br/>  values[3] = 60;<br/>  values[4] = 30;<br/>  values[5] = 20;<br/>  values[6] = 10;<br/>  values[7] = 30;<br/>//  values[8] = 20;<br/>//  values[9] = 10;</p>
+<p> }</p>
+<p> public void loadScores() throws Exception {<!-- --><br/>  try {<!-- --><br/>   this.open();<br/>   if (this.getRecordStore() != null)<br/>    this.close();<br/>  } catch (Exception e) {<!-- --><br/>   throw new Exception("Error loading Scores" + e);<br/>  }<br/> }</p>
+<p> public int[] getValues() {<!-- --><br/>  return this.values;// 得到分数的数组<br/> }</p>
+<p> public String[] getNames() {<!-- --><br/>  return this.names;// 得到名字的数组<br/> }</p>
+<p> public void reset() throws Exception {<!-- --><br/>  // 重新初始化数据集<br/>  this.open();<br/>  initValues();<br/>  updateData();<br/>  if (this.getRecordStore() != null)<br/>   this.close();<br/> }</p>
+<p> public void updateScores(int score, String Name) throws Exception {<!-- --><br/>  try {// 数据量小，简单地使用冒泡排序来完成更新并重排记录<br/>   for (int i = 0; i &lt; names.length; i++) {<!-- --><br/>    if (score &gt;= values[i]) {<!-- --><br/>     this.open();<br/>     for (int j = names.length - 1; j &gt; i; j--) {<!-- --><br/>      values[j] = values[j - 1];<br/>      names[j] = names[j - 1];<br/>     }<br/>     this.values[i] = score;<br/>     this.names[i] = Name;<br/>     updateData();<br/>     if (this.getRecordStore() != null)<br/>      this.close();<br/>     break;<br/>    }<br/>   }<br/>  } catch (Exception e) {<!-- --><br/>   throw new Exception(this.getRMSName() + "::updateScores::" + e);<br/>  }<br/> }</p>
+<p> public boolean isHighScore(int score) throws Exception {<!-- --><br/>  boolean isHighScore = false;// 遍历记录，判断新的分数是否是高分<br/>  try {<!-- --><br/>   for (int i = 0; i &lt; names.length; i++) {<!-- --><br/>    if (score &gt;= values[i])<br/>     isHighScore = true;<br/>   }<br/>  } catch (Exception e) {<!-- --><br/>   throw new Exception(this.getRMSName() + "::isHighScore::" + e);<br/>  }<br/>  return isHighScore;<br/> }</p>
+<p> protected void loadData() throws Exception {<!-- --><br/>  try {<!-- --><br/>   for (int i = 0; i &lt; names.length; i++) {<!-- --><br/>    byte[] record = this.getRecordStore().getRecord(i + 1);<br/>    values[i] =ByteArrayToInteger(record);<br/>    //System.out.print("Load "+record[0]+" "+record[1]+" "+record[2]+" "+record[3]+" /n");<br/>    <br/>    byte[] szbytes = new byte[record.length-4];<br/>    for(int j=0;j&lt;record.length-4;j++)<br/>    {<!-- --><br/>     szbytes[j]=record[4+j];<br/>    }<br/>    names[i]= new String(szbytes,"utf-8");<br/>    <br/>   }<br/>  } catch (Exception e) {<!-- --><br/>   throw new Exception(this.getRMSName() + "::loadData::" + e);<br/>  <br/>  }<br/>  <br/> }</p>
+<p> public static int ByteArrayToInteger(byte[] b) {<!-- --><br/>  int s = 0;</p>
+<p>  for(int i=0;i&lt;4 &amp;&amp; i&lt;b.length;i++)<br/>  {<!-- --><br/>   int t = b[i]&amp;0xFF;<br/>   s |= t&lt;&lt;(i*8);<br/>  }</p>
+<p>//  System.out.println("ByteArrayToInteger ("+s<br/>//    +") "+b[0]<br/>//    +" "+b[1]<br/>//    +" "+b[2]<br/>//    +" "+b[3]<br/>//    );<br/>  return s;<br/> }</p>
+<p><br/> public static byte[] IntegerToByteArray(int number) {<!-- --><br/>  int temp = number;<br/>  byte[] b = new byte[4];<br/>  for (int i = 0; i &lt;4; i++) { <br/>   b[i] = (byte)(temp &amp; 0xff);<br/>   temp = temp &gt;&gt; 8;<br/>  }<br/>//  System.out.println("IntegerToByteArray ("+number<br/>//    +") "+b[0]<br/>//    +" "+b[1]<br/>//    +" "+b[2]<br/>//    +" "+b[3]<br/>//    );<br/>  return b;<br/> }</p>
+<p><br/> protected void createDefaultData() throws Exception {<!-- --><br/>  try {<!-- --><br/>   for (int i = 0; i &lt; names.length; i++) {<!-- --><br/>       <br/>    byte []intBytes =  IntegerToByteArray(values[i]);<br/>    byte []szbytes = names[i].getBytes("UTF-8");<br/>    <br/>    byte[] record = new byte[szbytes.length+intBytes.length];<br/>    <br/>    //System.out.print("create "+intBytes[0]+" "+intBytes[1]+" "+intBytes[2]+" "+intBytes[3]+" /n");<br/>    <br/>    for(int j=0;j&lt;intBytes.length;j++)<br/>    {<!-- --><br/>     record[j]=intBytes[j];<br/>    }<br/>    <br/>    for(int j=0;j&lt;szbytes.length;j++)<br/>    {<!-- --><br/>     record[intBytes.length+j]=szbytes[j];<br/>    }</p>
+<p>    this.getRecordStore().addRecord(record, 0, record.length);<br/>   }<br/>  } catch (Exception e) {<!-- --><br/>   throw new Exception(this.getRMSName() + "::createDefaultData::" + e);<br/>  }<br/> }</p>
+<p> protected void updateData() throws Exception {<!-- --><br/>  try {<!-- --><br/>   for (int i = 0; i &lt; names.length; i++) {<!-- --><br/>    byte []intBytes =  IntegerToByteArray(values[i]);<br/>    byte []szbytes = names[i].getBytes("UTF-8");<br/>    <br/>    byte[] record = new byte[szbytes.length+intBytes.length];<br/>    <br/>    //System.out.print("SAVE "+intBytes[0]+" "+intBytes[1]+" "+intBytes[2]+" "+intBytes[3]+" /n");<br/>    <br/>    for(int j=0;j&lt;intBytes.length;j++)<br/>    {<!-- --><br/>     record[j]=intBytes[j];<br/>    }<br/>    <br/>    for(int j=0;j&lt;szbytes.length;j++)<br/>    {<!-- --><br/>     record[intBytes.length+j]=szbytes[j];<br/>    }<br/>    <br/>    this.getRecordStore()<br/>      .setRecord(i + 1, record, 0, record.length);<br/>   }<br/>  } catch (Exception e) {<!-- --><br/>   throw new Exception(this.getRMSName() + "::updateData::" + e);<br/>  }<br/> }</p>
+<p>}</p>
+<p><br/>class CGameField {<!-- --><br/> //FIELD: 22X17                      //<br/> //<br/> //1                     1         0 //<br/> //2                     2  TETRIS 0 //<br/> //3                     3  DANY   0 //<br/> //4 ____________________4_________0 //<br/> //5                     5 NEXT:   0 //<br/> //6                     6         0 //<br/> //7                     7 1 2 3 4 0 //<br/> //8                     8 2     2 0 //<br/> //9                     9 3     3 0 //<br/> //0                     0 1 2 3 4 0 //<br/> //1   PRESS ANY KEY     1         0 //<br/> //2     TO  START       2 SCORE:  0 //<br/> //3                     3 9000000 0 //<br/> //4                     4 LEVEL:  0 //<br/> //5                     5 1       0 //<br/> //6                     6 LINES:  0 //<br/> //7                     7 00:00   0 //<br/> //8                     8 RECORD: 0 //<br/> //9                     9 999999  0 //<br/> //0                     0PRESS ESC0 //<br/> //1                     1 TO MENU 0 //<br/> //2 1 2 3 4 5 6 7 8 9 0 2 2 3 4 5 6 //<br/> //</p>
+<p><br/> public static int _Width = 0;</p>
+<p> public static int _Heigth = 0;</p>
+<p> public static int _LeftBattle = 0;</p>
+<p> public static int _TopBattle = 0;</p>
+<p> public static int _LeftIcon = 0;</p>
+<p> public static int _TopIcon = 0;</p>
+<p> public static int _LeftNextBL_LABLE = 0;</p>
+<p> public static int _TopNextBL_LABLE = 0;</p>
+<p> public static int _LeftNextBL = 0;</p>
+<p> public static int _TopNextBL = 0;</p>
+<p> public static int _LeftScore_LABLE = 0;</p>
+<p> public static int _TopScore_LABLE = 0;</p>
+<p> public static int _LeftScore = 0;</p>
+<p> public static int _TopScore = 0;</p>
+<p> public static int _LeftLevel_LABLE = 0;</p>
+<p> public static int _TopLevel_LABLE = 0;</p>
+<p> public static int _LeftLevel = 0;</p>
+<p> public static int _TopLevel = 0;</p>
+<p> public static int _LeftTime_LABLE = 0;</p>
+<p> public static int _TopTime_LABLE = 0;</p>
+<p> public static int _LeftTime = 0;</p>
+<p> public static int _TopTime = 0;</p>
+<p> public static int _LeftRECORD_LABLE = 0;</p>
+<p> public static int _TopRECORD_LABLE = 0;</p>
+<p> public static int _LeftRECORD = 0;</p>
+<p> public static int _TopRECORD = 0;</p>
+<p> public static int _LeftHINT_LABLE = 0;</p>
+<p> public static int _TopHINT_LABLE = 0;</p>
+<p> public static int _LeftHINT = 0;</p>
+<p> public static int _TopHINT = 0;</p>
+<p> public static int VSquareNumber = 22;</p>
+<p> public static int HSquareNumber = 10;</p>
+<p> public static int HAlignNumber = 7;</p>
+<p> public static int nSquareSize = 18;</p>
+<p> public static int nDeadAreaHeight = 4;</p>
+<p> public static int nBaseScorePerLine = 10;</p>
+<p> private CSquare[][] squares;</p>
+<p> private int CurrentMaxY;</p>
+<p><br/> private int stopdelayms;<br/> <br/> CGameRecords gameRecords;<br/> public String []strGameRecordList;<br/> public boolean GameOver = false;</p>
+<p> public boolean GameWon = false;</p>
+<p> public static long nFrame = 0;</p>
+<p> public static float _InitSpeed=1.5f;<br/> //<br/> public int Scores = 0;</p>
+<p> public int Level = 0;</p>
+<p> public int nLine = 0;<br/> <br/> public boolean GameStarted = false;<br/> public boolean GamePaused = false;<br/> <br/> public static   int STATE_NONE   =0;<br/> public static   int STATE_FELL   =1;<br/> public static   int STATE_LINEFULL  =2;<br/> public static   int STATE_LEVELUP  =4;<br/> public static   int STATE_GAMEOVER  =8;<br/> public static   int STATE_GAMEWON  =16;<br/> <br/> <br/> public int    m_GameState=STATE_NONE;<br/> <br/> int m_PlayingGifkey=CGameDrawerBase.NoneGif;<br/> <br/> public CTetrisMenu pCurMenu=null;<br/> <br/> public CTetrisMenu mainMenu=null;<br/> public CTetrisMenu pauseMenu=null;<br/> public CTetrisMenu soundMenu=null;<br/> public CTetrisMenu bgmMenu=null;<br/> public CTetrisMenu effectMenu=null;<br/> public CTetrisMenu volumeMenu=null;<br/> <br/> public CTetrisMenu gamemodeMenu=null;<br/> public CTetrisMenu heroesMenu=null;<br/> public CTetrisMenu creditsMenu=null;<br/> public CTetrisMenu exitMenu=null;<br/> public CTetrisMenu gameOverMenu=null;<br/> public CTetrisMenu gameWonMenu=null;<br/> public CTetrisMenu quitMenu=null;<br/> <br/> public CTetrisMenu levelUpMenu=null;<br/> <br/> <br/> <br/> <br/> //public boolean bSoundOn =true;<br/> <br/> public boolean bExit=false;<br/> <br/> public boolean bShowCredits=false;<br/> <br/> public boolean bShowRecords=false;<br/> <br/> public boolean bEnteringName=false;<br/> public String  szPlayerName ="";<br/> public String  szCurrentChar ="A";<br/> public int []fullLines = new int[4];<br/> public int numFullLines = 0;<br/> <br/> //<br/> CBlock CurBlock;</p>
+<p> CBlock NextBlock;</p>
+<p> public CGameDrawerBase gameDrawer = null;<br/> public CGameSoundPlayer soundPlayer = null;</p>
+<p> long GameStartTick = 0;<br/> </p>
+<p> public CGameField() {<!-- --><br/>  <br/> }<br/> </p>
+<p><br/> <br/> public void Setup(int ScreenWidth, int ScreenHeight, <br/>   CGameDrawerBase drawer,<br/>   CGameSoundPlayer _soundPlayer) {<!-- --><br/>  <br/>  soundPlayer =_soundPlayer;<br/>  GameStartTick = System.currentTimeMillis();<br/>  <br/>  _Width = ScreenWidth;<br/>  _Heigth = ScreenHeight;<br/>  CGameField.nSquareSize = ScreenHeight / CGameField.VSquareNumber;<br/>  if (ScreenWidth / CGameField.nSquareSize &lt; (CGameField.HSquareNumber + CGameField.HAlignNumber)) {<!-- --><br/>   CGameField.nSquareSize = ScreenWidth<br/>     / (CGameField.HSquareNumber + CGameField.HAlignNumber);<br/>  }<br/>  <br/>  //System.out.println("nSquareSize :"+nSquareSize);</p>
+<p>  int effectWidth = CGameField.nSquareSize<br/>    * (CGameField.HSquareNumber + CGameField.HAlignNumber);<br/>  int effectHeight = CGameField.nSquareSize * CGameField.VSquareNumber;</p>
+<p>  //calc left top <br/>  _LeftBattle = (_Width - effectWidth) / 2;<br/>  _TopBattle = (_Heigth - effectHeight) / 2;</p>
+<p>  _LeftIcon = _LeftBattle + CGameField.nSquareSize * 12+5;<br/>  _TopIcon = _TopBattle + CGameField.nSquareSize;</p>
+<p>  _LeftNextBL_LABLE = _LeftIcon;<br/>  _TopNextBL_LABLE = _TopBattle + CGameField.nSquareSize * 4;<br/>  _LeftNextBL = _LeftIcon;<br/>  _TopNextBL = _TopBattle + CGameField.nSquareSize * 5;</p>
+<p>  _LeftScore_LABLE = _LeftIcon;<br/>  _TopScore_LABLE = _TopBattle + CGameField.nSquareSize * 11;<br/>  _LeftScore = _LeftIcon;<br/>  _TopScore = _TopBattle + CGameField.nSquareSize * 12;</p>
+<p>  _LeftLevel_LABLE = _LeftIcon;<br/>  _TopLevel_LABLE = _TopBattle + CGameField.nSquareSize * 13;<br/>  _LeftLevel = _LeftIcon;<br/>  _TopLevel = _TopBattle + CGameField.nSquareSize * 14+5;</p>
+<p>  _LeftTime_LABLE = _LeftIcon;<br/>  _TopTime_LABLE = _TopBattle + CGameField.nSquareSize * 15;<br/>  _LeftTime = _LeftIcon;<br/>  _TopTime = _TopBattle + CGameField.nSquareSize * 16+11;</p>
+<p>  _LeftRECORD_LABLE = _LeftIcon;<br/>  _TopRECORD_LABLE = _TopBattle + CGameField.nSquareSize * 17;<br/>  _LeftRECORD = _LeftIcon;<br/>  _TopRECORD = _TopBattle + CGameField.nSquareSize * 18+18;</p>
+<p>  _LeftHINT_LABLE = _LeftIcon;<br/>  _TopHINT_LABLE = _TopBattle + CGameField.nSquareSize * 19+18;<br/>  _LeftHINT = _LeftIcon;<br/>  _TopHINT = _TopBattle + CGameField.nSquareSize * 20+18;</p>
+<p>  squares = new CSquare[VSquareNumber][HSquareNumber];<br/>  for (int y = 0; y &lt; VSquareNumber; y++) {<!-- --><br/>   for (int x = 0; x &lt; HSquareNumber; x++) {<!-- --><br/>    squares[y][x] = new CSquare();<br/>    squares[y][x].Setup(x,y,<br/>      _LeftBattle  + nSquareSize * (x+1),<br/>     _TopBattle+ nSquareSize * (VSquareNumber - y - 1)<br/>     ); <br/>   }<br/>  }<br/>  reset();</p>
+<p>  gameDrawer = drawer;</p>
+<p>  LoadRecord();<br/>  CreateMenus();<br/>  pCurMenu = mainMenu;<br/> }<br/> <br/> String  [] optionsMain={<!-- --><br/>   "START",<br/>   "HEROES",<br/>   "SOUND",<br/>   "GAME MODE",<br/>   "CREDITS",<br/>   "EXIT"<br/>  };<br/>  <br/> String  [] optionsPause={<!-- --><br/>   "RESUME",<br/>   "SOUND",<br/>   "CREDITS",<br/>   "HEROES",<br/>   "QUIT",<br/>   "EXIT"<br/>  };<br/> <br/> String  [] optionsGameMode={<!-- --><br/>   "EASY",<br/>   "HARD",<br/>   "ELITE"<br/>  };</p>
+<p> String  [] optionsSound={<!-- --><br/>   "BG MUSIC",<br/>   "EFFECT SOUND",<br/>   "VOLUME",<br/>   "OK",<br/>  };<br/> <br/> String [] optionsOnOff={<!-- --><br/>   "ON",<br/>   "OFF"<br/> };<br/> <br/> String [] optionsVolume={<!-- --><br/>  "0",<br/>  "5",<br/>  "25",<br/>  "50",<br/>  "75",<br/>  "100",<br/> };<br/> <br/> String  [] optionsYesNo={<!-- --><br/>   "YES",<br/>   "NO"<br/>  };<br/> <br/> String  [] optionsOK={<!-- --><br/>   "OK",<br/>  };<br/> <br/> String []optionsLevelUp= {<!-- --><br/>  "Continue?", <br/> };<br/> <br/> String []creditHints={<!-- --><br/>   " ",<br/>   "PROGRAMMER",<br/>   "DANY",<br/>   "CONTACT",<br/>   "<a href="mailto:DANY21CN@21CN.COM">DANY21CN@21CN.COM</a>",<br/>   "THANKS",<br/>   "NICOLE",<br/>   " ",<br/> };<br/> <br/> String []gamewonHints={<!-- --><br/>   " ",<br/>   "Congratulations!",<br/>   "You are Winner",<br/>   " ",<br/> };<br/> <br/> String []levelupHints={<!-- --><br/>   " ",<br/>   "Congratulations!",<br/>   "LEVEL  ",<br/>   ""<br/> };<br/> <br/> <br/> String []gameoverHints={<!-- --><br/>   " ",<br/>   "Sorry",<br/>   "Please try again!",<br/>   " ",<br/> };<br/> <br/> <br/> <br/> <br/> private void CreateMenus()<br/> {<!-- --><br/>  <br/>  //CTetrisMenu(int id, String _Title, String [] _options, String [] _Hints,Rectangle _rect, boolean hozi)<br/>   mainMenu=new CTetrisMenu(1,<br/>     "TERTIS",<br/>     optionsMain,<br/>     null,<br/>     new Rectangle(25,120,120,120),<br/>     false);<br/>   <br/>   pauseMenu=new CTetrisMenu(1,<br/>     "PAUSED",<br/>     optionsPause,<br/>     null,<br/>     new Rectangle(25,120,120,120),<br/>     false);<br/>   <br/>   soundMenu=new CTetrisMenu(1,<br/>     "SOUND",<br/>     optionsSound,<br/>     null,<br/>     new Rectangle(25,120,120,100),<br/>     false);<br/>   <br/>   bgmMenu=new CTetrisMenu(1,<br/>     "BG MUSIC",<br/>     optionsOnOff,<br/>     null,<br/>     new Rectangle(25,120,120,120),<br/>     false);<br/>   <br/>   effectMenu = new CTetrisMenu(1,<br/>     "EFFECT SOUND",<br/>     optionsOnOff,<br/>     null,<br/>     new Rectangle(25,120,120,120),<br/>     false);<br/>  <br/>   volumeMenu = new CTetrisMenu(1,<br/>      "VOLUME",<br/>      optionsVolume,<br/>      null,<br/>      new Rectangle(25,120,120,120),<br/>      false);<br/>   <br/>   gamemodeMenu=new CTetrisMenu(1,<br/>     "MODE",<br/>     optionsGameMode,<br/>     null,<br/>     new Rectangle(25,120,120,90),<br/>     false);<br/>   <br/>   heroesMenu=new CTetrisMenu(1,<br/>     "HEROES",<br/>     optionsOK,<br/>     strGameRecordList,<br/>     new Rectangle(8,65,160,200),<br/>     false);<br/>   <br/>   creditsMenu=new CTetrisMenu(1,<br/>     "CREDITS",<br/>     optionsOK,<br/>     creditHints,<br/>     new Rectangle(8,65,160,180),<br/>     false);<br/>   <br/>   exitMenu=new CTetrisMenu(1,<br/>     "EXIT NOW?",<br/>     optionsYesNo,<br/>     null,<br/>     new Rectangle(25,120,120,90),<br/>     false);<br/>   <br/>   quitMenu=new CTetrisMenu(1,<br/>     "QUIT THE GAME?",<br/>     optionsYesNo,<br/>     null,<br/>     new Rectangle(25,120,120,90),<br/>     false);<br/> <br/>   gameOverMenu=new CTetrisMenu(1,<br/>     "GAME OVER",<br/>     optionsOK,<br/>     gameoverHints,<br/>     new Rectangle(18,140,140,120),<br/>     false);<br/>   <br/>   gameWonMenu = new CTetrisMenu(1,<br/>     "YOU WIN!",<br/>     optionsOK,<br/>     gamewonHints,<br/>     new Rectangle(18,140,140,120),<br/>     false);<br/>   <br/>   levelUpMenu = new CTetrisMenu(1,<br/>     "LEVEL UP!",<br/>     optionsLevelUp,<br/>     levelupHints,<br/>     new Rectangle(18,140,140,120),<br/>     false);<br/>  <br/>  <br/> }</p>
+<p> private void CreateBlocks() {<!-- --><br/>  int x = CGameField.HSquareNumber / 2;<br/>  int y = CGameField.VSquareNumber<br/>  - CGameField.nDeadAreaHeight;<br/>  <br/>  CurBlock.Create(NextBlock.Type, NextBlock.orientation,<br/>    x,y,squares[y][x].getAbsX(),squares[y][x].getAbsY());<br/>  NextBlock.Create(BLOCK_TYPE.undefine, -1, 0, 0,0,4*nSquareSize);<br/>  NextBlock.CenterAbs(new Rectangle(165,75,60,70));<br/> }</p>
+<p> public boolean StartGame() {<!-- --><br/>//  if (GamePaused) {<!-- --><br/>//   //already started<br/>//   //<br/>//   return true;<br/>//  }<br/>  <br/>  GameStartTick = System.currentTimeMillis();<br/>  <br/>  this.reset();<br/>  CurBlock = new CBlock();<br/>  NextBlock = new CBlock();</p>
+<p>  CreateBlocks();</p>
+<p>  CurBlock.Speed = _InitSpeed;<br/>  GameStarted = true;<br/>  GamePaused = false;<br/>  GameOver = false;<br/>  soundPlayer.PlayBackgroundMusic();<br/>  <br/>  return true;<br/> }</p>
+<p> public boolean Pause() {<!-- --><br/>  boolean res = PauseInternal();<br/>  if(res) pCurMenu = pauseMenu;<br/>  return res;<br/> }<br/> <br/> public boolean PauseInternal()<br/> {<!-- --><br/>  if (GameStarted &amp;&amp; !GamePaused) {<!-- --><br/>   soundPlayer.StopBackgroundMusic();<br/>   GamePaused = true;<br/>   return true;<br/>  }<br/>  return GamePaused;<br/> }</p>
+<p> public void Resume() {<!-- --><br/>  if (GameStarted &amp;&amp; GamePaused) {<!-- --><br/>   CurBlock.Resume();<br/>   soundPlayer.PlayBackgroundMusic();<br/>   GamePaused = false;<br/>  }</p>
+<p> }</p>
+<p> public void reset() {<!-- --><br/>  for (int y = 0; y &lt; VSquareNumber; y++) {<!-- --><br/>   for (int x = 0; x &lt; HSquareNumber; x++) {<!-- --><br/>    squares[y][x].IsHide = true;<br/>   }<br/>  }<br/>  numFullLines = 0;<br/>  CurrentMaxY = -1;<br/>  Scores = 0;<br/>  stopdelayms = 250;<br/>  Level = 1;<br/>  nLine = 0;<br/> }<br/> <br/> long gameplaydiff=0; <br/> <br/> public void DrawBackGround(CGameDrawerBase drawer) {<!-- --><br/>  gameDrawer.clear(Color.Black);</p>
+<p>//  Point p1 = new Point(_LeftBattle + nSquareSize - 1, _TopBattle<br/>//    + nSquareSize * 4);<br/>//  Point p2 = new Point(_LeftBattle + nSquareSize * 11, p1.Y);<br/>//  Point p3 = new Point(p2.X, _TopBattle + nSquareSize * 22);<br/>//  Point p4 = new Point(p1.X, p3.Y);<br/>//  drawer.DrawLine(Color.Tomato, p1, p2);<br/>//  drawer.DrawLine(Color.Blue, p2, p3);<br/>//  drawer.DrawLine(Color.Blue, p3, p4);<br/>//  drawer.DrawLine(Color.Blue, p4, p1);</p>
+<p>//  drawer<br/>//    .DrawString("TETRIS", Color.DarkBlue, new Point(_LeftIcon,<br/>//      _TopIcon));<br/>//  drawer.DrawString("BY Dany", 0, new Point(_LeftIcon, _TopIcon<br/>//    + CGameField.nSquareSize));</p>
+<p>//  drawer.DrawString("NEXT", Color.White, new Point(_LeftNextBL_LABLE,<br/>//    _TopNextBL_LABLE));</p>
+<p>//  drawer.DrawString("SCORE", Color.White, new Point(_LeftScore_LABLE,<br/>//    _TopScore_LABLE));<br/>  <br/>  drawer.DrawStringCenterVH((new Integer(Scores)).toString(), 0,<br/>    new Point(203, 178));</p>
+<p>//  drawer.DrawString("LEVEL", Color.White, new Point(_LeftLevel_LABLE,<br/>//    _TopLevel_LABLE));<br/>  <br/>  drawer.DrawStringCenterVH((new Integer(Level)).toString(), 0,<br/>    new Point(203, 212));</p>
+<p>  if (GameStarted&amp;&amp;!GamePaused)<br/>    gameplaydiff= System.currentTimeMillis() - GameStartTick;<br/>  <br/>  long nMinutes = gameplaydiff/1000/60;<br/>  long nSeconds = gameplaydiff/1000 - nMinutes*60;<br/>//  float fps = 0.0f;<br/>//  if (diff &gt; 0)<br/>//   fps = ((float) nFrame / (float) diff * 1000.0f);</p>
+<p>//  drawer.DrawString("LINES", Color.DarkBlue, new Point(_LeftTime_LABLE,<br/>//    _TopTime_LABLE));<br/>  drawer.DrawStringCenterVH((new Integer(nLine)).toString(), 0, new Point(<br/>    203, 246));</p>
+<p>//  drawer.DrawString("RECORD", Color.DarkBlue, new Point(_LeftRECORD_LABLE,<br/>//    _TopRECORD_LABLE));<br/> <br/>   drawer.DrawStringCenterVH(""+nMinutes+":"+nSeconds,<br/>     0, new Point(203, 282));</p>
+<p>  drawer.DrawStringCenterVH("PRESS B", 0, new Point(203,<br/>    294));<br/>  <br/>  drawer.DrawStringCenterVH("TO EXIT", 0,<br/>    new Point(203, 306));</p>
+<p>  for (int y = 0; y &lt; VSquareNumber; y++) {<!-- --><br/>   for (int x = 0; x &lt; HSquareNumber; x++) {<!-- --><br/>    drawer.DrawSquare(squares[y][x]);<br/>   }<br/>  }</p>
+<p> }</p>
+<p> void AddBlock(CBlock block) {<!-- --><br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   squares[block.qs[i].getY()][block.qs[i].getX()].Assign(block.qs[i]);</p>
+<p>  }</p>
+<p>  if (CurrentMaxY &lt; block.MaxY()) {<!-- --><br/>   CurrentMaxY = block.MaxY();<br/>  }<br/> }</p>
+<p> public boolean Intersected(int x, int y) {<!-- --><br/>  if (x &gt;= 0 &amp;&amp; x &lt; HSquareNumber &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; VSquareNumber) {<!-- --><br/>   return !squares[y][x].IsHide;<br/>  }<br/>  return false;<br/> }</p>
+<p> public boolean Intersected(CBlock block) {<!-- --><br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   if (Intersected(block.qs[i].getX(), block.qs[i].getY())) {<!-- --><br/>    return true;<br/>   }<br/>  }<br/>  return false;<br/> }</p>
+<p> public boolean ShouldStopFalling(CBlock block, long curTick) {<!-- --><br/>  for (int i = 0; i &lt; 4; i++) {<!-- --><br/>   int nx = block.qs[i].getX();<br/>   int ny = block.qs[i].getY() - 1;</p>
+<p>   if (ny &lt; 0<br/>     || (ny &lt; VSquareNumber &amp;&amp; nx &lt; HSquareNumber &amp;&amp; !squares[ny][nx].IsHide)) {<!-- --><br/>    //if (block.StopTick == 0)<br/>    //{<!-- --><br/>    //    block.StopTick = curTick;<br/>    //}<br/>    //else if (curTick - block.StopTick &gt;= stopdelayms)<br/>    //{<!-- --><br/>    AddBlock(block);<br/>    <br/>   <br/>    m_GameState |= STATE_FELL;<br/>    <br/>    return true;<br/>    //}<br/>   }<br/>  }</p>
+<p>  return false;<br/> }</p>
+<p> void CopyDown(int stY) {<!-- --><br/>  int my = CurrentMaxY + 1;<br/>  for (int y = stY; y &lt; my + 1; y++) {<!-- --><br/>   for (int x = 0; x &lt; HSquareNumber; x++) {<!-- --><br/>    squares[y][x].IsHide = squares[y + 1][x].IsHide;<br/>    squares[y][x].HightLight = squares[y + 1][x].HightLight;<br/>    squares[y][x].color = squares[y + 1][x].color;<br/>   }<br/>  }<br/> }<br/> <br/> <br/> void CalcScore(int nLine)<br/> {<!-- --><br/>  <br/>  switch (nLine) {<!-- --><br/>  case 1:<br/>   Scores += 10;<br/>   break;<br/>  case 2:<br/>   Scores += 40;<br/>   break;<br/>  case 3:<br/>   Scores += 80;<br/>   break;<br/>  case 4:<br/>   Scores += 160;<br/>   break;<br/>  }<br/> }<br/> <br/> boolean IsLevelUp()<br/> {<!-- --><br/>  <br/>  int oldLevel = Level;<br/>  if (Scores &gt;= 500 &amp;&amp; Scores &lt; 1500) {<!-- --><br/>   Level = 2;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 1500 &amp;&amp; Scores &lt; 3000) {<!-- --><br/>   Level = 3;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 3000 &amp;&amp; Scores &lt; 5000) {<!-- --><br/>   Level = 4;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 5000 &amp;&amp; Scores &lt; 7500) {<!-- --><br/>   Level = 5;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 7500 &amp;&amp; Scores &lt; 10500) {<!-- --><br/>   Level = 6;<br/>   stopdelayms = (int) (stopdelayms * 0.9f);<br/>  } else if (Scores &gt;= 10500 &amp;&amp; Scores &lt; 14000) {<!-- --><br/>   Level = 7;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 14000 &amp;&amp; Scores &lt; 18000) {<!-- --><br/>   Level = 8;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 18000 &amp;&amp; Scores &lt; 22500) {<!-- --><br/>   Level = 9;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 22500 &amp;&amp; Scores &lt; 27500) {<!-- --><br/>   Level = 10;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  } else if (Scores &gt;= 27500) {<!-- --><br/>   Level = 11;<br/>   stopdelayms = (int) (stopdelayms * 0.95f);<br/>  }<br/>//  else <br/>//   return true;<br/>  <br/>  return oldLevel&lt;Level;<br/> }<br/> <br/> void DeleteLines()<br/> {<!-- --><br/>  if(numFullLines&lt;=0) return;<br/>  <br/>  int deletedLine = numFullLines;<br/>  numFullLines =0;<br/>  <br/>  for(int i=deletedLine-1;i&gt;=0;i--)<br/>  {<!-- --><br/>   CopyDown(fullLines[i]);<br/>   CurrentMaxY--;<br/>  }<br/>  <br/>  nLine+=deletedLine;<br/> <br/> }</p>
+<p> public int CheckFullLinesNum() {<!-- --><br/>  <br/>  if(numFullLines!=0)<br/>  {<!-- --><br/>   return numFullLines;<br/>  }<br/>  <br/>  for (int y = 0; y &lt; CurrentMaxY + 1; y++) {<!-- --><br/>   int x = 0;<br/>   for (x = 0; x &lt; HSquareNumber; x++) {<!-- --><br/>    if (squares[y][x].IsHide) {<!-- --><br/>     break;<br/>    }<br/>   }<br/>   <br/>   if (x == HSquareNumber) {<!-- --><br/>    fullLines[numFullLines++]=y;<br/>    for (x = 0; x &lt; HSquareNumber; x++) {<!-- --><br/>     squares[y][x].HightLight=true;<br/>    }<br/>   }<br/>  }<br/>  <br/>  if(numFullLines!=0)<br/>  {<!-- --><br/>   m_GameState|=STATE_LINEFULL;<br/>  }<br/> <br/>  <br/>  return numFullLines;<br/> }</p>
+<p> public boolean IsFull() {<!-- --><br/>  if (CurrentMaxY &gt;= (VSquareNumber - nDeadAreaHeight))<br/>   return true;</p>
+<p>  return false;<br/> }</p>
+<p> public boolean IsANewRecord() {<!-- --></p>
+<p>  try {<!-- --><br/>   return gameRecords.isHighScore(this.Scores);<br/>  } catch (Exception e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/>  return false;<br/> }</p>
+<p> public void AddNewRecord(String name) {<!-- --><br/>  try {<!-- --><br/>   gameRecords.updateScores(this.Scores,name);<br/>   genGameRecordStrings();<br/>  } catch (Exception e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/> }</p>
+<p> public void Flush() {<!-- --><br/>  gameDrawer.Flip();<br/> }<br/> <br/> public void genGameRecordStrings()<br/> {<!-- --><br/>  if(gameRecords !=null)<br/>  {<!-- --><br/>   String []fills =<br/>   {<!-- --><br/>     "",<br/>     " ",<br/>     "  ",<br/>     "   ",<br/>     "    ",<br/>     "     ",<br/>     "      ",<br/>     "       ",<br/>     "        ",<br/>     "         ",<br/>     "          ",<br/>   };<br/>   int []values = gameRecords.getValues();<br/>   String []names = gameRecords.getNames();<br/>   if(strGameRecordList==null)<br/>   {<!-- --><br/>    strGameRecordList = new String[names.length+2];<br/>    strGameRecordList[0] = " ";<br/>    strGameRecordList[strGameRecordList.length-1]=" ";<br/>   }<br/>   for(int i=0;i&lt;names.length;i++)<br/>   {<!-- --><br/>    String szvalues = ""+values[i];<br/>    strGameRecordList[i+1] = names[i]+<br/>    fills[6-names[i].length()]+<br/>    " "+<br/>    fills[10-szvalues.length()]+szvalues;<br/>   }<br/>   <br/>  }<br/> }</p>
+<p> boolean CheckGameOver()<br/> {<!-- --><br/>  if (IsFull()) {<!-- --><br/>   GameStarted = false;<br/>   GameOver = true;<br/>  <br/>   m_GameState|=STATE_GAMEOVER;<br/>   pCurMenu = gameOverMenu;<br/>   pCurMenu.SetCurSel(-1);<br/>  <br/>   soundPlayer.StopBackgroundMusic();<br/>   return true;<br/>  }<br/>  return false;<br/> }<br/> <br/> boolean CheckGameWon()<br/> {<!-- --><br/>  if (Level &gt;= 11) {<!-- --><br/>   GameStarted = false;<br/>   GameWon = true;<br/>   pCurMenu = gameWonMenu;<br/>   pCurMenu.SetCurSel(-1);<br/>   soundPlayer.StopBackgroundMusic();<br/>   m_GameState |= STATE_GAMEWON;<br/>   return true;<br/>   <br/>  }<br/>  return false;<br/> }<br/> <br/> public void ProcessFrame()<br/> {<!-- --><br/>  long curTick = System.currentTimeMillis();<br/>  <br/>  //Polling the sound player.<br/>  //<br/>  soundPlayer.ControlEffectSound();<br/>  <br/>  if (GameStarted&amp;&amp;!GamePaused &amp;&amp; m_PlayingGifkey==CGameDrawerBase.NoneGif) <br/>  {<!-- --><br/>   <br/>   //Is needed to clear up the full lines?<br/>   //<br/>   if(numFullLines&gt;0)<br/>   {<!-- --><br/>    //calc Score<br/>    //<br/>    CalcScore(numFullLines);<br/>    <br/>    //Delete full lines<br/>    //<br/>    DeleteLines();<br/>    <br/>    <br/>    //Is leveling up?<br/>    //<br/>    if (IsLevelUp()) <br/>    {<!-- --><br/>     m_GameState|=STATE_LEVELUP;     <br/>     <br/>     //Leveling up..<br/>     //<br/>     CurBlock.Speed = CurBlock.Speed * 1.2f;<br/>    }<br/>    <br/>    CheckGameWon();<br/>    CheckGameOver();<br/>    <br/>    if(!CheckGameWon() &amp;&amp; !CheckGameOver())<br/>    {<!-- --><br/>     //Play with Next Block;<br/>     //<br/>     CreateBlocks();<br/>    }<br/>    return;<br/>   }<br/>   <br/>   if (ShouldStopFalling(CurBlock, curTick)) <br/>   {<!-- --><br/>    if(CheckFullLinesNum()&gt;0)<br/>    {<!-- --><br/>     return;<br/>    }</p>
+<p>    if (!CheckGameOver()){ <br/>     //Play with Next Block;<br/>     //<br/>     CreateBlocks();<br/>    }<br/>    return;<br/>   }</p>
+<p>   //Update Current Block Loction.<br/>   //<br/>   CurBlock.UpdateLocation(this, curTick);<br/>  }</p>
+<p> }<br/> <br/> int ind = 0;<br/> <br/> void DrawScene()<br/> { <br/>  DrawBackGround(gameDrawer);<br/>  <br/>  if (CurBlock != null &amp;&amp; (numFullLines&lt;=0))<br/>   CurBlock.Draw(gameDrawer);<br/>  <br/>  if (NextBlock != null)<br/>   NextBlock.Draw(gameDrawer);<br/>  <br/>  if(pCurMenu!=null)<br/>   pCurMenu.Draw(gameDrawer);<br/>  <br/>  gameDrawer.DrawGifFrame(m_PlayingGifkey);<br/>  </p>
+<p>  if(bEnteringName )<br/>  {<!-- --><br/>   gameDrawer.DrawGameMenuFrame(new Rectangle(15,120,140,80));<br/>   <br/>   gameDrawer.DrawStringCenterVH("ENTER NAME", TETRIS_FONT.Title, new Point(<br/>     83, 120 + 10));<br/>   <br/>   String tmpsz = szPlayerName;<br/>   if(nFrame%2==0)<br/>    tmpsz +=szCurrentChar;<br/>   gameDrawer.DrawString(tmpsz, 0, new Point(<br/>     56, 120 + 10 + 20));<br/>  }<br/>  <br/>//  Image  frame = gifDecoder.getFrame(ind);<br/>//         int delay = gifDecoder.getDelay(ind);<br/>//         System.out.println("frame = " + ind + "  delay = " + delay);<br/>//         ind++;<br/>//         .drawImage(frame, 0, 0, 0);<br/>       // do something with frame<br/> }<br/> <br/> public void PlayEffectSounds()<br/> {<!-- --><br/>  int ikey=-1;<br/>  if((m_GameState&amp;STATE_GAMEWON)!=0)<br/>  {<!-- --><br/>   ikey = CGameSoundPlayer.soundGamewon;<br/>  }<br/>  else if((m_GameState&amp;STATE_GAMEOVER)!=0)<br/>  {<!-- --><br/>   ikey = CGameSoundPlayer.soundGameover;<br/>  }<br/>  else if((m_GameState&amp;STATE_LEVELUP)!=0)<br/>  {<!-- --><br/>   PauseInternal();<br/>   ikey = CGameSoundPlayer.soundLevelup;<br/>  }<br/>  else if((m_GameState&amp;STATE_LINEFULL)!=0)<br/>  {<!-- --><br/>   ikey = CGameSoundPlayer.soundLinefull;<br/>  <br/>  }<br/>  else if((m_GameState&amp;STATE_FELL)!=0)<br/>  {<!-- --><br/>   ikey = CGameSoundPlayer.soundFell;<br/>  }<br/>  soundPlayer.PlayEffectSound(ikey);<br/>  m_GameState &amp;=~STATE_FELL;<br/>  m_GameState &amp;=~STATE_LINEFULL;<br/> }<br/> </p>
+<p><br/> </p>
+<p> public void PlayEffectAnimates()<br/> {<!-- --><br/>  <br/>  if(m_PlayingGifkey==CGameDrawerBase.NoneGif)<br/>  {<!-- --><br/>   if((m_GameState&amp;STATE_GAMEWON)!=0)<br/>   {<!-- --><br/>    m_PlayingGifkey = CGameDrawerBase.GameWonGif;<br/>    gameDrawer.PlayGif(m_PlayingGifkey,25,70,24*60*60000);<br/>    <br/>   }<br/>   else if((m_GameState&amp;STATE_GAMEOVER)!=0)<br/>   {<!-- --><br/>    m_PlayingGifkey = CGameDrawerBase.GameOverGif;<br/>    gameDrawer.PlayGif(m_PlayingGifkey,55,80,24*60*60000);<br/>   }<br/>   else if((m_GameState&amp;STATE_LEVELUP)!=0)<br/>   {<!-- --><br/>    m_PlayingGifkey = CGameDrawerBase.LevelUpGif;<br/>    gameDrawer.PlayGif(m_PlayingGifkey,50,70,24*60*60000);<br/>    levelupHints[2] = "YOU ARE LEVEL "+Level;<br/>    pCurMenu = levelUpMenu;<br/>    <br/>   }</p>
+<p>  }<br/>  else<br/>  { <br/>   //System.out.println("m_PlayingGifkey :"+m_PlayingGifkey);<br/>   <br/>   if(gameDrawer.GetGifState(m_PlayingGifkey)==CGameDrawerBase.GIF_STOPPED)<br/>   {<!-- --><br/>    if(m_PlayingGifkey==CGameDrawerBase.LevelUpGif)<br/>    {<!-- --><br/>     Resume();<br/>    }<br/>    else if(m_PlayingGifkey==CGameDrawerBase.GameOverGif)<br/>    {<!-- --><br/>     <br/>    }<br/>    else if(m_PlayingGifkey==CGameDrawerBase.GameOverGif)<br/>    {<!-- --><br/>     <br/>    }<br/>    <br/>    m_PlayingGifkey=CGameDrawerBase.NoneGif;<br/>   }<br/>   <br/>   <br/>  <br/>  }<br/>//  m_GameState &amp;=~STATE_GAMEWON;<br/>//  m_GameState &amp;=~STATE_GAMEOVER;<br/>//  m_GameState &amp;=~STATE_LEVELUP;<br/>//  m_GameState &amp;=~STATE_FELL;<br/>//  m_GameState &amp;=~STATE_LINEFULL;<br/>  m_GameState =0;<br/> }<br/> <br/> public void OnGameFrame() {<!-- --><br/>  <br/>  nFrame++;<br/>  ProcessFrame();<br/>  PlayEffectSounds();<br/>  PlayEffectAnimates();<br/>  DrawScene();<br/> <br/>  <br/> }</p>
+<p> public void OnPointerPressed(int x, int y)<br/> {<!-- --><br/>  if(pCurMenu!=null)<br/>  {<!-- --><br/>   pCurMenu.DoPointerPressed(x,y);<br/>   ProcessMenuSelection();<br/>  }<br/>  else <br/>  {<!-- --><br/>   if(GameStarted &amp;&amp; !GamePaused &amp;&amp; !GameOver &amp;&amp; !GameWon)<br/>   {<!-- --><br/>    Pause();<br/>   }<br/>  }<br/>  <br/> }<br/> <br/> public void ProcessMenuSelection()<br/> {<!-- --><br/>  if(pCurMenu.IsDone())<br/>  {<!-- --><br/>   pCurMenu.reset();<br/>   <br/>   int cursel=pCurMenu.GetCurSel();<br/>   //System.out.println("cursel:"+pCurMenu.GetCurSel());<br/>   <br/>   if(pCurMenu == mainMenu)<br/>   {<!-- --><br/>    switch(cursel)<br/>    {<!-- --><br/>//    "START",<br/>//    "HEROES",<br/>//    "SOUND",<br/>//    "GAME MODE",<br/>//    "CREDITS",<br/>//    "EXIT"<br/>     case 0:<br/>      StartGame();<br/>      pCurMenu =null;<br/>      break;<br/>     case 1:<br/>      heroesMenu.parent = pCurMenu;<br/>      pCurMenu = heroesMenu;<br/>      break;<br/>     case 2:<br/>      soundMenu.parent = pCurMenu;<br/>      pCurMenu = soundMenu;<br/>      break;<br/>     case 3:<br/>      gamemodeMenu.parent = pCurMenu;<br/>      pCurMenu = gamemodeMenu;<br/>      break;<br/>     case 4:<br/>      creditsMenu.parent= pCurMenu;<br/>      pCurMenu =creditsMenu; <br/>      break;<br/>     case 5:<br/>      exitMenu.parent = pCurMenu;<br/>      pCurMenu = exitMenu;<br/>      break;<br/>     default:<br/>      pCurMenu =null;<br/>      break;<br/>    }<br/>    <br/>   }<br/>   else if(pCurMenu == pauseMenu)<br/>   {<!-- --><br/>//    "RESUME",<br/>//    "SOUND",<br/>//    "CREDITS",<br/>//    "QUIT",<br/>//    "EXIT"<br/>    switch(cursel)<br/>    {<!-- --><br/>     case 0:<br/>      Resume();<br/>      pCurMenu =null;<br/>      break;<br/>     case 1:<br/>      soundMenu.parent = pCurMenu;<br/>      pCurMenu = soundMenu;<br/>      break;<br/>     case 2:<br/>      creditsMenu.parent= pCurMenu;<br/>      pCurMenu =creditsMenu; <br/>      break;<br/>     case 3:<br/>      heroesMenu.parent = pCurMenu;<br/>      pCurMenu = heroesMenu;<br/>      break;<br/>     case 4:<br/>      quitMenu.parent =pCurMenu;<br/>      pCurMenu = quitMenu;<br/>      soundPlayer.StopBackgroundMusic();<br/>      break;<br/>     case 5:<br/>      exitMenu.parent = pCurMenu;<br/>      pCurMenu = exitMenu;<br/>      break;<br/>     default:<br/>      pCurMenu =null;<br/>      break;<br/>    }<br/>    <br/>   }<br/>   else if(pCurMenu == soundMenu)<br/>   {<!-- --><br/>    switch(cursel)<br/>    {<!-- --><br/>//    "BGM"    <br/>//    "EFFECT",<br/>    case 0:<br/>     bgmMenu.parent = pCurMenu;<br/>     pCurMenu = bgmMenu;<br/>     break;<br/>    case 1:<br/>     effectMenu.parent = pCurMenu;<br/>     pCurMenu = effectMenu;<br/>     break;<br/>    case 2:<br/>     volumeMenu.parent = pCurMenu;<br/>     pCurMenu = volumeMenu;<br/>     break;<br/>    case 3:<br/>     pCurMenu = pCurMenu.parent;<br/>     break;<br/>    }<br/>   }<br/>   else if(pCurMenu==effectMenu)<br/>   {<!-- --><br/>    switch(cursel)<br/>    {<!-- --><br/>    case 0:<br/>     soundPlayer.EnableEffectSound(true);<br/>     break;<br/>    case 1:<br/>     soundPlayer.EnableEffectSound(false);<br/>     break;<br/>    }<br/>    pCurMenu = pCurMenu.parent;<br/>   }<br/>   else if(pCurMenu==bgmMenu)<br/>   {<!-- --><br/>    switch(cursel)<br/>    {<!-- --><br/>    case 0:<br/>     soundPlayer.EnableBgMusic(true);<br/>     if(GameStarted)<br/>      soundPlayer.PlayBackgroundMusic();<br/>     <br/>     break;<br/>    case 1:<br/>     soundPlayer.StopBackgroundMusic();<br/>     soundPlayer.EnableBgMusic(false);<br/>     break;<br/>    }<br/>    pCurMenu = pCurMenu.parent;<br/>   }<br/>   else if(pCurMenu == volumeMenu)<br/>   {<!-- --><br/>    int []levels={0,5,25,50,75,100};<br/>    switch(cursel)<br/>    {<!-- --><br/>    case 0:<br/>    case 1:<br/>    case 2:<br/>    case 3:<br/>    case 4:<br/>    case 5:<br/>     soundPlayer.SetVolume(levels[cursel]);<br/>     break;<br/>    }<br/>    pCurMenu = pCurMenu.parent;<br/>   }<br/>   else if(pCurMenu == exitMenu)<br/>   {<!-- --><br/>//      "YES",<br/>//      "NO"<br/>//<br/>    switch(cursel)<br/>    {<!-- --><br/>    case 0:<br/>     this.bExit = true;<br/>     break;<br/>    case 1:<br/>     pCurMenu = pCurMenu.parent;<br/>     break;<br/>    }<br/>   }<br/>   else if(pCurMenu == quitMenu)<br/>   {<!-- --><br/>//      "YES",<br/>//      "NO"<br/>//<br/>    switch(cursel)<br/>    {<!-- --><br/>    case 0:<br/>     pCurMenu = mainMenu;<br/>     break;<br/>    case 1:<br/>     pCurMenu = pCurMenu.parent;<br/>     break;<br/>    }<br/>   }<br/>    <br/>   else if(pCurMenu == gamemodeMenu)<br/>   {<!-- --><br/>//    "EASY",<br/>//    "HARD",<br/>//    "ELITE"<br/>    <br/>    switch(cursel)<br/>    {<!-- --><br/>    case 0:<br/>     _InitSpeed = 1.5f;<br/>     break;<br/>    case 1:<br/>     _InitSpeed = 2.5f;<br/>     break;<br/>    case 2:<br/>     _InitSpeed = 4.0f;<br/>     break;<br/>    }<br/>    pCurMenu = pCurMenu.parent;<br/>   }<br/>   else if(pCurMenu == gameOverMenu||pCurMenu == gameWonMenu)<br/>   {<!-- --><br/>    <br/>    soundPlayer.StopEffectSound();<br/>    gameDrawer.StopGif(m_PlayingGifkey);<br/>    <br/>    if(IsANewRecord())<br/>    {<!-- --><br/>     bEnteringName=true;<br/>     pCurMenu =null;<br/>    }<br/>    else<br/>    {<!-- --><br/>     pCurMenu = mainMenu;<br/>    }<br/>   }<br/>   else if(pCurMenu ==levelUpMenu)<br/>   {<!-- --><br/>    gameDrawer.StopGif(m_PlayingGifkey);<br/>    pCurMenu =null;<br/>   }<br/>   else<br/>   {<!-- --><br/>    if(pCurMenu!=null)<br/>    {<!-- --><br/>     pCurMenu = pCurMenu.parent;<br/>    }<br/>   }<br/>    <br/>  }<br/> }<br/> <br/> public void OnKeyDown(int keycode) {<!-- --><br/>  </p>
+<p>  if(bEnteringName)<br/>  {<!-- --><br/>   char cc = szCurrentChar.charAt(0);<br/>   char oldcc=cc;<br/>   switch (keycode) {<!-- --><br/>    <br/>    case TETRIS_KEYCODE.Up:<br/>     cc--;<br/>     if(cc&lt;'A')<br/>     {<!-- --><br/>      cc='Z';<br/>     }<br/>     <br/>     szCurrentChar=szCurrentChar.replace(oldcc,cc);<br/>     break;<br/>    case TETRIS_KEYCODE.Down:<br/>     cc++;<br/>     if(cc&gt;'Z')<br/>     {<!-- --><br/>      cc='A';<br/>     }<br/>     szCurrentChar=szCurrentChar.replace(oldcc,cc);<br/>     break;<br/>    case TETRIS_KEYCODE.Left:<br/>     if(szPlayerName.length()&gt;0)<br/>     {<!-- --><br/>      cc= szPlayerName.charAt(szPlayerName.length()-1);<br/>      if(szPlayerName.length()&lt;=1)<br/>       szPlayerName ="";<br/>      else<br/>       szPlayerName =szPlayerName.substring(0,szPlayerName.length()-1);<br/>      szCurrentChar=szCurrentChar.replace(oldcc,cc);<br/>     }<br/>     <br/>     break;<br/>    case TETRIS_KEYCODE.Right:<br/>     szPlayerName +=szCurrentChar;<br/>     break;<br/>    case TETRIS_KEYCODE.Rotate:<br/>     szPlayerName +=szCurrentChar;<br/>     if(szPlayerName.length()&gt;0)<br/>     {<!-- --><br/>      <br/>      bEnteringName =false;<br/>      bShowRecords = true;<br/>      AddNewRecord(szPlayerName);<br/>      pCurMenu = heroesMenu;<br/>      pCurMenu.parent = mainMenu;<br/>     }<br/>      <br/>     break;<br/>     <br/>   }<br/>   <br/>   if(szPlayerName.length()&gt;=6)<br/>   {<!-- --><br/>    bEnteringName =false;<br/>    bShowRecords = true;<br/>    AddNewRecord(szPlayerName);<br/>    //System.out.println(szPlayerName);<br/>    pCurMenu = heroesMenu;<br/>    pCurMenu.parent = mainMenu;<br/>   }<br/>   return;<br/>  }<br/>  <br/>  if(pCurMenu!=null)<br/>  {<!-- --><br/>   pCurMenu.DoKeyPressed(keycode);<br/>   ProcessMenuSelection();<br/>   return;<br/>  }<br/>  <br/>  <br/>   <br/>  if (GameStarted) {<!-- --><br/>   switch (keycode) {<!-- --><br/>   case TETRIS_KEYCODE.Down:<br/>    CurBlock.Down(this);<br/>    break;<br/>   case TETRIS_KEYCODE.Left:<br/>    CurBlock.Left(this);<br/>    break;<br/>   case TETRIS_KEYCODE.Right:<br/>    CurBlock.Right(this);<br/>    break;<br/>   case TETRIS_KEYCODE.Rotate:<br/>    CurBlock.Rotate(this);<br/>    break;<br/>   case TETRIS_KEYCODE.Escape:<br/>    Pause();<br/>    break;<br/>   }<br/>  } <br/>   <br/> }</p>
+<p> public void SaveRecord() {<!-- --></p>
+<p> }</p>
+<p> int GetTopRecord() {<!-- --><br/>  int top = 99999;<br/>  return top;<br/> }</p>
+<p> void LoadRecord() {<!-- --><br/>  <br/>  gameRecords = new CGameRecords("TetrisGameRecords");<br/>  try {<!-- --><br/>   //gameRecords.reset();<br/>   gameRecords.loadScores();<br/>   genGameRecordStrings();<br/>  } catch (Exception e) {<!-- --><br/>   // TODO Auto-generated catch block<br/>   e.printStackTrace();<br/>  }<br/>  <br/> }<br/>}<br/> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-10-13 22:15:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

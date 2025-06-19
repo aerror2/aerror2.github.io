@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>macosx 交叉编译 valgrind For Android</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>macosx 交叉编译 valgrind For Android</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/52335383" target="_blank">https://blog.csdn.net/aerror/article/details/52335383</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2016-08-27 15:38:25</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2773</div>
+        
+        
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">交叉编译</span>, <span class="tag">ndk</span>, <span class="tag">MacOSX</span>, <span class="tag">Valgrind</span></div>
+    
+    <div class="article-description">1. 安装NDK2.设置NDK_ROOT    export NDK_ROOT=PATH/TO/YOUR/ANDROID/NDK/ROOT3. 下载valgrind-3.11.0.tar.bz24. tar -xzf valgrind-3.11.0.tar.bz25. cd valgrind-3.11.06. 设置工具链 ：       ARCH_ABI=&quot;ar</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>1. 安装NDK</p>
+<p>2.设置NDK_ROOT</p>
+<p>    export NDK_ROOT=PATH/TO/YOUR/ANDROID/NDK/ROOT</p>
+<p>3. 下载valgrind-3.11.0.tar.bz2</p>
+<p>4. tar -xzf valgrind-3.11.0.tar.bz2</p>
+<p>5. cd valgrind-3.11.0</p>
+<p>6. 设置工具链 ：</p>
+<p><br/> <br/>        ARCH_ABI="arm-linux-androideabi-4.8"<br/>        HOSTOSN="darwin-x86_64"<br/> </p>
+<p><br/> <br/>        export AR="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ar"<br/>        export LD="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ld"<br/>        export CC="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-gcc"<br/>        export CXX="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-g++"<br/> </p>
+<p>#这个rand要设置，要不然就会在ld的时候用了默认的ranlib, 出错：no archive symbol table (run ranlib)</p>
+<p>       export RANLIB="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ranlib"<br/>        export STRIP="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-strip"<br/> </p>
+<p><br/> 7.设置sysroot, 记得要export，不然configure的时候，就会出错："configure: error: C compiler cannot create executables"<br/>        export CPPFLAGS="--sysroot=$NDK_ROOT/platforms/android-19/arch-arm" <br/>        export CFLAGS="--sysroot=$NDK_ROOT/platforms/android-19/arch-arm" <br/> </p>
+<p><span style="white-space:pre">android-19/</span> 这个挑一下你本地有的最新的就好。</p>
+<p>8. configure, 生成makefile</p>
+<p>    ./configure --prefix="/data/local/Inst" \<br/>   --host="armv7-unknown-linux" \<br/>   --target="armv7-unknown-linux" \<br/>   --with-tmpdir="/sdcard "</p>
+<p>完成之后必须看到这两行，要是是其它的，这个出错了，看readme.android文件的说明。</p>
+<p>#          Platform variant: android<br/> #     Primary -DVGPV string: -DVGPV_arm_linux_android=1<br/> </p>
+<p><br/> </p>
+<p>9. 编译和生成：</p>
+<p>      make -j 4</p>
+<p>10. 把编译好的文件整理出来到Inst目录</p>
+<p>     make -j4 install DESTDIR=`pwd`/Inst</p>
+<p>    完成之后，全部要完装的文件都在当前目录下的Inst里了。</p>
+<p><br/> </p>
+<p>11. 上传到手机</p>
+<p>     adb push  Inst/data/local/   /data/local/Inst</p>
+<p><br/> </p>
+<p><br/> </p>
+<p>使用：</p>
+<p><br/> </p>
+<p></p>
+<p class="p1">写一个 start_valgrind.sh  上传到手机的 /data/local下：</p>
+<p class="p1">#!/system/bin/sh</p>
+<p class="p2"><br/> </p>
+<p class="p1">PACKAGE="com.example.hellojni"</p>
+<p class="p2"><br/> </p>
+<p class="p1"># Callgrind tool</p>
+<p class="p1">#VGPARAMS='-v --error-limit=no --trace-children=yes --log-file=/sdcard/valgrind.log.%p --tool=callgrind --callgrind-out-file=/sdcard/callgrind.out.%p'</p>
+<p class="p2"><br/> </p>
+<p class="p1"># Memcheck tool</p>
+<p class="p1">VGPARAMS='-v --error-limit=no --trace-children=yes --log-file=/sdcard/valgrind.log.%p --tool=memcheck --leak-check=full --show-reachable=yes'</p>
+<p class="p2"><br/> </p>
+<p class="p1">export TMPDIR=/data/data/$PACKAGE</p>
+<p class="p2"><br/> </p>
+<p class="p1">exec /data/local/Inst/bin/valgrind $VGPARAMS $* </p>
+<br/>
+<p>本地写一个脚本： bootstrap_valgrind.sh </p>
+<p class="p1">#!/usr/bin/env bash</p>
+<p class="p2"><br/> </p>
+<p class="p1">PACKAGE="com.example.hellojni"</p>
+<p class="p2"><br/> </p>
+<p class="p1">adb push start_valgrind.sh /data/local/</p>
+<p class="p1">adb shell chmod 777 /data/local/start_valgrind.sh </p>
+<p class="p2"><br/> </p>
+<p class="p1">adb root</p>
+<p class="p1">adb shell "setprop wrap.$PACKAGE 'logwrapper /data/local/start_valgrind.sh'"</p>
+<p class="p2"><br/> </p>
+<p class="p1">echo "wrap.$PACKAGE: $(adb shell getprop wrap.$PACKAGE)"</p>
+<p class="p2"><br/> </p>
+<p class="p1">adb shell am force-stop $PACKAGE</p>
+<p class="p1">#这个是关闭selinux, 要不然会出acv denied的错误</p>
+<p class="p1">adb shell setenforce 0  </p>
+<p class="p1">#adb shell mount -o remount,rw -t ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system</p>
+<p class="p1">adb shell am start -a android.intent.action.MAIN -n $PACKAGE/.HelloJni</p>
+<p class="p2"><br/> </p>
+<p class="p1">adb logcat -c</p>
+<p class="p1">adb logcat</p>
+<p class="p2"><br/> </p>
+<p class="p2">如果没有这个 adb shell setenforce 0   命令， 有会下面的错, 是因为selinux的权限问题，不让访问。</p>
+<p class="p2"></p>
+<p class="p1">&lt;36&gt;[ 1365.720814] type=1400 audit(1472452195.847:5): avc: denied { write } for pid=2396 comm="main" path="pipe:[16280]" dev="pipefs" ino=16280 scontext=u:r:untrusted_app:s0 tcontext=u:r:zygote:s0 tclass=fifo_file</p>
+<p class="p1">....这里去写pid就会出错</p>
+<p class="p1"></p>
+<p class="p1"></p>
+<p class="p1">W/Zygote  (  198): at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)</p>
+<p class="p1"><br/> </p>
+<p class="p1"><br/> </p>
+<br/>
+<br/>
+<p>补丁，实际跑的时候nexus5下还有一个出错的：</p>
+<p></p>
+<p class="p1">--13298--   Reading EXIDX entries: 19 attempted, 19 successful</p>
+<p class="p1">disInstr(arm): unhandled instruction: 0xEC510F1E</p>
+<p class="p1">                 cond=14(0xE) 27:20=197(0xC5) 4:4=1 3:0=14(0xE)</p>
+<p class="p1">==13298== valgrind: Unrecognised instruction at address 0x4b1a908.</p>
+<p class="p1">==13298==    at 0x4B1A908: _armv7_tick (in /system/lib/libcrypto.so)</p>
+<p class="p1">==13298== Your program just tried to execute an instruction that Valgrind</p>
+<p class="p1">==13298== did not recognise.  There are two possible reasons for this.</p>
+<p class="p1">==13298== 1. Your program has a bug and erroneously jumped to a non-code</p>
+<p class="p1">==13298==    location.  If you are running Memcheck and you just saw a</p>
+<p class="p1">==13298==    warning about a bad jump, it's probably your program's fault.</p>
+<p class="p1">==13298== 2. The instruction is legitimate but Valgrind doesn't handle it,</p>
+<p class="p1">==13298==    i.e. it's Valgrind's fault.  If you think this is the case or</p>
+<p class="p1">==13298==    you are not sure, please let us know and we'll try to fix it.</p>
+<p class="p1">==13298== Either way, Valgrind will now raise a SIGILL signal which will</p>
+<p class="p1">==13298== probably kill your program.</p>
+<br/>
+<p>需要改改 valgrind-3.11.0/VEX/priv/guest_arm_toIR.c  17257行，加上以下代码：</p>
+<p>   /*<br/> <br/> <br/>       disInstr(arm): unhandled instruction: 0xEC510F1E<br/>                  cond=14(0xE) 27:20=197(0xC5) 4:4=1 3:0=14(0xE)<br/>    */<br/>    /*mrrc     p15, 1, r0,  r1, c14  */<br/>    if (0xEC510F1E == (insn &amp; 0xFFFF0FFF)) {<!-- --><br/>       UInt rK = INSN(15,12);<br/>       UInt rM = INSN(19,16);<br/>       if (rK &lt;= 14&amp;&amp;rM &lt;= 14) {<!-- --><br/>          putIRegA(rK, mkU32(0), condT, Ijk_Boring);<br/>          putIRegA(rM, mkU32(0), condT, Ijk_Boring);<br/>          DIP("mrrc p15,1,r%u,r%u,r1,c14\n",rM,rK);<br/>          goto decode_success;<br/>       }<br/>    }<br/> </p>
+<p><br/> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2016-08-27 15:38:25</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

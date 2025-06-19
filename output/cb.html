@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一个无线鼠标的HID Report Desc</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>一个无线鼠标的HID Report Desc</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/128661408" target="_blank">https://blog.csdn.net/aerror/article/details/128661408</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2023-01-12 15:58:15</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 847</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 5</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">嵌入式硬件</span></div>
+    
+    <div class="article-description">【代码】一个无线鼠标的HID Report Desc。</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p></p>
+<p></p>
+<p><a href="https://www.usbzh.com/article/detail-76.html" rel="nofollow" title="HID">HID</a>设备是USB规范定义的设备类型之一，其分类号为0x03.<br/> 关于<a href="https://www.usbzh.com/article/detail-221.html" rel="nofollow" title="USB设备类型">USB设备类型</a>定义，可参见本站：<a href="http://www.usbzh.com/article/detail-221.html" rel="nofollow" title="USB设备类型定义  - USB中文网">USB设备类型定义 - USB中文网</a></p>
+<p><a href="https://www.usbzh.com/article/detail-76.html" rel="nofollow" title="HID">HID</a>设备除了用于专门的输入输出设备外，有时也与其它的设备类型组合成一个复杂的设备。如对于UVC摄像头设备，可以附带一个<a href="https://www.usbzh.com/article/detail-80.html" rel="nofollow" title="UAC">UAC</a>麦克风音频设备和一个<a href="https://www.usbzh.com/article/detail-76.html" rel="nofollow" title="HID">HID</a>设备用于固件升级或自定义通讯。</p>
+<p>HID设备类型定义于<a href="https://www.usbzh.com/article/detail-64.html" rel="nofollow" title="接口描述符">接口描述符</a>中，通过<strong>bInterfaceClass、bInterfaceSubClass和bInterfaceProtocol</strong>来标识。</p>
+<h3 id="h2-hid-class"><a name="HID设备Class"></a>HID设备Class</h3>
+<p>对于HID类设备，<a href="https://www.usbzh.com/article/detail-64.html" rel="nofollow" title="接口描述符">接口描述符</a>的<strong>bInterfaceClass</strong>字段值固定为0x03.</p>
+<h3 id="h2-hid-subclass"><a name="HID设备SubClass"></a>HID设备SubClass</h3>
+<p>在HID规范的早期，SubClass用于标别不同类型HID类设备的特定协议，但随着HID设备附加功能的变化，但很快就发现这种方法限制太多。设备需要适应狭义定义的子类，并且不能提供子类所支持的功能以外的任何功能。例如，带有定位器的键盘，或提供击键的定位器。</p>
+<p><a href="https://www.usbzh.com/article/detail-64.html" rel="nofollow" title="接口描述符">接口描述符</a>的字段<strong>bInterfaceSubClass</strong>仅用于设备是否支持启动接口。</p>
+<table><thead><tr><th>Subclass Codes</th><th>Subclass Code Description</th></tr></thead><tbody><tr><td>0</td><td>No Subclass</td></tr><tr><td>1</td><td>Boot Interface Subclass</td></tr><tr><td>2 - 255</td><td>Reserved</td></tr></tbody></table>
+<ul><li>BIOS下识别USB键盘 <a href="http://www.usbzh.com/article/detail-131.html" rel="nofollow" title="BIOS下识别USB键盘  - USB中文网">BIOS下识别USB键盘 - USB中文网</a></li></ul>
+<h3 id="h2-hid-protocols"><a name="HID设备Protocols"></a>HID设备Protocols</h3>
+<p>HID设备支持多种协议。接口描述符的<strong>bInterfaceProtocol</strong>成员只有在InterfaceSubClass支持启动接口时才有意义，否则为0。<br/> 支持boot interface subclass的设备也只有两种，分别为键盘和鼠标：</p>
+<table><thead><tr><th>Subclass Codes</th><th>Subclass Code Description</th></tr></thead><tbody><tr><td>0</td><td>None</td></tr><tr><td>1</td><td>Keyboard</td></tr><tr><td>2</td><td>Mouse</td></tr><tr><td>3 - 255</td><td>Reserved</td></tr></tbody></table>
+<p>HID设备连接到USB主机后，主机通过发送Get_Descriptor请求读取HID设备的描述符，了解描述符对了解USB设备是至关重要的。</p>
+<h4 id="h3-hid-"><a name="HID设备的描述符"></a>HID设备的描述符</h4>
+<p>HID设备除了支持USB设备的5种标准描述符之外，还支持HID设备特有的3种描述符。这些描述符是：</p>
+<p>USB标准描述符：<a href="https://www.usbzh.com/article/detail-104.html" rel="nofollow" title="设备描述符">设备描述符</a>、配置描述符、<a href="https://www.usbzh.com/article/detail-64.html" rel="nofollow" title="接口描述符">接口描述符</a>、<a href="https://www.usbzh.com/article/detail-56.html" rel="nofollow" title="端点描述符">端点描述符</a>和<a href="https://www.usbzh.com/article/detail-53.html" rel="nofollow" title="字符串描述符">字符串描述符</a>。<br/> HID特有的描述符：<a href="https://www.usbzh.com/article/detail-62.html" rel="nofollow" title="HID描述符">HID描述符</a>、报表描述符（Report）和实体描述符（Physical）</p>
+<p>从描述符的关联关系看，<a href="https://www.usbzh.com/article/detail-62.html" rel="nofollow" title="HID描述符">HID描述符</a>是关联于接口。所以如果一个HID设备有2个端点，设备不需要每个端点有一个<a href="https://www.usbzh.com/article/detail-62.html" rel="nofollow" title="HID描述符">HID描述符</a>。</p>
+<p class="img-center"><img alt="" src="images/cb/3e70a79a43ea812609e7d47081066e24.png"/></p>
+<p>从前面的USB描述符可以看出一个规律，描述符的第一、二字节分别是描述符的长度和类型，描述符的类型字段（bDescriptorType）表明描述符的种类，下表列出了不同描述符的类型字段数值。</p>
+<table><thead><tr><th>描述符</th><th>应用</th><th>数值类型</th></tr></thead><tbody><tr><td><a href="https://www.usbzh.com/article/detail-104.html" rel="nofollow" title="设备描述符">设备描述符</a></td><td>所有设备必须有，只能一个</td><td>1</td></tr><tr><td>配置描述符</td><td>所有设备必须有，至少一个</td><td>2</td></tr><tr><td><a href="https://www.usbzh.com/article/detail-53.html" rel="nofollow" title="字符串描述符">字符串描述符</a></td><td>可选择</td><td>3</td></tr><tr><td><a href="https://www.usbzh.com/article/detail-64.html" rel="nofollow" title="接口描述符">接口描述符</a></td><td>每一个接口一个</td><td>4</td></tr><tr><td><a href="https://www.usbzh.com/article/detail-56.html" rel="nofollow" title="端点描述符">端点描述符</a></td><td>除端点0之外的每个端点一个</td><td>5</td></tr><tr><td><a href="https://www.usbzh.com/article/detail-50.html" rel="nofollow" title="设备限定描述符">设备限定描述符</a> Device_Qualiffier</td><td>同时支持<a href="https://www.usbzh.com/article/detail-851.html" rel="nofollow" title="全速">全速</a>与<a href="https://www.usbzh.com/article/detail-852.html" rel="nofollow" title="高速">高速</a>的设备必须有一个</td><td>6</td></tr><tr><td><a href="https://www.usbzh.com/article/detail-88.html" rel="nofollow" title="其它速率配置描述符">其它速率配置描述符</a> Other_Speed_Configuration</td><td></td><td>7</td></tr><tr><td>Interface_power</td><td></td><td>8</td></tr><tr><td>HID描述符</td><td>HID设备必须有</td><td>21</td></tr><tr><td>Hub描述符</td><td></td><td>29</td></tr><tr><td>报表描述符</td><td>HID设备必须有</td><td>22</td></tr><tr><td></td><td></td><td></td></tr><tr><td>实体描述符 Physical</td><td>可选择的</td><td>23</td></tr></tbody></table>
+<p>对于一个HID设备，<a href="https://www.usbzh.com/article/detail-104.html" rel="nofollow" title="设备描述符">设备描述符</a>与配置描述符没有HID特定的信息。其设备描述符的bDeviceClass和bDeviceSubClass字段的值为0，<a href="https://www.usbzh.com/article/detail-64.html" rel="nofollow" title="接口描述符">接口描述符</a>的bInterfaceClass字段值为03，表示设备的该接口是HID类别。在接口描述符中其他包含HID特定信息的字段还有子类别码（blnterfaceSubClass）与协议码（blnterfaceProtocol字段）。</p>
+<p>　　在接口描述符中子类别码字段等于1表示此设备支持启动接口（Boot Interface）。如果设备有启动接口，即便主机的HID没有加载驱动程序，设备也可以使用。这种情形可能发生在计算机是由DOS直接启动，在启动时观看系统设置画面或使用Wndows的安全模式时。</p>
+<p>　　含有启动接口的键盘或鼠标可以使用BIOS或许多主机支持的默认简单协议。HID规范定义了键盘与鼠标的启动接口协议。如果设备没有启动接口，并且接口描述符中协议码字段是1，表示设备支持键盘接口，协议码字段是2，表示支持鼠标接口。接口描述符中协议码字段是0，表示设备不支持启动协议。</p>
+<p>　　在 HID Usage Tables规范中定义了键盘与鼠标的启动描述符（Boot Descriptor）。BIOS不需要从设备中读取描述符，因为它知道启动协议，并且假设设备支持启动协议。所以要启动的设备不需要在固件内包含启动接口描述符，它只要在主机尚未要求在报表描述符中的定义协议时支持启动协议即可。在操作系统加载HlD驱动程序后会使用Set_Protocol请求，将设备由启动协议转换成报表协议。</p>
+<p> 硬件描述</p>
+<pre><code class="language-cpp hljs">code:0121                 .byte 0x12              // bLength
+code:0122                 .byte    1              // USB_DEVICE_DESCRIPTOR_TYPE
+code:0123                 .word 2                 // bcdUSB
+code:0125                 .byte    0              // bDeviceClass
+code:0126                 .byte    0              // bDeviceSubClass
+code:0127                 .byte 0                 // bDeviceProtocol
+code:0128                 .byte 8                 // bMaxPacketSize
+code:0129                 .word 0xF204            // VID
+code:012B                 .word 0x2311            // DEVICE ID
+code:012D                 .word 2                 // bcdDevice
+code:012F                 .byte 1                 // USBD_IDX_MFC_STR
+code:0130                 .byte    2              // USBD_IDX_PRODUCT_STR
+code:0131                 .byte 0                 // USBD_IDX_SERIAL_STR
+code:0132                 .byte    1              // USBD_CFG_MAX_NUM
+
+code:0133                 .byte 9                 //  //配置描述符的字节数大小，固定为9字节
+code:0134                 .byte    2              // 描述符类型编号，为0x02
+code:0135                 .byte 0x5B              // WORD wTotalLength;     //配置所返回的所有数量的大小
+code:0136                 .byte    0
+code:0137                 .byte 3                 // /*bNumInterfaces: 3 interface*/
+code:0138                 .byte    1              //   /*bConfigurationValue: Configuration value*/
+code:0139                 .byte    0              //  /*iConfiguration: Index of string descriptor describing
+code:013A                 .byte 0xA0              // /*bmAttributes: bus powered and Support Remote Wake-up */
+code:013B                 .byte 0x32 ; 2          //   /*MaxPower 100 mA: this current is used for detecting Vbus*/
+
+
+//interface 0
+code:013C                 .byte 9                 // //设备描述符的字节数大小，为0x09
+code:013D                 .byte 4                 //  //描述符类型编号，为0x04
+code:013E                 .byte 0                 //   /*bInterfaceNumber: Number of Interface*/ 编号
+code:013F                 .byte 0                 //     BYTE bAlternateSetting;//备用的接口描述符编号
+code:0140                 .byte 1                 //     BYTE bNumEndpoints;     //该接口使用端点数，不包括端点0
+code:0141                 .byte    3              //     BYTE bInterfaceClass;   //接口类型  3, hid
+code:0142                 .byte    1              //     BYTE bInterfaceSubClass;//接口子类型, 1 for boot
+code:0143                 .byte 1                 //    BYTE bInterfaceProtocol;//接口所遵循的协议  1 for keybarod
+code:0144                 .byte    0              //      BYTE iInterface;         //描述该接口的字符串索引值 
+
+
+//HID DESCRIPTOR
+code:0145                 .byte 9
+code:0146                 .byte 0x21              // HID_DESCRIPTOR_TYPE  HID设备的描述符
+code:0147                 .byte 0x11              // bcdHID	 HID规范版本号（BCD） byte 0  bcdHID：设备与其描述符所遵循的HID规范的版本号码，此数值是4个16进位的BCD格式字符。例如版本1.1的bcdHID是0110h。
+code:0148                 .byte    1              // bcdHID	 HID规范版本号（BCD） byte 1
+code:0149                 .byte 0                 //bCountryCode	1	Numeric	硬件设备所在国家的国家代码	
+code:014A                 .byte 1                 //bNumDescriptors	1	Numeric	类别描述符数目（至少有一个报表描述符）
+code:014B                 .byte 0x22              //bReportType	1	Constant  总是0x22?
+code:014C                 .byte 0x41              // wReportLength	2	Numeric	该类别描述符的总长度 Total length of Report descriptor
+code:014D                 .byte    0              //【wDescriptorLength】
+
+//端口1， IN, EP1, maxpacketsize
+code:014E                 .byte 7
+code:014F                 .byte 5                 //; USB_ENDPOINT_DESCRIPTOR_TYPE
+code:0150                 .byte 0x81               //; IN 1
+code:0151                 .byte 3
+code:0152                 .byte 8                  //;wMaxPacketSize 
+													/*
+														USB2.0时：
+														对于同步端点，此值用于指示主机在调度中保留的总线时间，这是每(微)帧数据有效负载所需的时间，
+														有效负载时间就是发送一帧数据需要占用的总线时间，在实际数据传输过程中，管道实际使用的带宽
+														可能比保留的带宽少，大家想想，如果实际使用的带宽比保留的还多，那就丢数了；
+														对于其类型的端点，bit10~bit0指定最大数据包大小(以字节为单位)；
+														bit12~bit11对于高速传输的同步和中断端点有效：bit12~bit11可指定每个微帧的额外通信次数，
+														这里大家一定要知道是在高速传输中，当一个事务超时时，在一个微帧时间内重传的次数，如果设置为
+														00b（None），则表示在一个微帧内只传输一个事务，不进行额外的超时重传，如果设置为01b，
+														则表示在一个微帧内可以传输两次事务，有一次额外的重传机会，从下面可以看出，一个微帧最多可以
+														有两次重传事务的机会，如果微帧结束了还是失败，就需要等到下一个微帧继续发送该事务；
+																											*/
+code:0153                 .byte 0
+
+
+code:0154                 .byte 0xA                 //主机查询端点的时间间隔 
+
+
+code:0155                 .byte 9
+code:0156                 .byte 4
+code:0157                 .byte 1                 //   /*bInterfaceNumber: Number of Interface*/ 编号
+code:0158                 .byte    0               //备用编号
+code:0159                 .byte 1                 //     BYTE bNumEndpoints;     //该接口使用端点数，不包括端点0
+code:015A                 .byte    3               //  BYTE bInterfaceClass;   //接口类型  3, hid
+code:015B                 .byte    1              //      BYTE bInterfaceSubClass;//接口子类型   boot
+code:015C                 .byte 2                  //    BYTE bInterfaceProtocol;//接口所遵循的协议  2 for mouse
+code:015D                 .byte    0
+
+code:015E                 .byte    9
+code:015F                 .byte 0x21              //  HID_DESCRIPTOR_TYPE
+code:0160                 .byte 0x11
+code:0161                 .byte 1
+code:0162                 .byte    0
+code:0163                 .byte 1            //bNumDescriptors	1	Numeric	类别描述符数目（至少有一个报表描述符）
+code:0164                 .byte 0x22 ;      //bReportType	1	Constant  总是0x22?
+code:0165                 .byte 0x5F        // wReportLength	2	Numeric	该类别描述符的总长度 Total length of Report descriptor
+code:0166                 .byte 1
+
+code:0167                 .byte    7
+code:0168                 .byte    5             //USB_ENDPOINT_DESCRIPTOR_TYPE
+code:0169                 .byte 0x82             //IN EP2
+code:016A                 .byte    3
+code:016B                 .byte 0x20             //wMaxPacketSize 
+code:016C                 .byte    0
+code:016D                 .byte    4
+
+code:016E                 .byte    9
+code:016F                 .byte    4
+code:0170                 .byte    2         //   /*bInterfaceNumber: Number of Interface*/ 编号         
+code:0171                 .byte    0         //备用编号
+code:0172                 .byte    2         //     BYTE bNumEndpoints;     //该接口使用端点数，不包括端点0    
+code:0173                 .byte 3            //  BYTE bInterfaceClass;   //接口类型  3, hid             //     BYTE bInterfaceClass;   //接口类型  3, hid
+code:0174                 .byte 0           //      BYTE bInterfaceSubClass;//接口子类型   not boot 
+code:0175                 .byte 0          //    BYTE bInterfaceProtocol;//接口所遵循的协议  0 for None
+code:0176                 .byte 0
+
+code:0177                 .byte 9
+code:0178                 .byte 0x21              ; HID_DESCRIPTOR_TYPE
+code:0179                 .byte 0x11
+code:017A                 .byte 1
+code:017B                 .byte    0
+code:017C                 .byte 1
+code:017D                 .byte 0x22
+code:017E                 .byte 0x1A         // wReportLength	2	Numeric	该类别描述符的总长度 Total length of Report descriptor
+code:017F                 .byte 0
+
+code:0180                 .byte 7
+code:0181                 .byte 5                 // USB_ENDPOINT_DESCRIPTOR_TYPE
+code:0182                 .byte 0x83              //IN EP3 
+code:0183                 .byte 3
+code:0184                 .byte 0x40               //wMaxPacketSize 
+code:0185                 .byte    0
+code:0186                 .byte 0xA
+
+code:0187                 .byte 7
+code:0188                 .byte 5                 // USB_ENDPOINT_DESCRIPTOR_TYPE
+code:0189                 .byte    3              //  OUT EP3
+code:018A                 .byte 3
+code:018B                 .byte 0x20                //wMaxPacketSize 
+code:018C                 .byte    0
+code:018D                 .byte    6
+
+
+code:018E                 .byte 4
+code:018F                 .byte 3                 ; USB_STRING_DESCRIPTOR_TYPE
+
+code:0190                 .byte 9
+code:0191                 .byte 4
+code:0192                 .byte 0x10
+code:0193                 .byte    3              ; USB_STRING_DESCRIPTOR_TYPE
+								/*
+													09 04 10 03 43 00 68 00  69 00 63 00 6F 00 6E 00  ....C.h.i.c.o.n.
+													79 00 20 03 57 00 69 00  72 00 65 00 6C 00 65 00  y. .W.i.r.e.l.e.
+													73 00 73 00 20 00 44 00  65 00 76 00 69 00 63 00  s.s. .D.e.v.i.c.
+													65 00                                             e
+								*/
+code:0194                 .byte 0x43 ; C
+code:0195                 .byte 0
+code:0196                 .byte 0x68
+code:0197                 .byte 0
+code:0198                 .byte 0x69
+code:0199                 .byte 0
+code:019A                 .byte 0x63
+code:019B                 .byte    0
+code:019C                 .byte 0x6F ; o
+code:019D                 .byte 0
+code:019E                 .byte 0x6E
+code:019F                 .byte 0
+code:01A0                 .byte 0x79
+code:01A1                 .byte    0
+code:01A2                 .byte 0x20
+code:01A3                 .byte 3                 
+code:01A4                 .byte 0x57
+code:01A5                 .byte 0
+code:01A6                 .byte 0x69
+code:01A7                 .byte 0
+code:01A8                 .byte 0x72
+code:01A9                 .byte    0
+code:01AA                 .byte 0x65
+code:01AB                 .byte    0
+code:01AC                 .byte 0x6C
+code:01AD                 .byte 0
+code:01AE                 .byte 0x65
+code:01AF                 .byte    0
+code:01B0                 .byte 0x73
+code:01B1                 .byte 0
+code:01B2                 .byte 0x73
+code:01B3                 .byte    0
+code:01B4                 .byte 0x20
+code:01B5                 .byte 0
+code:01B6                 .byte 0x44
+code:01B7                 .byte    0
+code:01B8                 .byte 0x65
+code:01B9                 .byte    0
+code:01BA                 .byte 0x76
+code:01BB                 .byte    0
+code:01BC                 .byte 0x69
+code:01BD                 .byte 0
+code:01BE                 .byte 0x63
+code:01BF                 .byte    0
+code:01C0                 .byte 0x65 ; e
+code:01C1                 .byte 0
+
+</code></pre>
+<p>报告描述</p>
+<pre><code class="hljs language-javascript">//interface 0
+0x05 0x01 Usage Page (Generic Desktop)
+0x09 0x06 Usage (Keyboard)
+0xa1 0x01 Collection (Application)
+	0x05 0x07 Usage Page (Keyboard)
+	0x19 0xe0 Usage Minimum (-32)
+	0x29 0xe7 Usage Maximum (-25)
+	0x15 0x00 Logical Minimum (0)
+	0x25 0x01 Logical Maximum (1)
+	0x95 0x08 Report Count (8)
+	0x75 0x01 Report Size (1)
+	0x81 0x02 Input (Data,Var,Abs)
+	0x95 0x08 Report Count (8)
+	0x75 0x01 Report Size (1)
+	0x81 0x01 Input (Cnst,Ary,Abs)
+	0x05 0x08 Usage Page (LEDs)
+	0x19 0x01 Usage Minimum (1)
+	0x29 0x03 Usage Maximum (3)
+	0x95 0x03 Report Count (3)
+	0x75 0x01 Report Size (1)
+	0x91 0x02 Output (Data,Var,Abs)
+	0x95 0x01 Report Count (1)
+	0x75 0x05 Report Size (5)
+	0x91 0x01 Output (Cnst,Ary,Abs)
+	0x05 0x07 Usage Page (Keyboard)
+	0x19 0x00 Usage Minimum (0)
+	0x2a 0xff 0x00 Usage Maximum (255)
+	0x15 0x00 Logical Minimum (0)
+	0x26 0xff 0x00 Logical Maximum (255)
+	0x95 0x06 Report Count (6)
+	0x75 0x08 Report Size (8)
+	0x81 0x00 Input (Data,Ary,Abs)
+0xc0 End Collection
+
+//interface 1
+0x05 0x01 Usage Page (Generic Desktop)
+0x09 0x80 Usage (System Control)
+0xa1 0x01 Collection (Application)
+	0x85 0x01 Report ID (1)
+	0x19 0x81 Usage Minimum (-127)
+	0x29 0x83 Usage Maximum (-125)
+	0x15 0x00 Logical Minimum (0)
+	0x25 0x01 Logical Maximum (1)
+	0x75 0x01 Report Size (1)
+	0x95 0x03 Report Count (3)
+	0x81 0x02 Input (Data,Var,Abs)
+	0x95 0x05 Report Count (5)
+	0x81 0x01 Input (Cnst,Ary,Abs)
+0xc0 End Collection
+0x06 0x00 0xff Usage Page (Vendor Defined Page 1)
+0x09 0x01 Usage (Vendor Usage 1)
+0xa1 0x01 Collection (Application)
+	0x85 0x02 Report ID (2)
+	0x1a 0xf1 0x00 Usage Minimum (241)
+	0x2a 0xfb 0x00 Usage Maximum (251)
+	0x15 0x00 Logical Minimum (0)
+	0x25 0x01 Logical Maximum (1)
+	0x75 0x01 Report Size (1)
+	0x95 0x0b Report Count (11)
+	0x81 0x02 Input (Data,Var,Abs)
+	0x95 0x05 Report Count (5)
+	0x81 0x01 Input (Cnst,Ary,Abs)
+0xc0 End Collection
+0x05 0x0c Usage Page (Consumer Devices)
+0x09 0x01 Usage (Consumer Control)
+0xa1 0x01 Collection (Application)
+	0x85 0x03 Report ID (3)
+	0x15 0x00 Logical Minimum (0)
+	0x25 0x01 Logical Maximum (1)
+	0x75 0x01 Report Size (1)
+	0x95 0x08 Report Count (8)
+	0x19 0xb5 Usage Minimum (-75)
+	0x29 0xb8 Usage Maximum (-72)
+	0x09 0xcd Usage (UNK)
+	0x09 0xe2 Usage (Mute)
+	0x09 0xe9 Usage (Volume Up)
+	0x09 0xea Usage (Volume Down)
+	0x81 0x02 Input (Data,Var,Abs)
+	0x0a 0x83 0x01 Usage (UNK)
+	0x0a 0x8a 0x01 Usage (UNK)
+	0x0a 0x92 0x01 Usage (UNK)
+	0x0a 0x94 0x01 Usage (UNK)
+	0x0a 0x21 0x02 Usage (UNK)
+	0x1a 0x23 0x02 Usage Minimum (547)
+	0x2a 0x25 0x02 Usage Maximum (549)
+	0x81 0x02 Input (Data,Var,Abs)
+	0x0a 0x26 0x02 Usage (UNK)
+	0x0a 0x27 0x02 Usage (UNK)
+	0x0a 0x2a 0x02 Usage (UNK)
+	0x95 0x03 Report Count (3)
+	0x81 0x02 Input (Data,Var,Abs)
+	0x95 0x05 Report Count (5)
+	0x81 0x01 Input (Cnst,Ary,Abs)
+0xc0 End Collection
+0x05 0x01 Usage Page (Generic Desktop)
+0x09 0x02 Usage (Mouse)
+0xa1 0x01 Collection (Application)
+	0x09 0x01 Usage (Pointer)
+	0xa1 0x00 Collection (Physical)
+		0x85 0x04 Report ID (4)
+		0x05 0x09 Usage Page (Button)
+		0x19 0x01 Usage Minimum (1)
+		0x29 0x03 Usage Maximum (3)
+		0x15 0x00 Logical Minimum (0)
+		0x25 0x01 Logical Maximum (1)
+		0x95 0x03 Report Count (3)
+		0x75 0x01 Report Size (1)
+		0x81 0x02 Input (Data,Var,Abs)
+		0x95 0x05 Report Count (5)
+		0x81 0x01 Input (Cnst,Ary,Abs)
+		0x05 0x01 Usage Page (Generic Desktop)
+		0x16 0x01 0xf8 Logical Minimum (-2047)
+		0x26 0xff 0x07 Logical Maximum (2047)
+		0x75 0x0c Report Size (12)
+		0x95 0x02 Report Count (2)
+		0x09 0x30 Usage (X)
+		0x09 0x31 Usage (Y)
+		0x81 0x06 Input (Data,Var,Rel)
+		0x15 0x81 Logical Minimum (-127)
+		0x25 0x7f Logical Maximum (127)
+		0x75 0x08 Report Size (8)
+		0x95 0x01 Report Count (1)
+		0x09 0x38 Usage (Wheel)
+		0x81 0x06 Input (Data,Var,Rel)
+	0xc0 End Collection
+0xc0 End Collection
+0x06 0x01 0xff Usage Page (UNK)
+0x09 0x01 Usage (UNK)
+0xa1 0x01 Collection (Application)
+	0x85 0x05 Report ID (5)
+	0x95 0x01 Report Count (1)
+	0x75 0x08 Report Size (8)
+	0x15 0x00 Logical Minimum (0)
+	0x25 0x0a Logical Maximum (10)
+	0x09 0x20 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x27 0xff 0xff 0x00 0x00 Logical Maximum (65535)
+	0x75 0x10 Report Size (16)
+	0x09 0x27 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x23 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x24 Usage (UNK)
+	0xb1 0x03 Feature (3)
+0xc0 End Collection
+0x06 0x01 0xff Usage Page (UNK)
+0x09 0x02 Usage (UNK)
+0xa1 0x01 Collection (Application)
+	0x85 0x06 Report ID (6)
+	0x95 0x01 Report Count (1)
+	0x75 0x08 Report Size (8)
+	0x15 0x00 Logical Minimum (0)
+	0x25 0x0a Logical Maximum (10)
+	0x09 0x20 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x27 0xff 0xff 0x00 0x00 Logical Maximum (65535)
+	0x75 0x10 Report Size (16)
+	0x09 0x27 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x23 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x24 Usage (UNK)
+	0xb1 0x03 Feature (3)
+0xc0 End Collection
+0x06 0x01 0xff Usage Page (UNK)
+0x09 0x03 Usage (UNK)
+0xa1 0x01 Collection (Application)
+	0x85 0x07 Report ID (7)
+	0x95 0x01 Report Count (1)
+	0x75 0x10 Report Size (16)
+	0x15 0x00 Logical Minimum (0)
+	0x27 0xff 0xff 0x00 0x00 Logical Maximum (65535)
+	0x09 0x27 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x75 0x08 Report Size (8)
+	0x26 0xff 0x00 Logical Maximum (255)
+	0x09 0x21 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x22 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x25 Usage (UNK)
+	0xb1 0x03 Feature (3)
+	0x09 0x26 Usage (UNK)
+	0xb1 0x03 Feature (3)
+0xc0 End Collection
+0x06 0x01 0xff Usage Page (UNK)
+0x09 0x08 Usage (UNK)
+0xa1 0x01 Collection (Application)
+	0x85 0x08 Report ID (8)
+	0x06 0x00 0xff Usage Page (Vendor Defined Page 1)
+	0x09 0x05 Usage (UNK)
+	0x19 0x00 Usage Minimum (0)
+	0x2a 0xff 0x7f Usage Maximum (32767)
+	0x15 0x00 Logical Minimum (0)
+	0x26 0xff 0x7f Logical Maximum (32767)
+	0x75 0x10 Report Size (16)
+	0x95 0x04 Report Count (4)
+	0xb1 0x02 Feature (2)
+0xc0 End Collection
+
+interface 2
+0x06 0x01 0xff Usage Page (UNK)
+0x09 0x04 Usage (UNK)
+0xa1 0x01 Collection (Application)
+	0x85 0x04 Report ID (4)
+	0x19 0x00 Usage Minimum (0)
+	0x2a 0xff 0x00 Usage Maximum (255)
+	0x15 0x00 Logical Minimum (0)
+	0x26 0xff 0x00 Logical Maximum (255)
+	0x75 0x08 Report Size (8)
+	0x95 0x1f Report Count (31)
+	0xb1 0x02 Feature (2)
+0xc0 End Collection
+
+</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2023-01-12 15:58:15</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

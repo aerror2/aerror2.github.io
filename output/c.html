@@ -1,0 +1,1001 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用mpu6500/6050, PID，互补滤波实现一个简单的飞行自稳控制系统</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>使用mpu6500/6050, PID，互补滤波实现一个简单的飞行自稳控制系统</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/148561198" target="_blank">https://blog.csdn.net/aerror/article/details/148561198</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-10 16:36:31</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 491</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 8</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 5</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">单片机</span>, <span class="tag">飞控</span></div>
+    
+    <div class="article-description">使用mpu6500, PID，互补滤波实现一个简单的自稳控制系统</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>首先，参考ai给出的客机飞机的比较平稳的最大仰府，偏转，和防滚角度，如下：</p>
+<p>客机的最大平稳仰俯（Pitch）、偏转（Yaw）和防滚（Roll）角度，通常在飞机的设计和飞行规程中有所规定。这些角度的限制是为了确保飞机的安全性，并在复杂的气流条件下进行平稳飞行。</p>
+<p>具体而言：</p>
+<ul><li> <p><strong>仰俯（Pitch）：</strong></p> <p>指飞机机头向上或向下的角度变化。客机设计通常会限制仰俯角度，以避免飞机失控或结构损坏。一般而言，客机的最大仰俯角在10度到20度之间，具体取决于飞机类型和飞行阶段。</p> </li><li> <p><strong>偏转（Yaw）：</strong></p> <p>指飞机机头左右偏离飞行方向的角度变化。偏转角度的限制是为了防止飞机剧烈摇摆或失控。客机的最大偏转角度通常在10度到20度之间，具体取决于飞机类型和飞行阶段。</p> </li><li> <p><strong>防滚（Roll）：</strong></p> <p>指飞机机翼左右倾斜的角度变化。防滚角度的限制是为了防止飞机翻滚或失控。客机的最大防滚角度通常在30度到40度之间，具体取决于飞机类型和飞行阶段。</p> </li></ul>
+<p>需要注意的是，这些角度是飞机设计和飞行规程的限制，而不是飞机的实际飞行。在飞机的正常飞行过程中，这些角度通常不会超过设计限制。</p>
+<p>客机的最大平稳仰俯、偏转和防滚角度通常在10度到40度之间，具体取决于飞机类型和飞行阶段。这些限制是为了确保飞机的安全性，并在复杂的气流条件下进行平稳飞行。</p>
+<p>还让ai以大型运输机查出了最大的安全角速度，如下：</p>
+<p>根据大型运输机设计标准，对于客机平稳安全的最大角速度变化率， 设定了以下安全限制：</p>
+<p>- 俯仰最大安全角速度：10度/秒<br/> - 横滚最大安全角速度：25度/秒（参考大型运输机20-30度/秒的标准）<br/> - 偏航最大安全角速度：15度/秒</p>
+<p></p>
+<p>我们取:  最大仰俯角是+-20角，翻滚+-40度，偏航是+-20度</p>
+<p></p>
+<p>为了简单，</p>
+<p>1. 只是加速度acc和角度gyro这个六个mpu返回的值进行计算。 不使用dmp解算姿态。</p>
+<p>2. 使用积分的办法去粗略计算yaw, pitch和roll 使用gyro和acc直接计算。</p>
+<p>3. 把用户的三个输入(pwm 1000-2000), 转化成目标角度，即飞机的最大仰俯角是+-20角，翻滚+-40度，偏航是+-20度</p>
+<p>4. 使用互补滤波和PID ，计算出输出的pwm去控制舵面，最终令到俯角，翻滚和偏航达到用户输入出的值。</p>
+<p>5. 不考虑油门对速度的影响</p>
+<p>6. 进行单元测试，输出的pwm变成舵面角度基于物理学转化成对于加速度acc和角度gyro的影响，内容在update_sensor_by_control</p>
+<p>7. 估算当前舵面角度和速度能产生的最大角速度<br/> 8. 比较这个最大角速度与安全角速度限制<br/> 9. 如果舵面效果不足（例如在低速时），自动增加油门提高速度，从而增强舵面效果<br/> 10. 如果舵面效果过强（例如在高速时），自动减小油门降低速度，避免过大的角速度变化<br/> 这种自适应控制方式能够在保证飞行安全和舒适性的同时，尽可能快速地达到目标姿态。</p>
+<p></p>
+<p>代码如下：</p>
+<pre><code class="language-cpp hljs">
+
+#include &lt;math.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+
+/**
+ * @brief 互补滤波器结构体定义
+ */
+ typedef struct {
+    float alpha;     /**&lt; 互补滤波系数，范围0-1，越接近1越信任陀螺仪数据 */
+    float angle;     /**&lt; 当前角度 */
+} complementary_filter_t;
+
+
+/**
+ * @brief 初始化互补滤波器
+ * @param[in] *filter 指向互补滤波器结构体的指针
+ * @param[in] alpha 互补滤波系数，范围0-1，越接近1越信任陀螺仪数据
+ * @note 无
+ */
+ void complementary_filter_init(complementary_filter_t *filter, float alpha) 
+ {
+     filter-&gt;alpha = alpha;
+     filter-&gt;angle = 0.0f;
+ }
+ 
+ /**
+  * @brief 互补滤波计算
+  * @param[in] *filter 指向互补滤波器结构体的指针
+  * @param[in] acc_angle 从加速度计计算的角度
+  * @param[in] gyro_rate 陀螺仪测量的角速度
+  * @param[in] dt 时间间隔（秒）
+  * @return 滤波后的角度值
+  * @note 无
+  */
+ float complementary_filter_update(complementary_filter_t *filter, float acc_angle, float gyro_rate, float dt) 
+ {
+     // 互补滤波核心算法
+     // 陀螺仪积分得到角度变化
+     float gyro_angle = filter-&gt;angle + gyro_rate * dt;
+     
+     // 互补滤波：结合陀螺仪和加速度计的数据
+     // alpha决定了对陀螺仪数据的信任程度
+     filter-&gt;angle = filter-&gt;alpha * gyro_angle + (1.0f - filter-&gt;alpha) * acc_angle;
+     
+     return filter-&gt;angle;
+ }
+ 
+
+ 
+
+// 全局互补滤波器实例
+static complementary_filter_t gs_pitch_filter;
+static complementary_filter_t gs_roll_filter;
+static complementary_filter_t gs_yaw_filter;
+static float gs_prev_yaw = 0.0f;
+static float gs_prev_time = 0.0f;
+
+// PID控制器参数和状态变量
+typedef struct {
+    float kp;           // 比例系数
+    float ki;           // 积分系数
+    float kd;           // 微分系数
+    float error_sum;    // 误差累积
+    float prev_error;   // 上一次误差
+    float output_limit; // 输出限制
+} pid_controller_t;
+
+// 全局PID控制器实例
+static pid_controller_t gs_pitch_pid;
+static pid_controller_t gs_roll_pid;
+static pid_controller_t gs_yaw_pid;
+
+/**
+ * @brief 初始化互补滤波器
+ * @note 无
+ */
+void init_filters(void)
+{
+    // 初始化俯仰角和横滚角的互补滤波器
+    // alpha=0.98表示98%信任陀螺仪数据，2%信任加速度计数据
+    complementary_filter_init(&amp;gs_pitch_filter, 0.98f);
+    complementary_filter_init(&amp;gs_roll_filter, 0.98f);
+    
+    // 初始化偏航角的互补滤波器
+    // 对于偏航角，我们更依赖陀螺仪数据，因此alpha设置得更高
+    complementary_filter_init(&amp;gs_yaw_filter, 0.99f);
+    
+    // 初始化时间和偏航角记录
+    gs_prev_time = 0.0f;
+    gs_prev_yaw = 0.0f;
+}
+
+
+
+/**
+ * @brief 初始化PID控制器
+ * @param[out] pid 指向PID控制器结构体的指针
+ * @param[in] kp 比例系数
+ * @param[in] ki 积分系数
+ * @param[in] kd 微分系数
+ * @param[in] output_limit 输出限制值
+ * @note 无
+ */
+void pid_init(pid_controller_t *pid, float kp, float ki, float kd, float output_limit)
+{
+    pid-&gt;kp = kp;
+    pid-&gt;ki = ki;
+    pid-&gt;kd = kd;
+    pid-&gt;error_sum = 0.0f;
+    pid-&gt;prev_error = 0.0f;
+    pid-&gt;output_limit = output_limit;
+}
+
+/**
+ * @brief 计算PID控制器输出
+ * @param[in,out] pid 指向PID控制器结构体的指针
+ * @param[in] error 当前误差
+ * @param[in] dt 时间间隔（秒）
+ * @return PID控制器输出值
+ * @note 无
+ */
+float pid_compute(pid_controller_t *pid, float error, float dt)
+{
+    // 计算积分项
+    pid-&gt;error_sum += error * dt;
+    
+    // 计算微分项
+    float error_diff = (error - pid-&gt;prev_error) / dt;
+    
+    // 计算PID输出
+    float output = pid-&gt;kp * error + pid-&gt;ki * pid-&gt;error_sum + pid-&gt;kd * error_diff;
+    
+    // 限制输出范围
+    if (output &gt; pid-&gt;output_limit) {
+        output = pid-&gt;output_limit;
+    } else if (output &lt; -pid-&gt;output_limit) {
+        output = -pid-&gt;output_limit;
+    }
+    
+    // 保存当前误差用于下次计算
+    pid-&gt;prev_error = error;
+    
+    return output;
+}
+
+/**
+ * @brief 初始化直线水平前进PID控制器
+ * @note 无
+ */
+void init_simple_stable_pid(void)
+{
+    // 初始化俯仰角PID控制器
+    pid_init(&amp;gs_pitch_pid, 0.5f, 0.1f, 0.05f, 10.0f);
+    
+    // 初始化横滚角PID控制器
+    pid_init(&amp;gs_roll_pid, 0.5f, 0.1f, 0.05f, 10.0f);
+    
+    // 初始化偏航角PID控制器
+    pid_init(&amp;gs_yaw_pid, 0.8f, 0.2f, 0.1f, 10.0f);
+    
+    // 初始化互补滤波器
+    init_filters();
+}
+
+
+/**
+ * @brief 从加速度数据计算俯仰角和横滚角
+ * @param[in] acc 加速度数据数组[3]
+ * @param[out] pitch 计算得到的俯仰角（度）
+ * @param[out] roll 计算得到的横滚角（度）
+ * @note 无
+ */
+ void calculate_angles_from_acc(float acc[3], float *pitch, float *roll)
+ {
+     // 计算俯仰角（pitch）和横滚角（roll）
+     // 注意：这里假设z轴垂直于地面，x轴向前，y轴向右
+     
+     // 计算俯仰角（绕y轴旋转）
+     *pitch = atan2f(-acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])) * 180.0f / M_PI;
+     
+     // 计算横滚角（绕x轴旋转）
+     *roll = atan2f(acc[1], acc[2]) * 180.0f / M_PI;
+ }
+ 
+
+ 
+/**
+ * @brief 使用PID控制算法计算直线水平前进的控制输出
+ * @param[in] acc 加速度数据数组[3]
+ * @param[in] gyro 陀螺仪数据数组[3]
+ * @param[in] target_pitch 目标俯仰角
+ * @param[in] target_roll 目标横滚角
+ * @param[in] target_yaw_rate 目标偏航角变化率
+ * @param[out] control_output 控制输出数组[3]，分别对应俯仰、横滚和偏航的控制量
+ * @param[in,out] throttle_pwm 油门PWM值，范围1000-2000，函数会根据需要调整此值
+ * @return 是否已经达到直线水平前进状态
+ * @note 此函数需要在初始化PID控制器后使用
+ */
+void simple_stable_pid_control(float acc[3], float gyro[3], float target_pitch, float target_roll, float target_yaw_rate, float control_output[3], int *throttle_pwm)
+{
+    float pitch_acc, roll_acc;
+    float current_time;
+    float dt;
+    float pitch, roll;
+    float yaw, yaw_gyro; // 使用陀螺仪积分计算偏航角
+    
+    // 获取当前时间（秒），实际应用中需要替换为真实的时间获取函数
+    current_time = 0.01f + gs_prev_time; // 假设每次调用间隔10ms
+    dt = current_time - gs_prev_time;
+    
+    // 使用陀螺仪z轴数据积分计算当前偏航角
+    // gyro[2]是z轴角速度，单位为度/秒，积分得到角度变化
+    yaw_gyro = gs_prev_yaw + gyro[2] * dt;
+    
+    // 从加速度计算出角度
+    calculate_angles_from_acc(acc, &amp;pitch_acc, &amp;roll_acc);
+    
+    // 使用互补滤波更新角度
+    pitch = complementary_filter_update(&amp;gs_pitch_filter, pitch_acc, gyro[0], dt);
+    roll = complementary_filter_update(&amp;gs_roll_filter, roll_acc, gyro[1], dt);
+    
+    // 对偏航角也应用互补滤波
+    // 注意：由于没有从加速度计直接获取偏航角的方法，这里使用陀螺仪积分值作为主要输入
+    // 在实际应用中，可以考虑使用磁力计数据作为偏航角的参考
+    yaw = complementary_filter_update(&amp;gs_yaw_filter, yaw_gyro, gyro[2], dt);
+    
+    // 计算偏差 - 使用传入的目标值而不是固定的0
+    float pitch_error = target_pitch - pitch; // 目标俯仰角
+    float roll_error = target_roll - roll;    // 目标横滚角
+    float yaw_rate = (yaw - gs_prev_yaw) / dt; // 当前偏航角变化率
+    float yaw_error = target_yaw_rate - yaw_rate; // 目标偏航角变化率
+    
+    // 使用PID控制器计算控制输出
+    control_output[0] = pid_compute(&amp;gs_pitch_pid, pitch_error, dt); // 俯仰控制
+    control_output[1] = pid_compute(&amp;gs_roll_pid, roll_error, dt);   // 横滚控制
+    control_output[2] = pid_compute(&amp;gs_yaw_pid, yaw_error, dt);     // 偏航控制
+    
+    // 定义客机平稳安全的最大角速度变化率（度/秒）
+    // 根据大型运输机设计标准，最大滚转速率通常在20-30度/秒之间
+    const float MAX_SAFE_PITCH_RATE = 10.0f;  // 俯仰最大安全角速度（度/秒）
+    const float MAX_SAFE_ROLL_RATE = 25.0f;   // 横滚最大安全角速度（度/秒）
+    const float MAX_SAFE_YAW_RATE = 15.0f;    // 偏航最大安全角速度（度/秒）
+    
+    // 计算当前角速度（使用陀螺仪数据）
+    float current_pitch_rate = fabsf(gyro[0]); // X轴陀螺仪数据对应俯仰角速度
+    float current_roll_rate = fabsf(gyro[1]);  // Y轴陀螺仪数据对应横滚角速度
+    float current_yaw_rate = fabsf(gyro[2]);   // Z轴陀螺仪数据对应偏航角速度
+    
+    // 计算控制输出对应的舵面角度
+    float elevator_angle = control_output[0] * 4.5f; // 假设控制输出1对应4.5度舵面角度
+    float aileron_angle = control_output[1] * 4.5f;
+    float rudder_angle = control_output[2] * 4.5f;
+    
+    // 估计舵面能产生的最大角速度（简化模型）
+    // 当前油门值（1000-2000）转换为百分比（0-100%）
+    float throttle_percent = (*throttle_pwm - 1000) / 10.0f;
+    // 假设速度与油门成正比，舵面效果与速度平方成正比（伯努利原理）
+    float speed_factor = 1.0f + (throttle_percent * throttle_percent) * 0.0001f;
+    
+    // 估计当前舵面能产生的最大角速度
+    float max_pitch_rate_possible = fabsf(elevator_angle) * 0.5f * speed_factor;
+    float max_roll_rate_possible = fabsf(aileron_angle) * 0.4f * speed_factor;
+    float max_yaw_rate_possible = fabsf(rudder_angle) * 0.3f * speed_factor;
+    
+    // 检查是否需要调整油门
+    bool need_more_throttle = false;
+    bool need_less_throttle = false;
+    
+    // 如果需要的角速度超过舵面能产生的最大角速度，需要增加油门
+    if (max_pitch_rate_possible &lt; MAX_SAFE_PITCH_RATE &amp;&amp; fabsf(pitch_error) &gt; 5.0f) {
+        need_more_throttle = true;
+    }
+    if (max_roll_rate_possible &lt; MAX_SAFE_ROLL_RATE &amp;&amp; fabsf(roll_error) &gt; 5.0f) {
+        need_more_throttle = true;
+    }
+    if (max_yaw_rate_possible &lt; MAX_SAFE_YAW_RATE &amp;&amp; fabsf(yaw_error) &gt; 5.0f) {
+        need_more_throttle = true;
+    }
+    
+    // 如果当前角速度已经超过安全角速度，但舵面角度很小，需要减小油门
+    if (current_pitch_rate &gt; MAX_SAFE_PITCH_RATE &amp;&amp; fabsf(elevator_angle) &lt; 10.0f) {
+        need_less_throttle = true;
+    }
+    if (current_roll_rate &gt; MAX_SAFE_ROLL_RATE &amp;&amp; fabsf(aileron_angle) &lt; 10.0f) {
+        need_less_throttle = true;
+    }
+    if (current_yaw_rate &gt; MAX_SAFE_YAW_RATE &amp;&amp; fabsf(rudder_angle) &lt; 10.0f) {
+        need_less_throttle = true;
+    }
+    
+    // 调整油门值
+    if (need_more_throttle &amp;&amp; !need_less_throttle) {
+        // 增加油门，但不超过最大值2000
+        *throttle_pwm += 20;
+        if (*throttle_pwm &gt; 2000) *throttle_pwm = 2000;
+    } else if (need_less_throttle &amp;&amp; !need_more_throttle) {
+        // 减小油门，但不低于最小值1000
+        *throttle_pwm -= 20;
+        if (*throttle_pwm &lt; 1000) *throttle_pwm = 1000;
+    }
+    
+    // 更新时间和偏航角记录 
+    gs_prev_time = current_time;
+    gs_prev_yaw = yaw;
+}
+
+/**
+ * @brief PWM值转换为角度
+ * @param[in] pwm PWM值，范围1000-2000
+ * @param[in] channel 通道号，0=俯仰(±20°)，1=横滚(±40°)，2=偏航(±20°)
+ * @return 转换后的角度值
+ * @note 根据不同通道返回不同范围的角度值
+ */
+float pwm_to_angle(int pwm, int channel)
+{
+    // 中点值1500对应0度
+    float normalized = (pwm - 1500) / 500.0f; // 归一化到±1范围
+    
+    // 根据通道返回不同范围的角度
+    switch(channel) {
+        case 0: // 俯仰通道，±20度
+            return normalized * 20.0f;
+        case 1: // 横滚通道，±40度
+            return normalized * 40.0f;
+        case 2: // 偏航通道，±20度
+            return normalized * 20.0f;
+        default:
+            return normalized * 20.0f; // 默认±20度
+    }
+}
+
+/**
+ * @brief 控制输出转换为PWM值
+ * @param[in] control 控制输出值
+ * @return 转换后的PWM值，范围1000-2000
+ * @note 无
+ */
+int control_to_pwm(float control)
+{
+    // 将控制输出(-10到10)线性映射到PWM值(1000-2000)
+    // 首先将控制输出限制在-10到10的范围内
+    if (control &gt; 10.0f) control = 10.0f;
+    if (control &lt; -10.0f) control = -10.0f;
+    
+    // 然后映射到1000-2000
+    return 1500 + (int)(control * 50.0f);
+}
+
+/**
+ * @brief PWM值转换为舵面角度
+ * @param[in] pwm PWM值，范围1000-2000
+ * @return 转换后的舵面角度值，范围-45到+45度
+ * @note 无
+ */
+float pwm_to_control_surface_angle(int pwm)
+{
+    // 将PWM值(1000-2000)线性映射到舵面角度值(-45到+45度)
+    return -45.0f + (pwm - 1000) * 90.0f / 1000.0f;
+}
+
+/**
+ * @brief 根据舵面角度更新传感器数据
+ * @param[in,out] acc 加速度数据数组[3]
+ * @param[in,out] gyro 陀螺仪数据数组[3]
+ * @param[in] output_pwm 输出PWM值数组[3]，分别对应俯仰、横滚和偏航通道
+ * @param[in] dt 时间间隔（秒）
+ * @note 根据物理公式模拟舵面角度对加速度和陀螺仪数据的影响
+ */
+void update_sensor_by_control(float acc[3], float gyro[3], int output_pwm[3], int throttle_pwm, float dt)
+{
+    // 将PWM值转换为舵面角度（-45到+45度）
+    float elevator_angle = pwm_to_control_surface_angle(output_pwm[0]); // 升降舵角度（俯仰）
+    float aileron_angle = pwm_to_control_surface_angle(output_pwm[1]);  // 副翼角度（横滚）
+    float rudder_angle = pwm_to_control_surface_angle(output_pwm[2]);   // 方向舵角度（偏航）
+    
+    // 计算飞行速度（基于油门值）
+    // 油门范围1000-2000，转换为0-100%的油门量
+    float throttle_percent = (throttle_pwm - 1000) / 10.0f;
+    // 假设最大速度为30m/s，根据油门百分比计算当前速度
+    float airspeed = throttle_percent * 0.3f; // 0-30 m/s
+    
+    // 模拟舵面角度对陀螺仪数据的影响
+    // 舵面角度越大，产生的角速度越大
+    // 这里使用简化的物理模型，实际上应该考虑更复杂的空气动力学模型
+    
+    // 计算舵面角度变化率（简化为当前角度除以时间步长）
+    // 这个变化率用于模拟舵面移动时产生的瞬时反作用力
+    float elevator_rate = elevator_angle / dt;
+    float aileron_rate = aileron_angle / dt;
+    float rudder_rate = rudder_angle / dt;
+    
+    // 考虑速度对舵面效果的影响（伯努利原理）
+    // 速度越大，舵面产生的力矩越大
+    float speed_factor = 1.0f + (airspeed * airspeed) * 0.01f; // 二次方关系，模拟动压与速度平方成正比
+    
+    // 升降舵影响俯仰角速度（绕Y轴）
+    // 正角度产生向上的力矩，负角度产生向下的力矩
+    gyro[0] += elevator_angle * 0.5f * speed_factor; // 比例因子可以根据实际情况调整
+    
+    // 副翼影响横滚角速度（绕X轴）
+    // 正角度产生向右的力矩，负角度产生向左的力矩
+    gyro[1] += aileron_angle * 0.4f * speed_factor;
+    
+    // 方向舵影响偏航角速度（绕Z轴）
+    // 正角度产生向右的力矩，负角度产生向左的力矩
+    gyro[2] += rudder_angle * 0.3f * speed_factor;
+    
+    // 添加舵面移动产生的反作用力对陀螺仪的影响
+    // 舵面快速移动时会产生反向的力矩
+    gyro[0] -= elevator_rate * 0.05f * speed_factor; // 升降舵移动产生的反作用力矩
+    gyro[1] -= aileron_rate * 0.04f * speed_factor;  // 副翼移动产生的反作用力矩
+    gyro[2] -= rudder_rate * 0.03f * speed_factor;   // 方向舵移动产生的反作用力矩
+    
+    // 模拟舵面角度对加速度数据的影响
+    // 舵面角度会改变飞行器的姿态，从而影响加速度计测量的重力分量
+    
+    // 升降舵影响前后加速度（X轴）
+    // 正角度（向上）会产生向后的加速度，负角度（向下）会产生向前的加速度
+    acc[0] += elevator_angle * 0.01f * speed_factor;
+    
+    // 副翼影响左右加速度（Y轴）
+    // 正角度（向右）会产生向右的加速度，负角度（向左）会产生向左的加速度
+    acc[1] += aileron_angle * 0.008f * speed_factor;
+    
+    // 方向舵主要影响偏航，对加速度的直接影响较小，这里简化处理
+    // 但在实际飞行中，方向舵会通过改变飞行器的侧滑角间接影响加速度
+    acc[1] += rudder_angle * 0.003f * speed_factor;
+    
+    // 添加舵面移动产生的反作用力对加速度计的影响
+    // 舵面快速移动时会产生反向的加速度
+    acc[0] -= elevator_rate * 0.002f * speed_factor; // 升降舵移动产生的反向加速度
+    acc[1] -= aileron_rate * 0.0015f * speed_factor; // 副翼移动产生的反向加速度
+    acc[1] -= rudder_rate * 0.0005f * speed_factor;  // 方向舵移动产生的反向加速度
+    
+    // 模拟伯努利原理对传感器的影响
+    // 速度越大，气流对传感器的影响越大
+    // 这里简化为速度对加速度和陀螺仪的直接影响
+    
+    // 速度产生的振动影响（随机噪声与速度成正比）
+    float vibration_factor = airspeed * 0.02f;
+    acc[0] += (rand() / (float)RAND_MAX - 0.5f) * vibration_factor;
+    acc[1] += (rand() / (float)RAND_MAX - 0.5f) * vibration_factor;
+    acc[2] += (rand() / (float)RAND_MAX - 0.5f) * vibration_factor;
+    
+    gyro[0] += (rand() / (float)RAND_MAX - 0.5f) * vibration_factor * 5.0f;
+    gyro[1] += (rand() / (float)RAND_MAX - 0.5f) * vibration_factor * 5.0f;
+    gyro[2] += (rand() / (float)RAND_MAX - 0.5f) * vibration_factor * 5.0f;
+    
+    // 速度产生的稳定性影响（高速时更稳定，低速时更不稳定）
+    // 这是因为高速时舵面效果更好，控制更精确
+    float stability_factor = 0.0f;
+    if (airspeed &gt; 5.0f) { // 假设5m/s以上才有明显的稳定效果
+        stability_factor = (airspeed - 5.0f) * 0.01f;
+        if (stability_factor &gt; 0.2f) stability_factor = 0.2f; // 限制最大稳定效果
+        
+        // 高速时减小随机扰动
+        acc[0] *= (1.0f - stability_factor);
+        acc[1] *= (1.0f - stability_factor);
+        gyro[0] *= (1.0f - stability_factor);
+        gyro[1] *= (1.0f - stability_factor);
+        gyro[2] *= (1.0f - stability_factor);
+    }
+    
+    // 模拟重力对加速度的影响（根据当前姿态）
+    // 这里使用简化模型，假设舵面角度直接影响姿态角
+    // 在实际情况下，应该通过积分角速度来更新姿态角
+    
+    // 假设当前俯仰角和横滚角与舵面角度成正比（简化模型）
+    float pitch_angle = elevator_angle * 0.2f; // 比例因子可以根据实际情况调整
+    float roll_angle = aileron_angle * 0.2f;
+    
+    // 将角度转换为弧度
+    float pitch_rad = pitch_angle * M_PI / 180.0f;
+    float roll_rad = roll_angle * M_PI / 180.0f;
+    
+    // 根据姿态角计算重力在三个轴上的分量
+    // 这是一个简化的模型，实际上应该使用完整的旋转矩阵
+    float gx = sinf(pitch_rad);
+    float gy = -sinf(roll_rad) * cosf(pitch_rad);
+    float gz = cosf(roll_rad) * cosf(pitch_rad);
+    
+    // 将重力分量添加到加速度中（重力加速度标准值为1g）
+    acc[0] = 0.8f * acc[0] + 0.2f * gx;
+    acc[1] = 0.8f * acc[1] + 0.2f * gy;
+    acc[2] = 0.8f * acc[2] + 0.2f * gz;
+    
+    // 添加一些随机噪声，模拟真实传感器的噪声
+    acc[0] += (rand() / (float)RAND_MAX - 0.5f) * 0.02f;
+    acc[1] += (rand() / (float)RAND_MAX - 0.5f) * 0.02f;
+    acc[2] += (rand() / (float)RAND_MAX - 0.5f) * 0.02f;
+    
+    gyro[0] += (rand() / (float)RAND_MAX - 0.5f) * 0.5f;
+    gyro[1] += (rand() / (float)RAND_MAX - 0.5f) * 0.5f;
+    gyro[2] += (rand() / (float)RAND_MAX - 0.5f) * 0.5f;
+}
+
+/**
+ * @brief 模拟读取加速度和陀螺仪数据
+ * @param[out] acc 加速度数据数组[3]
+ * @param[out] gyro 陀螺仪数据数组[3]
+ * @note 在实际应用中，这个函数应该从传感器读取真实数据
+ */
+void read_sensor_data(float acc[3], float gyro[3])
+{
+    // 模拟数据 - 在实际应用中应该从传感器读取
+    // 这里假设飞行器处于近似水平状态，有轻微扰动
+    
+    // 加速度数据 (x, y, z) 单位: g
+    // 理想情况下，水平静止时 acc = {0, 0, 1}
+    static float time_counter = 0.0f;
+    time_counter += 0.02f; // 每次增加20ms
+    
+    // 添加一些随机扰动和周期性变化模拟真实环境
+    acc[0] = 0.05f * sinf(time_counter * 0.5f); // 轻微前后晃动
+    acc[1] = 0.03f * cosf(time_counter * 0.7f); // 轻微左右晃动
+    acc[2] = 0.98f + 0.02f * sinf(time_counter * 0.3f); // 接近1g，有轻微上下波动
+    
+    // 陀螺仪数据 (x, y, z) 单位: 度/秒
+    // 理想情况下，静止时 gyro = {0, 0, 0}
+    gyro[0] = 2.0f * cosf(time_counter * 0.6f); // 轻微俯仰角速度
+    gyro[1] = 1.5f * sinf(time_counter * 0.8f); // 轻微横滚角速度
+    gyro[2] = 1.0f * sinf(time_counter * 0.4f); // 轻微偏航角速度
+}
+
+/**
+ * @brief 模拟读取PWM输入通道
+ * @param[out] pwm_channels PWM值数组[4]，分别对应俯仰、横滚、偏航和油门通道
+ * @note 在实际应用中，这个函数应该从接收机读取真实PWM值
+ */
+void read_pwm_channels(int pwm_channels[4])
+{
+    // 模拟数据 - 在实际应用中应该从接收机读取
+    // 这里假设接收到的PWM值在中间位置附近有轻微变化
+    static float time_counter = 0.0f;
+    time_counter += 0.02f; // 每次增加20ms
+    
+    // 添加一些随机扰动和周期性变化模拟真实环境
+    // 中间值1500附近波动
+    pwm_channels[0] = 1500 + (int)(50.0f * sinf(time_counter * 0.3f)); // 俯仰通道
+    pwm_channels[1] = 1500 + (int)(40.0f * cosf(time_counter * 0.5f)); // 横滚通道
+    pwm_channels[2] = 1500 + (int)(30.0f * sinf(time_counter * 0.7f)); // 偏航通道
+    pwm_channels[3] = 1500 + (int)(100.0f * sinf(time_counter * 0.2f)); // 油门通道
+}
+
+/**
+ * @brief 判断PID控制是否达到稳定状态
+ * @param[in] control_output 控制输出数组[3]
+ * @return 如果所有控制输出都小于阈值，返回1，否则返回0
+ * @note 无
+ */
+int is_pid_stable(float control_output[3])
+{
+    // 定义稳定阈值
+    const float threshold = 0.5f;
+    
+    // 检查所有控制输出是否都小于阈值
+    if (fabsf(control_output[0]) &lt; threshold &amp;&amp;
+        fabsf(control_output[1]) &lt; threshold &amp;&amp;
+        fabsf(control_output[2]) &lt; threshold) {
+        return 1; // 稳定
+    }
+    
+    return 0; // 不稳定
+}
+
+/**
+ * @brief 稳定飞行单元测试函数
+ * @note 此函数包含一个无限循环，模拟飞行控制系统的运行
+ */
+void stable_flight_unit_test(void)
+{
+    // 初始化PID控制器
+    init_simple_stable_pid();
+    
+    // 定义变量
+    float acc[3];          // 加速度数据
+    float gyro[3];         // 陀螺仪数据
+    int pwm_channels[4];   // PWM输入通道，包括油门
+    float target_angles[3]; // 目标角度
+    float control_output[3]; // 控制输出
+    int output_pwm[3];     // 输出PWM值
+    int stable_count = 0;   // 稳定计数器
+    int iteration = 0;      // 迭代计数器
+    float dt = 0.02f;      // 时间步长，20ms
+    
+    // 初始化输出PWM值为中间值（1500）
+    output_pwm[0] = 1500;
+    output_pwm[1] = 1500;
+    output_pwm[2] = 1500;
+    
+    // 初始化随机数生成器
+    srand(time(NULL));
+    
+    printf("开始稳定飞行单元测试...\n");
+    
+    // 无限循环，每次迭代模拟0.02秒
+    while (1) {
+        // 1. 读取当前的加速度和陀螺仪数据
+        read_sensor_data(acc, gyro);
+        
+        // 1.1 根据上一次的控制输出和当前油门值更新传感器数据，模拟舵面和速度对传感器的物理影响
+        update_sensor_by_control(acc, gyro, output_pwm, pwm_channels[3], dt);
+        
+        // 2. 读取三个通道的PWM值(1000-2000)
+        read_pwm_channels(pwm_channels);
+        
+        // 将PWM值线性转换为目标角度
+        target_angles[0] = pwm_to_angle(pwm_channels[0], 0); // 俯仰目标角度 (±20°)
+        target_angles[1] = pwm_to_angle(pwm_channels[1], 1); // 横滚目标角度 (±40°)
+        target_angles[2] = pwm_to_angle(pwm_channels[2], 2); // 偏航目标角度变化率 (±20°)
+        
+        // 3. 调用PID控制函数，并传递油门值进行自动调整
+        simple_stable_pid_control(acc, gyro, 
+                                  target_angles[0], 
+                                  target_angles[1], 
+                                  target_angles[2], 
+                                  control_output,
+                                  &amp;pwm_channels[3]);
+        
+        // 4. 将控制输出转换为PWM值(1000-2000)并打印结果
+        output_pwm[0] = control_to_pwm(control_output[0]);
+        output_pwm[1] = control_to_pwm(control_output[1]);
+        output_pwm[2] = control_to_pwm(control_output[2]);
+        
+        // 打印当前迭代的信息
+        printf("迭代 %d:\n", iteration);
+        printf("  输入 PWM: [%d, %d, %d, %d]\n", pwm_channels[0], pwm_channels[1], pwm_channels[2], pwm_channels[3]);
+        printf("  目标角度: [%.2f, %.2f, %.2f]\n", target_angles[0], target_angles[1], target_angles[2]);
+        printf("  控制输出: [%.2f, %.2f, %.2f]\n", control_output[0], control_output[1], control_output[2]);
+        
+        // 记录调整前的油门值，用于检测是否被自动调整
+        static int prev_throttle = 0;
+        if (iteration == 0) {
+            prev_throttle = pwm_channels[3];
+        }
+        
+        // 显示油门信息，包括是否被自动调整
+        printf("  油门: %d (%.1f%%)", pwm_channels[3], (pwm_channels[3] - 1000) / 10.0f);
+        if (pwm_channels[3] &gt; prev_throttle) {
+            printf(" [自动增加 +%d]\n", pwm_channels[3] - prev_throttle);
+        } else if (pwm_channels[3] &lt; prev_throttle) {
+            printf(" [自动减少 -%d]\n", prev_throttle - pwm_channels[3]);
+        } else {
+            printf(" [未调整]\n");
+        }
+        prev_throttle = pwm_channels[3];
+        
+        printf("  输出 PWM: [%d, %d, %d]\n", output_pwm[0], output_pwm[1], output_pwm[2]);
+        
+        // 5. 检查PID是否接近稳定
+        if (is_pid_stable(control_output)) {
+            stable_count++;
+            printf("  状态: 稳定 (%d/5)\n", stable_count);
+            
+            // 如果连续5次稳定，则退出循环
+            if (stable_count &gt;= 5) {
+                printf("\n稳定飞行测试成功! PID控制器已达到稳定状态.\n");
+                break;
+            }
+        } else {
+            stable_count = 0;
+            printf("  状态: 不稳定\n");
+        }
+        
+        printf("\n");
+        
+        // 增加迭代计数器
+        iteration++;
+        
+        // 模拟延时0.02秒
+        // 在实际应用中，应该使用真实的延时函数
+        // delay_ms(20);
+        
+        // 为了防止无限循环，设置最大迭代次数
+        if (iteration &gt;= 100) {
+            printf("\n达到最大迭代次数，测试结束。PID控制器未能达到稳定状态.\n");
+            break;
+        }
+    }
+}
+</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2025-06-10 16:36:31</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

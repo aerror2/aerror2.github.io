@@ -1,0 +1,838 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>要快速找到 A, B, C 使得 A×B×Cx4/13 最接近 D</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>要快速找到 A, B, C 使得 A×B×Cx4/13 最接近 D</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/144826960" target="_blank">https://blog.csdn.net/aerror/article/details/144826960</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-12-30 15:31:22</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 399</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 5</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 6</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">算法</span>, <span class="tag">人工智能</span></div>
+    
+    <div class="article-description">A取值范围 为(64, 128, 256,1024),B为（1-255），C为（1-256）D的取值范围是[0,66846720]</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p id="main-toc"><strong>目录</strong></p>
+<p id="1.%E6%9C%80%E6%85%A2%E7%9A%84%E5%8A%9E%E6%B3%95%EF%BC%8C%E6%9C%80%E7%B2%BE%E7%A1%AE%E7%9A%84%EF%BC%8C-toc" style="margin-left:0px;"><a href="#1.%E6%9C%80%E6%85%A2%E7%9A%84%E5%8A%9E%E6%B3%95%EF%BC%8C%E6%9C%80%E7%B2%BE%E7%A1%AE%E7%9A%84%EF%BC%8C" rel="nofollow">1.最慢的办法，最精确的，</a></p>
+<p id="2.%20%E6%AF%94%E8%BE%83%E5%BF%AB%EF%BC%8C%E4%BD%86%E7%B2%BE%E7%A1%AE%E8%BE%83%E5%B7%AE%E7%9A%84%E5%8A%9E%E6%B3%95%E3%80%82-toc" style="margin-left:0px;"><a href="#2.%20%E6%AF%94%E8%BE%83%E5%BF%AB%EF%BC%8C%E4%BD%86%E7%B2%BE%E7%A1%AE%E8%BE%83%E5%B7%AE%E7%9A%84%E5%8A%9E%E6%B3%95%E3%80%82" rel="nofollow">2. 比较快，但精确较差的办法。</a></p>
+<p id="3.%E6%94%B9%E8%BF%9B%E7%B2%BE%E7%A1%AE%E5%BA%A6%E5%90%8E-toc" style="margin-left:0px;"><a href="#3.%E6%94%B9%E8%BF%9B%E7%B2%BE%E7%A1%AE%E5%BA%A6%E5%90%8E" rel="nofollow">3.改进精确度后</a></p>
+<p id="4.%E6%80%A7%E8%83%BD%E5%92%8C%E5%87%86%E7%A1%AE%E5%BA%A6%E6%B5%8B%E8%AF%95-toc" style="margin-left:0px;"><a href="#4.%E6%80%A7%E8%83%BD%E5%92%8C%E5%87%86%E7%A1%AE%E5%BA%A6%E6%B5%8B%E8%AF%95" rel="nofollow">4.性能和准确度测试</a></p>
+<p id="5.%E9%92%88%E5%AF%B9%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96%E9%80%9F%E5%BA%A6-toc" style="margin-left:0px;"><a href="#5.%E9%92%88%E5%AF%B9%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96%E9%80%9F%E5%BA%A6" rel="nofollow">5.针对应用场景进一步优化速度</a></p>
+<p style="margin-left:0px;"></p>
+<h2 style="margin-left:0px;">0. 取值范围</h2>
+<p>A取值范围 为(64, 128, 256,1024),</p>
+<p>B为（1-255），</p>
+<p>C为（1-256）</p>
+<p>D的取值范围是0-20568221</p>
+<p id="main-toc"></p>
+<p id="-toc" style="margin-left:200px;"></p>
+<hr id="hr-toc"/>
+<p></p>
+<p></p>
+<h2 id="1.%E6%9C%80%E6%85%A2%E7%9A%84%E5%8A%9E%E6%B3%95%EF%BC%8C%E6%9C%80%E7%B2%BE%E7%A1%AE%E7%9A%84%EF%BC%8C">1.最慢的办法，最精确的，</h2>
+<p>三层循环循环，每次要计算261120 ，比较慢， 如下：</p>
+<p></p>
+<pre><code class="language-cpp hljs">
+void find_best_abc_slow(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+         
+            for(uint32_t C=1; C&lt;=256;C++)
+            {
+                // 计算当前值和误差
+                uint32_t current_value = A * B * C *4/13;
+                uint32_t error = (current_value &gt; D) ? (current_value - D) : (D - current_value);
+
+                // 更新最优解
+                if (error &lt; *min_error) {
+                    *min_error = error;
+                    *best_A = A;
+                    *best_B = B;
+                    *best_C = C;
+                }
+            }
+        }
+    }
+}
+
+</code></pre>
+<h2 id="2.%20%E6%AF%94%E8%BE%83%E5%BF%AB%EF%BC%8C%E4%BD%86%E7%B2%BE%E7%A1%AE%E8%BE%83%E5%B7%AE%E7%9A%84%E5%8A%9E%E6%B3%95%E3%80%82">2. 比较快，但精确较差的办法。</h2>
+<p><img alt="" height="914" src="images/9/f33e6104900447ef83d0fc61eb2ac502.png" width="1200"/></p>
+<p>代码实现如下：</p>
+<pre><code class="language-cpp hljs">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;limits.h&gt;
+
+// 动态计算最优解
+void find_best_abc(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+    // 计算目标值 D'
+    uint32_t D_prime = (uint32_t)((uint64_t)D * 13 / 4);
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+            uint32_t product_AB = A * B;
+
+            // 剪枝：如果 A * B &gt; D_prime，停止当前循环
+            if (product_AB &gt; D_prime) break;
+
+            // 动态计算 C
+            uint32_t C = D_prime / product_AB; // 整数除法计算 C
+
+            // 检查 C 是否在合法范围
+            if (C &lt; 1 || C &gt; 256) continue;
+
+            // 计算当前值和误差
+            uint32_t current_value = A * B * C;
+            uint32_t error = (current_value &gt; D_prime) ? (current_value - D_prime) : (D_prime - current_value);
+
+            // 更新最优解
+            if (error &lt; *min_error) {
+                *min_error = error;
+                *best_A = A;
+                *best_B = B;
+                *best_C = C;
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="3.%E6%94%B9%E8%BF%9B%E7%B2%BE%E7%A1%AE%E5%BA%A6%E5%90%8E">3.改进精确度后</h2>
+<p>由于整法除法引起的精度问题，增加对于结果+-1的比较。</p>
+<pre><code class="language-cpp hljs">
+void find_best_abc_better(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+    // 计算目标值 D'
+    uint32_t D_prime = (uint32_t)((uint64_t)D * 13 / 4);
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+            uint32_t product_AB = A * B;
+
+            // 剪枝：如果 A * B &gt; D_prime，停止当前循环
+            if (product_AB &gt; D_prime) break;
+
+            // 动态计算 C
+            uint32_t C = D_prime / product_AB; // 初步估算的 C 值
+
+            // 检查 C 和其附近值（C-1, C, C+1）
+            for (int offset = -1; offset &lt;= 1; offset++) {
+                uint32_t adjusted_C = C + offset;
+
+                // 检查 C 是否在合法范围
+                if (adjusted_C &lt; 1 || adjusted_C &gt; 256) continue;
+
+                // 计算当前值和误差
+                uint64_t current_value = (uint64_t)A * B * adjusted_C;
+                uint32_t error = (current_value &gt; D_prime) ? (current_value - D_prime) : (D_prime - current_value);
+
+                // 更新最优解
+                if (error &lt; *min_error) {
+                    *min_error = error;
+                    *best_A = A;
+                    *best_B = B;
+                    *best_C = adjusted_C;
+                }
+            }
+        }
+    }
+}
+
+</code></pre>
+<h2 id="4.%E6%80%A7%E8%83%BD%E5%92%8C%E5%87%86%E7%A1%AE%E5%BA%A6%E6%B5%8B%E8%AF%95">4.性能和准确度测试</h2>
+<p>使用以下代码</p>
+<pre><code class="language-cpp hljs">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;time.h&gt;
+
+// 动态计算最优解
+void find_best_abc(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+    // 计算目标值 D'
+    uint32_t D_prime = (uint32_t)((uint64_t)D * 13 / 4);
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+            uint32_t product_AB = A * B;
+
+            // 剪枝：如果 A * B &gt; D_prime，停止当前循环
+            if (product_AB &gt; D_prime) break;
+
+            // 动态计算 C
+            uint32_t C = D_prime / product_AB; // 整数除法计算 C
+
+            // 检查 C 是否在合法范围
+            if (C &lt; 1 || C &gt; 256) continue;
+
+            // 计算当前值和误差
+            uint32_t current_value = A * B * C;
+            uint32_t error = (current_value &gt; D_prime) ? (current_value - D_prime) : (D_prime - current_value);
+
+            // 更新最优解
+            if (error &lt; *min_error) {
+                *min_error = error;
+                *best_A = A;
+                *best_B = B;
+                *best_C = C;
+            }
+        }
+    }
+
+    uint32_t fix  = (  *best_A) * (*best_B) *  ( *best_C ) * 4 /13;
+      *min_error   = (fix &gt; D) ? (fix - D) : (D - fix);
+
+}
+
+
+void find_best_abc_better(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+    // 计算目标值 D'
+    uint32_t D_prime = (uint32_t)((uint64_t)D * 13 / 4);
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+            uint32_t product_AB = A * B;
+
+            // 剪枝：如果 A * B &gt; D_prime，停止当前循环
+            if (product_AB &gt; D_prime) break;
+
+            // 动态计算 C
+            uint32_t C = D_prime / product_AB; // 初步估算的 C 值
+
+            // 检查 C 和其附近值（C-1, C, C+1）
+            for (int offset = -1; offset &lt;= 1; offset++) {
+                uint32_t adjusted_C = C + offset;
+
+                // 检查 C 是否在合法范围
+                if (adjusted_C &lt; 1 || adjusted_C &gt; 256) continue;
+
+                // 计算当前值和误差
+                uint64_t current_value = (uint64_t)A * B * adjusted_C;
+                uint32_t error = (current_value &gt; D_prime) ? (current_value - D_prime) : (D_prime - current_value);
+
+                // 更新最优解
+                if (error &lt; *min_error) {
+                    *min_error = error;
+                    *best_A = A;
+                    *best_B = B;
+                    *best_C = adjusted_C;
+                }
+            }
+        }
+    }
+
+    uint32_t fix  = (  *best_A) * (*best_B) *  ( *best_C ) * 4 /13;
+    *min_error   = (fix &gt; D) ? (fix - D) : (D - fix);
+}
+
+
+
+void find_best_abc_slow(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+         
+            for(uint32_t C=1; C&lt;=256;C++)
+            {
+                // 计算当前值和误差
+                uint32_t current_value = A * B * C *4/13;
+                uint32_t error = (current_value &gt; D) ? (current_value - D) : (D - current_value);
+
+                // 更新最优解
+                if (error &lt; *min_error) {
+                    *min_error = error;
+                    *best_A = A;
+                    *best_B = B;
+                    *best_C = C;
+                }
+            }
+        }
+    }
+}
+
+
+void find_best_abc_slow_better(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+    // 计算目标值 D'
+    uint32_t D_prime = (uint32_t)((uint64_t)D * 13 / 4);
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+            uint32_t product_AB = A * B;
+            if (product_AB &gt; D_prime) break; // 剪枝: 如果 A * B 已经大于 D'，跳过后续 B 值
+
+            // 枚举 C 的取值
+            for (uint32_t C = 1; C &lt;= 256; C++) {
+                uint32_t current_value = A * B * C * 4 / 13;
+                uint32_t error = (current_value &gt; D) ? (current_value - D) : (D - current_value);
+
+                // 更新最优解
+                if (error &lt; *min_error) {
+                    *min_error = error;
+                    *best_A = A;
+                    *best_B = B;
+                    *best_C = C;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+int main() {
+    
+    uint32_t best_A, best_B, best_C, min_error;
+
+    clock_t start_time = clock();
+
+    for(uint32_t D =1000;D&lt;100000;D+=100)
+    {
+        // 计算最优解
+        find_best_abc(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+
+    }
+
+    double elapsed_time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
+    printf("fast 运行时间: %.6f 秒\n", elapsed_time);
+
+
+    start_time = clock();
+    for(uint32_t D =1000;D&lt;100000;D+=100)
+    {
+        // 计算最优解
+        find_best_abc_better(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+
+    }
+    elapsed_time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
+    printf("better 运行时间: %.6f 秒\n", elapsed_time);
+
+
+    
+    start_time = clock();
+    for(uint32_t D =1000;D&lt;100000;D+=100)
+    {
+        // 计算最优解
+        find_best_abc_slow(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+
+    }
+    elapsed_time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
+    printf("slow 运行时间: %.6f 秒\n", elapsed_time);
+
+
+
+    for(uint32_t D =1000;D&lt;100000;D+=100)
+    {
+        // 计算最优解
+        find_best_abc(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+        printf("FAST   D=%d 最优解: A = %d, B = %d, C = %d, 误差 = %d\n", D, best_A, best_B, best_C, min_error);
+
+        find_best_abc_better(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+        printf("BETTER D=%d 最优解: A = %d, B = %d, C = %d, 误差 = %d\n",D, best_A, best_B, best_C, min_error);
+
+        find_best_abc_slow(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+        printf("SLOW   D=%d最优解: A = %d, B = %d, C = %d, 误差 = %d\n",D, best_A, best_B, best_C, min_error);
+
+
+    }
+
+    return 0;
+}
+
+</code></pre>
+<p>测试结果如下：</p>
+<p>最快的算法比最慢的快 198倍</p>
+<p></p>
+<pre><code class="language-cpp hljs">(base) $ gcc  findbest.c -o best
+(base) $ ./best 
+fast 运行时间: 0.004464 秒
+better 运行时间: 0.011828 秒
+slow 运行时间: 0.886645 秒
+FAST   D=1000 最优解: A = 64, B = 1, C = 50, 误差 = 16
+BETTER D=1000 最优解: A = 64, B = 1, C = 51, 误差 = 4
+SLOW   D=1000最优解: A = 64, B = 1, C = 51, 误差 = 4
+FAST   D=1100 最优解: A = 64, B = 1, C = 55, 误差 = 17
+BETTER D=1100 最优解: A = 64, B = 1, C = 56, 误差 = 2
+...
+FAST   D=99900 最优解: A = 64, B = 57, C = 89, 误差 = 1
+BETTER D=99900 最优解: A = 64, B = 57, C = 89, 误差 = 1
+SLOW   D=99900最优解: A = 64, B = 57, C = 89, 误差 = 1</code></pre>
+<h2 id="5.%E9%92%88%E5%AF%B9%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96%E9%80%9F%E5%BA%A6">5.针对应用场景进一步优化速度</h2>
+<p>因为对于一个数值会多次取值，为了进一步改进速度，增加了一个cache层，把计算结果cache起，在下次使用时，快速查到cache中有没有，有的时候立即返回，无需计算。 cache的总数量为10个。</p>
+<pre><code class="language-cpp hljs">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;limits.h&gt;
+
+#define CACHE_SIZE 10 // 缓存的最大数量
+
+// 定义缓存项结构
+typedef struct {
+    uint32_t D;          // 输入值
+    uint32_t best_A;     // 最优解 A
+    uint32_t best_B;     // 最优解 B
+    uint32_t best_C;     // 最优解 C
+    uint32_t min_error;  // 最小误差
+} CacheEntry;
+
+// 定义缓存
+CacheEntry cache[CACHE_SIZE];
+int cache_count = 0;
+
+// 在缓存中查找目标值 D 的结果
+int find_in_cache(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    for (int i = 0; i &lt; cache_count; i++) {
+        if (cache[i].D == D) {
+            *best_A = cache[i].best_A;
+            *best_B = cache[i].best_B;
+            *best_C = cache[i].best_C;
+            *min_error = cache[i].min_error;
+            return 1; // 找到缓存
+        }
+    }
+    return 0; // 未找到缓存
+}
+
+// 将计算结果存储到缓存中
+void add_to_cache(uint32_t D, uint32_t best_A, uint32_t best_B, uint32_t best_C, uint32_t min_error) {
+    if (cache_count &lt; CACHE_SIZE) {
+        // 如果缓存未满，直接添加
+        cache[cache_count++] = (CacheEntry){D, best_A, best_B, best_C, min_error};
+    } else {
+        // 如果缓存已满，采用简单的替换策略（FIFO）
+        for (int i = 1; i &lt; CACHE_SIZE; i++) {
+            cache[i - 1] = cache[i];
+        }
+        cache[CACHE_SIZE - 1] = (CacheEntry){D, best_A, best_B, best_C, min_error};
+    }
+}
+
+// 动态计算最优解
+void find_best_abc(uint32_t D, uint32_t *best_A, uint32_t *best_B, uint32_t *best_C, uint32_t *min_error) {
+    // 首先查找缓存
+    if (find_in_cache(D, best_A, best_B, best_C, min_error)) {
+        return; // 如果找到缓存，直接返回
+    }
+
+    uint32_t A_values[] = {64, 128, 256, 1024}; // A 的可能取值
+    *min_error = UINT32_MAX; // 初始化最小误差为最大值
+    *best_A = 0;
+    *best_B = 0;
+    *best_C = 0;
+
+    // 计算目标值 D'
+    uint32_t D_prime = (uint32_t)((uint64_t)D * 13 / 4);
+
+    // 枚举 A 的取值
+    for (int i = 0; i &lt; 4; i++) {
+        uint32_t A = A_values[i];
+
+        // 枚举 B 的取值
+        for (uint32_t B = 1; B &lt;= 255; B++) {
+            uint32_t product_AB = A * B;
+
+            // 剪枝：如果 A * B &gt; D_prime，停止当前循环
+            if (product_AB &gt; D_prime) break;
+
+            // 动态计算 C
+            uint32_t C = D_prime / product_AB; // 初步估算的 C 值
+
+            // 检查 C 和其附近值（C-1, C, C+1）
+            for (int offset = -1; offset &lt;= 1; offset++) {
+                uint32_t adjusted_C = C + offset;
+
+                // 检查 C 是否在合法范围
+                if (adjusted_C &lt; 1 || adjusted_C &gt; 256) continue;
+
+                // 计算当前值和误差
+                uint64_t current_value = (uint64_t)A * B * adjusted_C;
+                uint32_t error = (current_value &gt; D_prime) ? (current_value - D_prime) : (D_prime - current_value);
+
+                // 更新最优解
+                if (error &lt; *min_error) {
+                    *min_error = error;
+                    *best_A = A;
+                    *best_B = B;
+                    *best_C = adjusted_C;
+                }
+            }
+        }
+    }
+
+    // 将计算结果存储到缓存中
+    add_to_cache(D, *best_A, *best_B, *best_C, *min_error);
+}
+
+int main() {
+    uint32_t D; // 目标值
+    printf("请输入目标值 D (0 ~ 66846720): ");
+    scanf("%u", &amp;D);
+
+    if (D &gt; 66846720) {
+        printf("输入值 D 超出范围！\n");
+        return 1;
+    }
+
+    uint32_t best_A, best_B, best_C, min_error;
+
+    // 计算最优解
+    find_best_abc(D, &amp;best_A, &amp;best_B, &amp;best_C, &amp;min_error);
+
+    // 输出结果
+    printf("最优解: A = %u, B = %u, C = %u, 误差 = %u\n", best_A, best_B, best_C, min_error);
+
+    return 0;
+}
+</code></pre>
+<h6></h6>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2024-12-30 15:31:22</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

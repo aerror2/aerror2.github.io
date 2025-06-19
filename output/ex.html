@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于windows xp sp2和windows 2003 sp1的最大连接数限制分析</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>关于windows xp sp2和windows 2003 sp1的最大连接数限制分析</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/2467781" target="_blank">https://blog.csdn.net/aerror/article/details/2467781</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-05-21 23:13:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2044</div>
+        
+        
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">windows</span>, <span class="tag">xp</span>, <span class="tag">c</span></div>
+    
+    <div class="article-description">这个限制也是在tcpip.sys中限制的,windows xp sp2的版本代码如下,留意红色的代码:INIT:0005F660                         ; __stdcall InitTCPConn()INIT:0005F660                         _InitTCPConn@0  proc near               ; CO</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>这个限制也是在tcpip.sys中限制的,</p>
+<p>windows xp sp2的版本代码如下,留意红色的代码:</p>
+<p>INIT:0005F660                         ; __stdcall InitTCPConn()<br/>INIT:0005F660                         <a href="mailto:_InitTCPConn@0">_InitTCPConn@0</a>  proc near               ; CODE XREF: IPProcessConfiguration():loc_61DA9p<br/>INIT:0005F660 6A 00                                   push    0               ; Depth<br/>INIT:0005F662 68 54 43 50 43                          push    43504354h       ; Tag<br/>INIT:0005F667 6A 44                                   push    44h             ; Size<br/>INIT:0005F669 6A 00                                   push    0               ; Flags<br/>INIT:0005F66B 68 A0 12 02 00                          push    offset <a href="mailto:_TcpConnFree@4">_TcpConnFree@4</a> ; Free<br/>INIT:0005F670 68 4A AE 01 00                          push    offset <a href="mailto:_TcpConnAllocate@12">_TcpConnAllocate@12</a> ; Allocate<br/>INIT:0005F675 E8 AC 85 FC FF                          call    <a href="mailto:_PplCreatePool@24">_PplCreatePool@24</a> ; PplCreatePool(x,x,x,x,x,x)<br/>INIT:0005F67A 85 C0                                   test    eax, eax<br/>INIT:0005F67C A3 44 45 05 00                          mov     _TcpConnPool, eax<br/>INIT:0005F681 0F 84 67 37 00 00                       jz      nullsub_1<br/>INIT:0005F687 56                                      push    esi<br/>INIT:0005F688 8B 35 B0 F2 04 00                       mov     esi, ds:__imp__KeInitializeSpinLock@4 ; KeInitializeSpinLock(x)<br/>INIT:0005F68E 68 9C 3F 05 00                          push    offset _ConnTableLock ; SpinLock<br/>INIT:0005F693 FF D6                                   call    esi ; KeInitializeSpinLock(x) ; KeInitializeSpinLock(x)<br/>INIT:0005F695 68 20 44 05 00                          push    offset _ActiveOpenLock ; SpinLock<br/>INIT:0005F69A FF D6                                   call    esi ; KeInitializeSpinLock(x) ; KeInitializeSpinLock(x)<br/><font color="#993300">INIT:0005F69C C7 05 1C 01 05 00 0A 00+                mov     _ActiveOpenProgressThreshold, 0Ah &lt;-----就是这里呀.10连接限制</font><br/>INIT:0005F6A6 B8 20 40 05 00                          mov     eax, offset _ActiveOpenTable<br/>INIT:0005F6AB 5E                                      pop     esi<br/>INIT:0005F6AC<br/>INIT:0005F6AC                         loc_5F6AC:                              ; CODE XREF: InitTCPConn()+59j<br/>INIT:0005F6AC 89 40 04                                mov     [eax+4], eax<br/>INIT:0005F6AF 89 00                                   mov     [eax], eax<br/>INIT:0005F6B1 83 C0 08                                add     eax, 8<br/>INIT:0005F6B4 3D 20 44 05 00                          cmp     eax, offset _ActiveOpenLock<br/>INIT:0005F6B9 7C F1                                   jl      short loc_5F6AC<br/>INIT:0005F6BB 57                                      push    edi<br/>INIT:0005F6BC 68 2D C4 04 00                          push    offset <a href="mailto:_ActiveOpenLimitLogCallback@8">_ActiveOpenLimitLogCallback@8</a> ; ActiveOpenLimitLogCallback(x,x)<br/>INIT:0005F6C1 68 00 40 05 00                          push    offset _ActiveOpenLimitLogEvent<br/>INIT:0005F6C6 E8 61 B5 FB FF                          call    <a href="mailto:_CTEInitEvent@8">_CTEInitEvent@8</a> ; CTEInitEvent(x,x)<br/>INIT:0005F6CB A1 80 97 05 00                          mov     eax, _TCPTime<br/>INIT:0005F6D0 05 00 F0 FF FF                          add     eax, 0FFFFF000h<br/>INIT:0005F6D5 6A 14                                   push    14h<br/>INIT:0005F6D7 A3 24 01 05 00                          mov     _ActiveOpenLimitLogTick, eax<br/>INIT:0005F6DC 59                                      pop     ecx<br/>INIT:0005F6DD 33 C0                                   xor     eax, eax<br/>INIT:0005F6DF BF A0 3F 05 00                          mov     edi, offset _ConnectCancelArray<br/>INIT:0005F6E4 F3 AB                                   rep stosd<br/>INIT:0005F6E6 40                                      inc     eax<br/>INIT:0005F6E7 5F                                      pop     edi<br/>INIT:0005F6E8 C3                                      retn<br/>INIT:0005F6E8                         <a href="mailto:_InitTCPConn@0">_InitTCPConn@0</a>  endp ; sp = -8<br/></p>
+<p>win2003 sp1同样有这样的限制.</p>
+<p>IT:00095361                               ; __stdcall InitTCPConn()<br/>INIT:00095361                               <a href="mailto:_InitTCPConn@0">_InitTCPConn@0</a>  proc near               ; CODE XREF: InitAddr():loc_974D7p<br/>INIT:00095361 6A 00                                         push    0               ; Depth<br/>INIT:00095363 68 54 43 50 43                                push    43504354h       ; Tag<br/>INIT:00095368 6A 48                                         push    48h             ; Size<br/>INIT:0009536A 6A 00                                         push    0               ; Flags<br/>INIT:0009536C 68 67 E3 02 00                                push    offset <a href="mailto:_TcpConnFree@4">_TcpConnFree@4</a> ; Free<br/>INIT:00095371 68 B5 01 02 00                                push    offset <a href="mailto:_TcpConnAllocate@12">_TcpConnAllocate@12</a> ; Allocate<br/>INIT:00095376 E8 6A F2 F7 FF                                call    <a href="mailto:_PplCreatePool@24">_PplCreatePool@24</a> ; PplCreatePool(x,x,x,x,x,x)<br/>INIT:0009537B 85 C0                                         test    eax, eax<br/>INIT:0009537D A3 64 CC 08 00                                mov     _TcpConnPool, eax<br/>INIT:00095382 0F 84 3D 2F 00 00                             jz      locret_982C5<br/>INIT:00095388 56                                            push    esi<br/>INIT:00095389 8B 35 40 E2 05 00                             mov     esi, ds:__imp__KeInitializeSpinLock@4 ; KeInitializeSpinLock(x)<br/>INIT:0009538F 68 90 C6 08 00                                push    offset _ConnTableLock ; SpinLock<br/>INIT:00095394 FF D6                                         call    esi ; KeInitializeSpinLock(x) ; KeInitializeSpinLock(x)<br/>INIT:00095396 68 40 CB 08 00                                push    offset _ActiveOpenLock ; SpinLock<br/>INIT:0009539B FF D6                                         call    esi ; KeInitializeSpinLock(x) ; KeInitializeSpinLock(x)<br/><font color="#ff6600">INIT:0009539D C7 05 98 10 06 00 0A 00 00 00                 mov     _ActiveOpenProgressThreshold, 0Ah</font><br/>INIT:000953A7 B8 40 C7 08 00                                mov     eax, offset _ActiveOpenTable<br/>INIT:000953AC 5E                                            pop     esi<br/>INIT:000953AD<br/>INIT:000953AD                               loc_953AD:                              ; CODE XREF: InitTCPConn()+59j<br/>INIT:000953AD 89 40 04                                      mov     [eax+4], eax<br/>INIT:000953B0 89 00                                         mov     [eax], eax<br/>INIT:000953B2 83 C0 08                                      add     eax, 8<br/>INIT:000953B5 3D 40 CB 08 00                                cmp     eax, offset _ActiveOpenLock<br/>INIT:000953BA 7C F1                                         jl      short loc_953AD<br/>INIT:000953BC 57                                            push    edi<br/>INIT:000953BD 68 5E 55 05 00                                push    offset <a href="mailto:_ActiveOpenLimitLogCallback@8">_ActiveOpenLimitLogCallback@8</a> ; ActiveOpenLimitLogCallback(x,x)<br/>INIT:000953C2 68 20 C7 08 00                                push    offset _ActiveOpenLimitLogEvent<br/>INIT:000953C7 FF 15 20 E3 05 00                             call    ds:__imp__CTEInitEvent@8 ; CTEInitEvent(x,x)<br/>INIT:000953CD A1 E0 C5 08 00                                mov     eax, _TCPTime<br/>INIT:000953D2 05 00 F0 FF FF                                add     eax, 0FFFFF000h<br/>INIT:000953D7 6A 14                                         push    14h<br/>INIT:000953D9 A3 A0 10 06 00                                mov     _ActiveOpenLimitLogTick, eax<br/>INIT:000953DE 59                                            pop     ecx<br/>INIT:000953DF 33 C0                                         xor     eax, eax<br/>INIT:000953E1 BF C0 C6 08 00                                mov     edi, offset _ConnectCancelArray<br/>INIT:000953E6 F3 AB                                         rep stosd<br/>INIT:000953E8 40                                            inc     eax<br/>INIT:000953E9 5F                                            pop     edi<br/>INIT:000953EA C3                                            retn<br/>INIT:000953EA                               <a href="mailto:_InitTCPConn@0">_InitTCPConn@0</a>  endp</p>
+<p> </p>
+<p>要绕过这个限制很容易，改一下tcpip.sys就可以了，如</p>
+<p>把:</p>
+<p>  mov     _ActiveOpenProgressThreshold, 0Ah</p>
+<p>改成:</p>mov     _ActiveOpenProgressThreshold, 0x7FFFFFFFh 
+<p>就可以了。改了之后记得修正tcpip.sys的checksum</p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-05-21 23:13:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

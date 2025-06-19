@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J2ME手机游戏贪吃蛇开发Step By Step</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>J2ME手机游戏贪吃蛇开发Step By Step</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/2958019" target="_blank">https://blog.csdn.net/aerror/article/details/2958019</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-09-21 17:15:00</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2309</div>
+        
+        
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">j2me</span>, <span class="tag">手机游戏</span>, <span class="tag">motorola</span>, <span class="tag">integer</span>, <span class="tag">null</span>, <span class="tag">j2se</span></div>
+    
+    <div class="article-description">呵呵，昨天晚上开始学习手机游戏编写，现在现学现卖，希望可以帮到一些初手.:). Step1.安装J2se SDK, j2sdk-1_4_2_08-windows-i586-p.exe/到C:/j2sdk1.4.2_08目录 Step2.我的电脑-&gt;属性-&gt;高级-&gt;环境变量,设置PATH路径加上: C:/j2sdk1.4.2_08/bin; Step3.安装Motorola J2ME SDK f</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>呵呵，昨天晚上开始学习手机游戏编写，现在现学现卖，希望可以帮到一些初手.:).</p>
+<p><br/> Step1.安装J2se SDK, j2sdk-1_4_2_08-windows-i586-p.exe/到C:/j2sdk1.4.2_08目录<br/> Step2.我的电脑-&gt;属性-&gt;高级-&gt;环境变量,设置PATH路径加上: C:/j2sdk1.4.2_08/bin;<br/> Step3.安装Motorola J2ME SDK for Linux OS Products,Mot_Linux_5.4.2.exe到目录C:/Motorola/5.4.2/<br/> Step4.在D:/创建以下目录结构D:/com/snake<br/> Step5.创建目录结构D:/com/snake/res/audio,复制C:/WINDOWS/Media/recycle.wav到D:/com/snake/res/audio目录下.<br/> Step6.创建并编写D:/com/snake/snake.jad,内容如下:<br/> <br/><br/></p>
+<div class="highlighter">
+<ol class="highlighter-j"><li>   MIDlet-<span class="number">1</span>: SnakeGame, ,com.snake.SnakeGame</li><li class="alt">   MIDlet-Jar-Size: <span class="number">9512</span></li><li>   MIDlet-Jar-URL: snake.jar</li><li class="alt">   MIDlet-Name: SnakeGame</li><li>   MIDlet-Vendor: yourname<span class="annotation">@21cn</span>.com</li><li class="alt">   MIDlet-Version: <span class="number">1.0</span></li><li>   </li></ol>
+</div>
+<p>Step7.创建并编写D:/com/snake/manifest.mf,内容如下:<br/></p>
+<div class="highlighter">
+<ol class="highlighter-j"><li>Manifest-Version: <span class="number">1.0</span></li><li class="alt">MIDlet-Name: Snake</li><li>MIDlet-<span class="number">1</span>: SnakeGame, ,com.snake.SnakeGame</li><li class="alt">MIDlet-Version: <span class="number">1.0</span></li><li>MIDlet-Vendor: yourname<span class="annotation">@21cn</span>.com</li><li class="alt">MicroEdition-Configuration: CLDC-<span class="number">1.0</span></li><li>MicroEdition-Profile: MIDP-<span class="number">1.0</span></li><li class="alt">MIDlet-Description: Snake Game For Mobile Phone</li></ol>
+</div>
+<p>Step8.创建并编写D:/makeSnakeEM3.bat,内容如下:<br/></p>
+<div class="highlighter">
+<ol class="highlighter-c"><li>@rem ***************************************************************</li><li class="alt">@rem ** Copyright (c) 2002-2003 Motorola, Inc. All rights reserved.</li><li>@rem **</li><li class="alt">@rem ** makeOneEM1.bat</li><li>@rem **</li><li class="alt">@rem **     This script compiles one of the demo MIDlets.</li><li>@rem **</li><li class="alt">@rem ** Command Line Parameters:</li><li>@rem **   - Location of .JAVA files to compile</li><li class="alt">@rem **   - Location of Emulator</li><li>@rem **</li><li class="alt">@rem **</li><li>@rem ** Assumptions:</li><li class="alt">@rem **   - This script <span class="keyword">is</span> invoked from the demo/scripts directory</li><li>@rem **   - Demo midlets are <span class="keyword">in</span> the package com</li><li class="alt">@rem **   - The directory demo/com exists.</li><li>@rem **   - Default behavior <span class="keyword">is</span> to compile bounce <span class="keyword">for</span> the Monty emulator</li><li class="alt">@rem **   - Java 1.2 compiler can be invoked:</li><li>@rem **     + javac.exe <span class="keyword">is</span> on the PATH</li><li class="alt">@rem **</li><li>@rem ** Results:</li><li class="alt">@rem **   - One of the potential targets will be created <span class="keyword">in</span> it's directory</li><li>@rem **   - Each output <span class="keyword">class</span> will be written to a .JAR file</li><li class="alt">@rem **     </li><li>@rem **</li><li class="alt">@rem ***************************************************************</li><li>@echo off</li><li class="alt"></li><li><span class="keyword">set</span> MOTOSDKPATH=C:/Motorola/5.4.2/</li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  Check to see <span class="keyword">if</span> a command line argument was specified</li><li>@rem **  First argument must be the target MIDlet name</li><li class="alt">@rem ***************************************************************</li><li></li><li class="alt">del  com/snake/*.<span class="keyword">class</span></li><li>@<span class="keyword">if</span> NOT <span class="string">"%1"</span>==<span class="string">""</span> <span class="keyword">set</span> COMPILETARG=%1</li><li class="alt">@<span class="keyword">if</span>     <span class="string">"%1"</span>==<span class="string">""</span> <span class="keyword">set</span> COMPILETARG=snake</li><li></li><li class="alt">@rem ***************************************************************</li><li>@rem **  Set the COMPILECLASS variable to point to the midlet dir</li><li class="alt">@rem **  then append the name of the target MIDlet</li><li>@rem ***************************************************************</li><li class="alt"><span class="keyword">set</span> COMPILECLASS=com/%COMPILETARG%</li><li></li><li class="alt">@rem ***************************************************************</li><li>@rem **  Check to see <span class="keyword">if</span> a command line argument was specified</li><li class="alt">@rem **  Second argument must be the target Emulator name</li><li>@rem ***************************************************************</li><li class="alt">@<span class="keyword">if</span> NOT <span class="string">"%2"</span>==<span class="string">""</span> <span class="keyword">set</span> TARGETEMUL=%2</li><li>@<span class="keyword">if</span>     <span class="string">"%2"</span>==<span class="string">""</span> <span class="keyword">set</span> TARGETEMUL=EmulatorM.3</li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  Next 3 lines can be un-REMarked to help with debugging </li><li>@rem **  a problematic build.</li><li class="alt">@rem ***************************************************************</li><li>@rem <span class="keyword">set</span> COMPILETARG</li><li class="alt">@rem <span class="keyword">set</span> COMPILECLASS</li><li>@rem <span class="keyword">set</span> TARGETEMUL</li><li class="alt">@echo Compiling ...</li><li>@echo off</li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  Change to the demo root dir</li><li>@rem **  </li><li class="alt">@rem ***************************************************************</li><li></li><li class="alt">@rem ***************************************************************</li><li>@rem **  Compile <span class="keyword">using</span> the specified emulator and target MIDlet</li><li class="alt">@rem **  source files</li><li>@rem ***************************************************************</li><li class="alt">@echo javac  -target 1.1 -O -classpath %MOTOSDKPATH%/%TARGETEMUL%/lib/midp.zip %COMPILECLASS%/*.java</li><li>javac  -target 1.1 -O -classpath %MOTOSDKPATH%/%TARGETEMUL%/lib/midp.zip %COMPILECLASS%/*.java</li><li class="alt"></li><li></li><li class="alt">@echo Creating JAR ...</li><li>@echo off</li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  Now create the .JAR file <span class="keyword">in</span> the directory with the sources</li><li>@rem **  include the manifest, stored <span class="keyword">in</span> meta-inf</li><li class="alt">@rem ***************************************************************</li><li>@echo off</li><li class="alt"></li><li>jar cmf %COMPILECLASS%/manifest.mf %COMPILECLASS%/%COMPILETARG%.jar %COMPILECLASS%/*.<span class="keyword">class</span> </li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  See <span class="keyword">if</span> the target midlet has any resources that will need</li><li>@rem **  to be included <span class="keyword">in</span> the .JAR</li><li class="alt">@rem ***************************************************************</li><li>echo jar uf ../%COMPILETARG%.jar *</li><li class="alt">cd %COMPILECLASS%/res</li><li>jar uf ../%COMPILETARG%.jar *</li><li class="alt">cd  ../../../</li><li></li><li class="alt">:JARCOMPLETE</li><li></li><li class="alt">@echo Preverifying ...</li><li>@echo off</li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  Use the preverifier that <span class="keyword">is</span> supplied with the emulator</li><li>@rem **  </li><li class="alt">@rem ***************************************************************</li><li>@echo off</li><li class="alt"></li><li>%MOTOSDKPATH%/%TARGETEMUL%/bin/preverify -classpath %MOTOSDKPATH%/%TARGETEMUL%/lib;%MOTOSDKPATH%/%TARGETEMUL%/bin;%MOTOSDKPATH%/%TARGETEMUL%/lib/midp.zip -d %COMPILECLASS% %COMPILECLASS%/%COMPILETARG%.jar</li><li class="alt"></li><li>@rem ***************************************************************</li><li class="alt">@rem **  Extract the preverified classes from the .JAR file. These</li><li>@rem **  will be runnable <span class="keyword">if</span> there are no resources involved.</li><li class="alt">@rem ***************************************************************</li><li>@echo off</li><li class="alt"></li><li>@echo Restoring preverified classes...</li><li class="alt">jar xf %COMPILECLASS%/%COMPILETARG%.jar %COMPILECLASS%/*.<span class="keyword">class</span></li><li></li><li class="alt"></li></ol>
+</div>
+<p>Step8.创建并编写D:/com/snake/SnakeGame.java,内容如下:<br/></p>
+<div class="highlighter">
+<ol class="highlighter-c"><li><span class="comment">/*</span></li><li class="alt"><span class="comment">*  SnakeGame.java</span></li><li><span class="comment">*</span></li><li class="alt"><span class="comment">*  2008-9-21 17:32</span></li><li><span class="comment">*  </span></li><li class="alt"><span class="comment">*  This notice does not imply publication.</span></li><li><span class="comment">*/</span></li><li class="alt"></li><li>package com.snake;</li><li class="alt"></li><li>import java.util.Vector;</li><li class="alt">import java.util.Random;</li><li>import javax.microedition.lcdui.*;</li><li class="alt">import javax.microedition.midlet.*;</li><li>import javax.microedition.media.Player;</li><li class="alt">import javax.microedition.media.Manager;</li><li>import javax.microedition.media.MediaException;</li><li class="alt">import java.io.IOException;</li><li>import java.io.InputStream;</li><li class="alt"><span class="comment">/**</span></li><li><span class="comment">*</span></li><li class="alt"><span class="comment">* @see MIDlet</span></li><li><span class="comment">*/</span></li><li class="alt"><span class="keyword">public</span> <span class="keyword">class</span> SnakeGame extends MIDlet  implements CommandListener{<!-- --></li><li></li><li class="alt"></li><li></li><li class="alt"></li><li>    <span class="comment">/**</span></li><li class="alt"><span class="comment">     * The game speed (in milliseconds)</span></li><li><span class="comment">     */</span></li><li class="alt">    <span class="keyword">private</span> final <span class="keyword">int</span> GAME_SPEED = 200;</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * The main game screen</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">private</span> GameFrame mainFrame;</li><li class="alt"></li><li>    <span class="comment">/**</span></li><li class="alt"><span class="comment">     * The title screen</span></li><li><span class="comment">     */</span></li><li class="alt">    <span class="keyword">private</span> Form titleScreen;</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * The results screen</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">private</span> Form statsScreen;</li><li class="alt"></li><li>    <span class="comment">/**</span></li><li class="alt"><span class="comment">     * The Snake Movie Clip object for this game</span></li><li><span class="comment">     */</span></li><li class="alt">    <span class="keyword">private</span> SnakeMc mySnakeMc;</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * True if game has not started or player lost</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">private</span> boolean gameOver = <span class="keyword">true</span>;</li><li class="alt"></li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * Reference to Display</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">private</span> Display myDisplay;</li><li class="alt">    </li><li></li><li class="alt">    </li><li>    </li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * The repaint lock for this Bounce MIDlet</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">public</span> Object repaintLock = <span class="keyword">new</span> Object();</li><li class="alt">    <span class="keyword">public</span> Object playSoundLock  = <span class="keyword">new</span>  Object();</li><li>    <span class="keyword">private</span> <span class="keyword">int</span>   playSound=0;</li><li class="alt">    <span class="keyword">private</span> SoundPlayer soundPlayer=<span class="keyword">null</span>;</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * How many games have been played</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">private</span> <span class="keyword">int</span> numGames=0;</li><li class="alt"></li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * The number of milliseconds the user has been playing this game</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">private</span> <span class="keyword">long</span> elapsedTime;</li><li class="alt">    </li><li>    <span class="keyword">public</span> SnakeGame() {<!-- --></li><li class="alt"></li><li>        myDisplay = Display.getDisplay(<span class="keyword">this</span>);</li><li class="alt">        </li><li>        <span class="comment">/*</span></li><li class="alt"><span class="comment">         * Create main game screen</span></li><li><span class="comment">         */</span></li><li class="alt">        mainFrame = <span class="keyword">new</span> GameFrame();</li><li></li><li class="alt">        <span class="comment">/*</span></li><li><span class="comment">         * Create title screen</span></li><li class="alt"><span class="comment">         */</span></li><li>        titleScreen = <span class="keyword">new</span> Form(<span class="string">"贪吃蛇"</span>);</li><li class="alt">        </li><li>        titleScreen.append(<span class="keyword">new</span> StringItem(<span class="keyword">null</span>,</li><li class="alt">                <span class="string">"很经典的游戏哦，希望你喜欢。 /n联系作者: dany21cn@21cn.com"</span>));</li><li>        titleScreen.setCommandListener(<span class="keyword">this</span>);</li><li class="alt">        titleScreen.addCommand(<span class="keyword">new</span> Command(<span class="string">"开始"</span>, Command.OK, 1));</li><li></li><li class="alt">        <span class="comment">/*</span></li><li><span class="comment">         * Create results screen</span></li><li class="alt"><span class="comment">         */</span></li><li>        statsScreen = <span class="keyword">new</span> Form(<span class="string">"游戏统计"</span>);</li><li class="alt">        statsScreen.setCommandListener(SnakeGame.<span class="keyword">this</span>);</li><li>        statsScreen.addCommand(<span class="keyword">new</span> Command(<span class="string">"再玩一局?"</span>, Command.OK, 1));</li><li class="alt">    }</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * Begin the application, show its frame</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">protected</span> <span class="keyword">void</span> startApp() {<!-- --></li><li class="alt"></li><li>        myDisplay.setCurrent(titleScreen);</li><li class="alt">    }</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * Application is being terminated, kill threads</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">protected</span> <span class="keyword">void</span> pauseApp() {<!-- --></li><li class="alt"></li><li>        gameOver = <span class="keyword">true</span>;</li><li class="alt">        mySnakeMc = <span class="keyword">null</span>;</li><li>      </li><li class="alt">    }</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * Clean up application</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">protected</span> <span class="keyword">void</span> destroyApp(boolean unconditional) {<!-- --></li><li class="alt"></li><li>        gameOver = <span class="keyword">true</span>;</li><li class="alt">    }</li><li></li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * Start the game</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">public</span> <span class="keyword">void</span> commandAction(Command c, Displayable d) {<!-- --></li><li class="alt"></li><li>        <span class="comment">/*</span></li><li class="alt"><span class="comment">         * Create Sound Play And Snake Game  threads</span></li><li><span class="comment">         */</span></li><li class="alt">        mySnakeMc = <span class="keyword">new</span> SnakeMc();</li><li>        soundPlayer = <span class="keyword">new</span>  SoundPlayer();</li><li class="alt"></li><li>        </li><li class="alt">        <span class="comment">/*</span></li><li><span class="comment">         * Get the starting time</span></li><li class="alt"><span class="comment">         */</span></li><li>        elapsedTime = System.currentTimeMillis();</li><li class="alt">        </li><li>        <span class="comment">/*</span></li><li class="alt"><span class="comment">         * Set the initial Snake positions</span></li><li><span class="comment">         */</span></li><li class="alt">        mySnakeMc.setUp();</li><li></li><li class="alt"></li><li>        <span class="comment">/*</span></li><li class="alt"><span class="comment">         * Set the screen</span></li><li><span class="comment">         */</span></li><li class="alt">        myDisplay.setCurrent(mainFrame);</li><li></li><li class="alt">        <span class="comment">/*</span></li><li><span class="comment">         * Start the thread</span></li><li class="alt"><span class="comment">         */</span></li><li>        gameOver = <span class="keyword">false</span>;</li><li class="alt">        playSound =0;</li><li>      </li><li class="alt">        soundPlayer.start();</li><li>        mySnakeMc.start();</li><li class="alt">        </li><li>        </li><li class="alt">    }</li><li></li><li class="alt">    <span class="keyword">public</span> <span class="keyword">class</span> SnakeBlock</li><li> {<!-- --></li><li class="alt">  <span class="keyword">public</span> <span class="keyword">int</span> r=2;</li><li>  <span class="keyword">public</span> <span class="keyword">int</span> x=0;</li><li class="alt">  <span class="keyword">public</span> <span class="keyword">int</span> y=0;</li><li>  <span class="keyword">public</span> <span class="keyword">int</span> xx=0;</li><li class="alt">  <span class="keyword">public</span> <span class="keyword">int</span> yy=0;</li><li>  <span class="keyword">public</span> SnakeBlock()</li><li class="alt">  {<!-- --></li><li>   super();</li><li class="alt">  }</li><li>  </li><li class="alt"> }</li><li>    </li><li class="alt">    <span class="comment">/**</span></li><li><span class="comment">     * The main Screen for this game</span></li><li class="alt"><span class="comment">     */</span></li><li>    <span class="keyword">class</span> GameFrame extends Canvas {<!-- --></li><li class="alt"></li><li>     Font font = Font.getFont(Font.FACE_MONOSPACE,</li><li class="alt">                   Font.STYLE_PLAIN, Font.SIZE_SMALL);</li><li>      </li><li class="alt">      <span class="keyword">int</span> gameAction = 0;</li><li>        <span class="comment">/**</span></li><li class="alt"><span class="comment">         * Canvas receives all key events</span></li><li><span class="comment">         */</span></li><li class="alt">        <span class="keyword">public</span> <span class="keyword">void</span> keyPressed(<span class="keyword">int</span> keyCode) {<!-- --></li><li></li><li class="alt">           </li><li>         synchronized (SnakeGame.<span class="keyword">this</span>.repaintLock){<!-- --></li><li class="alt">             <span class="keyword">try</span> {<!-- --></li><li>                 gameAction = getGameAction(keyCode);</li><li class="alt">             } <span class="keyword">catch</span> (Exception e) {<!-- --></li><li>             }</li><li class="alt">   </li><li>             <span class="keyword">if</span> (gameAction == LEFT) {<!-- --></li><li class="alt">                 </li><li>              mySnakeMc.kbq.addElement(<span class="keyword">new</span> Integer(0));</li><li class="alt">             } <span class="keyword">else</span> <span class="keyword">if</span> (gameAction == RIGHT) {<!-- --></li><li>              mySnakeMc.kbq.addElement(<span class="keyword">new</span> Integer(2));</li><li class="alt">             }</li><li>             <span class="keyword">else</span> <span class="keyword">if</span>(gameAction == UP)</li><li class="alt">             {<!-- --></li><li>              mySnakeMc.kbq.addElement(<span class="keyword">new</span> Integer(1));</li><li class="alt">             }</li><li>             <span class="keyword">else</span> <span class="keyword">if</span>(gameAction == DOWN)</li><li class="alt">             {<!-- --></li><li>              mySnakeMc.kbq.addElement(<span class="keyword">new</span> Integer(3));</li><li class="alt">             }</li><li>         }</li><li class="alt">            </li><li>            </li><li class="alt">            <span class="keyword">return</span>;</li><li>        }</li><li class="alt"></li><li>        <span class="comment">/**</span></li><li class="alt"><span class="comment">         * Clear the game screen</span></li><li><span class="comment">         */</span></li><li class="alt">        <span class="keyword">private</span> <span class="keyword">void</span> clear(Graphics g) {<!-- --></li><li></li><li class="alt">            g.setColor(0xFFFFFF);</li><li>            g.fillRect(0, 0, getWidth(), getHeight());</li><li class="alt">        }</li><li></li><li class="alt">        <span class="comment">/**</span></li><li><span class="comment">         * Paint the game screen</span></li><li class="alt"><span class="comment">         */</span></li><li>        <span class="keyword">public</span> <span class="keyword">void</span> paint(Graphics g) {<!-- --></li><li class="alt"></li><li>            g.setFont(font);</li><li class="alt">            synchronized (g) {<!-- --></li><li></li><li class="alt">                <span class="comment">/*</span></li><li><span class="comment">                 * Clear the screen</span></li><li class="alt"><span class="comment">                 */</span></li><li>                clear(g);</li><li class="alt">              </li><li>                <span class="comment">/*</span></li><li class="alt"><span class="comment">                 * Paint the Snake and Food</span></li><li><span class="comment">                 */</span></li><li class="alt">                synchronized (SnakeGame.<span class="keyword">this</span>.repaintLock)</li><li>                {<!-- --></li><li class="alt">                 </li><li>                 g.setColor(0x2000ff);</li><li class="alt">                 <span class="keyword">for</span>(<span class="keyword">int</span> i=0;i&lt;mySnakeMc.food.size();i++)</li><li>                 {<!-- --></li><li class="alt">                  SnakeBlock s = (SnakeBlock)mySnakeMc.food.elementAt(i);</li><li>                    g.fillRect(s.x, s.y, mySnakeMc.blocksize-1,</li><li class="alt">                      mySnakeMc.blocksize-1);</li><li>                 }</li><li class="alt">                 </li><li>                 g.setColor(0x007fff); </li><li class="alt">                 <span class="keyword">for</span>(<span class="keyword">int</span> i=0;i&lt;mySnakeMc.sa.size();i++)</li><li>                 {<!-- --></li><li class="alt">                  SnakeBlock s = (SnakeBlock)mySnakeMc.sa.elementAt(i);</li><li>                     g.fillRect(s.x, s.y, mySnakeMc.blocksize-1,</li><li class="alt">                      mySnakeMc.blocksize-1);</li><li>                 }</li><li class="alt">                }</li><li>                </li><li class="alt">                </li><li>                g.setColor(0xff6000);</li><li class="alt">                </li><li>                <span class="comment">/*</span></li><li class="alt"><span class="comment">                 * Draw a line in the top of the canvas</span></li><li><span class="comment">                 */</span></li><li class="alt">               String szInfo = <span class="string">"1P[DANY] "</span>+</li><li>                    <span class="string">"时间: "</span>+mySnakeMc.tickcount*GAME_SPEED/1000+</li><li class="alt">                    <span class="string">" 得分: "</span>+mySnakeMc.scores;</li><li>                g.drawString(szInfo, 0, 0,</li><li class="alt">                        Graphics.LEFT | Graphics.TOP);</li><li>               </li><li class="alt">                </li><li>            }</li><li class="alt">        }</li><li>    }</li><li class="alt"></li><li>    <span class="comment">/**</span></li><li class="alt"><span class="comment">     * The ball thread</span></li><li><span class="comment">     */</span></li><li class="alt">    <span class="keyword">class</span> SnakeMc extends Thread {<!-- --></li><li>     <span class="keyword">public</span> <span class="keyword">int</span>  StartX  = 0;</li><li class="alt">     <span class="keyword">public</span> <span class="keyword">int</span>  StartY  =  0;</li><li>     <span class="keyword">public</span> <span class="keyword">int</span> blocksize  =  8;</li><li class="alt">     <span class="keyword">public</span> <span class="keyword">int</span>  blWidth    =  64;</li><li>     <span class="keyword">public</span> <span class="keyword">int</span>  blHeight    =  32;</li><li class="alt">     <span class="keyword">public</span> <span class="keyword">int</span>   numFood   =  5;</li><li>     <span class="keyword">public</span> TextField  t   =  <span class="keyword">null</span>;</li><li class="alt">     <span class="keyword">public</span> TextField  t2    =  <span class="keyword">null</span>;</li><li>    </li><li class="alt">     <span class="keyword">public</span> SnakeBlock  ss   =  <span class="keyword">null</span>;</li><li>     <span class="keyword">public</span> Vector sa     =  <span class="keyword">new</span> Vector();</li><li class="alt">     <span class="keyword">public</span> Vector kbq    =  <span class="keyword">new</span> Vector();</li><li>     <span class="keyword">public</span> Vector rr    =  <span class="keyword">new</span> Vector();</li><li class="alt">     <span class="keyword">public</span> Vector food  =   <span class="keyword">new</span> Vector();</li><li>     <span class="keyword">public</span> <span class="keyword">int</span>  scores    =  0;</li><li class="alt">     <span class="keyword">public</span> <span class="keyword">int</span>  bonus     =  0;</li><li>     <span class="keyword">public</span> <span class="keyword">long</span>  tickcount   = 0;</li><li class="alt">      </li><li>        <span class="comment">/**</span></li><li class="alt"><span class="comment">         * Create a Snake Game</span></li><li><span class="comment">         */</span></li><li class="alt">        <span class="keyword">public</span> SnakeMc() {<!-- --></li><li></li><li class="alt">            setUp();</li><li>        }</li><li class="alt"></li><li>        <span class="comment">/**</span></li><li class="alt"><span class="comment">         * Set starting position</span></li><li><span class="comment">         */</span></li><li class="alt">        <span class="keyword">void</span> setUp() {<!-- --></li><li>         blWidth  = mainFrame.getWidth()/blocksize;</li><li class="alt">         blHeight = mainFrame.getHeight()/blocksize;</li><li>        }</li><li class="alt"></li><li>  <span class="keyword">public</span> SnakeBlock  CreateSprite(<span class="keyword">int</span> w)</li><li class="alt">  {<!-- --></li><li>   SnakeBlock  s   =  <span class="keyword">new</span> SnakeBlock();</li><li class="alt">   <span class="keyword">return</span> s;</li><li>  }</li><li class="alt">  </li><li>  <span class="keyword">public</span> SnakeBlock  AppendSprite(<span class="keyword">int</span> w)</li><li class="alt">  {<!-- --></li><li>   SnakeBlock  s   =  CreateSprite(w);</li><li class="alt">   sa.addElement(s);</li><li>   <span class="keyword">if</span>(sa.size()&gt;1)</li><li class="alt">   {<!-- --></li><li>    SnakeBlock  pres = (SnakeBlock)sa.elementAt(sa.size()-2);</li><li class="alt">    s.x    =    pres.x;</li><li>    s.y    =    pres.y;</li><li class="alt">    s.xx    =   pres.xx;</li><li>    s.yy    =   pres.yy;</li><li class="alt">    s.r    =    (pres.r+2)%4;</li><li>    UpdateSnakePos(s);</li><li class="alt">    s.r    =    pres.r;</li><li>   }</li><li class="alt">   <span class="keyword">else</span></li><li>   {<!-- --></li><li class="alt">    s.x  =    StartX;</li><li>    s.y  =    StartY;</li><li class="alt">    s.xx    =    s.x/blocksize;</li><li>    s.yy    =    s.y/blocksize;</li><li class="alt">    </li><li>   }</li><li class="alt">   <span class="keyword">return</span> s;</li><li>  }</li><li class="alt">  </li><li>  <span class="keyword">public</span> <span class="keyword">void</span>   UpdateSnakePos(SnakeBlock s)</li><li class="alt">  {<!-- --></li><li>  </li><li class="alt">   {<!-- --></li><li>    <span class="keyword">switch</span>(s.r)</li><li class="alt">          {<!-- --></li><li>          <span class="keyword">case</span> 0:</li><li class="alt">           s.x -= blocksize;</li><li>           s.xx--;</li><li class="alt">           <span class="keyword">break</span>;</li><li>          <span class="keyword">case</span> 1:</li><li class="alt">           s.y -= blocksize;</li><li>           s.yy--;</li><li class="alt">           <span class="keyword">break</span>;</li><li>          <span class="keyword">case</span> 2:</li><li class="alt">           s.x += blocksize;</li><li>           s.xx++;</li><li class="alt">           <span class="keyword">break</span>;</li><li>          <span class="keyword">case</span> 3:</li><li class="alt">           s.y += blocksize;</li><li>           s.yy++;</li><li class="alt">           <span class="keyword">break</span>;</li><li>          }</li><li class="alt">         </li><li>   }</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> <span class="keyword">void</span>   upateSnakesPos()</li><li>  {<!-- --></li><li class="alt">    <span class="keyword">int</span>  i   = 0;</li><li>    <span class="keyword">for</span>(i = 0;i&lt;sa.size();i++)</li><li class="alt">    {<!-- --></li><li>     SnakeBlock  s   = (SnakeBlock)sa.elementAt(i);</li><li class="alt">     <span class="keyword">for</span>(<span class="keyword">int</span>  j  = 0;j&lt;rr.size();j++)</li><li>     {<!-- --></li><li class="alt">      <span class="keyword">int</span> vtmp =((Integer)rr.elementAt(j)).intValue();</li><li>      <span class="keyword">if</span>(i ==   (vtmp&gt;&gt;16))</li><li class="alt">      {<!-- --></li><li>       s.r    =  vtmp%4;</li><li class="alt">      }</li><li>     </li><li class="alt">     }</li><li>     UpdateSnakePos(s);</li><li class="alt">    }</li><li>    </li><li class="alt">    Vector  tt     =    <span class="keyword">new</span> Vector();</li><li>    <span class="keyword">for</span>(i = 0;i&lt;rr.size();i++)</li><li class="alt">    {<!-- --></li><li>     <span class="keyword">int</span> vi =((Integer)rr.elementAt(i)).intValue();</li><li class="alt">     <span class="keyword">int</span>  tmp     =    (vi&gt;&gt;16);</li><li>     <span class="keyword">if</span>(tmp &lt;sa.size()+10)</li><li class="alt">     {<!-- --></li><li>     </li><li class="alt">      tt.addElement(<span class="keyword">new</span> Integer(((tmp+1)&lt;&lt;16)|(vi&amp;0xffff)));</li><li>     }</li><li class="alt">    }</li><li>    rr    =    <span class="keyword">null</span>;</li><li class="alt">    rr    =    tt;</li><li>  }</li><li class="alt">  </li><li>  </li><li class="alt">  <span class="keyword">public</span> <span class="keyword">void</span>  startGame()</li><li>  {<!-- --></li><li class="alt">   tickcount++;</li><li>   <span class="keyword">if</span>(ss==<span class="keyword">null</span>)</li><li class="alt">   {<!-- --></li><li>    tickcount++;</li><li class="alt">    cleanup();</li><li>    ss = AppendSprite(0);</li><li class="alt">    genFood(); </li><li>   }</li><li class="alt">  }</li><li>  </li><li class="alt"></li><li>  </li><li class="alt">  <span class="keyword">public</span> boolean   IntersectSnake(<span class="keyword">int</span> xx, <span class="keyword">int</span> yy)</li><li>  {<!-- --></li><li class="alt">   <span class="keyword">int</span>  i  = 0;</li><li>   <span class="keyword">for</span>(i = 0;i&lt;sa.size();i++)</li><li class="alt">   {<!-- --></li><li>    SnakeBlock s = (SnakeBlock)sa.elementAt(i);</li><li class="alt">    <span class="keyword">if</span>(xx == s.xx &amp;&amp; yy == s.yy)</li><li>    {<!-- --></li><li class="alt">     <span class="keyword">return</span> <span class="keyword">true</span>;</li><li>    }</li><li class="alt">   }</li><li>   <span class="keyword">return</span> <span class="keyword">false</span>;</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> boolean   IsGameOver()</li><li>  {<!-- --></li><li class="alt">  </li><li>   </li><li class="alt">   <span class="keyword">if</span>(ss.xx&lt;0 || ss.xx &gt;blWidth-1 || ss.yy&lt;0 || ss.yy &gt;blHeight-1)</li><li>   {<!-- --></li><li class="alt">    <span class="keyword">return</span> <span class="keyword">true</span>;</li><li>   }</li><li class="alt">   <span class="keyword">int</span>  i   = 0;</li><li>   <span class="keyword">for</span>(i = 1;i&lt;sa.size();i++)</li><li class="alt">   {<!-- --></li><li>    SnakeBlock s = (SnakeBlock)sa.elementAt(i);</li><li class="alt">    <span class="keyword">if</span>(ss.xx == s.xx &amp;&amp; ss.yy == s.yy)</li><li>    {<!-- --></li><li class="alt">     <span class="keyword">return</span> <span class="keyword">true</span>;</li><li>    }</li><li class="alt">   }</li><li>  </li><li class="alt">   </li><li>   <span class="keyword">return</span> <span class="keyword">false</span>;</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> SnakeBlock   getFood(<span class="keyword">int</span> xx,<span class="keyword">int</span> yy)</li><li>  {<!-- --></li><li class="alt">   <span class="keyword">for</span>(<span class="keyword">int</span>  i  = 0;i&lt;food.size();i++)</li><li>   {<!-- --></li><li class="alt">    SnakeBlock s = (SnakeBlock)food.elementAt(i);</li><li>    <span class="keyword">if</span>(s.xx    == xx &amp;&amp; s.yy    == yy)</li><li class="alt">    {<!-- --></li><li>     <span class="keyword">return</span> s; </li><li class="alt">    }</li><li>   }</li><li class="alt">   <span class="keyword">return</span> <span class="keyword">null</span>;</li><li>  }</li><li class="alt">  </li><li>  <span class="keyword">public</span> <span class="keyword">void</span>   genFood()</li><li class="alt">  {<!-- --></li><li></li><li class="alt">   <span class="keyword">if</span>(food.size()!= 0)</li><li>     <span class="keyword">return</span>;</li><li class="alt">   <span class="keyword">int</span> ii=0;</li><li>   <span class="keyword">for</span>(;food.size() &lt;numFood;ii++)</li><li class="alt">   {<!-- --></li><li></li><li class="alt">    Random random = <span class="keyword">new</span> Random();</li><li>    <span class="keyword">int</span> k = random.nextInt();</li><li class="alt">    <span class="keyword">int</span>  xx  = Math.abs(k % blWidth);</li><li>    k = random.nextInt();</li><li class="alt">    <span class="keyword">int</span>  yy  = Math.abs(k % blHeight); ;</li><li>    </li><li class="alt">    <span class="keyword">if</span>(getFood(xx,yy)    == <span class="keyword">null</span> &amp;&amp;!IntersectSnake(xx,yy)  )</li><li>    {<!-- --></li><li class="alt">     SnakeBlock  s     =     CreateSprite(1);</li><li>     s.x    =    xx*blocksize;</li><li class="alt">     s.y    =    yy*blocksize;</li><li>     s.xx    =    xx;</li><li class="alt">     s.yy    =    yy;</li><li>     food.addElement(s);</li><li class="alt">    }  </li><li>   }</li><li class="alt">   </li><li>  }</li><li class="alt">  </li><li>  </li><li class="alt">  <span class="keyword">public</span> <span class="keyword">void</span>   eatFood()</li><li>  {<!-- --></li><li class="alt">  <span class="keyword">if</span>(ss!= <span class="keyword">null</span>)</li><li>  {<!-- --></li><li class="alt">  </li><li>   <span class="keyword">for</span>(<span class="keyword">int</span>  i  = 0;i&lt;food.size();i++)</li><li class="alt">   {<!-- --></li><li>    SnakeBlock s = (SnakeBlock)food.elementAt(i);</li><li class="alt">    <span class="keyword">if</span>(s.xx    == ss.xx &amp;&amp; s.yy    == ss.yy)</li><li>    {<!-- --></li><li class="alt">     AppendSprite(0);</li><li>     <span class="keyword">if</span>(sa.size()&gt;2)</li><li class="alt">     {<!-- --></li><li>      bonus += 4*(sa.size()-2);</li><li class="alt">      <span class="keyword">if</span>(tickcount&gt;0)</li><li>      {<!-- --></li><li class="alt">       bonus += sa.size()/tickcount;</li><li>      }</li><li class="alt">     }</li><li>     </li><li class="alt">     scores   +=    10+bonus;</li><li>     </li><li class="alt">     food.removeElementAt(i);</li><li>     </li><li class="alt">     synchronized (SnakeGame.<span class="keyword">this</span>.playSoundLock)</li><li>              {<!-- --></li><li class="alt">               playSound++;</li><li>              }</li><li class="alt">     </li><li>     <span class="keyword">return</span>;</li><li class="alt">    }</li><li>   }</li><li class="alt">   </li><li>  }</li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> <span class="keyword">void</span>   cleanup()</li><li>  {<!-- --></li><li class="alt">   sa.removeAllElements();</li><li>   food.removeAllElements();</li><li class="alt">   rr.removeAllElements();</li><li>   kbq.removeAllElements();</li><li class="alt">      </li><li></li><li class="alt">   ss      =    <span class="keyword">null</span>;</li><li>   scores      =    0;</li><li class="alt">   bonus       =    0;</li><li>   tickcount     =    0;</li><li class="alt">   </li><li>   </li><li class="alt">  }</li><li>  </li><li class="alt">  <span class="keyword">public</span> <span class="keyword">void</span>  GameFrame()</li><li>  {<!-- --></li><li class="alt">  </li><li>   <span class="keyword">if</span>(ss!= <span class="keyword">null</span>)</li><li class="alt">    {<!-- --></li><li>    tickcount++;</li><li class="alt">     <span class="keyword">if</span>(kbq.size()&gt;0)</li><li>       {<!-- --></li><li class="alt">        <span class="keyword">int</span>  c  = 0;</li><li>           c    =   ((Integer)kbq.elementAt(0)).intValue(); <span class="comment">// pick the next turn in the queue (may be undefined if queue is empty) </span></li><li class="alt">             kbq.removeElementAt(0);</li><li>           <span class="comment">// and check that it is not undefined and not a 180 degree turn </span></li><li class="alt">           <span class="comment">// (annoying to be able to turn into the snake with one key press) </span></li><li>           <span class="comment">// </span></li><li class="alt">           <span class="keyword">if</span> (c%2!= ss.r%2) </li><li>           { </li><li class="alt">          rr.addElement(<span class="keyword">new</span> Integer(c)); <span class="comment">// change current direction to the new value </span></li><li>           }</li><li class="alt">       } </li><li>       </li><li class="alt">       upateSnakesPos();</li><li>       <span class="keyword">if</span>(IsGameOver())</li><li class="alt">       {<!-- --></li><li>        SnakeGame.<span class="keyword">this</span>.gameOver  =  <span class="keyword">true</span>;</li><li class="alt">      ss      =    <span class="keyword">null</span>;</li><li>        <span class="keyword">return</span>;</li><li class="alt">       }</li><li>       eatFood();</li><li class="alt">       genFood();</li><li>   </li><li class="alt">    } </li><li>  }</li><li class="alt"></li><li>        <span class="comment">/**</span></li><li class="alt"><span class="comment">         * Loop to run thread, loops until game over</span></li><li><span class="comment">         */</span></li><li class="alt">        <span class="keyword">public</span> <span class="keyword">void</span> run() {<!-- --></li><li></li><li class="alt">         startGame();</li><li>            <span class="keyword">while</span> (!gameOver) {<!-- --></li><li class="alt"></li><li>                <span class="comment">/*</span></li><li class="alt"><span class="comment">                 * Sleep for animation delay</span></li><li><span class="comment">                 */</span></li><li class="alt">                <span class="keyword">try</span> {<!-- --></li><li>                    Thread.sleep(GAME_SPEED);</li><li class="alt">                } <span class="keyword">catch</span> (Exception e) {<!-- --></li><li>                    <span class="keyword">return</span>;</li><li class="alt">                }</li><li>                synchronized (SnakeGame.<span class="keyword">this</span>.repaintLock) {<!-- --></li><li class="alt">                 GameFrame();</li><li>                 mainFrame.repaint(0,0,mainFrame.getWidth(),mainFrame.getHeight());</li><li class="alt">                }</li><li>            }</li><li class="alt">            </li><li>            <span class="comment">/*</span></li><li class="alt"><span class="comment">             * Get statistic information</span></li><li><span class="comment">             */</span></li><li class="alt">            elapsedTime = System.currentTimeMillis()</li><li>              - elapsedTime;</li><li class="alt">            numGames++;</li><li>            statsScreen.append(<span class="keyword">new</span> StringItem(<span class="string">"Game "</span> +</li><li class="alt">                    numGames + <span class="string">" over"</span>, <span class="string">"时间: "</span> +</li><li>                    (elapsedTime/1000) + <span class="string">" 秒 "</span> +</li><li class="alt">                    <span class="string">"得分: "</span>+scores</li><li>                    ));</li><li class="alt"></li><li>            <span class="comment">/*</span></li><li class="alt"><span class="comment">             * Show the statistics screen</span></li><li><span class="comment">             */</span></li><li class="alt">            myDisplay.setCurrent(statsScreen);</li><li>        }</li><li class="alt">        </li><li>        </li><li class="alt">    }</li><li>    </li><li class="alt">    <span class="keyword">class</span> SoundPlayer extends Thread {<!-- --></li><li>     </li><li class="alt"></li><li>  Player myPlayer = <span class="keyword">null</span>;</li><li class="alt">  <span class="keyword">public</span> SoundPlayer()</li><li>  { </li><li class="alt">   <span class="keyword">try</span> {<!-- --></li><li>    InputStream <span class="keyword">is</span> = getClass().getResourceAsStream(<span class="string">"/audio/recycle.wav"</span>);</li><li class="alt">     myPlayer =Manager.createPlayer(<span class="keyword">is</span>,<span class="string">"audio/x-wav"</span>);</li><li>    } <span class="keyword">catch</span> (MediaException pe) {<!-- --></li><li class="alt">    } <span class="keyword">catch</span> (IOException ioe) {<!-- --></li><li>   }</li><li class="alt">  }</li><li>        <span class="keyword">public</span> <span class="keyword">void</span> run() {<!-- --></li><li class="alt"></li><li>               <span class="keyword">while</span> (!gameOver) {<!-- --></li><li class="alt">                <span class="keyword">try</span> {<!-- --></li><li>                       Thread.sleep(5);</li><li class="alt">                   } <span class="keyword">catch</span> (Exception e) {<!-- --></li><li>                       <span class="keyword">return</span>;</li><li class="alt">                   }</li><li>                   </li><li class="alt">                   <span class="keyword">int</span> num=0;</li><li>                   synchronized (SnakeGame.<span class="keyword">this</span>.playSoundLock)</li><li class="alt">                   {<!-- --></li><li>                    num =playSound;</li><li class="alt">                    playSound=0;</li><li>                   }</li><li class="alt">                   </li><li>                   <span class="keyword">for</span>(<span class="keyword">int</span> i=0;i&lt;num;i++)</li><li class="alt">                {<!-- --></li><li>                    <span class="keyword">try</span> {<!-- --></li><li class="alt">                     myPlayer.start();</li><li>                   } <span class="keyword">catch</span> (MediaException pe) {<!-- --></li><li class="alt">                   }</li><li>               </li><li class="alt">                }</li><li>               }</li><li class="alt">               </li><li>              </li><li class="alt">        }</li><li>    }</li><li class="alt"></li><li>  </li><li class="alt">}</li><li></li><li class="alt"></li></ol>
+</div>
+<p>Step9.运行D:/makeSnakeEM3.bat,编译生成snake.jar.</p>
+<p>Step10.运行C:/Motorola/5.4.2/launchpad.exe,选择D:/com/snake/snake.jad,Launch运行测试.</p>
+<p>Step11.使用Usb线把D:/com/snake/snake.jar复制到手机（我使用的型号是e680i）上.<br/>Step12.在手机运行snake.jar,提示安装,按提示安装完毕,在程序菜单中运行游戏. <br/>Step13.结束. :)</p>
+<p> </p>
+<p> </p>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2008-09-21 17:15:00</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stm32 硬件spi半双工三线的一些研究心得</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>stm32 硬件spi半双工三线的一些研究心得</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/126694561" target="_blank">https://blog.csdn.net/aerror/article/details/126694561</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2022-09-04 21:52:42</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 7491</div>
+        <div class="meta-item"><i class="far fa-comment"></i> 评论数: 2</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 58</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 12</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">stm32</span>, <span class="tag">单片机</span>, <span class="tag">嵌入式硬件</span></div>
+    
+    <div class="article-description">这个根据工作原理分析了一下，为什么在这样，主要是因为我们的读的时候，要是这个速度高，我们的mcu还没有去禁用SPI停时钟这个太慢了，上面代码已经在判断到RXNE时马上disable SPI了，但是明显，这个还是不够快。a7105可以使用四线spi,或者3线spi, 但是之前都是使用3线的软件模拟的三线spi的，所以不想改其它代码了，就想可以提高一个spi的读写速度，原来软件方式的读写速度，在48Mhz的03x下面，大约速度是1.6mbs,使用硬件spi之后，最终大约速度为12mbs.</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>a7105可以使用四线spi,或者3线spi, 但是之前都是使用3线的软件模拟的三线spi的，所以不想改其它代码了，就想可以提高一个spi的读写速度，原来软件方式的读写速度，在48Mhz的03x下面，大约速度是1.6mbs,使用硬件spi之后，最终大约速度为12mbs. </p>
+<p></p>
+<p>     为了令它可以稳定工作，这个还是花了不少时间了。主要的挑战是因为是使用3线spi,情况有些特殊，我们需要使用MOSI一条数据线实现主和从的双向模式<span style="color:#000000">通信。根据文档，我们使用进行以下设置</span></p>
+<p>1. <span style="color:#000000">SPIx-&gt;CR1 的 <strong>BIDIMODE 设置为1，表示启用双向模式</strong></span></p>
+<p>2. 使用SPIX-&gt;CR1的<span style="color:#000000"><strong>BIDIOE 来控制方向，0表示当前为Master读数据，1表示当前为Master写数据</strong></span></p>
+<p>3. 更换这个方向时需要把SPIx禁用, SPIX-&gt;CR1的SPE,来控制。</p>
+<p>这个总体思路是这样的，我实际编写完代码，发现是完全不工作的，网上也比较少这样的使用，有少数几个文章有说这个。</p>
+<p>根据文档，在BIDIMODE 为1，BIDIOE为0， 时钟CLK在SPE马上开启输出，同时它只会在SPE为零时才会停，这个意味着，我们要依赖于Slave的处理速度，同时也依赖于自己是否可以准确开关这个CLK信号，否则这个读出来的数据就会错乱。</p>
+<p>        这时需要一个比较慢的速度才可以稳定，最开始我并没有注意到这个，在    spiInit.SPI_BaudRatePrescaler 小于 SPI_BaudRatePrescaler_128时，要不读取全是零，要不出现一开始是对的，读着读着，数据就是错的，最后读出来全零的情况。只能不断的降低读写速度。最后才能稳定无误。但是128分频后，明显比软件模拟的方式还慢，这个就没有价值了。这个代码如下：</p>
+<pre><code class="language-cpp hljs">void spi_init()
+{
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+
+
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 |  GPIO_Pin_15;
+	
+
+	GPIO_Init(GPIOB, &amp;GPIO_InitStructure);
+	
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_0); 
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_0);
+
+	SPI_I2S_DeInit(SPI1);
+	spiInit.SPI_Direction = SPI_Direction_1Line_Tx;
+	spiInit.SPI_Mode = SPI_Mode_Master;
+	spiInit.SPI_DataSize  = SPI_DataSize_8b;
+	spiInit.SPI_CPOL  = SPI_CPOL_Low;
+	spiInit.SPI_CPHA = SPI_CPHA_1Edge;
+	spiInit.SPI_NSS = SPI_NSS_Soft;
+	spiInit.SPI_BaudRatePrescaler= SPI_BaudRatePrescaler_128;
+	spiInit.SPI_FirstBit  = SPI_FirstBit_MSB;
+	spiInit.SPI_CRCPolynomial = 7;
+	SPI_Init(SPI1, &amp;spiInit);
+	
+	SPI_SSOutputCmd(SPI1,DISABLE);
+	  
+	//NSS
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_Init(GPIOA, &amp;GPIO_InitStructure);
+
+	SPI_TIModeCmd(SPI1,DISABLE);
+	SPI_NSSPulseModeCmd(SPI1,DISABLE);
+	SPI_Cmd(SPI1,ENABLE);
+}
+
+void Rf_Spi_Write_Byte(uint8_t dat)
+{
+	if(!g_bisTx)
+	{
+		
+		  SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
+    	  SPI1-&gt;CR1 |= SPI_Direction_Tx;
+    	g_bisTx=1;
+	}
+
+	 *(uint8_t*)&amp;SPI1-&gt;DR = dat;
+    SPI1-&gt;CR1 |= SPI_CR1_SPE; //ENABLE SPI
+
+
+   // while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_BSY) != RESET){}
+    //SPI_SendData8(SPI1,dat);
+   
+	while(!(SPI1-&gt;SR &amp; SPI_I2S_FLAG_TXE)){}
+	while (SPI1-&gt;SR &amp;  SPI_I2S_FLAG_BSY){}
+   
+	 SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+ 
+
+
+}
+
+uint8_t Rf_Spi_Read_Byte(void)
+{
+#if USE_HARDWARE_SPI
+
+	uint8_t dat =0;
+
+	if(g_bisTx)
+    {
+	    SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
+	    SPI1-&gt;CR1 &amp;= SPI_Direction_Rx;
+	     /* Clear FRXTH bit */
+		SPI1-&gt;CR2 &amp;= (uint16_t)~((uint16_t)SPI_CR2_FRXTH);
+		/* Set new FRXTH bit value */
+		SPI1-&gt;CR2 |= SPI_RxFIFOThreshold_QF;  //SET IT 8 BIT per READ, THAT is QUETER OF 32BIT
+	    
+	}
+	SPI1-&gt;CR1 |= SPI_CR1_SPE; //ENABLE SPI
+ 	g_bisTx=0;
+
+     while (!(SPI1-&gt;SR &amp;  SPI_I2S_FLAG_RXNE)  ) ; // wait data received
+     SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
+	 dat = *(uint8_t*)&amp;SPI1-&gt;DR;
+
+	return dat;
+
+}
+</code></pre>
+<p>        这个根据工作原理分析了一下，为什么会发生这样的情况，主要是因为我们的读的时候，要是这个速度高，我们的mcu去禁用SPI停时钟这个操作太慢了，虽然上面代码已经在判断到RXNE时马上disable SPI了，但是明显，这个事实上还是不够快。..... 怎么办？ 如何能提高速度？ 这个折腾了很久，终于发现一个不合理的操作可以直接把速度成 DIV4,即12MB。这个就是先禁用SPI,  再判断RXNE...发现竟然是可以很稳定的工作。</p>
+<pre><code class="language-cpp hljs">
+	SPI1-&gt;CR1 |= SPI_CR1_SPE; //ENABLE SPI
+g_bisTx=0;
+     SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
+
+     while (!(SPI1-&gt;SR &amp;  SPI_I2S_FLAG_RXNE)  ) ; // wait data received
+	 dat = *(uint8_t*)&amp;SPI1-&gt;DR;</code></pre>
+<p>这个确实也是神奇，特别写这个文章记录一下。</p>
+<p>归纳的原理应该是SPI ENABLE就开始读了，这ENABLE和DISALBE的时间刚好就是12MB的速度，多一条指令都不行了。</p>
+<p></p>
+<p>同时也尝试了使用DMA去加速，但是同样因为这个时钟刹车停止问题，使用DMA时实际测试需要更慢才能稳定传输，也要去到SPI_BaudRatePrescaler_128。究其原因应该也是DMA停止时操作太多，无法简化，导致时钟无法及时停止，引起数据错误。</p>
+<p>以下是三线SPI的DMA传输的代码，供参考。</p>
+<pre><code class="hljs language-javascript">void Rfchip_Spi_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+    DMA_InitTypeDef DMA_InitStructure={0};
+
+	
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+
+
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 |  GPIO_Pin_15;
+	
+
+	GPIO_Init(GPIOB, &amp;GPIO_InitStructure);
+	
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_0); 
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_0);
+
+	SPI_I2S_DeInit(SPI1);
+	spiInit.SPI_Direction = SPI_Direction_1Line_Tx;
+	spiInit.SPI_Mode = SPI_Mode_Master;
+	spiInit.SPI_DataSize  = SPI_DataSize_8b;
+	spiInit.SPI_CPOL  = SPI_CPOL_Low;
+	spiInit.SPI_CPHA = SPI_CPHA_1Edge;
+	spiInit.SPI_NSS = SPI_NSS_Soft;
+	spiInit.SPI_BaudRatePrescaler= SPI_BaudRatePrescaler_128;
+	spiInit.SPI_FirstBit  = SPI_FirstBit_MSB;
+	spiInit.SPI_CRCPolynomial = 7;
+	SPI_Init(SPI1, &amp;spiInit);
+	
+	SPI_SSOutputCmd(SPI1,DISABLE);
+	  
+	//NSS
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_Init(GPIOA, &amp;GPIO_InitStructure);
+
+	SPI_TIModeCmd(SPI1,DISABLE);
+	SPI_NSSPulseModeCmd(SPI1,DISABLE);
+
+
+    DMA_DeInit(DMA1_Channel2);
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&amp;SPI1-&gt;DR;
+	DMA_InitStructure.DMA_MemoryBaseAddr = 0;
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA_InitStructure.DMA_BufferSize = 0;
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel2, &amp;DMA_InitStructure);
+
+
+    DMA_DeInit(DMA1_Channel3);
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&amp;SPI1-&gt;DR;
+    DMA_InitStructure.DMA_MemoryBaseAddr = 0;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+    DMA_InitStructure.DMA_BufferSize = 0;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+    DMA_Init(DMA1_Channel3, &amp;DMA_InitStructure);
+
+
+
+
+	SPI_Cmd(SPI1,ENABLE);
+
+
+
+	//GIO
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_Init(GPIOA, &amp;GPIO_InitStructure);
+	RFChip_Disable;
+}
+
+
+
+void Rf_Spi_Write_Bytes(uint8_t *pbuf, uint32_t len)
+{
+
+	if(!g_bisTx)
+	{
+		
+		  SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
+    	  SPI1-&gt;CR1 |= SPI_Direction_Tx;
+    	g_bisTx=1;
+	}
+
+    DMA_Cmd(DMA1_Channel3,DISABLE);
+
+	DMA1_Channel3-&gt;CMAR = (uint32_t)pbuf;
+    DMA1_Channel3-&gt;CNDTR = len;
+    DMA_Cmd(DMA1_Channel3,ENABLE);
+    SPI_I2S_DMACmd(SPI1,SPI_I2S_DMAReq_Tx,ENABLE);
+    SPI1-&gt;CR1 |= SPI_CR1_SPE; //ENABLE SPI
+    while(DMA_GetFlagStatus(DMA1_FLAG_TC3)==RESET);
+    DMA_ClearFlag(DMA1_FLAG_TC3);
+    SPI_I2S_DMACmd(SPI1,SPI_I2S_DMAReq_Tx,DISABLE);
+
+    while (SPI1-&gt;SR &amp;  SPI_I2S_FLAG_BSY){}
+	
+	SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+	DMA_Cmd(DMA1_Channel3,DISABLE);
+	
+ 
+
+
+}
+
+void Rf_Spi_Read_Bytes(uint8_t *pbuf, uint32_t len)
+{
+
+	uint16_t Dis_SPI_CR1_SPE=(uint16_t)~((uint16_t)SPI_CR1_SPE);
+	uint16_t dMA_DISABLE =  (uint16_t)(~DMA_CCR_EN);
+	if(g_bisTx)
+    {
+	    SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
+	    SPI1-&gt;CR1 &amp;= SPI_Direction_Rx;
+	     /* Clear FRXTH bit */
+		SPI1-&gt;CR2 &amp;= (uint16_t)~((uint16_t)SPI_CR2_FRXTH);
+		/* Set new FRXTH bit value */
+		SPI1-&gt;CR2 |= SPI_RxFIFOThreshold_QF;  //SET IT 8 BIT per READ, THAT is QUETER OF 32BIT
+	    
+	}
+	g_bisTx=0;
+    DMA1_Channel2-&gt;CCR &amp;= dMA_DISABLE;  //DISABLE DMA CHANNEL2
+	DMA1_Channel2-&gt;CMAR = (uint32_t)pbuf;
+    DMA1_Channel2-&gt;CNDTR = len;
+    SPI1-&gt;CR2 |= SPI_I2S_DMAReq_Rx; //DMA REQUEST
+    SPI1-&gt;CR1 |= SPI_CR1_SPE; //ENABLE SPI
+    DMA1_Channel2-&gt;CCR |= DMA_CCR_EN; //ENABLE DMA CHANNEL2
+
+    while(!(DMA1-&gt;ISR &amp; DMA1_FLAG_TC2));
+     DMA1_Channel2-&gt;CCR &amp;=dMA_DISABLE;  //DISABLE DMA CHANNEL2
+
+    SPI1-&gt;CR1 &amp;= Dis_SPI_CR1_SPE;//DISABLE SPI
+
+    SPI1-&gt;CR2 &amp;= (uint16_t)~SPI_I2S_DMAReq_Rx;
+
+    DMA_ClearFlag(DMA1_FLAG_TC2);
+    
+
+}
+</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2022-09-04 21:52:42</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

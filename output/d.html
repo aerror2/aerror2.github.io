@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用pwm控制舵机来回摆动的中心位置</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>使用pwm控制舵机来回摆动的中心位置</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/148479782" target="_blank">https://blog.csdn.net/aerror/article/details/148479782</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-06 18:01:34</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 264</div>
+        
+        
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">python</span>, <span class="tag">算法</span>, <span class="tag">linux</span>, <span class="tag">单片机</span></div>
+    
+    <div class="article-description">本文实现了一个基于PWM控制的舵机摆动模拟器，使用tkinter创建可视化界面。通过PWM信号（1000-2000）控制舵机在±45度范围内摆动，其中1500对应中心位置。系统采用滑动条输入PWM值，实时计算目标角度并动态更新摆臂位置，同时显示红色虚线标记摆动范围。程序包含角度转换、边界检测和摆动速度控制功能，模拟了舵机根据PWM信号平滑移动到目标位置的过程。该模拟器可直观展示PWM与舵机角度间的映射关系。</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>使用pwm控制舵机来回摆动的中心位置，还是基于前两篇的结果，这个让舵机可以在45度的范围摆动，可以使用pwm控制它摆动的中心角度。</p>
+<p></p>
+<p> 效果：</p>
+<div class="csdn-video-box" data-report-view='{"spm":"3001.10261","extra":{"id":"B0yj1qaN-1749224903391"}}'>
+<iframe allowfullscreen="true" data-mediaembed="bilibili" frameborder="0" id="B0yj1qaN-1749224903391" src="https://player.bilibili.com/player.html?aid=114637190271768"></iframe>
+<p>python写的模拟舵机控制来回摆动的中心点</p>
+</div>
+<p>代码如下：</p>
+<pre><code class="hljs language-javascript">import tkinter as tk
+import math
+ 
+class SwingArm:
+    def __init__(self):
+        self.current_angle = 0.0  # 当前角度（-45~45）
+        self.target_angle = 0.0   # 目标角度
+        self.speed = 180.0         #  180.0度/秒
+        angle_rad = math.radians(self.current_angle)
+        self.x = 200 + 100 * math.cos(angle_rad)
+        self.y = 150 - 100 * math.sin(angle_rad)
+    def set_target(self, pwm):
+        # PWM映射到角度（1000→-45°，2000→45°）
+        self.target_angle = (pwm - 1500) * 0.09
+        
+    def update(self, delta_time):
+        # 计算移动方向和距离
+        angle_diff = self.target_angle - self.current_angle
+        if abs(angle_diff) &lt; 0.1:  # 到达阈值
+            return
+        
+        direction = 1 if angle_diff &gt; 0 else -1
+        max_step = self.speed * delta_time
+        step = min(abs(angle_diff), max_step) * direction
+        
+        # 更新当前角度并限制范围
+        self.current_angle = max(-45.0, min(45.0, self.current_angle + step))
+        
+        # 新增摆臂位置计算
+        angle_rad = math.radians(self.current_angle)
+        self.x = 200 + 100 * math.cos(angle_rad)
+        self.y = 150 - 100 * math.sin(angle_rad)
+
+class ServoSimulator:
+    def __init__(self, master):
+        self.master = master
+        master.title("舵机摆动模拟器")
+        
+        # 界面布局
+        self.canvas = tk.Canvas(master, width=400, height=300, bg='white')
+        self.canvas.pack(pady=20)
+        
+        # PWM输入控件
+        # 删除原有Entry控件，添加滑动条
+        self.pwm_label = tk.Label(master, text="PWM控制 (1000-2000):")
+        self.pwm_label.pack()
+        
+        # 创建水平滑动条
+        self.pwm_slider = tk.Scale(master, from_=1000, to=2000, orient=tk.HORIZONTAL,
+                                 length=300, command=self.update_angle)
+        self.pwm_slider.set(1500)  # 设置默认值
+        self.pwm_slider.pack(pady=10)
+        
+        # 删除原有pwm_entry及其绑定
+        self.pwm_entry = tk.Entry(master)
+        self.pwm_entry.pack()
+        self.pwm_entry.insert(0, "1500")
+        
+        # 角度显示
+        self.angle_label = tk.Label(master, text="当前角度: 0.00°")
+        self.angle_label.pack(pady=10)
+        
+        # 绘制摆臂
+        self.arm = self.canvas.create_line(200, 150, 300, 150, width=3, fill='blue')
+        
+        # 绘制最大最小角度参考线（红色虚线）
+        self.min_line = self.canvas.create_line(200, 150, 200, 150, width=1, fill='red', dash=(4,2))
+        self.max_line = self.canvas.create_line(200, 150, 200, 150, width=1, fill='red', dash=(4,2))
+
+        # 绑定输入事件
+        self.pwm_entry.bind("&lt;KeyRelease&gt;", self.update_angle)
+        
+        # 新增初始化变量
+        self.current_angle = 0.0
+        self.direction = 1
+        
+        self.input_pwm = 0.0
+        self.swing_angle = 0.0  # 初始角度
+
+        # 初始化摆臂对象
+        self.swing_arm = SwingArm()
+        
+        # 删除残留的pwm_entry相关代码
+        self.pwm_entry.pack_forget()  # 隐藏输入框
+        self.pwm_entry.unbind("&lt;KeyRelease&gt;")  # 解除事件绑定
+        
+        # 启动动画循环
+        self.update_animation()
+        
+    def update_angle(self, pwm_value):
+        # 将PWM值传给摆臂对象
+        self.swing_arm.set_target(int(pwm_value))
+    def do_swing(self, delta_time):
+        self.auto_speed = (self.input_pwm-1000)/1000*180.0
+        deltaAngle = self.auto_speed * delta_time * self.direction
+        new_angle = self.swing_angle + deltaAngle
+        
+        # 边界检测和方向反转
+        if new_angle &gt;= 25 or new_angle &lt;= -25:
+            self.direction *= -1
+        
+        # 更新当前角度并设置目标PWM
+        self.swing_angle = new_angle
+        target_pwm = 1500 + (self.swing_angle / 0.09)
+        self.swing_arm.set_target(int(target_pwm))
+    def adjust_swing_center(self, delta_time):
+        self.auto_speed = 90
+        # 计算中心位置（1000→-25°，2000→25°）
+        center = (self.input_pwm - 1500) * 0.05
+        
+        # 计算摆动边界（中心±22.5度）
+        min_angle = center - 22.5
+        max_angle = center + 22.5
+        
+        # 更新角度并检测边界
+        new_angle = self.swing_angle + self.auto_speed * delta_time * self.direction
+        
+        if new_angle &gt; max_angle or new_angle &lt; min_angle:
+            self.direction *= -1
+            new_angle = max(min(new_angle, max_angle), min_angle)
+            
+        self.swing_angle = new_angle
+        
+        # 设置目标PWM
+        target_pwm = 1500 + (self.swing_angle / 0.09)
+        self.swing_arm.set_target(int(target_pwm))
+        
+
+    def adjust_swing_center(self, delta_time):
+        self.auto_speed = 90
+        # 计算中心位置（1000→-25°，2000→25°）
+        center = (self.input_pwm - 1500) * 0.05
+        
+        # 计算摆动边界（中心±22.5度）
+        min_angle = center - 22.5
+        max_angle = center + 22.5
+        
+        # 更新角度并检测边界
+        new_angle = self.swing_angle + self.auto_speed * delta_time * self.direction
+        
+        if new_angle &gt; max_angle or new_angle &lt; min_angle:
+            self.direction *= -1
+            new_angle = max(min(new_angle, max_angle), min_angle)
+            
+        self.swing_angle = new_angle
+        
+        # 设置目标PWM
+        target_pwm = 1500 + (self.swing_angle / 0.09)
+        self.swing_arm.set_target(int(target_pwm))
+        
+        # 更新参考线位置
+        min_rad = math.radians(min_angle)
+        max_rad = math.radians(max_angle)
+        self.canvas.coords(self.min_line, 
+            200, 150, 
+            200 + 100 * math.cos(min_rad), 
+            150 - 100 * math.sin(min_rad))
+        self.canvas.coords(self.max_line, 
+            200, 150, 
+            200 + 100 * math.cos(max_rad), 
+            150 - 100 * math.sin(max_rad))
+    def update_animation(self):
+       # self.do_swing(0.02)
+        self.adjust_swing_center(0.02)
+        self.swing_arm.update(0.02)
+        self.angle_label.config(text=f"当前角度: {self.swing_arm.current_angle:+.2f}°")
+        self.canvas.coords(self.arm, 200, 150, self.swing_arm.x, self.swing_arm.y)
+        self.master.after(50, self.update_animation)
+ 
+ 
+    def update_angle(self, pwm_value=None):
+        try:
+            # 从滑动条获取值
+            pwm = int(pwm_value) if pwm_value else self.pwm_slider.get()
+            print(f"更新pwm: {pwm}")
+            #self.swing_arm.set_target(pwm)
+            self.input_pwm = pwm
+
+        except Exception as e:
+            print(f"更新错误: {e}")
+        except ValueError:
+            self.angle_label.config(text="输入无效！")
+ 
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = ServoSimulator(root)
+    root.mainloop()</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2025-06-06 18:01:34</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

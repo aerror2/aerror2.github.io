@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>libpng使用例子</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>libpng使用例子</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/7032959" target="_blank">https://blog.csdn.net/aerror/article/details/7032959</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2011-12-02 01:56:49</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 14229</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">compression</span>, <span class="tag">file</span>, <span class="tag">struct</span>, <span class="tag">output</span>, <span class="tag">null</span>, <span class="tag">list</span></div>
+    
+    <div class="article-description">本例使用libpng,将一系列单个的序列帧png文件合并成一个大的png, 去除无用的空白，计算每个系列的最小有效范围。请看源码吧，libpng用法有不明白的，可以参考一下，有抄到的到方请保留版权  //@author aerror //2011/12/02#include &quot;stdafx.h&quot;#include #include #include #incl</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>本例使用libpng,将一系列单个的序列帧png文件合并成一个大的png, 去除无用的空白，计算每个系列的最小有效范围。</p>
+<p>请看源码吧，libpng用法有不明白的，可以参考一下，有抄到的到方请保留版权</p>
+<p> </p>
+<p> </p>
+<pre><code class="language-cpp hljs">//@author aerror 
+//2011/12/02
+#include "stdafx.h"
+#include &lt;Windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;tchar.h&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;list&gt;
+
+
+extern "C"{
+#include "png.h"
+}
+
+
+	
+#define EnsureVectorSize(v,ds)  {if(v.size()&lt;(unsigned int)ds){ v.resize(ds);}}
+
+typedef struct _RECTANGLE
+{
+	int top;
+	int left;
+	int bottom;
+	int right;
+}TRECTANGLE;
+
+
+
+class PNG_SRC_FILE
+{
+public:
+	std::string filename;
+	png_bytep   bmp;
+	unsigned int rawWidth  ;
+	unsigned int rawHeight  ;
+	PNG_SRC_FILE(const char * src)
+	{
+		filename =src;
+		bmp = NULL;
+	}
+	virtual ~PNG_SRC_FILE()
+	{
+		if(bmp!=NULL)
+		{
+			delete []bmp;
+		}
+	}
+
+};
+
+typedef std::list&lt;  PNG_SRC_FILE *&gt; TPNG_SRC_FILE_LIST;
+typedef std::list&lt;   PNG_SRC_FILE *&gt;::iterator TPNG_SRC_FILE_LIST_ITER;
+
+bool filename_sort(PNG_SRC_FILE * x1,PNG_SRC_FILE * x2)
+{
+	return x1-&gt;filename &lt; x2-&gt;filename;
+}
+
+typedef struct _tanimation_info
+{
+
+	const char *actionName;
+	const char *actionDir;
+	unsigned rowHeight;
+	unsigned frameWidth;
+	unsigned frameHeight;
+	unsigned totalFrame;
+	unsigned fps;
+	TPNG_SRC_FILE_LIST  * filelist;
+	unsigned int minTop     ;
+	unsigned int maxBottom  ;
+	unsigned int minLeft    ;
+	unsigned int maxRight   ;
+
+}TANIMATION_INFO;
+
+	std::vector&lt;BYTE&gt;				s_srcDibBitsBuffer;
+	std::vector&lt;BYTE&gt;				s_dstDibBitsBuffer;
+	std::vector&lt;BYTE&gt;				s_dstPngRowsBuffer;
+	std::vector&lt;BYTE&gt;				s_dstPngTempBuffer;
+	
+	
+
+	int outputToPngFileNormal(const char *szFileName,unsigned int numDibBtis,const unsigned char *pDibBytes,unsigned int _width, unsigned int _height)
+	{
+		FILE *fp;
+		png_structp png_ptr;
+		png_infop info_ptr;
+	
+
+		/* open the file */
+		fp = fopen(szFileName, "wb");
+		if (fp == NULL)
+		  return (ERROR);
+
+		png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING,NULL, NULL, NULL);
+
+		if (png_ptr == NULL)
+		{
+		  fclose(fp);
+		  return (ERROR);
+		}
+
+		/* Allocate/initialize the image information data.  REQUIRED */
+		info_ptr = png_create_info_struct(png_ptr);
+		if (info_ptr == NULL)
+		{
+		  fclose(fp);
+		  png_destroy_write_struct(&amp;png_ptr,  png_infopp_NULL);
+		  return (ERROR);
+		}
+
+		/* Set error handling.  REQUIRED if you aren't supplying your own
+		* error handling functions in the png_create_write_struct() call.
+		*/
+		if (setjmp(png_jmpbuf(png_ptr)))
+		{
+		  /* If we get here, we had a problem reading the file */
+		  fclose(fp);
+		  png_destroy_write_struct(&amp;png_ptr, &amp;info_ptr);
+		  return (ERROR);
+		}
+
+		png_init_io(png_ptr, fp);
+
+
+		/* Set the image information here.  Width and height are up to 2^31,
+		* bit_depth is one of 1, 2, 4, 8, or 16, but valid values also depend on
+		* the color_type selected. color_type is one of PNG_COLOR_TYPE_GRAY,
+		* PNG_COLOR_TYPE_GRAY_ALPHA, PNG_COLOR_TYPE_PALETTE, PNG_COLOR_TYPE_RGB,
+		* or PNG_COLOR_TYPE_RGB_ALPHA.  interlace is either PNG_INTERLACE_NONE or
+		* PNG_INTERLACE_ADAM7, and the compression_type and filter_type MUST
+		* currently be PNG_COMPRESSION_TYPE_BASE and PNG_FILTER_TYPE_BASE. REQUIRED
+		*/
+		
+
+		
+		int src_bytes_per_pixel	= numDibBtis/_width/_height;	
+		png_uint_32 k, height, width;
+
+		height = _height;	
+		width = _width;
+
+
+		png_set_IHDR(png_ptr, info_ptr, width, height, 8, 
+		   PNG_COLOR_TYPE_RGB_ALPHA,
+		  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+
+		png_text text_ptr[2]={0,0};
+
+		char szDetail[255]="pvr";
+		/*sprintf(szDetail,"type=%d method=%d size=%dx%d lefttop=%d,%d frame=%dx%d\n",
+						pInfo-&gt;type,
+						pInfo-&gt;method,
+						(int)(pInfo-&gt;width),
+						(int)(pInfo-&gt;height), 
+						(int)(pInfo-&gt;left),
+						(int)(pInfo-&gt;top),
+						(int)(pInfo-&gt;frmWidth),
+						(int)(pInfo-&gt;frmHeith) );
+*/
+		text_ptr[0].key = "Author";
+		text_ptr[0].text = "dany21cn@21cn.com";
+		text_ptr[0].compression = PNG_TEXT_COMPRESSION_NONE;
+		text_ptr[1].key = "Description";
+		text_ptr[1].text = szDetail;
+		text_ptr[1].compression = PNG_TEXT_COMPRESSION_NONE;
+		png_set_text(png_ptr, info_ptr, text_ptr, 2);
+
+
+		/* Write the file header information.  REQUIRED */
+		png_write_info(png_ptr, info_ptr);
+
+		if (height &gt; PNG_UINT_32_MAX/png_sizeof(png_bytep))
+		 png_error (png_ptr, "Image is too tall to process in memory");
+
+
+		png_bytep image =  NULL;
+		png_bytep imagerow =  NULL;
+		
+		
+		EnsureVectorSize(s_dstPngRowsBuffer,width*4);
+		imagerow =	&amp;s_dstPngRowsBuffer[0];
+		
+		
+		
+
+		for(int y=0;y&lt;_height;y++)
+		{
+			for(int x=0;x&lt;_width;x++)
+			{
+				int dx = x;//+pInfo-&gt;left;
+				int dy = y;//+pInfo-&gt;top;
+
+				if(dx&gt;width || dy&gt;height)
+				{
+					printf("invalid offset operation\n");
+					return ERROR;
+				}
+
+				const unsigned char* psrc = pDibBytes + y*_width*src_bytes_per_pixel+ x*src_bytes_per_pixel;
+				png_bytep pdst = NULL;
+				
+				pdst = imagerow  +dx*4;
+				
+				if(src_bytes_per_pixel==4)
+				{
+					/*
+					pdst[0] = psrc[2];
+					pdst[1] = psrc[1];
+					pdst[2] = psrc[0];
+					pdst[3] = psrc[3];
+					*/
+
+					pdst[0] = psrc[0];
+					pdst[1] = psrc[1];
+					pdst[2] = psrc[2];
+					pdst[3] = psrc[3];
+				}
+			
+			}
+			
+			png_write_row(png_ptr,imagerow);
+
+		}
+		
+		
+		/* You can write optional chunks like tEXt, zTXt, and tIME at the end
+		* as well.  Shouldn't be necessary in 1.1.0 and up as all the public
+		* chunks are supported and you can use png_set_unknown_chunks() to
+		* register unknown chunks into the info structure to be written out.
+		*/
+
+		/* It is REQUIRED to call this to finish writing the rest of the file */
+		png_write_end(png_ptr, info_ptr);
+
+		/* clean up after the write, and free any memory allocated */
+		png_destroy_write_struct(&amp;png_ptr, &amp;info_ptr);
+
+		fclose(fp);
+
+		return 0;
+	}
+
+
+TRECTANGLE cutTransparent(png_bytep bmp, unsigned int width, unsigned int height )
+{
+	TRECTANGLE  t={0,0,height,width};
+
+	//row by row from top
+	//
+	for(int y=0;y&lt;height;y++)
+	{
+		bool thisLineEmpty = true;
+		for(int x=0;x&lt;width;x++)
+		{
+			unsigned char* psrc = bmp + y*width*4+ x*4;
+			unsigned  int v =  *(unsigned int* )psrc;
+			if(v &amp;0xFF000000)
+			{
+				thisLineEmpty = false;
+				break;
+			}
+		}
+
+		if(thisLineEmpty)
+		{
+			t.top ++ ;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	for(int y=height-1;y&gt;=0;y--)
+	{
+		bool thisLineEmpty = true;
+		for(int x=0;x&lt;width;x++)
+		{
+			unsigned char* psrc = bmp + y*width*4+ x*4;
+			unsigned  int v =  *(unsigned int* )psrc;
+			if(v &amp;0xFF000000)
+			{
+				thisLineEmpty = false;
+				break;
+			}
+		}
+
+		if(thisLineEmpty)
+		{
+			t.bottom --;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	
+	for(int x=0;x&lt;width;x++)
+	{
+		bool thisLineEmpty = true;
+		for(int y=0;y&lt;height;y++)
+		{
+			unsigned char* psrc = bmp + y*width*4+ x*4;
+			unsigned  int v =  *(unsigned int* )psrc;
+			if(v &amp;0xFF000000)
+			{
+				thisLineEmpty = false;
+				break;
+			}
+		}
+
+		if(thisLineEmpty)
+		{
+			t.left ++ ;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+
+	for(int x=width-1;x&gt;=0;x--)
+	{
+		bool thisLineEmpty = true;
+		for(int y=0;y&lt;height;y++)
+		{
+			unsigned char* psrc = bmp + y*width*4+ x*4;
+			unsigned  int v =  *(unsigned int* )psrc;
+			if(v &amp;0xFF000000)
+			{
+				thisLineEmpty = false;
+				break;
+			}
+		}
+
+		if(thisLineEmpty)
+		{
+			t.right --;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+
+	return t;
+}
+
+
+/**
+stand=standby
+attack=Normal attack
+squat=Morale attack
+attacked=under attack
+defense=????
+*/
+
+
+void concat(const char *packsDir, const char *outputDir)
+{
+	WIN32_FIND_DATAA FindFileData;
+	HANDLE hFind = INVALID_HANDLE_VALUE;
+	char DirSpec[MAX_PATH];  // directory specification
+	char DirBase[MAX_PATH];  // directory specification
+	char filename_dest[MAX_PATH];
+	char npc_name[MAX_PATH];
+
+	DWORD dwError;
+
+
+	TANIMATION_INFO aniInfo[4]={
+		{ "stand","standby",0,0,0,0,0,0,0,0,0,0},
+		{ "attack","Normal attack",0,0,0,0,0,0,0,0,0,0},
+		{ "squat","Morale attack",0,0,0,0,0,0,0,0,0,0},
+		{ "attacked","under attack",0,0,0,0,0,0,0,0,0,0}
+	};
+
+	
+	strcpy(DirSpec,packsDir);
+	int rlen = strlen(DirSpec);
+	if(DirSpec[rlen -1]=='\\')
+	{
+		DirSpec[rlen-1]='\0';
+	}
+	strcpy(DirBase,DirSpec);
+	char *last = strrchr(DirBase,'\\');
+	strcpy(npc_name,last+1);
+
+
+	char szCurPath[MAX_PATH];
+
+
+	GetCurrentDirectoryA(MAX_PATH,szCurPath);
+	
+	unsigned int currentRowHeight = 0;
+	unsigned int output_width=0;
+	unsigned int output_height=0;
+	for(int n=0;n&lt;4;n++)
+	{
+	
+		strcpy(DirSpec,DirBase);
+		strcat(DirSpec,"\\序列\\");
+		strcat(DirSpec,aniInfo[n].actionDir);
+		SetCurrentDirectoryA(DirSpec);
+		strcat(DirSpec,"\\*.png");
+		
+		aniInfo[n].filelist = new TPNG_SRC_FILE_LIST();
+		TPNG_SRC_FILE_LIST &amp;filelist = *aniInfo[n].filelist;
+
+		hFind = FindFirstFileA(DirSpec, &amp;FindFileData);
+		if (hFind != INVALID_HANDLE_VALUE) 
+		{
+			while (FindNextFileA(hFind, &amp;FindFileData) != 0) 
+			{
+				filelist.push_back(new PNG_SRC_FILE(FindFileData.cFileName));
+			}
+			dwError = GetLastError();
+			FindClose(hFind);
+		}
+
+		if(filelist.empty())
+		{
+			continue;
+		}
+
+		filelist.sort(filename_sort);
+
+
+		//剪切
+		//
+		unsigned int minTop    =0 ;
+		unsigned int maxBottom =0 ;
+		unsigned int minLeft   =0 ;
+		unsigned int maxRight  =0 ;
+
+		for(TPNG_SRC_FILE_LIST_ITER  iter = filelist.begin(); 
+			iter !=filelist.end(); iter++)
+		{
+		
+			png_structp png_ptr=NULL;
+			png_infop info_ptr=NULL;
+			png_infop end_info_ptr=NULL;
+
+			/* open the file */
+			FILE *fp = fopen((*iter)-&gt;filename.c_str(), "rb");
+			if (fp == NULL)
+				return ;
+			png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,NULL, NULL, NULL);
+			info_ptr = png_create_info_struct(png_ptr);
+			end_info_ptr = png_create_info_struct(png_ptr);
+			png_init_io(png_ptr, fp);
+			png_read_info(png_ptr,info_ptr);
+
+			png_bytep dibbytes = new png_byte[info_ptr-&gt;width * info_ptr-&gt;height * 4];
+			
+			(*iter)-&gt;bmp = dibbytes ;
+			(*iter)-&gt;rawWidth = info_ptr-&gt;width;
+			(*iter)-&gt;rawHeight = info_ptr-&gt;height;
+			
+			
+			for(int y=0;y&lt;info_ptr-&gt;height;y++)
+			{
+				png_bytep pdest = dibbytes + y*info_ptr-&gt;width*4;
+				png_read_row(png_ptr,pdest,NULL);
+			}
+
+			TRECTANGLE cut = cutTransparent(dibbytes,info_ptr-&gt;width,info_ptr-&gt;height);
+			if(minTop==0 || minTop&gt; cut.top)
+			{
+				minTop = cut.top;
+			}
+			if(minLeft==0 || minLeft&gt; cut.left)
+			{
+				minLeft = cut.left;
+			}
+
+			if(maxRight &lt; cut.right)
+			{
+				maxRight = cut.right;
+			}
+			
+			if(maxBottom &lt; cut.bottom)
+			{
+				maxBottom  = cut.bottom;
+			}
+			
+
+			png_destroy_read_struct(&amp;png_ptr,&amp;info_ptr,&amp;end_info_ptr);
+			fclose(fp);
+		}
+
+		
+		aniInfo[n].fps = 10;
+		aniInfo[n].frameWidth = maxRight - minLeft;
+		aniInfo[n].frameHeight  = maxBottom-minTop;
+		aniInfo[n].totalFrame= filelist.size();
+		aniInfo[n].rowHeight = currentRowHeight;
+		aniInfo[n].minTop     =minTop     ;
+		aniInfo[n].maxBottom  =maxBottom  ;
+		aniInfo[n].minLeft    =minLeft    ;
+		aniInfo[n].maxRight   =maxRight   ;
+
+		currentRowHeight += aniInfo[n].frameHeight;
+
+		if(output_width  &lt; aniInfo[n].frameWidth * aniInfo[n].totalFrame)
+		{
+			output_width   = aniInfo[n].frameWidth * aniInfo[n].totalFrame;
+		}
+
+		output_height = currentRowHeight;
+	}
+	
+	EnsureVectorSize(s_srcDibBitsBuffer, output_height * output_width * 4);
+
+	png_bytep  bigmap = &amp;s_srcDibBitsBuffer[0];
+	currentRowHeight = 0;
+	
+	std::string xml;
+	const char *headline_fmt =  "&lt;SWFLoader isBattle=\"true\" name=\"%s\" url=\"assets/soldiers/%s.swf\" load=\"false\"&gt;\n";
+	const char *actionline_fmt =  "  &lt;action name=\"%s\" rowHeight=\"%d\" frameWidth=\"%d\" frameHeight=\"%d\" fps=\"120\" totalFrame=\"%d\" attackFrame=\"0\" attackedFrame=\"0\" isRight=\"true\" offsetX=\"115\" offsetY=\"-268\"/&gt;\n";
+	const char *endline_fmt =  "&lt;/SWFLoader&gt;\n";
+	sprintf(DirSpec,headline_fmt,npc_name,npc_name);
+	xml = DirSpec;
+
+	for(int n=0;n&lt;4;n++)
+	{
+		
+		TPNG_SRC_FILE_LIST &amp;filelist = *aniInfo[n].filelist;
+		if(filelist.empty())
+		{
+			continue;
+		}
+
+		sprintf(DirSpec,actionline_fmt,aniInfo[n].actionName,aniInfo[n].rowHeight,aniInfo[n].frameWidth,aniInfo[n].frameHeight,aniInfo[n].totalFrame);
+		xml +=DirSpec;
+
+		int curCol= 0;
+		for(TPNG_SRC_FILE_LIST_ITER   iter = filelist.begin(); 
+			iter !=filelist.end(); iter++)
+		{
+			int yy = 0;
+			for(int y=aniInfo[n].minTop;y&lt;aniInfo[n].maxBottom;y++)
+			{
+				int xx = 0;
+				for(int x=aniInfo[n].minLeft;x&lt;aniInfo[n].maxRight;x++)
+				{
+					unsigned int* psrc = (unsigned int*)((*iter)-&gt;bmp + y*(*iter)-&gt;rawWidth *4+ x*4);
+					int dx =  curCol * aniInfo[n].frameWidth  +  xx;
+					int dy =  currentRowHeight +yy;
+					unsigned int* dest = (unsigned int*)(bigmap + dy * output_width * 4 + dx*4);
+					xx++;
+					*dest = *psrc;
+				}
+
+				yy ++;
+			}
+			
+			curCol ++;
+			PNG_SRC_FILE * f = *iter;
+			delete f;
+		}
+
+		delete aniInfo[n].filelist;
+
+		currentRowHeight += aniInfo[n].frameHeight;
+	}
+	xml += endline_fmt;
+
+
+	SetCurrentDirectoryA(szCurPath);
+
+	strcpy(filename_dest,outputDir);
+	if(outputDir[strlen(outputDir)-1]!='\\')
+		strcat(filename_dest,"\\");
+	strcat(filename_dest,npc_name);
+	strcat(filename_dest,".png");
+	outputToPngFileNormal(filename_dest,4*output_width * output_height, &amp;s_srcDibBitsBuffer[0],output_width,output_height);
+
+	strcpy(filename_dest,outputDir);
+	
+	if(outputDir[strlen(outputDir)-1]!='\\')
+		strcat(filename_dest,"\\");
+	strcat(filename_dest,"AnimationConfig.xml");
+
+	FILE *xmlFile = fopen(filename_dest,"a");
+	
+	if(xmlFile==NULL)
+	{
+		return ;
+	}
+
+	fwrite(xml.c_str(),1,xml.length(),xmlFile);
+	fclose(xmlFile);
+}
+
+void print_uasge()
+{
+	printf("USEAGE:\n"
+			"   pngconcat  x:\\path\\to\\yournpcdirectory x:\\path\\to\\output \n"
+			"EXAMPLE:\n"
+			"   pngconcat  D:\\<a rel="nofollow">hero_</a>xxxxxx D:\\temp \n"
+			);
+}
+
+int checkDir(const char * szdir)
+{
+	 struct _stat buf;
+   int result;
+   char timebuf[26];
+   const char* filename = szdir;
+   errno_t err;
+
+   // Get data associated with "crt_stat.c": 
+   result = _stat( filename, &amp;buf );
+
+   // Check if statistics are valid: 
+   if( result != 0 )
+   {
+      perror( "Problem getting information" );
+      switch (errno)
+      {
+         case ENOENT:
+           printf("File %s not found.\n", filename);
+           break;
+         case EINVAL:
+           printf("Invalid parameter to _stat.\n");
+           break;
+         default:
+           /* Should never be reached. */
+           printf("Unexpected error in _stat.\n");
+      }
+	  return -1;
+   }
+   else
+   {
+	   if( (buf.st_mode &amp; _S_IFDIR)==0)
+	   {
+		     printf("input %s is not a directory.\n", filename);
+			 return -1;
+	   }
+		
+   }
+   return 0;
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	
+	if(argc != 3 || checkDir(argv[1])  || checkDir(argv[2]) )
+	{
+		print_uasge();
+		return -1;
+	}
+
+	concat(argv[1],argv[2]);
+	return 0;
+}</code></pre>
+<p><br/>  </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2011-12-02 01:56:49</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>

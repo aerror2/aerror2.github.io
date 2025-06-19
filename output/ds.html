@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOS 共识算法 DPOS3.0 的改进</title>
+    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
+    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
+    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
+    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
+    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
+    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
+    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
+    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
+    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
+    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>EOS 共识算法 DPOS3.0 的改进</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/80517837" target="_blank">https://blog.csdn.net/aerror/article/details/80517837</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2018-05-30 23:39:22</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1903</div>
+        
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
+        
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">EOS</span>, <span class="tag">   共识算法</span>, <span class="tag">  DPOS </span></div>
+    
+    <div class="article-description">   BP ： Block producer， 块产生者。         本文描述了一个DPoS的改进，它更强地保证了遵守DPoS3.0协议下的结点不会共识失败。我们定义共识失败为: 两个结点包括了两个不同的不可逆的链.       背景:       PoW , 如Bitcoin, 定义了一个 “最长链”规则的共识。使用这个规则，任何Block都不会被认为是不可逆的确认状态。 ...</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>   BP ： Block producer， 块产生者。</p>
+<p>   </p>
+<p><span style="color:#4f4f4f;">      </span><span style="color:#4f4f4f;">本文描述了一个DPoS</span>的改进，它更强地保证了遵守DPoS3.0协议下的结点不会共识失败。我们定义共识失败为: 两个结点包括了两个不同的<span style="color:#4f4f4f;">不可逆的链.</span></p>
+<p>       背景:</p>
+<p>       PoW , 如Bitcoin, 定义了一个 “最长链”规则的共识。使用这个规则，任何Block都不会被认为是不可逆的确认状态。 在任何时候，一个人可以从一个更老的块生产一个更长的链，结点就会转换(分叉)。由此我们可以得出这样的结论: 比特币仅仅提供了一个基于的尝试去分叉产所需要的经济成本的高概率的不可逆性。</p>
+<p>       BitShares介绍DPoS. 在这个算法下，股权持有人选举产生BP。BP被伪随机的打散并分配了一个绝对的时间段。在这个时间段里，他们会产生或者不产生一个块。拥有大多数BP的链它会以更快的速度增加它的链高度。如果两个链以不同的速度增长，那么更快的链最终将成为最长的链。因此，最初委托证明的股份算法为比特币提供了类似的保证，就是说，随着块的增加，另一个较慢的链越来越不可能发生逆转。</p>
+<p>       DPoS调度算法的本质是将大量的信息传递给一个观察者。例如，基于缺失块的出现频率，一个观察者可以发现他们可能处于一个少数派的链上。在21个BP的情况下，在仅仅2个连续的缺失块出现时(6秒), 一个节点可以准确地检测到他们可能是在一个少数的分叉上。同样地，如果BP在连续21个块中都没有缺失一个块，那么你可以确定你的块不会被反转。</p>
+<p>     罕见的共识失败（DPoS2.0)</p>
+<p>       DPoS2.0我们引入了最后一个不可逆块的概念。这个块最近有2/3+1的BP基于它来产生新块的。理论是，如果2/3+1的生产者建立在一个确定一个区块的链条上，那么就不可能有其他的分叉了。</p>
+<p>       就是说，在真实用户已经构造了一个网络被分成两条链的人为的场景。常情况下，这只会导致一个或两个链停止前进的最后一个不可逆块，直到一个链被重新连接到2/3+1的生产者。</p>
+<p>      在这个正常的行为中，一切都很好，一旦连接建立，所有的节点就会集中在一个真链上。</p>
+<p>      然而，在这个有一个竞争条件，就是两个分叉的链有可能同时得到2/3+1生产者。当这种情况发生时，分叉两条链的节点无法同步，因为它们都不会回卷到最后一个不可逆转的块。需要手动干预。</p>
+<p>      在这种情况下，一个或两个分叉将会停止前进的不可逆性，这取决于哪个分叉最终会得到2/3+1的生产者。少数派链的增长速度可能仍为1/2，但等待不可逆转的节点将不再接受最终确定的少数派链上的任何交易。</p>
+<p>      这种故障模式产生了一个单块，如果它回退了，一些服务可能会经历损失。根据我们的估计，发生这种情况的概率要比一个比特币块的概率要小得多。在实际测试中，BitShares和Steem在运行了超过3年并没有发这种情况。</p>
+<p>       DPOS 3.0 + BFT</p>
+<p>      随着EOSIO我们引入了区块链通信(IBC)，它允许一个链高效地向另一个链证明交易是最终的。Finality对IBC至关重要，因为一旦区块链接受了来自另一个的消息，就不容易，也不希望回卷两个链来纠正错误。</p>
+<p>       想象一下区块链正试图接受比特币存款。一个用户在他引用的块的6块后，提交了全部的比特币。基于这个证明这个是不可逆的动作。 想像一下，如果BTC分叉了，这6个块给撤销了，这时候怎么办？ 这个区块链不可能逆转和拒绝先前接受的比特币交易。这样的事件需要人工干预和(或)硬分叉。这样的硬分叉/干预将会波及所有连接的链。这不是一个可行的选择。</p>
+<p>      为了确保IBC在所有非复杂情况下的安全可靠，DPOS 3.0 + BFT引入了一个小的更改, 是关于最后一个不可逆块(LIB)是如何计算的。有了这个更改，我们可以证明两个节点不可能在没有至少1/3的块产生节点故意恶意的情况下得出不同的结论。此外，我们还可以证明哪怕是一个节点的恶意行为。</p>
+<p>       DPOS背后的核心理念是，每个产品块都是对所有之前区块的投票。有了这个模型，2/3+的生产者建立在一个特定的区块上，它有2/3+投票。这在理论上听起来很不错，但在不同的时间，非拜占庭式的区块生产者可以在不同的分叉上生产区块。当它们产生这些块时，它们最终会对每个链上出现的块编号产生间接的相互冲突的投票。</p>
+<p>       假设有A,B和C三个BP， 它们之间因为故碍网络一段时间内无法通讯。  这时，A在时间T产生了 块N, B在时间点T+1时产生了块N. 这时，假设C恢复通讯了，它在T+2这个时间点，基于B产生的块N的顶部，产生了块N+1。 在这个之后，A也恢复通讯了，知道了C的块N+1,  A会切换到最长的分叉上。下一次 产生个一块时，它会间接的确认了 B的块N，这个块是和A之前产生的块N冲突的。</p>
+<p>       在DPoS2.0 的规则下，A’s block N会有来自A，B和C的投票，并且，因为有（2/3+1）的确认成为不可逆的。在DPOS的规则下，我们要求A披露他之前确认的另一个block N，由于这个信息披露，网络将不会计算A的block，因为它已经投票给B的block N，这就使得B的block N只有2个投票，这还不足以达到不可逆性。</p>
+<p>        DPOS 3.0 B的block N永远不会实现直接的不可逆性，因为它要求A、B和C的投票结果是2/3+1，而A在另一个块N上投下一票，如果N+2和B产生N+3，那么N+1就不可逆了。这将会给block N+1的3张支持票，达到2/3+1。一旦C的block N+1是不可逆转的，B的block N也被认为是不可逆的。</p>
+<p>        为了实现这个算法，每个块生成器包括最高的块号(H)，它在任何一个分叉上都得到了确认。当块 N被应用时，仅在于range (H+1, N)这个范围内的块会得到不可逆性的投票。</p>
+<p>       任何在重叠区域对一个块进行签名的BP都被认为是拜占庭式的，并将生成错误行为的密码学证明。</p>
+<p> </p>
+<p>       有了这些信息，我们现在可以生成一个简单的证明，即对于任何给定的块高度，在相同高度的两个不同块上获得2/3+1的投票，同时至少1/3的BP必须对冲突范围内的块进行签名。</p>
+<p>       </p>
+<p>       如果有一个诚实的网络分裂，那么就会发生这样的情况: 两个好的组（1/3 *2）产生各自的选择，一个坏的组（1/3*1）在两个分叉上都进行签名。 而实际上一个连接良好的网络，至少需要2/3+1的成员是恶意的，才有可能去产生两个不同的不可逆块。</p>
+<p>      在这些规则下，现在有两种方式让生产者签署拜占庭式的声明:</p>
+<p> </p>
+<p> </p>
+<p>1. 用相同的块号直接或间接地签署两个区块。</p>
+<p> </p>
+<p>             2. 用相同的时间块签两个块。</p>
+<p> </p>
+<p>      运行默认软件的诚实节点永远不会做这些事情。因此，我们有可能对所有的不良行为进行惩罚，即使只是失败的尝试的行为。     </p>
+<p> </p>
+<p> 感谢</p>
+<p> </p>
+<p>这个问题的解决方案是由Bart, Arhag，以及我和B1团队的其他成员共同发现的。</p>
+<p>https://github.com/EOSIO/eos/issues/2718</p>
+<p> </p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>版本所有 tdany.com  | 发表时间: 2018-05-30 23:39:22</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>
