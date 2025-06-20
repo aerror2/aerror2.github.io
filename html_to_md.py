@@ -94,8 +94,10 @@ def convert_index_html_to_md(html_file, output_dir):
     # 生成输出文件名
     output_file = os.path.join(output_dir, "Home.md")
     
-    # 将 .html 链接替换为 .md 链接
-    markdown = re.sub(r'\]\(([^)]+)\.html\)', r'](\1.md)', markdown)
+    # 将内部链接的文件扩展名移除，以适应 GitHub Wiki 格式
+    # 对于内部链接，GitHub Wiki 使用不带扩展名的格式：https://github.com/username/repo/wiki/pagename
+    markdown = re.sub(r'\]\(([^)]+)\.html\)', r'](\1)', markdown)
+    markdown = re.sub(r'\]\(([^)]+)\.md\)', r'](\1)', markdown)
     
     # 写入Markdown文件
     with open(output_file, 'w', encoding='utf-8') as f:
