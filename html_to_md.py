@@ -103,7 +103,7 @@ def convert_index_html_to_md(html_file, output_dir):
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(markdown)
     
-    # 不再打印转换成功信息，由main函数统一处理
+    print(f"已转换索引: {html_file} -> {output_file}")
     return output_file
 
 def convert_html_to_md(html_file, output_dir):
@@ -124,9 +124,6 @@ def convert_html_to_md(html_file, output_dir):
     # 读取HTML文件
     with open(html_file, 'r', encoding='utf-8') as f:
         html_content = f.read()
-        
-    # 保存原始HTML内容，以便后续处理
-    original_html = html_content
     
     # 移除HTML中的省略号span元素和图片元素
     html_content = re.sub(r'<span[^>]*id="[^"]*_Closed_Text"[^>]*>[^<]*\.\.\..*?</span>', '', html_content)
@@ -339,21 +336,6 @@ def convert_html_to_md(html_file, output_dir):
     
     article_content = str(article_tag) if article_tag else ''
     
-    # 直接处理带颜色的文本
-    colored_spans = soup.find_all('span', style=lambda s: s and 'color:' in s.lower())
-    for span in colored_spans:
-        if span.string and span.string.strip():
-            style = span.get('style', '')
-            color_match = re.search(r'color:\s*([#\w]+)', style, re.IGNORECASE)
-            if color_match:
-                color_code = color_match.group(1)
-                # 创建新的标签结构
-                new_text = f"<font color=\"{color_code}\">{span.string}</font>"
-                new_tag = soup.new_tag('span')
-                new_tag.string = new_text
-                span.replace_with(new_tag)
-
-    
     # 处理图片和视频
     # 查找所有图片元素
     images = soup.find_all('img')
@@ -416,33 +398,11 @@ def convert_html_to_md(html_file, output_dir):
     h = html2text.HTML2Text()
     h.ignore_links = False
     h.body_width = 0  # 不自动换行
-    h.mark_code = True
-    h.escape_snob = False  # 不转义特殊字符
     h.unicode_snob = True  # 保留Unicode字符
     h.skip_internal_links = False
     h.inline_links = True
-    h.protect_links = True  # 保护链接
-    h.images_to_alt = False
-    h.images_with_size = False
-    h.ignore_images = False
-    h.ignore_emphasis = False
-    h.ignore_tables = False
-    h.single_line_break = True  # 单行换行
-    h.emphasis_mark = '*'  # 强调标记
-    h.strong_mark = '**'  # 加粗标记
-    h.ul_item_mark = '-'  # 无序列表标记
-    h.emphasis = True  # 启用强调
-    h.google_doc = False
-    h.hide_strikethrough = False
-    h.ignore_anchors = False
-    h.pad_tables = True
-    h.wrap_links = False  # 不换行链接
-    h.wrap_list_items = False  # 不换行列表项
-    h.inline_links = True
     h.protect_links = True
     h.mark_code = True
-    # 保留 font 标签
-    h.ignore_tags = ['font']
     
     article_md = h.handle(article_content)
     
@@ -558,98 +518,55 @@ def convert_html_to_md(html_file, output_dir):
     base_name = os.path.splitext(os.path.basename(html_file))[0]
     output_file = os.path.join(output_dir, f"{base_name}.md")
     
-    # 替换 .html 链接为 .md 链接
-    markdown = re.sub(r'\]\(([^)]+)\.html\)', r']\(\1.md)', markdown)
-    
-    # 从原始HTML中提取带颜色的文本，并将其替换回Markdown文件中
-    # 注释掉这部分代码，因为它使用了未导入的uuid模块，并且可能导致性能问题
-    # soup_original = BeautifulSoup(original_html, 'html.parser')
-    # colored_spans = soup_original.find_all('span', style=lambda s: s and 'color:' in s.lower())
-    # 
-    # for span in colored_spans:
-    #     if span.string and span.string.strip():
-    #         style = span.get('style', '')
-    #         color_match = re.search(r'color:\s*([#\w]+)', style, re.IGNORECASE)
-    #         if color_match:
-    #             color_code = color_match.group(1)
-    #             text = span.string.strip()
-    #             # 在Markdown中查找纯文本，并替换为带颜色的文本
-    #             if text and text in markdown:
-    #                 # 需要导入uuid模块
-    #                 # import uuid
-    #                 # 创建一个唯一的标记，确保不会与文本内容冲突
-    #                 # placeholder = f"COLOR_PLACEHOLDER_{uuid.uuid4().hex}"
-    #                 # 先将文本替换为占位符
-    #                 # markdown = markdown.replace(text, placeholder)
-    #                 # 然后将占位符替换为带颜色的文本
-    #                 # markdown = markdown.replace(placeholder, f'<font color="{color_code}">{text}</font>')
+    # 将 .html 链接替换为 .md 链接
+    markdown = re.sub(r'\]\(([^)]+)\.html\)', r'](\1.md)', markdown)
     
     # 写入Markdown文件
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(markdown)
     
-    # 不再打印转换成功信息，由main函数统一处理
+    print(f"已转换: {html_file} -> {output_file}")
     return output_file
 
 def main():
     if len(sys.argv) < 2:
-        print("用法: python html_to_md.py <HTML文件或目录> [输出目录]")
+        print("用法: python html_to_md.py <HTML目录> [输出目录]")
         sys.exit(1)
     
-    html_path = sys.argv[1]
+    html_dir = sys.argv[1]
     output_dir = sys.argv[2] if len(sys.argv) > 2 else "markdown"
     
-    # 创建输出目录（如果不存在）
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # 检查输入路径是文件还是目录
-    if os.path.isfile(html_path) and html_path.lower().endswith('.html'):
-        # 单个HTML文件
-        try:
-            output_file = convert_html_to_md(html_path, output_dir)
-            print(f"已转换: {html_path} -> {output_file}")
-        except Exception as e:
-            print(f"转换 {html_path} 时出错: {e}")
-            sys.exit(1)
-    elif os.path.isdir(html_path):
-        # HTML目录
-        # 获取所有HTML文件
-        html_files = glob.glob(os.path.join(html_path, "*.html"))
-        
-        if not html_files:
-            print(f"错误: 在 {html_path} 中没有找到HTML文件")
-            sys.exit(1)
-        
-        # 创建已处理文件的集合，避免重复处理
-        processed_files = set()
-        
-        # 首先转换index.html（如果存在）
-        index_file = os.path.join(html_path, "index.html")
-        if os.path.exists(index_file):
-            try:
-                output_file = convert_html_to_md(index_file, output_dir)
-                print(f"已转换: {index_file} -> {output_file}")
-                processed_files.add(index_file)
-            except Exception as e:
-                print(f"转换索引文件时出错: {e}")
-        
-        # 转换其他HTML文件
-        converted_count = len(processed_files)
-        for html_file in html_files:
-            if html_file not in processed_files:  # 避免重复处理
-                try:
-                    print(f"开始转换: {html_file} ")
-
-                    output_file = convert_html_to_md(html_file, output_dir)
-                    print(f"已转换: {html_file} -> {output_file}")
-                    converted_count += 1
-                except Exception as e:
-                    print(f"转换 {html_file} 时出错: {e}")
-        
-        print(f"\n共转换 {converted_count} 个文件到 {output_dir} 目录")
-    else:
-        print(f"错误: 输入路径不是有效的HTML文件或目录 - {html_path}")
+    # 检查HTML目录是否存在
+    if not os.path.isdir(html_dir):
+        print(f"错误: 目录不存在 - {html_dir}")
         sys.exit(1)
+    
+    # 获取所有HTML文件
+    html_files = glob.glob(os.path.join(html_dir, "*.html"))
+    
+    if not html_files:
+        print(f"错误: 在 {html_dir} 中没有找到HTML文件")
+        sys.exit(1)
+    
+    # 首先转换index.html（如果存在）
+    index_file = os.path.join(html_dir, "index.html")
+    if os.path.exists(index_file):
+        try:
+            convert_html_to_md(index_file, output_dir)
+            html_files.remove(index_file)  # 从列表中移除，避免重复转换
+        except Exception as e:
+            print(f"转换索引文件时出错: {e}")
+    
+    # 转换其他HTML文件
+    converted_files = []
+    for html_file in html_files:
+        try:
+            output_file = convert_html_to_md(html_file, output_dir)
+            converted_files.append(output_file)
+        except Exception as e:
+            print(f"转换 {html_file} 时出错: {e}")
+    
+    print(f"\n共转换 {len(converted_files) + (1 if os.path.exists(index_file) else 0)} 个文件到 {output_dir} 目录")
 
 if __name__ == "__main__":
     main()
