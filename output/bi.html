@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MacOS如何读取磁盘原始的扇区内容，恢复误删除的数据</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-10-30 14:41:07</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 572</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 581</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -174,13 +174,16 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>MacOS 也是把磁盘当成一个文件，也是可以使用 dd来读取，命行令行如下：</p>
-<pre><code class="hljs language-javascript">sudo dd if=/dev/disk2 bs=512 count=1 skip=100 of=sector_100.bin</code></pre>
+<pre>
+<code class="hljs language-javascript">sudo dd if=/dev/disk2 bs=512 count=1 skip=100 of=sector_100.bin</code></pre>
 <p>这个就是读取 /dev/disk2这个磁盘每100这个sector, bs表示扇区大小是512.</p>
 <p>但是你直接用读，应该是会出错的，如下：</p>
-<pre><code class="hljs language-javascript">dd: /dev/disk2: Resource busy</code></pre>
+<pre>
+<code class="hljs language-javascript">dd: /dev/disk2: Resource busy</code></pre>
 <p>你需要把这个磁盘umount下来。</p>
 <p>先使用diskutil list找到这磁盘的挂载</p>
-<pre><code class="hljs language-javascript">$ diskutil list
+<pre>
+<code class="hljs language-javascript">$ diskutil list
 
 
 /dev/disk2 (synthesized):
@@ -191,16 +194,19 @@
 
 </code></pre>
 <p>然后umount它的挂载</p>
-<pre><code class="hljs language-javascript">$ diskutil umount disk2s1
+<pre>
+<code class="hljs language-javascript">$ diskutil umount disk2s1
 
 Volume p1t2 on disk2s1 unmounted</code></pre>
 <p>再执行就ok了。</p>
-<pre><code class="hljs language-javascript">$ sudo dd if=/dev/disk2 bs=512 count=1 skip=100 of=sector_100.bin
+<pre>
+<code class="hljs language-javascript">$ sudo dd if=/dev/disk2 bs=512 count=1 skip=100 of=sector_100.bin
 1+0 records in
 1+0 records out
 512 bytes transferred in 0.000225 secs (2274877 bytes/sec)</code></pre>
 <p>也可以使用grep命令去查找一个字符串出现的位置。</p>
-<pre><code class="hljs hljs language-javascript">$ sudo grep -a -o -b 'EFI PART' /dev/nvme0n1
+<pre>
+<code class="hljs hljs language-javascript">$ sudo grep -a -o -b 'EFI PART' /dev/nvme0n1
 512:EFI PART
 41661792:EFI PART
 412075976:EFI PART
@@ -208,10 +214,11 @@ Volume p1t2 on disk2s1 unmounted</code></pre>
 587940832:EFI PART
 512110190080:EFI PART</code></pre>
 <p>按上面的原理，我们可以使用代码来一个一个扇区的查找我们丢失数据。我丢了一个android的签名keystore, 用遍了网上的工具都没有找到。我自己写了一个搜索扇区程序，尝试去恢复这个文件。代码如下：</p>
-<pre><code class="hljs language-javascript">//
+<pre>
+<code class="hljs language-javascript">//
 //  main.cpp
 //  recoverssd
-
+////
 #include &lt;unistd.h&gt;
 #include &lt;stdio.h&gt;
 #include &lt;string&gt;

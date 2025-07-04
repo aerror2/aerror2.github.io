@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MacOS IOS Mach-O修改补丁之增加外部未定义符号并调用</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-04-13 18:03:32</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 686</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 693</div>
         
         
         
@@ -174,9 +174,11 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>1. Mach-O的文件的基本结构如下：</p>
-<p><img alt="" height="918" src="images/c8/223980a6f82276811293a7d9e597cf0a.png" width="890"><br/>  </img></p>
+<p><img alt="" height="918" src="images/c8/223980a6f82276811293a7d9e597cf0a.png" width="890"><br/>
+ </img></p>
 <p>2.例子文件所有头部：</p>
-<pre><code class="hljs language-javascript">Mach header
+<pre>
+<code class="hljs language-javascript">Mach header
       magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
    MH_MAGIC     ARM         V7  0x00      OBJECT     5       1960 SUBSECTIONS_VIA_SYMBOLS
 Load command 0
@@ -568,14 +570,16 @@ Load command 4
       locreloff 0
         nlocrel 0</code></pre>
 <p>3. 外部符号也是符号表的一部分，符号表包括了三种的符号的(nlocalsym + nextdefsym + nundefsym)，如外部符号是N_DEF, N_EXT.</p>
-<pre><code class="hljs language-javascript">Load command 3
+<pre>
+<code class="hljs language-javascript">Load command 3
      cmd LC_SYMTAB
  cmdsize 24
   symoff 299028
    nsyms 417
   stroff 304032
  strsize 17752</code></pre>
-<pre><code class="hljs language-javascript">Load command 4
+<pre>
+<code class="hljs language-javascript">Load command 4
             cmd LC_DYSYMTAB
         cmdsize 80
       ilocalsym 0
@@ -602,7 +606,8 @@ Load command 4
 <p> stroff 304032 &lt;---这个是符号字符串的文件偏移</p>
 <p> </p>
 <p>一个符号的定义结构如下:</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 /*
  * Format of a symbol table entry of a Mach-O file for 32-bit architectures.
  * Modified from the BSD format.  The modifications from the original format
@@ -654,7 +659,9 @@ struct nlist_64 {
 <p> </p>
 <p>我们要加增一个外部符号，需要做以下的修改：</p>
 <p>LC_SYMTAB:</p>
-<p>   nsyms 417   --&gt; 417+1 = 418<br/>   stroff 304032 --&gt; 304032+12 = 304044(0x4A3AC)<br/>  strsize 17752 --&gt;17752 + strlen("CreateIphonePathFileSystem")(26)+1 =  17779(0x4573)</p>
+<p>   nsyms 417   --&gt; 417+1 = 418<br/>
+  stroff 304032 --&gt; 304032+12 = 304044(0x4A3AC)<br/>
+ strsize 17752 --&gt;17752 + strlen("CreateIphonePathFileSystem")(26)+1 =  17779(0x4573)</p>
 <p> </p>
 <p>LC_DYSYMTAB:</p>
 <p>      nundefsym 112 --&gt; 112 +1  == 113</p>
@@ -677,8 +684,11 @@ struct nlist_64 {
 <p><img alt="" height="474" src="images/c8/17820266703a375489f6532e74849bd8.png" width="1200"/></p>
 <p> </p>
 <p><img alt="" height="818" src="images/c8/c6fa20d9533261ee2267f9f3f8716847.png" width="1200"/></p>
-<p>关于ARM的B,BL跳转指令<br/> .text:00001260 A3 04 00 EB                             BL      sub_24F4<br/>  </p>
-<pre><code class="hljs language-javascript">echo "obase=2;ibase=16;EB0004A3" | bc
+<p>关于ARM的B,BL跳转指令<br/>
+.text:00001260 A3 04 00 EB                             BL      sub_24F4<br/>
+ </p>
+<pre>
+<code class="hljs language-javascript">echo "obase=2;ibase=16;EB0004A3" | bc
 
 11101011000000000000010010100011
 
@@ -728,11 +738,19 @@ DEBB
 <p>0x1260 + 0x4A3 * 4 + 8 = 24F4</p>
 <p>偏移 = (目标地址 - 当前地址 - 8) &gt;&gt; 2</p>
 <p>偏移 = (0x24F4 - 0x1260 - 8) / 4 = 0x4A3</p>
-<p>假设跳转指令处的地址是A,跳转目标处的地址是B.<br/> B,BL指令保存的是偏移地址,这个地址的计算方法是:<br/> 1.B-(A+8).A+8是因为ARM的流水线使得指令执行到A处时,PC实际的值是A+8.<br/> 2.第一步得到的值是4的倍数,因为ARM的指令是4对齐的,即最低两位为00.于是将这个值右移两位.<br/> 3.得到最终偏移</p>
-<p>执行时:<br/> 1.取出偏移<br/> 2.左移两位<br/> 3.加入PC,这时PC的值刚好为目标处的地址值,即目标地址指令进入取指,流水线前两级被清空</p>
+<p>假设跳转指令处的地址是A,跳转目标处的地址是B.<br/>
+B,BL指令保存的是偏移地址,这个地址的计算方法是:<br/>
+1.B-(A+8).A+8是因为ARM的流水线使得指令执行到A处时,PC实际的值是A+8.<br/>
+2.第一步得到的值是4的倍数,因为ARM的指令是4对齐的,即最低两位为00.于是将这个值右移两位.<br/>
+3.得到最终偏移</p>
+<p>执行时:<br/>
+1.取出偏移<br/>
+2.左移两位<br/>
+3.加入PC,这时PC的值刚好为目标处的地址值,即目标地址指令进入取指,流水线前两级被清空</p>
 <p> </p>
 <p>根据上面的原理，进行armv7 32bit的.o文件进行调用修改, 过程如下:</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 
 
 
@@ -822,7 +840,8 @@ EA000016
 <p><img alt="" height="706" src="images/c8/428b4d6cf78d7a7198a9c834d6eb8a1f.png" width="1200"/></p>
 <p>实际在0804这个地址的原始数并非 反编译看到那些数据49 F7 00 EB ，而是FD FD FF EB,  这个重定位的类型是BR24, 应该是说在加载的时候直接修改这条指令的低24bit.</p>
 <p>这个数据结构：</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 /*
  * Format of a relocation entry of a Mach-O file.  Modified from the 4.3BSD
  * format.  The modifications from the original format were changing the value
@@ -842,7 +861,8 @@ struct relocation_info {
 		r_type:4;	/* if not 0, machine specific relocation type */
 };</code></pre>
 <p>即如果是外部符号的话 , r_symbolnum的低24bit,  即是符号的下标。</p>
-<p><img alt="" height="706" src="images/c8/d55b781648633aff8c694a594f9f1724.png" width="1200"/><br/> 从上图的strlen我们进行计算 </p>
+<p><img alt="" height="706" src="images/c8/d55b781648633aff8c694a594f9f1724.png" width="1200"/><br/>
+从上图的strlen我们进行计算 </p>
 <p>5d00019F &amp; FFFFFF  = 00019F  = 415</p>
 <p> rawoff = 0x49014 + 415*12 = 0x4A388</p>
 <p><img alt="" height="596" src="images/c8/cb7a8f833f7bf6d29b304973139f6c04.png" width="1200"/></p>
@@ -865,14 +885,21 @@ struct relocation_info {
 <p>基本上按上面的流程处理就可以增另一个外部调用的符号表.</p>
 <p>指令方面有些不一样的，但这个和32bit是一样结构编码的，如上图。</p>
 <p> </p>
-<p>ARM64 BL和B指令, 跳转地址计算不大一样。<br/> 公式是: (目标地址-当前地址)/4 </p>
-<p>验证一下：<br/> 00000000000008b4 03000014               b          loc_8c0</p>
-<p>(76c - 764 )/4   = 3<br/> 0000000000000924 02000014               b          92c<br/> (92c- 024)/4 = 2 </p>
+<p>ARM64 BL和B指令, 跳转地址计算不大一样。<br/>
+公式是: (目标地址-当前地址)/4 </p>
+<p>验证一下：<br/>
+00000000000008b4 03000014               b          loc_8c0</p>
+<p>(76c - 764 )/4   = 3<br/>
+0000000000000924 02000014               b          92c<br/>
+(92c- 024)/4 = 2 </p>
 <p> </p>
 <p> </p>
-<p><br/> //这个有重定位表, 计算应该是一样的。<br/> 000000000000050c 7FF20094               bl         __ZnwmRK10MemLabelIdmPKci   </p>
+<p><br/>
+//这个有重定位表, 计算应该是一样的。<br/>
+000000000000050c 7FF20094               bl         __ZnwmRK10MemLabelIdmPKci   </p>
 <p> </p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 
 0000000000000508 E10314AA               mov        x1, x20
 000000000000050c 7FF20094               bl         __ZnwmRK10MemLabelIdmPKci    ; operator new(unsigned long, MemLabelId const&amp;, unsigned long, char const*, int)
@@ -918,7 +945,8 @@ struct relocation_info {
 <p>将</p>
 <p>3E0D0:    5D0001A3 -&gt;  5D0001BE (符号索引为446)</p>
 <p>Arm64修改完成</p>
-<pre><code class="hljs language-javascript">000000000000050c A7F20094               bl         _CreateIphonePathFileSystem
+<pre>
+<code class="hljs language-javascript">000000000000050c A7F20094               bl         _CreateIphonePathFileSystem
 0000000000000510 E8010090               adrp       x8, #0x3c000
 0000000000000514 086947F9               ldr        x8, [x8, #0xed0]             ; __ZTV20LocalFileSystemPosix
 0000000000000518 0E000014               b          loc_550

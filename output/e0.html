@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于 AspNetDB.mdf</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2008-05-08 04:19:00</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3636</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3640</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
         
         
@@ -175,9 +175,9 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <h3>关于 AspNetDB.mdf</h3>
 <div class="t_msgfont" id="postmessage_26039">
-  由于没有aspnetdb.mdf数据库，因此得先建立一个，这个可以通过aspnet_regsql.exe完成，该程序位于C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/下。 1、运行它之后会弹出的窗口：按"Next &gt;"按钮 2、我们会发现除了有配置数据库外，还有删除数据库的功能，以后说不定可以派上用场，现在自然选Configure SQL Server for application services，按"Next &gt;"按钮 3、现在进入数据库选择界面，如果SQLSERVER就安装在本地的话，可以不用改任何东西，直接按"Next &gt;"。这里的Database显示为 
- ，表示默认数据库名为aspnetdb，你也可以根据自己的需要更改名称。 4、可以开始安装数据库了，当Finish按钮亮起时，表明数据库安装成功，一切顺利！ 这几天在学ASP.NET,可是在数据库连接时一直出现问题，原因就是在配置安全的时候发生如下错误：出现了如下错误选定的数据存储区出现问题，原因可能是服务器名称或凭据无效，或者权限不足。也可能是未启用角色管理器功能造成的。请单击下面的按钮，以重定向到可以选择新数据存储区的页。下面的消息可能会有助于诊断问题: 无法连接到 SQL Server 数据库。解决方法： 1、打开VS的命令提示，输入aspnet_regsql，用默认的数据库(aspnetdb)。 2、打开VS，依次：工具--&gt;选项--&gt;数据库工具--&gt;数据连接--&gt;SQL Server实例名称(默认为空)，改为你的服务器名称。 3、还是VS，工具--&gt;连接到数据库--&gt;服务器名(选择刚才的服务器)，选择 microsoft sql server,在服务器名称中填写"." (很重要呦^_^),然后按要求选择Windows或SQL Server身份验证，数据库选择刚才的aspnetdb。测试OK后，在高级里复制出语句 Data Source=Server;Initial Catalog=aspnetdb;User ID=sa 4、打开IIS:默认网站--&gt;属性--&gt;ASP.NET--&gt;编辑全局配置--&gt;常规--&gt;连接字符串管理器LocalSqlServer的连接字符串改为 
- <img alt="" border="0" src="images/e0/5631054428f23ee3f12571892fc34c73.png">ata Source=Server;Initial Catalog=aspnetdb;User ID=sa 
+ 由于没有aspnetdb.mdf数据库，因此得先建立一个，这个可以通过aspnet_regsql.exe完成，该程序位于C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/下。 1、运行它之后会弹出的窗口：按"Next &gt;"按钮 2、我们会发现除了有配置数据库外，还有删除数据库的功能，以后说不定可以派上用场，现在自然选Configure SQL Server for application services，按"Next &gt;"按钮 3、现在进入数据库选择界面，如果SQLSERVER就安装在本地的话，可以不用改任何东西，直接按"Next &gt;"。这里的Database显示为
+ ，表示默认数据库名为aspnetdb，你也可以根据自己的需要更改名称。 4、可以开始安装数据库了，当Finish按钮亮起时，表明数据库安装成功，一切顺利！ 这几天在学ASP.NET,可是在数据库连接时一直出现问题，原因就是在配置安全的时候发生如下错误：出现了如下错误选定的数据存储区出现问题，原因可能是服务器名称或凭据无效，或者权限不足。也可能是未启用角色管理器功能造成的。请单击下面的按钮，以重定向到可以选择新数据存储区的页。下面的消息可能会有助于诊断问题: 无法连接到 SQL Server 数据库。解决方法： 1、打开VS的命令提示，输入aspnet_regsql，用默认的数据库(aspnetdb)。 2、打开VS，依次：工具--&gt;选项--&gt;数据库工具--&gt;数据连接--&gt;SQL Server实例名称(默认为空)，改为你的服务器名称。 3、还是VS，工具--&gt;连接到数据库--&gt;服务器名(选择刚才的服务器)，选择 microsoft sql server,在服务器名称中填写"." (很重要呦^_^),然后按要求选择Windows或SQL Server身份验证，数据库选择刚才的aspnetdb。测试OK后，在高级里复制出语句 Data Source=Server;Initial Catalog=aspnetdb;User ID=sa 4、打开IIS:默认网站--&gt;属性--&gt;ASP.NET--&gt;编辑全局配置--&gt;常规--&gt;连接字符串管理器LocalSqlServer的连接字符串改为
+ <img alt="" border="0" src="images/e0/5631054428f23ee3f12571892fc34c73.png">ata Source=Server;Initial Catalog=aspnetdb;User ID=sa
  <img alt="" border="0" src="images/e0/10cc0224e98e5331f88b4d321f1502df.png">assword=sa 。 5、还是在IIS:默认网站--&gt;属性--&gt;ASP.NET--&gt;编辑全局配置--&gt;身份验证--&gt;选定"启用角色管理" 表名：aspnet_Applications 说明：保存应用程序信息 
  <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名 </td><td>类型</td><td>属性</td><td>说明 </td></tr><tr><td>ApplicationName</td><td>nvarchar(256)</td><td> </td><td>应用程序名</td></tr><tr><td>LoweredApplicationName</td><td>nvarchar(256)</td><td> </td><td>小写的应用程序名</td></tr><tr><td>ApplicationId </td><td>uniqueidentifier</td><td>PK</td><td>应用程序的id, GUID值 </td></tr><tr><td>Description</td><td>nvarchar(256)</td><td>nullable</td><td>应用程序的 描述</td></tr></tbody></table> 表名：aspnet_Paths 说明：路径信息 
  <table cellspacing="0" class="t_table" style="WIDTH: 98%"><tbody><tr><td>字段名 </td><td>类型</td><td>属性</td><td>说明 </td></tr><tr><td>ApplicationId</td><td>uniqueidentifier</td><td>FK: appnet_Applications.ApplciationId </td><td>应用程序Id</td></tr><tr><td>PathId</td><td>uniqueidentifier</td><td>PK</td><td>路径Id</td></tr><tr><td>Path</td><td>nvarchar(256)</td><td> </td><td>路径信息 </td></tr><tr><td>LoweredPath </td><td>nvarchar(256)</td><td> </td><td>小写的路径信息 </td></tr></tbody></table> 表名：aspnet_Users 说明：用户信息 
@@ -213,7 +213,7 @@
 <em>(33.5 KB)</em>
 <dd>
 <p>2007-10-29 21:13 </p>
-<p><img alt="03.JPG" border="0" src="images/e0/3037e9ac4d7ea0c6a48e76e9952b6fc3.png"/> </p>
+<p><img alt="03.JPG" border="0" src="images/e0/3037e9ac4d7ea0c6a48e76e9952b6fc3.png"> </img></p>
 </dd>
 </img></dl>
 <dl class="t_attachlist">
@@ -224,7 +224,7 @@
 <p>2007-10-29 21:13 </p>
 <p><img alt="04.JPG" border="0" src="images/e0/c04c42795772d62c35474c5428fbe1ea.png"/> </p>
 </dd>
-</dl>  
+</dl> 
 </div>
 </div>
     </div>

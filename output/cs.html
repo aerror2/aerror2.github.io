@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小米10 adbd 以root权限启动提供服务</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-01-15 19:54:54</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2388</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2402</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 4</div>
         
@@ -187,7 +187,8 @@
 <p>1.  下载android 10 的 aosp_arm64-img  <a href="https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest" rel="nofollow">https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest</a>， </p>
 <p><a href="https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest/aosp_arm64-img-7064523.zip" rel="nofollow">https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest/aosp_arm64-img-7064523.zip</a></p>
 <p>2.   解压<a href="https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest/aosp_arm64-img-7064523.zip" rel="nofollow">aosp_arm64-img-7064523.zip</a>得到system.img文件， 用以下命令得到debug版的adbd</p>
-<pre><code class="hljs language-javascript">mkdir /mnt/system
+<pre>
+<code class="hljs language-javascript">mkdir /mnt/system
 mount -o ro system.img /mnt/system
 #一定要-o ro 要不然默认是rw，  mount不成功.
 
@@ -195,17 +196,20 @@ mount -o ro system.img /mnt/system
 cp  /mnt/system/system/bin/adbd   adbd
 </code></pre>
 <p>因为是ext2文件系统，使用linux比较方便，macos也可以使用fuse。可以用file命令来判断这个image是raw的img还是sparse的img, 要是sparse img, 还需要使用simg2img命令来转一下, 需要的话，使用brew , yum  , apt之类的工具安装。</p>
-<pre><code class="hljs language-javascript">$ file system.img 
+<pre>
+<code class="hljs language-javascript">$ file system.img 
 system.img: Linux rev 1.0 ext2 filesystem data, UUID=4729639d-b5f2-5cc1-a120-9ac5f788683c (extents) (large files) (huge files)</code></pre>
 <p>3. 上传adbd到 手机</p>
-<pre><code class="hljs language-javascript">adb push adbd /mnt/sdcard
+<pre>
+<code class="hljs language-javascript">adb push adbd /mnt/sdcard
 adb shell su -c mv /mnt/sdcard/adbd /data/local/
 adb shell su -c chmod +x /data/local/adbd
 
 </code></pre>
 <p>4. 编写脚本adbdroot, system_properties_arm64是专门用于修改ro.开头的只读系统变量的，ro开头是只读，使用setprop是无法修改的，具体原理看<a href="https://bbs.pediy.com/thread-222293.htm" rel="nofollow">https://bbs.pediy.com/thread-222293.htm</a></p>
 <p> </p>
-<pre><code class="hljs language-javascript">Upload  system_properties_arm64  and adb to /data/local/
+<pre>
+<code class="hljs language-javascript">Upload  system_properties_arm64  and adb to /data/local/
 
 stop adbd 
 /data/local/system_properties_arm64 ro.secure 0
@@ -217,14 +221,16 @@ nohup  ./adbd &gt;/dev/null &amp;
 <p> </p>
 <p> </p>
 <p>5.上传adbdroot到手机，并执行</p>
-<pre><code class="hljs language-javascript">adb push adbdroot /mnt/sdcard/
+<pre>
+<code class="hljs language-javascript">adb push adbdroot /mnt/sdcard/
 adb shell su -c mv /mnt/sdcard/adbdroot /data/local
 adb shell su -c chmod +x /data/local/adbdroot 
 adb shell su -c /data/local/adbdroot
 
 </code></pre>
 <p>6. 使用whoami测试,  得到adb shell权限默认就是root，不需要再su一下了，使用原来的脚本工具，调试就很方便了。</p>
-<pre><code class="hljs language-javascript">$ adb shell whoami
+<pre>
+<code class="hljs language-javascript">$ adb shell whoami
 root
 </code></pre>
 <p>本文用到的资源我上传了一份在这里，adbd和system_properties_arm64 , <a href="https://download.csdn.net/download/aerror/14429391">https://download.csdn.net/download/aerror/14429391</a>, 方便大家直接使用。</p>
@@ -236,7 +242,8 @@ root
 <p>属性是由init进程读取到内存中，然后通过mmap只读方式共享到其他进程中。读的时候每个进程都可以直接读取，而修改或者添加只能由init进程来进行，这样方便selinux权限管理。</p>
 <p>有root权限后，我们可以将属性内存通过mmap读写的方式共享到我们的内存中，这样可以任意修改，绕过init的限制。</p>
 <h3 id="msg_header_h2_0">属性内存结构</h3>
-<pre><code class="hljs language-javascript">* +-----+   children    +----+   children    +--------+
+<pre>
+<code class="hljs language-javascript">* +-----+   children    +----+   children    +--------+
 * |     |--------------&gt;| ro |--------------&gt;| secure |
 * +-----+               +----+               +--------+
 *                       /    \                /   |
@@ -248,7 +255,8 @@ root
 *</code></pre>
 <p> </p>
 <p>上图其实很形象，是字典树和二叉树的混合。结点信息数据结构如下：</p>
-<pre><code class="hljs language-javascript">typedef struct prop_bt {
+<pre>
+<code class="hljs language-javascript">typedef struct prop_bt {
     uint8_t namelen;        // 该结点名字长度
     uint8_t reserved[3];    // 对齐的作用
     uint32_t prop;          // 指向prop_info，里面保存key和value信息
@@ -264,7 +272,8 @@ typedef struct prop_info {
     char name[0];               // 属性名字
 } prop_info;</code></pre>
 <p>思路：</p>
-<pre><code class="hljs language-javascript">1. Android N上，首先读取读取/property_contexts文件，获取属性前缀和security context
+<pre>
+<code class="hljs language-javascript">1. Android N上，首先读取读取/property_contexts文件，获取属性前缀和security context
 （selinux定义的)的关系，由于每个security context对应一个文件，所以需要通过前缀来找到对应的文
 件，6.0及以下所以属性都保存在/dev/__properties__文件中，可以不读取/property_contexts文件
 2. 打开对应的文件，将属性以'.'分隔，将第一部分和头结点对比，若相同则第二部分和children对比，不同，

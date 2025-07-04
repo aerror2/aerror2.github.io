@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>如何调试别人写的apk</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2018-05-30 23:48:46</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2974</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2981</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 5</div>
         
@@ -173,19 +173,7 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-<p>1. 新一个工程，package name和原apk的package一致</p>
-<p>2. 解压原来的apk, 得到class.dex</p>
-<p>3. 使用apktool d x.apk, 解压资源到 x目录</p>
-<p>4. 把res和assets复制到新的工程相应目录</p>
-<p>5. 新的工程加一个jni，写两个mk文件，一个是随便写个空函数，一个写原apk的so的prebuild. <br/>6.  <span style="font-family:Menlo;font-size:13px;">ndk-build NDK_DEBUG=1</span></p>
-<p><span style="font-family:Menlo;font-size:13px;">7.</span><span style="font-family:Menlo;font-size:13px;">android update project . , 生成build.xml</span></p>
-<p><span style="font-family:Menlo;font-size:12px;">8.cp adt/tools/ant/build.xml的&lt;project&gt; 的子节点所有内容 替换生成的ant的这一行：&lt;import file="${sdk.dir}/tools/ant/build.xml" /&gt;</span></p>
-<p><span style="font-family:Menlo;font-size:12px;">9. 修改 &lt;dex path="${intermediate.dex.file}"/&gt; 指向解压得到的class.dex，如&lt;dex path="/yourpath/classes.dex"/&gt;</span></p>
-<p><span style="font-family:Menlo;font-size:12px;">10. ant debug</span></p>
-<p><span style="font-family:Menlo;font-size:12px;">11. adb install myproject-debug.apk</span></p>
-<p><span style="font-family:Menlo;font-size:12px;">12. ndk-gdb --start</span></p>
-<p><span style="font-family:Menlo;"><span style="font-size:12px;">有root的机器，以上都不用做，直接gdbserver或用ida, attach上去就好了。 </span></span></p>
-<p><span style="font-family:Menlo;"><span style="font-size:12px;">很多前年2014年写的，一直在草稿里，不知道为什么了。。。发出来了。</span></span></p>
+<p>1. 新一个工程，package name和原apk的package一致</p><p>2. 解压原来的apk, 得到class.dex</p><p>3. 使用apktool d x.apk, 解压资源到 x目录</p><p>4. 把res和assets复制到新的工程相应目录</p><p>5. 新的工程加一个jni，写两个mk文件，一个是随便写个空函数，一个写原apk的so的prebuild. <br/>6.  <span style="font-family:Menlo;font-size:13px;">ndk-build NDK_DEBUG=1</span></p><p><span style="font-family:Menlo;font-size:13px;">7.</span><span style="font-family:Menlo;font-size:13px;">android update project . , 生成build.xml</span></p><p><span style="font-family:Menlo;font-size:12px;">8.cp adt/tools/ant/build.xml的&lt;project&gt; 的子节点所有内容 替换生成的ant的这一行：&lt;import file="${sdk.dir}/tools/ant/build.xml" /&gt;</span></p><p><span style="font-family:Menlo;font-size:12px;">9. 修改 &lt;dex path="${intermediate.dex.file}"/&gt; 指向解压得到的class.dex，如&lt;dex path="/yourpath/classes.dex"/&gt;</span></p><p><span style="font-family:Menlo;font-size:12px;">10. ant debug</span></p><p><span style="font-family:Menlo;font-size:12px;">11. adb install myproject-debug.apk</span></p><p><span style="font-family:Menlo;font-size:12px;">12. ndk-gdb --start</span></p><p><span style="font-family:Menlo;"><span style="font-size:12px;">有root的机器，以上都不用做，直接gdbserver或用ida, attach上去就好了。 </span></span></p><p><span style="font-family:Menlo;"><span style="font-size:12px;">很多前年2014年写的，一直在草稿里，不知道为什么了。。。发出来了。</span></span></p>
 </div>
     </div>
     

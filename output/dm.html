@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>如何手动更新mac的固件</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2019-06-02 10:13:22</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 8013</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 8027</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 2</div>
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 4</div>
         
@@ -179,17 +179,18 @@
 <p>@Y.H Wong  2018-11-04 13:00:24</p>
 <p>That guide on MacRumors is really useful. I recently upgraded a 2014 MBPr board using most of its instructions, and it still works. Changes made: 1. No need for kapton tape. 2. I used a Sintech ST-NGFF2013-B. 3. I didn't turn off hibernation with pmset, I didn't buy a CH341A programmer either. I just looked up the MBP112 and MBP114 firmwares, transplanted the NVMe driver from MBP114 to MBP112, and flashed my Mac with /usr/libexec/efiupdater -p /path/to/EFIPayloads --force-update. Wakeup problem completely gone.</p>
 <p> </p>
-<table><tbody><tr><td id="file-gistfile1-txt-LC1">Procedure followed by Pepijn to run the high sierra firmware installer:</td></tr><tr><td id="file-gistfile1-txt-L2"> </td><td id="file-gistfile1-txt-LC2"> </td></tr><tr><td id="file-gistfile1-txt-L3"> </td><td id="file-gistfile1-txt-LC3">1. get the FirmwareUpdate.pkg file from the OS installer app's installESD.dmg</td></tr><tr><td id="file-gistfile1-txt-L4"> </td><td id="file-gistfile1-txt-LC4">2. extract the contents using pkgutil --expand /path/to/FirmwareUpdate.pkg &lt;path somewhere else&gt;/FirmwareUpdate</td></tr><tr><td id="file-gistfile1-txt-L5"> </td><td id="file-gistfile1-txt-LC5">3. in terminal, cd to the Scripts directory inside the expanded FirmwareUpdate pkg directory.</td></tr><tr><td id="file-gistfile1-txt-L6"> </td><td id="file-gistfile1-txt-LC6">4. with Scripts as your working directory, run these 2 commands, then reboot:</td></tr><tr><td id="file-gistfile1-txt-L7"> </td><td id="file-gistfile1-txt-LC7">sudo /usr/libexec/FirmwareUpdateLauncher -p "$PWD/Tools"</td></tr><tr><td id="file-gistfile1-txt-L8"> </td><td id="file-gistfile1-txt-LC8">sudo /usr/libexec/efiupdater -p "$PWD/Tools/EFIPayloads"</td></tr><tr><td id="file-gistfile1-txt-L9"> </td><td id="file-gistfile1-txt-LC9">5. at the reboot, firmware will be updated if there are any updates to be applied.</td></tr></tbody></table>
-<p> </p>
+<table><tbody><tr><td id="file-gistfile1-txt-LC1">Procedure followed by Pepijn to run the high sierra firmware installer:</td></tr><tr><td id="file-gistfile1-txt-L2"> </td><td id="file-gistfile1-txt-LC2"> </td></tr><tr><td id="file-gistfile1-txt-L3"> </td><td id="file-gistfile1-txt-LC3">1. get the FirmwareUpdate.pkg file from the OS installer app's installESD.dmg</td></tr><tr><td id="file-gistfile1-txt-L4"> </td><td id="file-gistfile1-txt-LC4">2. extract the contents using pkgutil --expand /path/to/FirmwareUpdate.pkg &lt;path somewhere else&gt;/FirmwareUpdate</td></tr><tr><td id="file-gistfile1-txt-L5"> </td><td id="file-gistfile1-txt-LC5">3. in terminal, cd to the Scripts directory inside the expanded FirmwareUpdate pkg directory.</td></tr><tr><td id="file-gistfile1-txt-L6"> </td><td id="file-gistfile1-txt-LC6">4. with Scripts as your working directory, run these 2 commands, then reboot:</td></tr><tr><td id="file-gistfile1-txt-L7"> </td><td id="file-gistfile1-txt-LC7">sudo /usr/libexec/FirmwareUpdateLauncher -p "$PWD/Tools"</td></tr><tr><td id="file-gistfile1-txt-L8"> </td><td id="file-gistfile1-txt-LC8">sudo /usr/libexec/efiupdater -p "$PWD/Tools/EFIPayloads"</td></tr><tr><td id="file-gistfile1-txt-L9"> </td><td id="file-gistfile1-txt-LC9">5. at the reboot, firmware will be updated if there are any updates to be applied.</td></tr></tbody></table><p> </p>
 <p>实际测试了一下，这个就是把这个文件写到EFI里，然后重启就会更新了，要是可以更新的话，会很快出现一个进度条，走完了，就是更新成功了，就会重启进入系统。但是对于个修改的EFI无法成功，即使是已经使用了原装的SSD硬盘也是不行。</p>
 <p>估计是EFI更新器会对这个文件进行一些校验，不知道怎么可以避过。</p>
-<pre class="has"><code class="hljs language-javascript">
+<pre class="has">
+<code class="hljs language-javascript">
 nvram -p
 ...
 efi-apple-recovery	&lt;array&gt;&lt;dict&gt;&lt;key&gt;IOMatch&lt;/key&gt;&lt;dict&gt;&lt;key&gt;IOProviderClass&lt;/key&gt;&lt;string&gt;IOMedia&lt;/string&gt;&lt;key&gt;IOPropertyMatch&lt;/key&gt;&lt;dict&gt;&lt;key&gt;UUID&lt;/key&gt;&lt;string&gt;C4A04D2E-CDA9-4D2F-A772-7B74233FBC68&lt;/string&gt;&lt;/dict&gt;&lt;/dict&gt;&lt;key&gt;BLLastBSDName&lt;/key&gt;&lt;string&gt;disk0s1&lt;/string&gt;&lt;/dict&gt;&lt;dict&gt;&lt;key&gt;IOEFIDevicePathType&lt;/key&gt;&lt;string&gt;MediaFilePath&lt;/string&gt;&lt;key&gt;Path&lt;/key&gt;&lt;string&gt;\EFI\APPLE\FIRMWARE\MBP112.scap&lt;/string&gt;&lt;/dict&gt;&lt;/array&gt;%00
 ...
 </code></pre>
-<pre>使用refind 进入shell.efi，使用下命令刷smc
+<pre>
+使用refind 进入shell.efi，使用下命令刷smc
 SmcFlasher.efi -force -update &lt;filename.smc&gt;
 </pre>
 </div>

@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>开源BLHELI-S 代码详细解读(五）</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,9 +161,9 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-03-01 13:28:33</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 613</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 637</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 4</div>
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 3</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
     </div>
     
@@ -174,7 +174,16 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>我们继续来看calc_next_comm_timing, 每次操作完换相之后，这里都会调用，同时会设置timer3去等advance timing.</p>
-<p>总体思想是根据电机运行状态计算前4次换相时间，然后根据前4次换相时间计算15度和7.5度电角度时间，换相之后延时7.5度电角度开始检测过零点，检测到过零点后延时15度电角度进行换相</p>
+<p>总体思想是根据电机运行状态计算前4次换相时间，然后根据前4次换相时间计算15度和7.5度电角度时间，换相之后延时7.5度电角度开始检测过零点，检测到过零点后延时15度电角度进行换相.</p>
+<p>视频</p>
+<div class="csdn-video-box" data-report-view='{"spm":"3001.10261","extra":{"id":"xwCFjNYS-1751441624365"}}'>
+<iframe allowfullscreen="true" data-mediaembed="bilibili" frameborder="0" id="xwCFjNYS-1751441624365" src="https://player.bilibili.com/player.html?aid=114781843363061"></iframe>
+<p>三相无刷电机零交叉点检测</p>
+</div>
+<p></p>
+<p><img alt="" height="1084" src="images/br/b9220fd14bb84791842d7589577a826b.png" width="1218"/></p>
+<p><img alt="" height="2010" src="images/br/18a5da396efa46f8bf2a574a4bd04fb5.png" width="488"/></p>
+<p></p>
 <p>下图来自网络，我也没有清晰的，大家将就，原作者请@我，我加上版本信息。谢谢</p>
 <p></p>
 <p><img alt="" height="634" src="images/br/063c7ea1bb3900604eec03503912ef8c.png" width="552"/></p>

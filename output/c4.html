@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于Hook unistd中open, read, write, close的一些技巧</title>
-    <link rel="stylesheet" href="css/common/351df2a8316f113f252ef2bb9edfaf0a.css">
+    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
     <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
     <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
     <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
     <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
     <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
     <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/704d5b9767516f50879128f39374a65a.css">
+    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
     <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
     <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
     <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_035309477599f7645e5ab0f64693e50a.css">
+    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
@@ -161,7 +161,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-05-12 15:26:12</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 986</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 992</div>
         
         
         
@@ -177,7 +177,8 @@
 <p>一开始我是自己自增的去维护这个整数，把所有的, 无论是自己的，还是系统都是再进行重新映射。但是，实际情况中发现的，还有一些fd并不能全部hook住，有一些函数也不好hook, 如fcntl和ioctl这里，是有可变参数的，我们要转发这些函数，必须要使用汇编来操作，这个就相当麻烦了。</p>
 <p>经过思考，我搞了一个比较完美的办法，就是id全部使用系统的来生成，我们都打开一下当前路径"."去申请一个fd, 这样我们就不怕hook漏掉了失去控制了。</p>
 <p>测试代码：</p>
-<pre><code class="hljs language-javascript">#include &lt;unistd.h&gt;
+<pre>
+<code class="hljs language-javascript">#include &lt;unistd.h&gt;
    #include &lt;sys/stat.h&gt;
        #include &lt;fcntl.h&gt;
 
@@ -204,7 +205,8 @@ int main(int argc, char** argv)
 }
 </code></pre>
 <p>实际代码示意：</p>
-<pre><code class="hljs language-javascript">int  open_hook(const char *pathname, int flags, mode_t mode) 
+<pre>
+<code class="hljs language-javascript">int  open_hook(const char *pathname, int flags, mode_t mode) 
 {
     int fd= -1;
     void * xfd=NULL;
