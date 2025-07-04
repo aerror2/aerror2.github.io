@@ -349,38 +349,7 @@ def extract_blog_content(html_content, output_dir, article_dir, url):
         publish_time = None
         
 
-        # 提取CSS链接并下载
-        css_links = extract_css_links(soup, url)
-        css_paths = []
-        
-        # 创建公共CSS目录
-        common_css_dir = os.path.join(output_dir, "css/common")
-        os.makedirs(common_css_dir, exist_ok=True)
-        
-        # 下载CSS文件到公共目录
-        for css_url in css_links:
-            # 使用URL的哈希值作为CSS文件名，确保唯一性
-            css_hash = hashlib.md5(css_url.encode()).hexdigest()
-            css_path = download_file(css_url, output_dir, "css/common", 'css')
-            if css_path not in css_paths:
-                css_paths.append(css_path)
-        
-        # 提取内联样式
-        inline_styles = extract_inline_styles(soup)
-        
-        # 保存内联样式到文件
-        if inline_styles:
-            # 计算内联样式的哈希值，用于去重
-            inline_hash = hashlib.md5(inline_styles.encode()).hexdigest()
-            inline_css_path = os.path.join(common_css_dir, f"inline_{inline_hash}.css")
-            
-            # 检查是否已存在相同的内联样式文件
-            if not os.path.exists(inline_css_path):
-                with open(inline_css_path, 'w', encoding='utf-8') as f:
-                    f.write(inline_styles)
-                print(f"已保存内联样式: {inline_css_path}")
-            
-            css_paths.append(f"css/common/inline_{inline_hash}.css")
+        # 不再提取和下载CSS文件
             
         # 确保保留所有元素的style属性和class属性
         # 这对于保留原文中带颜色的文字非常重要
@@ -440,7 +409,7 @@ def extract_blog_content(html_content, output_dir, article_dir, url):
                             local_img_path = download_image(img_url, output_dir, f"images/{article_dir}")
                             img['src'] = local_img_path
                     
-                    return title, str(content_views), css_paths, publish_time
+                    return title, str(content_views), publish_time
                 
                 # 处理代码块，添加语言类
                 for pre in article_content.find_all('pre'):
@@ -464,7 +433,7 @@ def extract_blog_content(html_content, output_dir, article_dir, url):
                         local_img_path = download_image(img_url, output_dir, f"images/{article_dir}")
                         img['src'] = local_img_path
                 
-                return title, str(article_content), css_paths, publish_time
+                return title, str(article_content), publish_time
             
             # 如果找不到article_content，尝试处理整个content_box
             # 提取文章标题
@@ -496,15 +465,15 @@ def extract_blog_content(html_content, output_dir, article_dir, url):
                     local_img_path = download_image(img_url, output_dir, f"images/{article_dir}")
                     img['src'] = local_img_path
             
-            return title, str(content_box), css_paths, publish_time
+            return title, str(content_box), publish_time
         else:
             print("未找到'blog-content-box'内容")
-            return None, None, [], None
+            return None, None, None
     except Exception as e:
         print(f"解析HTML内容时出错: {e}")
-        return None, None, [], None
+        return None, None, None
 
-def generate_html(title, content, url, output_file, css_paths=None, publish_time=None, view_count=None, comment_count=None, collect_count=None, digg_count=None, tags=None, description=None):
+def generate_html(title, content, url, output_file, publish_time=None, view_count=None, comment_count=None, collect_count=None, digg_count=None, tags=None, description=None):
     """生成包含提取内容的HTML文件
     
     Args:
@@ -512,7 +481,6 @@ def generate_html(title, content, url, output_file, css_paths=None, publish_time
         content: 文章内容
         url: 原文链接
         output_file: 输出文件路径
-        css_paths: CSS文件路径列表
         publish_time: 发布时间
         view_count: 浏览量
         comment_count: 评论数
@@ -522,11 +490,8 @@ def generate_html(title, content, url, output_file, css_paths=None, publish_time
         description: 文章描述
     """
     try:
-        # 构建CSS链接
+        # 移除原始CSS引用
         css_links = ""
-        if css_paths:
-            for css_path in css_paths:
-                css_links += f'    <link rel="stylesheet" href="{css_path}">' + "\n"
         
         # 添加Prism.js的CSS和JS
         prism_css = "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css\">\n"
@@ -579,7 +544,6 @@ def generate_html(title, content, url, output_file, css_paths=None, publish_time
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
-{css_links}
 {prism_css}
 {extra_css}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -702,7 +666,7 @@ def generate_html(title, content, url, output_file, css_paths=None, publish_time
     </div>
     
     <div class="footer">
-        <p>版本所有 tdany.com  | 发表时间: {publish_time if publish_time else time.strftime('%Y-%m-%d %H:%M:%S')}</p>
+        <p>发表时间: {publish_time if publish_time else time.strftime('%Y-%m-%d %H:%M:%S')}</p>
     </div>
 {prism_js}
     <script>
@@ -1029,7 +993,7 @@ def generate_index_html(output_dir, article_info):
     </div>
     
     <div class="footer">
-        <p>版本信息: tdany.com | 生成时间: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
+        <p> 生成时间: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
     </div>
     
     <script>
@@ -1279,8 +1243,8 @@ def main():
         if not html_content:
             continue
         
-        # 提取博客内容并下载图片和CSS
-        title, blog_content, css_paths, html_publish_time = extract_blog_content(html_content, output_dir, short_name, url)
+        # 提取博客内容并下载图片
+        title, blog_content, html_publish_time = extract_blog_content(html_content, output_dir, short_name, url)
         if not blog_content:
             continue
         
@@ -1308,7 +1272,7 @@ def main():
             description = blog_info.get("description")
         
         # 生成HTML文件
-        generate_html(title, blog_content, url, output_file, css_paths, publish_time,
+        generate_html(title, blog_content, url, output_file, publish_time,
                         view_count, comment_count, collect_count, digg_count, tags, description)
     
 
