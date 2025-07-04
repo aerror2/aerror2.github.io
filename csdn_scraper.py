@@ -15,24 +15,45 @@ import shutil
 import json
 from urllib.parse import urljoin, urlparse
 
-def generate_short_name(index):
-    """生成短文件名（最多三个字符，小写字母和数字）"""
+def generate_short_name(index, existing_shortnames=None):
+    """生成短文件名（最多三个字符，小写字母和数字）
+    
+    Args:
+        index: 索引值，用于生成短文件名
+        existing_shortnames: 已存在的短文件名集合，用于排重
+        
+    Returns:
+        生成的不重复短文件名
+    """
     chars = "abcdefghijklmnopqrstuvwxyz0123456789"
     chars_len = len(chars)
     
-    if index < chars_len:
-        return chars[index]
-    elif index < chars_len * chars_len:
-        # 两位数的命名
-        first_char = chars[index // chars_len]
-        second_char = chars[index % chars_len]
-        return first_char + second_char
-    else:
-        # 三位数的命名
-        first_char = chars[(index // (chars_len * chars_len)) % chars_len]
-        second_char = chars[(index // chars_len) % chars_len]
-        third_char = chars[index % chars_len]
-        return first_char + second_char + third_char
+    # 如果没有提供已存在的短文件名集合，创建一个空集合
+    if existing_shortnames is None:
+        existing_shortnames = set()
+    
+    # 尝试生成短文件名，直到找到一个不在已存在集合中的名称
+    while True:
+        if index < chars_len:
+            short_name = chars[index]
+        elif index < chars_len * chars_len:
+            # 两位数的命名
+            first_char = chars[index // chars_len]
+            second_char = chars[index % chars_len]
+            short_name = first_char + second_char
+        else:
+            # 三位数的命名
+            first_char = chars[(index // (chars_len * chars_len)) % chars_len]
+            second_char = chars[(index // chars_len) % chars_len]
+            third_char = chars[index % chars_len]
+            short_name = first_char + second_char + third_char
+        
+        # 检查生成的短文件名是否已存在
+        if short_name not in existing_shortnames:
+            return short_name
+        
+        # 如果已存在，增加索引值尝试下一个
+        index += 1
 
 def read_urls_from_config(config_file):
     """从配置文件中读取URL列表和对应的文件名
@@ -91,7 +112,9 @@ def read_urls_from_config(config_file):
                         if url in shortname_map:
                             short_name = shortname_map[url]
                         else:
-                            short_name = generate_short_name(index)
+                            # 获取已存在的短文件名集合用于排重
+                            existing_shortnames = set(shortname_map.values())
+                            short_name = generate_short_name(index, existing_shortnames)
                             shortname_map[url] = short_name
                         url_map[short_name] = url
                         titles_map[url] = original_title
@@ -107,7 +130,9 @@ def read_urls_from_config(config_file):
                             short_name = shortname_map[url]
                             
                         else:
-                            short_name = generate_short_name(index)
+                            # 获取已存在的短文件名集合用于排重
+                            existing_shortnames = set(shortname_map.values())
+                            short_name = generate_short_name(index, existing_shortnames)
                             shortname_map[url] = short_name
                         url_map[short_name] = url
                         # 从URL中提取文章ID作为标题
@@ -1092,9 +1117,12 @@ def load_blogs_from_json(json_file):
                 if url in shortname_map:
                     short_name = shortname_map[url]
                 else:
-                    short_name = generate_short_name(index)
+                    # 获取已存在的短文件名集合用于排重
+                    existing_shortnames = set(shortname_map.values())
+                    short_name = generate_short_name(index, existing_shortnames)
                     shortname_map[url] = short_name
                 
+                print(f"加入处理列表 {title} 短文件名 {short_name} {url}")
                 url_map[short_name] = url
                 titles_map[url] = title
                 if post_time:  # 如果有发布时间，保存到映射中
