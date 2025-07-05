@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-02-03 11:16:00</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 656</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 667</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 5</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -170,7 +170,8 @@
 <p>      头文件位于:</p>
 <p>/usr/local/include/db.h</p>
 <p>/usr//local/Cellar/berkeley-db/18.1.40_2/include/db.h</p>
-<pre><code class="hljs language-javascript">/*
+<pre>
+<code class="hljs language-javascript">/*
  * Copyright (c) 1996, 2020 Oracle and/or its affiliates.  All rights reserved.
  *
  * See the file LICENSE for license information.
@@ -181,7 +182,8 @@
 */</code></pre>
 <p>    一开始以为是版本低了，upgrade了一下没有解决，</p>
 <p>后来找了一下xcode目录下,也有一个db.h </p>
-<pre><code class="hljs language-javascript">$ find /Applications/Xcode.app/Contents/Developer  -name "db.h"
+<pre>
+<code class="hljs language-javascript">$ find /Applications/Xcode.app/Contents/Developer  -name "db.h"
 /Applications/Xcode.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS.sdk/usr/include/db.h
 /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/db.h
 /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS.sdk/usr/include/db.h
@@ -191,7 +193,8 @@
 /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/include/db.h
 (base) DanyMini:mybuild dany$ vi /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/db.h</code></pre>
 <p>打开看了一下，好像比较老的，</p>
-<pre><code class="hljs language-javascript">/*-
+<pre>
+<code class="hljs language-javascript">/*-
  * Copyright (c) 1990, 1993, 1994
  *      The Regents of the University of California.  All rights reserved.
  *
@@ -228,10 +231,12 @@
  */
 </code></pre>
 <p> 同时get这个函数看起来也刚好是只有四个参数，</p>
-<pre><code class="hljs language-javascript">        int (*get)(const struct __db *, const DBT *, DBT *, unsigned int);
+<pre>
+<code class="hljs language-javascript">        int (*get)(const struct __db *, const DBT *, DBT *, unsigned int);
 </code></pre>
 <p>看来是优先使用/usr/local下的头文件了， 简单处理一下，看起来brew也有多份，直接删除一下/usr/local下的db.h及相关的头文件</p>
-<pre><code class="hljs language-javascript"> rm  /usr/local/include/db.h
+<pre>
+<code class="hljs language-javascript"> rm  /usr/local/include/db.h
 rm /usr/local/include/db_185.h 
 rm /usr/local/include/db_cxx.h 
 rm /usr/local/include/dbstl* </code></pre>

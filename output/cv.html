@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-10-29 17:59:41</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2714</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2718</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
         
@@ -166,20 +166,24 @@
 <p>放完之后，打开“照片”应用，提交原文件不可用，无法打开云云，于是尝试使用sqite3修复一下.</p>
 <p></p>
 <p>1. 先把照片应用都退出</p>
-<pre><code class="hljs language-javascript">ps aux | grep -i photo | awk '{print $1}' | xargs kill -9 </code></pre>
+<pre>
+<code class="hljs language-javascript">ps aux | grep -i photo | awk '{print $1}' | xargs kill -9 </code></pre>
 <p>2. 备份db</p>
-<pre><code class="hljs language-javascript">#先备份
+<pre>
+<code class="hljs language-javascript">#先备份
 cp -r /Volumes/evo/myphotos.photoslibrary/database /Volumes/evo/myphotos.photoslibrary/database.bak</code></pre>
 <p>3.  先修复ZGENERICASSET</p>
 <p></p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
  
 #更新资源的路径
 sqlite3 /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite "
 update ZGENERICASSET set ZDIRECTORY=replace(ZDIRECTORY,\"/Volumes/st3t/pictures/\", \"/Volumes/nas2/pictures/\");"
 </code></pre>
 <p>4. 修复ZFILESYSTEMBOOKMARK, 这个主要内容是放在blob的字段里的ZBOOKMARKDATA， 这个比较麻烦，要先.dump出来用sed改一下，再导入db中。</p>
-<pre><code class="hljs language-javascript">#先导出来:
+<pre>
+<code class="hljs language-javascript">#先导出来:
 $ sqlite3 /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite ".dump" &gt; bak.sql
 
 
@@ -209,14 +213,18 @@ sqlite3 temp.sqlite ".read bak.sql"
 mv temp.sqlite /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite 
 </code></pre>
 <p>5. 删除临时文件, 不删除打开会报错。</p>
-<pre><code class="hljs language-javascript">rm Photos.sqlite-shm  Photos.sqlite-wal Photos.sqlite.lock</code></pre>
+<pre>
+<code class="hljs language-javascript">rm Photos.sqlite-shm  Photos.sqlite-wal Photos.sqlite.lock</code></pre>
 <p>6. 删除无用的volume 记录 。 </p>
-<pre><code class="hljs language-javascript">sqlite3 /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite "delete from ZFILESYSTEMVOLUME"</code></pre>
+<pre>
+<code class="hljs language-javascript">sqlite3 /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite "delete from ZFILESYSTEMVOLUME"</code></pre>
 <p></p>
 <p>PS: 要是文夹名字不会其它文件名重复，可以直接 </p>
-<pre><code class="hljs language-javascript">sqlite3 /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite ".dump"  | sed 's/nas2/nas3/g' | sed 's/6e617332/6e617333/g' &gt; tmp.sql </code></pre>
+<pre>
+<code class="hljs language-javascript">sqlite3 /Volumes/evo/myphotos.photoslibrary/database/Photos.sqlite ".dump"  | sed 's/nas2/nas3/g' | sed 's/6e617332/6e617333/g' &gt; tmp.sql </code></pre>
 <p>7.因为放到了smb的共享目录，沙箱检查会过不了。需要补丁一下PLSandboxHelper processWithID:canReadSandboxForPath的调用户让它总是返回1.</p>
-<pre><code class="hljs language-javascript">/System/Library/Frameworks/Photos.framework/Versions/A/Photos 
+<pre>
+<code class="hljs language-javascript">/System/Library/Frameworks/Photos.framework/Versions/A/Photos 
 
 
 

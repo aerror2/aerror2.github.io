@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-10-31 16:01:48</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 207</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 211</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
@@ -161,12 +161,14 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>希望可以像xxd一样，分两栏，左右是16进制，右边是ascii的字符串，自定义一个命令即可，如下。</p>
-<pre><code class="hljs hljs language-javascript"> define xxd
+<pre>
+<code class="hljs hljs language-javascript"> define xxd
 dump binary memory dump.bin $arg0 $arg0+$arg1
 shell xxd dump.bin
 end</code></pre>
 <p>执行效果</p>
-<pre><code class="hljs hljs language-javascript">(gdb) define xxd
+<pre>
+<code class="hljs hljs language-javascript">(gdb) define xxd
 Type commands for definition of "xxd".
 End with a line saying just "end".
 &gt;dump binary memory dump.bin $arg0 $arg0+$arg1

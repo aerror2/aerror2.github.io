@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-03-28 11:22:07</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 510</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 529</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 9</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 4</div>
@@ -164,7 +164,8 @@
 <p>        1.本质上sageattention是sdpa，SDPA的全称为Scaled Dot-Product Attention, 属于乘性注意力机制， 简单一句话来说就是，根据Query (Q)与Key之间的匹配度来对Value进行加权，而事实上不管是Query, Key还是Value都来自于输入，因此所谓的SDPA本质上是对输入信息信息进行重组。</p>
 <p>       2. sageattention使用了Triton这个包，它可以把python的代码编译成目标机器码，大大加速这个运算的速度。</p>
 <p>        3. 从官方例子可以看到，它本质的工作原理就是简单的替换torch.nn.functional.scaled_dot_product_attention这个函数，示例如下：</p>
-<pre><code class="language-python hljs">from sageattention import sageattn
+<pre>
+<code class="language-python hljs">from sageattention import sageattn
 import torch.nn.functional as F
 。。。
     F.scaled_dot_product_attention = sageattn
@@ -172,7 +173,8 @@ import torch.nn.functional as F
 <p><span style="color:#fe2c24">        所以，要用上sageatten，其实只需要原来的模型支持sdpa的注意力机制即可。</span></p>
 <p></p>
 <p>        但很不幸，从deepseekvl2官方开源github可以看到DeepseekVLV2ForCausalLM和DeepseekV2ForCausalLM都是不支持sdpa的，这个两个类都没有声明_supports_sdpa = True</p>
-<pre><code class="language-python hljs">ATTENTION_CLASSES = {
+<pre>
+<code class="language-python hljs">ATTENTION_CLASSES = {
     "eager": DeepseekV2Attention,
     "flash_attention_2": DeepseekV2FlashAttention2,
 
@@ -188,13 +190,16 @@ import torch.nn.functional as F
 <p></p>
 <p>        修改步骤如下：</p>
 <p>1. 首先要让DeepseekVLV2ForCausalLM和DeepseekV2ForCausalLM先支持sdpa,添加_supports_sdpa,这样transformers/modeling_utils.py的_check_and_enable_sdpa才可以检查通过.</p>
-<pre><code class="language-python hljs">class DeepseekV2ForCausalLM(DeepseekV2PreTrainedModel):
+<pre>
+<code class="language-python hljs">class DeepseekV2ForCausalLM(DeepseekV2PreTrainedModel):
     _tied_weights_keys = ["lm_head.weight"]
     _supports_sdpa = True</code></pre>
-<pre><code class="language-python hljs">class DeepseekVLV2ForCausalLM(DeepseekVLV2PreTrainedModel):
+<pre>
+<code class="language-python hljs">class DeepseekVLV2ForCausalLM(DeepseekVLV2PreTrainedModel):
     _supports_sdpa = True</code></pre>
 <p>2.然后在DeepSeek-VL2/deepseek_vl2/models/modeling_deepseek.py添加sdpa的attention的实现类，我们让它继承LlamaAttention，如下，其实这个直接抄的LlamaSdpaAttention，copy是为了修改方便，实现如下：</p>
-<pre><code class="language-python hljs">
+<pre>
+<code class="language-python hljs">
 class DeepSeekSdpaAttention(LlamaAttention):
     """
     Deepseek attention module using torch.nn.functional.scaled_dot_product_attention. This module inherits from
@@ -300,7 +305,8 @@ class DeepSeekSdpaAttention(LlamaAttention):
         return attn_output, None, past_key_value
 </code></pre>
 <p>3. 修改modeling_deepseek.py的ATTENTION_CLASSES，加上sdpa支持，如下：</p>
-<pre><code class="language-python hljs">
+<pre>
+<code class="language-python hljs">
 ATTENTION_CLASSES = {
     "eager": DeepseekV2Attention,
     "flash_attention_2": DeepseekV2FlashAttention2,
@@ -314,13 +320,15 @@ ATTENTION_CLASSES = {
 }
 </code></pre>
 <p>4.使用的sageattion和Triton的版本如下：</p>
-<pre><code class="language-python hljs">Name: sageattention
+<pre>
+<code class="language-python hljs">Name: sageattention
 Version: 1.0.6
 
 Name: triton
 Version: 3.2.0</code></pre>
 <p>5. 训练测试，</p>
-<pre><code class="language-python hljs">swift sft  --model "deepseek-ai/deepseek-vl2-tiny"  --dataset  ../TEST.json  --attn_impl sdp
+<pre>
+<code class="language-python hljs">swift sft  --model "deepseek-ai/deepseek-vl2-tiny"  --dataset  ../TEST.json  --attn_impl sdp
 
 。。。
 using attn_implementation: mha_sdpa

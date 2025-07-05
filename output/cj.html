@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-12-31 15:51:02</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3507</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3514</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 2</div>
         
@@ -160,19 +160,46 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-<p><br/> void Rfchip_Spi_Init(void)<br/> {<!-- --></p>
-<p>    LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);<br/>     LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_7);<br/>     RFChip_Disable;<br/> }</p>
-<p>void Rf_Spi_Write_Byte(uint8_t dat)<br/> {<!-- --></p>
+<p><br/>
+void Rfchip_Spi_Init(void)<br/>
+{<!-- --></p>
+<p>    LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);<br/>
+    LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_7);<br/>
+    RFChip_Disable;<br/>
+}</p>
+<p>void Rf_Spi_Write_Byte(uint8_t dat)<br/>
+{<!-- --></p>
 <p>    LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
-<p>    LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_7,LL_GPIO_MODE_OUTPUT);<br/>     for (uint8_t i = 0; i &lt; 8; i++)<br/>     {<!-- --><br/>         if ((dat &amp; 0x80) == 0x80)<br/>             LL_GPIO_SetOutputPin(GPIOA,LL_GPIO_PIN_7);<br/>         else<br/>             LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_7);<br/>         <br/>         <br/>         LL_GPIO_SetOutputPin(GPIOA,LL_GPIO_PIN_5);<br/>         dat &lt;&lt;= 1;<br/>         LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
+<p>    LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_7,LL_GPIO_MODE_OUTPUT);<br/>
+    for (uint8_t i = 0; i &lt; 8; i++)<br/>
+    {<!-- --><br/>
+        if ((dat &amp; 0x80) == 0x80)<br/>
+            LL_GPIO_SetOutputPin(GPIOA,LL_GPIO_PIN_7);<br/>
+        else<br/>
+            LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_7);<br/>
+        <br/>
+        <br/>
+        LL_GPIO_SetOutputPin(GPIOA,LL_GPIO_PIN_5);<br/>
+        dat &lt;&lt;= 1;<br/>
+        LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
 <p>    }</p>
 <p>}</p>
-<p>uint8_t Rf_Spi_Read_Byte(void)<br/> {<!-- --></p>
-<p>    uint8_t dat=0;<br/>         LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
+<p>uint8_t Rf_Spi_Read_Byte(void)<br/>
+{<!-- --></p>
+<p>    uint8_t dat=0;<br/>
+        LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
 <p>    LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_7,LL_GPIO_MODE_INPUT);</p>
-<p>    for (uint8_t i = 0; i &lt; 8; i++)<br/>     {<!-- --><br/>         dat &lt;&lt;= 1;<br/>         LL_GPIO_SetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
-<p>        if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_7))<br/>             dat |= 0x01;<br/>         LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
-<p>    }<br/>     return dat;<br/> }<br/>  </p>
+<p>    for (uint8_t i = 0; i &lt; 8; i++)<br/>
+    {<!-- --><br/>
+        dat &lt;&lt;= 1;<br/>
+        LL_GPIO_SetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
+<p>        if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_7))<br/>
+            dat |= 0x01;<br/>
+        LL_GPIO_ResetOutputPin(GPIOA,LL_GPIO_PIN_5);</p>
+<p>    }<br/>
+    return dat;<br/>
+}<br/>
+ </p>
 </div>
     </div>
     

@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-01 12:43:19</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 215</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 222</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -163,7 +163,8 @@
 <p>１．找到cywin的安装目录找到mintty.exe, sublime的菜单Tools新一个buildSysteｍ，</p>
 <p><img alt="" height="522" src="images/8/ddcb6c6b22364284845a92747cad639e.png" width="391"/></p>
 <p>2.sublime会帮你新建个文件叫 untitle.sublime-build,填写以下内容，然后保存为cywinmake.sublime-build</p>
-<pre><code class="hljs language-javascript">{
+<pre>
+<code class="hljs language-javascript">{
 	"shell_cmd": "E:\\cywin\\bin\\mintty.exe  -h always  -e /bin/sh --login -i -c  \"cd \"\\$OLDPWD\" &amp;&amp; make \""
 }
 </code></pre>

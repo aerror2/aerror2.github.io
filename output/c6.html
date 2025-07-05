@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-05-03 13:27:56</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 409</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 412</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -162,12 +162,14 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>有一个usb外置的硬盘，想插电直接可以linux挂载，关电linux直接umount, 查了一下没有一个比较合适的解决方案。于是自己写了一脚本，然后使用crontab 每10秒运行一次。</p>
 <p>计划任务,增加每分钟的任务</p>
-<pre><code class="hljs language-javascript">crontab -e
+<pre>
+<code class="hljs language-javascript">crontab -e
 
 #增加每分钟的任务
 * * * * * /etc/misc/usb_auto_check.sh &amp;&gt;&gt;/var/log/usb_auto_check.log 2&gt;&amp;1</code></pre>
 <p>usb_auto_check.sh:</p>
-<pre><code class="hljs language-javascript">#!/bin/bash
+<pre>
+<code class="hljs language-javascript">#!/bin/bash
 #
 mountpoint="/hdd8t"
 devuuid="30ea7272-4283-4def-9ab4-69b204b9c09c"

@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2022-09-04 21:52:42</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 7579</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 7589</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 2</div>
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 60</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 12</div>
@@ -169,7 +169,8 @@
 <p>这个总体思路是这样的，我实际编写完代码，发现是完全不工作的，网上也比较少这样的使用，有少数几个文章有说这个。</p>
 <p>根据文档，在BIDIMODE 为1，BIDIOE为0， 时钟CLK在SPE马上开启输出，同时它只会在SPE为零时才会停，这个意味着，我们要依赖于Slave的处理速度，同时也依赖于自己是否可以准确开关这个CLK信号，否则这个读出来的数据就会错乱。</p>
 <p>        这时需要一个比较慢的速度才可以稳定，最开始我并没有注意到这个，在    spiInit.SPI_BaudRatePrescaler 小于 SPI_BaudRatePrescaler_128时，要不读取全是零，要不出现一开始是对的，读着读着，数据就是错的，最后读出来全零的情况。只能不断的降低读写速度。最后才能稳定无误。但是128分频后，明显比软件模拟的方式还慢，这个就没有价值了。这个代码如下：</p>
-<pre><code class="language-cpp hljs">void spi_init()
+<pre>
+<code class="language-cpp hljs">void spi_init()
 {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 
@@ -269,7 +270,8 @@ uint8_t Rf_Spi_Read_Byte(void)
 }
 </code></pre>
 <p>        这个根据工作原理分析了一下，为什么会发生这样的情况，主要是因为我们的读的时候，要是这个速度高，我们的mcu去禁用SPI停时钟这个操作太慢了，虽然上面代码已经在判断到RXNE时马上disable SPI了，但是明显，这个事实上还是不够快。..... 怎么办？ 如何能提高速度？ 这个折腾了很久，终于发现一个不合理的操作可以直接把速度成 DIV4,即12MB。这个就是先禁用SPI,  再判断RXNE...发现竟然是可以很稳定的工作。</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 	SPI1-&gt;CR1 |= SPI_CR1_SPE; //ENABLE SPI
 g_bisTx=0;
      SPI1-&gt;CR1 &amp;= (uint16_t)~((uint16_t)SPI_CR1_SPE);//DISABLE SPI
@@ -281,7 +283,8 @@ g_bisTx=0;
 <p></p>
 <p>同时也尝试了使用DMA去加速，但是同样因为这个时钟刹车停止问题，使用DMA时实际测试需要更慢才能稳定传输，也要去到SPI_BaudRatePrescaler_128。究其原因应该也是DMA停止时操作太多，无法简化，导致时钟无法及时停止，引起数据错误。</p>
 <p>以下是三线SPI的DMA传输的代码，供参考。</p>
-<pre><code class="hljs language-javascript">void Rfchip_Spi_Init(void)
+<pre>
+<code class="hljs language-javascript">void Rfchip_Spi_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
     DMA_InitTypeDef DMA_InitStructure={0};

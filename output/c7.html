@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-04-30 15:49:01</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1122</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1125</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
         
@@ -175,7 +175,8 @@
 <p>   这个一个信息是8个字节，分两个整型吧， 第一个是tag这个查手册有以下字义，第二数的意义根据tag的不同来定义.</p>
 <p>  <img alt="" height="1200" src="images/c7/3576f14a07bafc8cb6f978074a539c0f.png" width="1200"/></p>
 <p>你可以使用readelf 来打印这个段出来：</p>
-<pre><code class="hljs language-javascript">Dynamic section at offset 0xefc contains 24 entries:
+<pre>
+<code class="hljs language-javascript">Dynamic section at offset 0xefc contains 24 entries:
   Tag        Type                         Name/Value
  0x00000003 (PLTGOT)                     0x1fdc
  0x00000002 (PLTRELSZ)                   48 (bytes)
@@ -206,7 +207,8 @@
 <p>      0x00000001 (NEEDED)                     Shared library: [ibdl.so] </p>
 <p>      01 00 00 00  //表示NEEDED </p>
 <p>      70 00 00 00 //表示这个动态库名字在strtab中的偏移， (有多个的，这里是, 看图，sh_link是2,所以是下标2那个)，如图划了红线:</p>
-<p><img alt="" height="344" src="images/c7/d1570f9573700983c8763ce1b0015892.png" width="904"><br/>  </img></p>
+<p><img alt="" height="344" src="images/c7/d1570f9573700983c8763ce1b0015892.png" width="904"><br/>
+ </img></p>
 <p>     </p>
 <p> </p>
 <p>3.2  将对应的api的名字修改成我们的，如fopen 改成fopex, 这样的不增加文件内容，      <span style="color:#f33b45;">在 解析符号引用时，动态链接程序使用宽度优先算法检查符号表。就是说首先检查可执行程序自身的符号表，然后检查 DT_NEEDED 条目(按顺序) 的符号表，接着在第二级 DT_NEEDED 条目上搜索。共享目标文件必须对进程而言可 读，不需要其他权限。</span></p>
@@ -219,7 +221,8 @@
 <p>        dlopen()ed.</p>
 <p> </p>
 <p>有一些符号没有版本的，这种的话直接改了就可以了，但有些符号是有版本的，如:</p>
-<pre><code class="hljs language-javascript">readelf  --dyn-syms   libtestmod.so 
+<pre>
+<code class="hljs language-javascript">readelf  --dyn-syms   libtestmod.so 
 
 Symbol table '.dynsym' contains 13 entries:
    Num:    Value          Size Type    Bind   Vis      Ndx Name
@@ -260,7 +263,8 @@ Displaying notes found at file offset 0x00000190 with length 0x00000024:
 </code></pre>
 <p>fopex@GLIBC_2.2.5 (2) , <span style="color:#f33b45;">@GLIBC_2.2.5</span>表示这个是version string, <span style="color:#f33b45;"> (2)</span> 是（这个也是一个标识值，对于在version_info中对比Elf_Internal_Vernaux的vna_other值, 见上面Version needs section,  [ none  Version: 2]这个信息）， 具体可以看binutils的源代码的readelf.c, 这个是由SHT_GNU_versym段定义的，根据代码，只有外部的重态符号才有这个version strings，</p>
 <p>因此SHT_GNU_versym的version的数量是和dynamic sym的数量是一致的，这个的version的数据结构是：</p>
-<pre><code class="hljs language-javascript">typedef struct {
+<pre>
+<code class="hljs language-javascript">typedef struct {
   unsigned char		vs_vers[2];
 } ATTRIBUTE_PACKED  Elf_External_Versym;</code></pre>
 <p> </p>
@@ -269,12 +273,14 @@ Displaying notes found at file offset 0x00000190 with length 0x00000024:
 <p>很明显一旦一个符号指定了一个version string的话，其实它就绑到一个so的(needed)了。</p>
 <p>所以我们为了 LINKER去我们的hook的so去找这个fopex符号的话，我们必须将这个version的值改成1(global).</p>
 <p>否则会这样报错：</p>
-<pre><code class="hljs language-javascript">/test: relocation error: /lib64/libtestmod.so: symbol fopex, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference</code></pre>
+<pre>
+<code class="hljs language-javascript">/test: relocation error: /lib64/libtestmod.so: symbol fopex, version GLIBC_2.2.5 not defined in file libc.so.6 with link time reference</code></pre>
 <p>我们做以下修改：</p>
 <p><img alt="" height="628" src="images/c7/39c4ead3aeddcd30c13ac1943508baad.png" width="1200"/></p>
 <p>改完之后:</p>
 <p> </p>
-<pre><code class="hljs language-javascript">readelf  --dyn-syms   libtestmod.so 
+<pre>
+<code class="hljs language-javascript">readelf  --dyn-syms   libtestmod.so 
 
 Symbol table '.dynsym' contains 13 entries:
    Num:    Value          Size Type    Bind   Vis      Ndx Name
@@ -297,7 +303,8 @@ Symbol table '.dynsym' contains 13 entries:
 <p>测试，</p>
 <p>环境：</p>
 <p>要先设置一个交叉编译的环境，使用以下步骤:</p>
-<pre><code class="hljs language-javascript">#NDK_ROOT是你安装ndk的目录 。
+<pre>
+<code class="hljs language-javascript">#NDK_ROOT是你安装ndk的目录 。
 1.  export SYSROOT=$NDK_ROOT/platforms/android-21/arch-x86
 
 2. mkdir toolchain
@@ -306,7 +313,8 @@ Symbol table '.dynsym' contains 13 entries:
 
 4. export PATH=$PATH:"$PWD/tc_androidx86/bin"</code></pre>
 <p>编写编译脚本：</p>
-<pre><code class="hljs language-javascript">GCC=$PWD/tc_androidx86/bin/i686-linux-android-gcc
+<pre>
+<code class="hljs language-javascript">GCC=$PWD/tc_androidx86/bin/i686-linux-android-gcc
 
 $GCC testhook.c -pie -fPIE -shared -o ibdl.so
 $GCC testmod.c  -pie -fPIE -shared -o libtestmod.so
@@ -314,7 +322,8 @@ $GCC test.c -pie -fPIE -L.  -ltestmod -o test
 </code></pre>
 <p>代码：</p>
 <p>test.c</p>
-<pre><code class="hljs language-javascript">#include &lt;stdio.h&gt;
+<pre>
+<code class="hljs language-javascript">#include &lt;stdio.h&gt;
 #include "test.h"
 
 int main(int argc, char ** argv)
@@ -325,7 +334,8 @@ int main(int argc, char ** argv)
 	return 0;
 }</code></pre>
 <p>testmod.c</p>
-<pre><code class="hljs language-javascript">#include &lt;stdio.h&gt;
+<pre>
+<code class="hljs language-javascript">#include &lt;stdio.h&gt;
 #include "test.h"
 
 void test_so_call(const char *sz)
@@ -337,7 +347,8 @@ void test_so_call(const char *sz)
 }
 </code></pre>
 <p>testhook.c</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 #include &lt;stdio.h&gt;
 
 #define EXPORT __attribute__((visibility("default")))
@@ -349,7 +360,8 @@ EXPORT FILE *fopex(const char * filename , const char *mode)
 }</code></pre>
 <p> </p>
 <p>执行结果：</p>
-<pre><code class="hljs language-javascript">adb push libtestmod.so /lib/
+<pre>
+<code class="hljs language-javascript">adb push libtestmod.so /lib/
 adb push ibdl.so /lib/
 adb push test /data/local
 adb shell chmod +x /lib/libtestmod.so 
@@ -364,7 +376,8 @@ adfsaf 0x0
 <p>实际对于apk安装来说，ibdl.so这样的文件不会给正确安装，这样安装之后就会造成ibdl.so加载时缺失，由于libdl.so基本地每个so都是需要的，其实这个声明是多余的，这个so早就给加载了，就算没有给加载，hook的so里也会加载这个so,</p>
 <p>其实我们可以，直接把so改成libxy.so, 效果也是一样的。</p>
 <p>修改so的脚本：</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 function removeVersion()
 {
 
@@ -434,7 +447,8 @@ for cc in Development Release ; do
 
 done</code></pre>
 <p>去掉LIBC的程序：</p>
-<pre><code class="hljs language-javascript">#include &lt;stdio.h&gt;
+<pre>
+<code class="hljs language-javascript">#include &lt;stdio.h&gt;
 
 int main(int argc, char **argv)
 {

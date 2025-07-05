@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-06 16:17:00</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 316</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 336</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 3</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 8</div>
@@ -164,11 +164,13 @@
 <p>运行效果如上，</p>
 <p>        这是一个用Python tkinter开发的舵机摆动模拟器，用于调试舵机控制代码。模拟器包含一个SwingArm类模拟舵机运动（固定速度180度/秒），通过滑动条输入PWM信号（1000-2000对应-45°至45°）。GUI显示当前角度和摆臂位置，每50ms更新一次状态。使用前需安装python-tk，主要功能包括：PWM到角度转换、平滑角度过渡和实时可视化。该工具便于开发者测试舵机控制算法而无需实际硬件。</p>
 <p>1.需要安装python-tk 如</p>
-<pre><code class="hljs hljs language-javascript"> brew install python-tk</code></pre>
+<pre>
+<code class="hljs hljs language-javascript"> brew install python-tk</code></pre>
 <p>2. class SwingArm 是舵机，它的速度是固定的，为180.0度/秒  </p>
 <p>3. 滑条模拟输入的pwm</p>
 <p>代码如下：</p>
-<pre><code class="language-python hljs">import tkinter as tk
+<pre>
+<code class="language-python hljs">import tkinter as tk
 import math
 
 class SwingArm:

@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-02-06 10:32:34</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 156</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 169</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -162,7 +162,8 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p> 其实很多种办法，可以使用dir相关的函数把文件都枚举出来，然后使用正则表达式，这个是我之前的做法。但是有更简单的办法，就是使用glob库, 示例实现如下：</p>
 <p></p>
-<pre><code class="hljs language-javascript">#include &lt;glob.h&gt;
+<pre>
+<code class="hljs language-javascript">#include &lt;glob.h&gt;
 
 
 void GetAllPathsByPattern(const char * pattern)
@@ -182,7 +183,8 @@ void GetAllPathsByPattern(const char * pattern)
 }</code></pre>
 <p></p>
 <p>使用方法：</p>
-<pre><code class="hljs language-javascript">GetAllPathsByPattern("/data/*.assets");</code></pre>
+<pre>
+<code class="hljs language-javascript">GetAllPathsByPattern("/data/*.assets");</code></pre>
 <p>如此简单，没有想到吧？</p>
 </div>
     </div>

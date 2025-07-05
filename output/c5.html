@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2020-05-04 23:02:58</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 332</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 335</div>
         
         
         
@@ -161,23 +161,29 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>首先创建一个临时的目录：</p>
-<pre><code class="hljs language-javascript">mkdir tempformv</code></pre>
+<pre>
+<code class="hljs language-javascript">mkdir tempformv</code></pre>
 <p>使用stat,cut和mkdir创建以月份为名的文件夹</p>
-<pre><code class="hljs language-javascript">$stat -c "%y" * | cut -b1-7 | sort | uniq | while read line ;do mkdir tempformv/$line; done 
+<pre>
+<code class="hljs language-javascript">$stat -c "%y" * | cut -b1-7 | sort | uniq | while read line ;do mkdir tempformv/$line; done 
 
 $ls tempformv/
 2010-05  2020-05</code></pre>
 <p>生成要执行的命令</p>
-<pre><code class="hljs language-javascript">$ stat -c 'TT="%y";FN="%n"'  * | grep -v tempformv  | while read line; do eval "$line"; echo  "mv \"${FN}\" \"tempformv/${TT:0:7}/\""; done &gt; tempformv/mvops.sh</code></pre>
+<pre>
+<code class="hljs language-javascript">$ stat -c 'TT="%y";FN="%n"'  * | grep -v tempformv  | while read line; do eval "$line"; echo  "mv \"${FN}\" \"tempformv/${TT:0:7}/\""; done &gt; tempformv/mvops.sh</code></pre>
 <p>检查一下生成的命令</p>
-<pre><code class="hljs language-javascript">cat tempformv/mvops.sh</code></pre>
+<pre>
+<code class="hljs language-javascript">cat tempformv/mvops.sh</code></pre>
 <p>无误后，执行命令</p>
-<pre><code class="hljs language-javascript">chmod +x tempformv/mvops.sh
+<pre>
+<code class="hljs language-javascript">chmod +x tempformv/mvops.sh
 tempformv/mvops.sh
 
 </code></pre>
 <p>把文件从temp目录移回来</p>
-<pre><code class="hljs language-javascript">mv tempformv/* . 
+<pre>
+<code class="hljs language-javascript">mv tempformv/* . 
 </code></pre>
 <p>完成</p>
 </div>

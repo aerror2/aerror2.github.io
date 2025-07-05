@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2017-11-12 22:34:29</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2412</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2415</div>
         
         
         
@@ -160,79 +160,83 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-<p><br/> </p>
+<p><br/>
+</p>
 <p>打算升级10.13,发现别人的x99都成功了，但是一直还是卡在内核一加载就卡死或者重启这一步。折腾了几天，分析了kernel和以前的补丁，终于找到了解决办法。</p>
 <p>是有我的cpu比较特殊，或者说比较稀少，需要多打一个msr相关的补丁，而这个旧的补丁的代码变了。使用otool分别分编译了一下10.12的kernel和10.13的kernel. 把这个补丁正确打上，启动起来了，一切完美。</p>
-<p><br/> <br/> <br/> </p>
+<p><br/>
 <br/>
 <br/>
-<br/>
-<br/> otool -tVj 10.12/kernel &gt; 10.12/kernel.txt 
-<br/>
-<br/>
-<br/> 10.12 reboot fix 补丁:  
-<br/> Find:  554889e5415741564155415453504189d64189f74889fb4585ff0f84  
-<br/> Replace: c34889e5415741564155415453504189d64189f74889fb4585ff0f84  
+</p>
 <br/>
 <br/>
 <br/>
 <br/>
+otool -tVj 10.12/kernel &gt; 10.12/kernel.txt<br/>
 <br/>
 <br/>
-<br/> ffffff800041d014        41 57   pushq   %r15 
-<br/> ffffff800041d016        41 56   pushq   %r14 
-<br/> ffffff800041d018        41 55   pushq   %r13 
-<br/> ffffff800041d01a        41 54   pushq   %r12 
-<br/> ffffff800041d01c        53      pushq   %rbx 
-<br/> ffffff800041d01d        50      pushq   %rax 
-<br/> ffffff800041d01e        41 89 d6        movl    %edx, %r14d 
-<br/> ffffff800041d021        41 89 f7        movl    %esi, %r15d 
-<br/> ffffff800041d024        48 89 fb        movq    %rdi, %rbx 
-<br/> ffffff800041d027        45 85 ff        testl   %r15d, %r15d 
-<br/> ffffff800041d02a        0f 84 94 00 00 00       je      0xffffff800041d0c4 
-<br/> ffffff800041d030        48 83 c3 28     addq    $0x28, %rbx 
-<br/> ffffff800041d034        4c 8d 25 1a 9a 56 00    leaq    0x569a1a(%rip), %r12 ## literal pool for: "%s: programming MSR 0x%x\n" 
-<br/> ffffff800041d03b        4c 8d 2d 2d 9a 56 00    leaq    0x569a2d(%rip), %r13 ## literal pool for: "xcpm_program_msrs" 
-<br/> ffffff800041d042        66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00       nopw    %cs:(%rax,%rax) 
-<br/> ffffff800041d050        8b 05 42 3c 68 00       movl    _xcpm_cpu_model(%rip), %eax 
-<br/> ffffff800041d056        85 43 dc        testl   -0x24(%rbx), %eax 
-<br/> ffffff800041d059        74 60   je      0xffffff800041d0bb 
-<br/> ffffff800041d05b        45 85 f6        testl   %r14d, %r14d 
-<br/> ffffff800041d05e        74 06   je      0xffffff800041d066 
-<br/> ffffff800041d060        44 39 73 d8     cmpl    %r14d, -0x28(%rbx) 
+10.12 reboot fix 补丁: <br/>
+Find:  554889e5415741564155415453504189d64189f74889fb4585ff0f84 <br/>
+Replace: c34889e5415741564155415453504189d64189f74889fb4585ff0f84 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
+ffffff800041d014        41 57   pushq   %r15<br/>
+ffffff800041d016        41 56   pushq   %r14<br/>
+ffffff800041d018        41 55   pushq   %r13<br/>
+ffffff800041d01a        41 54   pushq   %r12<br/>
+ffffff800041d01c        53      pushq   %rbx<br/>
+ffffff800041d01d        50      pushq   %rax<br/>
+ffffff800041d01e        41 89 d6        movl    %edx, %r14d<br/>
+ffffff800041d021        41 89 f7        movl    %esi, %r15d<br/>
+ffffff800041d024        48 89 fb        movq    %rdi, %rbx<br/>
+ffffff800041d027        45 85 ff        testl   %r15d, %r15d<br/>
+ffffff800041d02a        0f 84 94 00 00 00       je      0xffffff800041d0c4<br/>
+ffffff800041d030        48 83 c3 28     addq    $0x28, %rbx<br/>
+ffffff800041d034        4c 8d 25 1a 9a 56 00    leaq    0x569a1a(%rip), %r12 ## literal pool for: "%s: programming MSR 0x%x\n"<br/>
+ffffff800041d03b        4c 8d 2d 2d 9a 56 00    leaq    0x569a2d(%rip), %r13 ## literal pool for: "xcpm_program_msrs"<br/>
+ffffff800041d042        66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00       nopw    %cs:(%rax,%rax)<br/>
+ffffff800041d050        8b 05 42 3c 68 00       movl    _xcpm_cpu_model(%rip), %eax<br/>
+ffffff800041d056        85 43 dc        testl   -0x24(%rbx), %eax<br/>
+ffffff800041d059        74 60   je      0xffffff800041d0bb<br/>
+ffffff800041d05b        45 85 f6        testl   %r14d, %r14d<br/>
+ffffff800041d05e        74 06   je      0xffffff800041d066<br/>
+ffffff800041d060        44 39 73 d8     cmpl    %r14d, -0x28(%rbx)<br/>
 <br/>
 <br/>
-<br/> 10.13 
-<br/> otool -tVj 10.13/kernel &gt; 10.13/kernel.txt 
 <br/>
 <br/>
-<br/> ffffff80003a6da0        55      pushq   %rbp 
-<br/> ffffff80003a6da1        48 89 e5        movq    %rsp, %rbp 
-<br/> ffffff80003a6da4        41 57   pushq   %r15 
-<br/> ffffff80003a6da6        41 56   pushq   %r14 
-<br/> ffffff80003a6da8        41 55   pushq   %r13 
-<br/> ffffff80003a6daa        41 54   pushq   %r12 
-<br/> ffffff80003a6dac        53      pushq   %rbx 
-<br/> ffffff80003a6dad        50      pushq   %rax 
-<br/> ffffff80003a6dae        41 89 d6        movl    %edx, %r14d 
-<br/> ffffff80003a6db1        48 89 fb        movq    %rdi, %rbx 
-<br/> ffffff80003a6db4        85 f6   testl   %esi, %esi 
-<br/> ffffff80003a6db6        0f 84 84 00 00 00       je      0xffffff80003a6e40 
-<br/> ffffff80003a6dbc        41 89 f5        movl    %esi, %r13d 
-<br/> ffffff80003a6dbf        4c 8d 3d 2d 2f 5d 00    leaq    0x5d2f2d(%rip), %r15 ## literal pool for: "%s: programming MSR 0x%x\n" 
-<br/> ffffff80003a6dc6        4c 8d 25 40 2f 5d 00    leaq    0x5d2f40(%rip), %r12 ## literal pool for: "xcpm_program_msrs" 
 <br/>
 <br/>
-<br/> 10.13 reboot fix 补丁:  
-<br/> Find: 554889e5415741564155415453504189d64889fb85f6 
-<br/> Replace: c34889e5415741564155415453504189d64889fb85f6 
 <br/>
+<br/>
+10.13<br/>
+otool -tVj 10.13/kernel &gt; 10.13/kernel.txt<br/>
+<br/>
+<br/>
+ffffff80003a6da0        55      pushq   %rbp<br/>
+ffffff80003a6da1        48 89 e5        movq    %rsp, %rbp<br/>
+ffffff80003a6da4        41 57   pushq   %r15<br/>
+ffffff80003a6da6        41 56   pushq   %r14<br/>
+ffffff80003a6da8        41 55   pushq   %r13<br/>
+ffffff80003a6daa        41 54   pushq   %r12<br/>
+ffffff80003a6dac        53      pushq   %rbx<br/>
+ffffff80003a6dad        50      pushq   %rax<br/>
+ffffff80003a6dae        41 89 d6        movl    %edx, %r14d<br/>
+ffffff80003a6db1        48 89 fb        movq    %rdi, %rbx<br/>
+ffffff80003a6db4        85 f6   testl   %esi, %esi<br/>
+ffffff80003a6db6        0f 84 84 00 00 00       je      0xffffff80003a6e40<br/>
+ffffff80003a6dbc        41 89 f5        movl    %esi, %r13d<br/>
+ffffff80003a6dbf        4c 8d 3d 2d 2f 5d 00    leaq    0x5d2f2d(%rip), %r15 ## literal pool for: "%s: programming MSR 0x%x\n"<br/>
+ffffff80003a6dc6        4c 8d 25 40 2f 5d 00    leaq    0x5d2f40(%rip), %r12 ## literal pool for: "xcpm_program_msrs"<br/>
+<br/>
+<br/>
+10.13 reboot fix 补丁: <br/>
+Find: 554889e5415741564155415453504189d64889fb85f6<br/>
+Replace: c34889e5415741564155415453504189d64889fb85f6<br/>
 <br/>
 <br/>
 <br/>

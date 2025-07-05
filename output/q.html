@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-03-05 18:11:47</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 365</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 380</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
@@ -162,7 +162,8 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>修改workbench.desktop.main.js，再打开app,就会提示“安装似乎已经损坏”。 它是使用sha256，然后base64来检查的。 修复步骤如下：</p>
 <p></p>
-<pre><code class="hljs language-javascript">$ shasum -a 256 /Applications/Cursor.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js | xxd -r -p | base64
+<pre>
+<code class="hljs language-javascript">$ shasum -a 256 /Applications/Cursor.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.js | xxd -r -p | base64
 esHUY32AY47v3JSVXor3fTSlSwQIJiM6/EwaPoe+yJU=
 
  sed -i "" -E  's/workbench.desktop.main.js":.*/workbench.desktop.main.js": "esHUY32AY47v3JSVXor3fTSlSwQIJiM6\/EwaPoe+yJU",/g'   /Applications/Cursor.app/Contents/Resources/app/product.json</code></pre>

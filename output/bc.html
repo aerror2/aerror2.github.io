@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-12-23 13:54:29</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 156</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 162</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -160,7 +160,8 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 ;w24 是输入的32bit的数字
 ;w9  是w32/10的余数
 
@@ -173,7 +174,8 @@
  MSUB w9, w8, w9, w24       | W9 = (levelNo - 0 * 10) = 0 (0x00000000);</code></pre>
 <p>汇编代码如上, 相当神奇，特别立贴，记录一下，</p>
 <p>等效的c代码如下：</p>
-<pre><code class="hljs language-javascript">uint32_t calc_10_remain(uint32_t levelNo) {
+<pre>
+<code class="hljs language-javascript">uint32_t calc_10_remain(uint32_t levelNo) {
     uint32_t w8 = 0xCCCCCCCD;  // 52429 (0xCCCD)
 
     uint64_t result = (uint64_t)levelNo * w8;  // levelNo is multiplied with w8

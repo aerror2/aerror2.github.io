@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-23 15:06:35</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 382</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 391</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
@@ -161,12 +161,14 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>使用clang++编译出来的android程序，实际真机运行出现 cannot locate symbol "_ZTTNSt6__ndk114basic_ofstreamIcNS_11char_traitsIcEEEE" referenced by</p>
-<pre><code class="hljs language-javascript">vayu:/ # /data/local/cmix                                                                                                                                  
+<pre>
+<code class="hljs language-javascript">vayu:/ # /data/local/cmix                                                                                                                                  
 CANNOT LINK EXECUTABLE "/data/local/cmix": cannot locate symbol "_ZTTNSt6__ndk114basic_ofstreamIcNS_11char_traitsIcEEEE" referenced by "/data/local/cmix"...
 </code></pre>
 <p>这个简单的解决办法是，加-static参数，改一下make file在flags里加上，如下：</p>
 <p></p>
-<pre><code class="hljs language-javascript">#CC = clang++
+<pre>
+<code class="hljs language-javascript">#CC = clang++
 CC = /Volumes/data/Codes/AndroidNDK12479018.app/Contents/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android30-clang++
 LFLAGS = -std=c++14 -Wall 
 
@@ -191,7 +193,8 @@ clean:
 </code></pre>
 <p>make clean &amp;&amp; make</p>
 <p>重新上传，运行ok.</p>
-<pre><code class="hljs language-javascript"> adb push cmix /sdcard/
+<pre>
+<code class="hljs language-javascript"> adb push cmix /sdcard/
 adb shell
 vayu:/ # cp /sdcard/cmix /data/local/cmix                                                                                                                   
 vayu:/ # /data/local/cmix

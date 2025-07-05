@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-23 10:56:01</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 727</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 736</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
@@ -163,8 +163,10 @@
 <p>  官方没有android的编译方法，自己编写脚本在macos下交叉编译.</p>
 <p>下载源码： git clone https://github.com/hxim/paq8px.git </p>
 <p>稍旧的ndk并不能编译成功，需要下载最新的ndkr27c, 最后是使用clang来编译。</p>
-<pre>编译build.sh</pre>
-<pre><code class="hljs language-javascript">export ANDROID_NDK=/Volumes/data/Codes/AndroidNDK12479018.app/Contents/NDK
+<pre>
+编译build.sh</pre>
+<pre>
+<code class="hljs language-javascript">export ANDROID_NDK=/Volumes/data/Codes/AndroidNDK12479018.app/Contents/NDK
 
 
 
@@ -177,8 +179,11 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
 make
 </code></pre>
 <p>修改paq8px/CMakeLists.txt, 如下，去掉clang++不支持的-march=nocona和-floop-strip-mine</p>
-<pre></pre>
-<pre><code class="hljs language-javascript">if (NATIVECPU)
+<pre>
+
+</pre>
+<pre>
+<code class="hljs language-javascript">if (NATIVECPU)
     add_definitions(-march=native -mtune=native)
 else ()
 #    add_definitions(-march=nocona -mtune=generic)
@@ -198,7 +203,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #set(CMAKE_CXX_FLAGS "-O3 -floop-strip-mine -funroll-loops -ftree-vectorize -fgcse-sm -falign-loops=16")
 set(CMAKE_CXX_FLAGS "-O3 -funroll-loops -ftree-vectorize -fgcse-sm -falign-loops=16")</code></pre>
 <p>运行编译，成功</p>
-<pre><code class="hljs language-javascript">mkdir mybuild
+<pre>
+<code class="hljs language-javascript">mkdir mybuild
 cd mybuild
 chmod +x ../build.sh
 

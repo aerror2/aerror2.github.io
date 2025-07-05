@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-08-12 23:54:52</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2486</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2489</div>
         
         
         
@@ -163,7 +163,8 @@
 <p>好久没有打开Light Room Classic, 今天打开发现slpash 出现之后就直接闪退，百思不解，好像很久什么都没有干呀。试一下把网络禁了，发现不闪了。 哦。。。。。原来如此。</p>
 <p>好吧，tcpdump分析一下，看看闪退之前访问了什么网络。</p>
 <p></p>
-<pre><code class="hljs language-javascript">sudo tcpdump -i en0 port 53
+<pre>
+<code class="hljs language-javascript">sudo tcpdump -i en0 port 53
 Password:
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
@@ -175,7 +176,8 @@ listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
 23:41:58.102422 IP 192.168.2.1.domain &gt; 192.168.2.4.55761: 906 2/0/0 A 54.71.139.124, A 54.212.57.71 (68)
 23:41:58.154484 IP 192.168.2.4.57216 &gt; 192.168.2.1.domain: 15444+ A? www.photoshop.com. (35)
 23:41:58.193876 IP 192.168.2.1.domain &gt; 192.168.2.4.57216: 15444 5/0/0 CNAME photoshop.com., A 54.148.140.113, A 44.241.44.191, A 54.186.31.35, A 44.233.73.34 (113)</code></pre>
-<pre><code class="hljs language-javascript"> sudo tcpdump -i en0 port 53
+<pre>
+<code class="hljs language-javascript"> sudo tcpdump -i en0 port 53
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
 
@@ -190,7 +192,8 @@ listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
 23:44:04.723816 IP 192.168.2.1.domain &gt; 192.168.2.4.63473: 55474 4/0/0 CNAME ocsp-cn-lb.apple.com.akadns.net., CNAME ioshost.qtlcdn.com., A 120.240.100.117, A 183.240.58.148 (155)
 </code></pre>
 <p>哦。。。。。 哪在路由上把这些都加入黑名单试试....</p>
-<pre><code class="hljs language-javascript">ipset=/.adobe.com/blacklist
+<pre>
+<code class="hljs language-javascript">ipset=/.adobe.com/blacklist
 ipset=/.photoshop.com/blacklist
 ipset=/.adobe.io/blacklist
 ipset=/.adobegenuine.com/blacklist</code></pre>

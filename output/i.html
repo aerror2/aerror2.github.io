@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-04-15 16:56:57</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 519</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 545</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -163,7 +163,8 @@
 <p>ERROR: torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_28_x86_64.whl is not a supported wheel on this platform.</p>
 <p></p>
 <p>可以</p>
-<pre><code class="hljs language-javascript"> pip debug --verbose | grep manylinux | grep cp310
+<pre>
+<code class="hljs language-javascript"> pip debug --verbose | grep manylinux | grep cp310
 WARNING: This command is only meant for debugging. Do not use this with automation for parsing and getting these details, since the output and options of this command may change without notice.
   cp310-cp310-manylinux_2_27_x86_64
   cp310-cp310-manylinux_2_26_x86_64
@@ -184,12 +185,15 @@ WARNING: This command is only meant for debugging. Do not use this with automati
 <p>发现，刚好少了2_28</p>
 <p>把whl的文件名改一下。</p>
 <p></p>
-<pre><code class="hljs language-javascript">mv torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_28_x86_64.whl torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_27_x86_64.whl</code></pre>
+<pre>
+<code class="hljs language-javascript">mv torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_28_x86_64.whl torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_27_x86_64.whl</code></pre>
 <p>然后再安装</p>
-<pre><code class="hljs language-javascript">pip torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_27_x86_64.whl</code></pre>
+<pre>
+<code class="hljs language-javascript">pip torch-2.8.0.dev20250325+cu128-cp310-cp310-manylinux_2_27_x86_64.whl</code></pre>
 <p>可以安装了。</p>
 <p>实际安装 2_27 , 2_28是<strong>GLIBC的版本。</strong></p>
-<pre><code class="hljs language-javascript"># strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC
+<pre>
+<code class="hljs language-javascript"># strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC
 GLIBC_2.2.5
 GLIBC_2.2.6
 GLIBC_2.3
@@ -221,12 +225,23 @@ GLIBC_2.28
 GLIBC_PRIVATE</code></pre>
 <p>改了安装完还是要升级GLIBC</p>
 <p></p>
-<p><br/> .安装 GLIBC 2.28:<br/> 将Debian安全更新源添加到系统的软件源列表中:</p>
-<p>sudo su -c 'echo "deb http://security.debian.org/debian-security buster/updates main" &gt;&gt; /etc/apt/sources.list' root<br/> <br/> 从指定的密钥服务器上获取并导入一个公钥：</p>
-<p>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 112695A0E562B32A 54404762BBB6E853<br/> <br/> 更新系统软件包列表：</p>
-<p>sudo apt update<br/> <br/> 安装名为"libc6"和"libc6-dev"的软件包：</p>
-<p>sudo apt install libc6 libc6-dev -y<br/> <br/> .安装成功后再次查看：</p>
-<p>strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_2.28<br/>  </p>
+<p><br/>
+.安装 GLIBC 2.28:<br/>
+将Debian安全更新源添加到系统的软件源列表中:</p>
+<p>sudo su -c 'echo "deb http://security.debian.org/debian-security buster/updates main" &gt;&gt; /etc/apt/sources.list' root<br/>
+<br/>
+从指定的密钥服务器上获取并导入一个公钥：</p>
+<p>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 112695A0E562B32A 54404762BBB6E853<br/>
+<br/>
+更新系统软件包列表：</p>
+<p>sudo apt update<br/>
+<br/>
+安装名为"libc6"和"libc6-dev"的软件包：</p>
+<p>sudo apt install libc6 libc6-dev -y<br/>
+<br/>
+.安装成功后再次查看：</p>
+<p>strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_2.28<br/>
+ </p>
 </div>
     </div>
     

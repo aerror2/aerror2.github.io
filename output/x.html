@@ -148,7 +148,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-23 13:10:21</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 778</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 787</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -162,7 +162,8 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>这个比较简单只有makefile, 修改一下使用最新的anroid的ndk r27 下的llvm/prebuilt/darwin-x86_64/bin/ 下的编译工具即可，修改如下：</p>
 <p>LFLAGS和CC改一下，注释的是原来的内容。然后执行make就可以了。</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 #CC = clang++
 CC = /Volumes/data/Codes/AndroidNDK12479018.app/Contents/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android21-clang++ 
 LFLAGS = -std=c++14 -Wall
