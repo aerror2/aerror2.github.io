@@ -473,7 +473,7 @@ def extract_blog_content(html_content, output_dir, article_dir, url):
         print(f"解析HTML内容时出错: {e}")
         return None, None, None
 
-def generate_html(title, content, url, output_file, publish_time=None, view_count=None, comment_count=None, collect_count=None, digg_count=None, tags=None, description=None):
+def generate_html(title, content, url, output_file, publish_time=None, view_count=None, comment_count=None, collect_count=None, digg_count=None, tags=None, description=None, is_manual=False):
     """生成包含提取内容的HTML文件
     
     Args:
@@ -516,7 +516,7 @@ def generate_html(title, content, url, output_file, publish_time=None, view_coun
 </head>
 <body>
     <div class="header">
-        <a href="index.html">← 返回目录</a>
+        <a href="{"manual.html" if is_manual else "index.html"}">← 返回目录</a>
     </div>
     
     <h1>{title}</h1>
@@ -895,6 +895,172 @@ def load_blogs_from_json(json_file):
         print(f"读取博客列表JSON文件时出错: {e}")
         return {}, {}, {}, {}
 # 定义排序和生成索引的函数
+def generate_manual_html(output_dir, manual_articles):
+    """生成说明书文章的manual.html索引页面
+    
+    Args:
+        output_dir: 输出目录
+        manual_articles: 说明书文章信息列表
+    """
+    html_content = f'''
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品说明书目录</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .manual-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }}
+        .manual-card {{
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }}
+        .manual-card:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }}
+        .manual-image {{
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }}
+        .manual-title {{
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }}
+        .manual-meta {{
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }}
+        .manual-link {{
+            display: inline-block;
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }}
+        .manual-link:hover {{
+            background: #0056b3;
+        }}
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-book"></i> 产品说明书目录</h1>
+        <nav>
+            <a href="/"><i class="fas fa-home"></i> 返回主页</a>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="manual-grid">
+'''
+    
+    for article in manual_articles:
+        # 从对应的HTML文件中提取产品图片
+        product_image = extract_product_image(output_dir, article['filename'])
+        
+        # 格式化发布时间
+        publish_time_str = ""
+        if article.get('publish_time'):
+            try:
+                # 尝试解析时间字符串
+                if isinstance(article['publish_time'], str):
+                    # 假设时间格式为 "YYYY-MM-DD HH:MM:SS" 或类似格式
+                    publish_time_str = article['publish_time'][:10]  # 只取日期部分
+                else:
+                    publish_time_str = str(article['publish_time'])
+            except:
+                publish_time_str = ""
+        
+        html_content += f'''
+            <div class="manual-card">
+                {f'<img src="{product_image}" alt="产品图片" class="manual-image">' if product_image else ''}
+                <div class="manual-title">{article['title']}</div>
+                <div class="manual-meta">
+                    <i class="fas fa-calendar"></i> {publish_time_str}
+                </div>
+                <a href="{article['filename']}.html" class="manual-link">
+                    <i class="fas fa-eye"></i> 查看说明书
+                </a>
+            </div>
+'''
+    
+    html_content += '''
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 产品说明书目录. 共 ''' + str(len(manual_articles)) + ''' 个产品说明书.</p>
+    </footer>
+</body>
+</html>
+'''
+    
+    # 写入manual.html文件
+    manual_file = os.path.join(output_dir, 'manual.html')
+    try:
+        with open(manual_file, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        print(f"已生成说明书目录页面: {manual_file}")
+    except Exception as e:
+        print(f"生成说明书目录页面时出错: {e}")
+
+def extract_product_image(output_dir, filename):
+    """从HTML文件中提取产品图片
+    
+    Args:
+        output_dir: 输出目录
+        filename: 文件名（不含扩展名）
+        
+    Returns:
+        图片路径或None
+    """
+    html_file = os.path.join(output_dir, f"{filename}.html")
+    if not os.path.exists(html_file):
+        return None
+        
+    try:
+        with open(html_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+        soup = BeautifulSoup(content, 'html.parser')
+        
+        # 查找文章内容中的第一张图片
+        article_content = soup.find('div', class_='article-content')
+        if article_content:
+            img = article_content.find('img')
+            if img and img.get('src'):
+                return img['src']
+                
+        # 如果没找到，查找任何图片
+        img = soup.find('img')
+        if img and img.get('src'):
+            return img['src']
+            
+        return None
+    except Exception as e:
+        print(f"提取产品图片时出错 {filename}: {e}")
+        return None
+
 def sort_and_generate_index(blog_info_map, url_map, titles_map, publish_times_map, output_directory):
     """按发布时间排序文章列表并生成索引页面
     
@@ -965,6 +1131,8 @@ def main():
     parser.add_argument('-j', '--json', help='博客列表JSON文件路径', required=False)
     parser.add_argument('-o', '--output', help='输出目录', default=os.path.join(os.getcwd(), "output"))
     parser.add_argument('--only-index', action='store_true', help='只生成索引页面')
+    parser.add_argument('--manual-index-only', action='store_true', help='只生成说明书文章的manual.html索引页面')
+    parser.add_argument('--only-manual', action='store_true', help='只更新标题包含"说明书"的文章，并生成index.html和manual.html')
     
     # 解析命令行参数
     args = parser.parse_args()
@@ -993,9 +1161,86 @@ def main():
     
     sort_and_generate_index(blog_info_map, url_map, titles_map, publish_times_map, output_dir)
 
+    # 如果只需要生成说明书索引页面
+    if args.manual_index_only:
+        # 筛选标题包含"说明书"的文章
+        manual_articles = []
+        url_to_short_name = {url: short_name for short_name, url in url_map.items()}
+        
+        for url, blog_info in blog_info_map.items():
+            title = titles_map.get(url, "")
+            if "说明书" in title and url in url_to_short_name:
+                short_name = url_to_short_name[url]
+                article_data = {
+                    "filename": short_name,
+                    "title": title,
+                    "url": url,
+                    "publish_time": publish_times_map.get(url)
+                }
+                manual_articles.append(article_data)
+        
+        # 按发布时间排序
+        def sort_by_time(x):
+            time = x.get("publish_time")
+            return time if time is not None else ""
+        
+        manual_articles.sort(key=sort_by_time, reverse=True)
+        
+        # 生成manual.html页面
+        generate_manual_html(output_dir, manual_articles)
+        print(f"已筛选出 {len(manual_articles)} 篇说明书文章")
+        return
+
     # 如果只需要生成索引页面
     if args.only_index:
         return
+    
+    # 如果只处理说明书文章
+    if args.only_manual:
+        # 筛选标题包含"说明书"的文章
+        manual_url_map = {}
+        manual_titles_map = {}
+        manual_publish_times_map = {}
+        manual_blog_info_map = {}
+        
+        url_to_short_name = {url: short_name for short_name, url in url_map.items()}
+        
+        for url, blog_info in blog_info_map.items():
+            title = titles_map.get(url, "")
+            if "说明书" in title and url in url_to_short_name:
+                short_name = url_to_short_name[url]
+                manual_url_map[short_name] = url
+                manual_titles_map[url] = title
+                manual_publish_times_map[url] = publish_times_map.get(url)
+                manual_blog_info_map[url] = blog_info
+        
+        # 更新映射为只包含说明书文章
+        url_map = manual_url_map
+        titles_map = manual_titles_map
+        publish_times_map = manual_publish_times_map
+        blog_info_map = manual_blog_info_map
+        
+        # 生成说明书文章的manual.html页面
+        manual_articles = []
+        for url, blog_info in blog_info_map.items():
+            title = titles_map.get(url, "")
+            short_name = url_to_short_name[url]
+            article_data = {
+                "filename": short_name,
+                "title": title,
+                "url": url,
+                "publish_time": publish_times_map.get(url)
+            }
+            manual_articles.append(article_data)
+        
+        # 按发布时间排序
+        def sort_by_time(x):
+            time = x.get("publish_time")
+            return time if time is not None else ""
+        
+        manual_articles.sort(key=sort_by_time, reverse=True)
+        generate_manual_html(output_dir, manual_articles)
+        print(f"已筛选出 {len(manual_articles)} 篇说明书文章")
     
     success = False
 
@@ -1037,9 +1282,12 @@ def main():
             tags = blog_info.get("tags")
             description = blog_info.get("description")
         
+        # 判断是否为说明书文章
+        is_manual = "说明书" in original_title
+        
         # 生成HTML文件
         generate_html(title, blog_content, url, output_file, publish_time,
-                        view_count, comment_count, collect_count, digg_count, tags, description)
+                        view_count, comment_count, collect_count, digg_count, tags, description, is_manual)
     
 
 if __name__ == "__main__":

@@ -38,7 +38,7 @@
 <path d="M5,0 0,2.5 5,5z" id="raphael-marker-block" stroke-linecap="round" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
 </svg>
 <h2><a id="Xbox_One__macOS_HID__3"></a>Xbox One 控制器转换为 macOS HID 设备的工作原理分析</h2>
-<p>源代码在 https://github.com/guilhermearaujo/xboxonecontrollerenabler.git</p>
+<p>源代码在  https://github.com/guilhermearaujo/xboxonecontrollerenabler.git</p>
 <p>这个工程的核心功能是将 Xbox One 控制器（macOS 原生不支持的设备）转换为 macOS 可识别的 HID 设备。这里通过分析代码，详细解释其工作原理、设备描述和报告描述符的实现。</p>
 <h3><a id="_10"></a>整体架构</h3>
 <p>该项目由三个主要部分组成：</p>
@@ -225,14 +225,18 @@
 </code></pre>
 <ol start="5"><li><code>VHIDDevice</code> 更新其内部状态并通知代理</li><li><code>WJoyDevice</code> 将更新后的 HID 状态发送到系统</li></ol>
 <h3><a id="_248"></a>报告提交流程</h3>
-<ol><li> <p><strong>VHIDDevice.m 中的状态更新和报告生成</strong>：<br/> 当按钮或指针状态发生变化时，VHIDDevice会生成新的状态报告：</p> <pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>setButton<span class="token punctuation">:</span><span class="token punctuation">(</span>NSUInteger<span class="token punctuation">)</span>buttonIndex pressed<span class="token punctuation">:</span><span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>pressed <span class="token punctuation">{<!-- --></span>
+<ol><li>
+<p><strong>VHIDDevice.m 中的状态更新和报告生成</strong>：<br/>
+当按钮或指针状态发生变化时，VHIDDevice会生成新的状态报告：</p>
+<pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>setButton<span class="token punctuation">:</span><span class="token punctuation">(</span>NSUInteger<span class="token punctuation">)</span>buttonIndex pressed<span class="token punctuation">:</span><span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>pressed <span class="token punctuation">{<!-- --></span>
   <span class="token comment">// ... 检查按钮状态是否变化</span>
   <span class="token punctuation">[</span>m_Buttons setButton<span class="token punctuation">:</span>buttonIndex pressed<span class="token punctuation">:</span>pressed<span class="token punctuation">]</span><span class="token punctuation">;</span>
   
   <span class="token keyword">if</span><span class="token punctuation">(</span>m_Delegate <span class="token operator">!=</span> nil<span class="token punctuation">)</span>
       <span class="token punctuation">[</span>m_Delegate VHIDDevice<span class="token punctuation">:</span><span class="token keyword">self</span> stateChanged<span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token keyword">self</span> state<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</code></pre> <pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span>NSData<span class="token operator">*</span><span class="token punctuation">)</span>state <span class="token punctuation">{<!-- --></span>
+</code></pre>
+<pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span>NSData<span class="token operator">*</span><span class="token punctuation">)</span>state <span class="token punctuation">{<!-- --></span>
   <span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span>data <span class="token operator">=</span> <span class="token punctuation">[</span>m_State mutableBytes<span class="token punctuation">]</span><span class="token punctuation">;</span>
   NSData <span class="token operator">*</span>buttonState <span class="token operator">=</span> <span class="token punctuation">[</span>m_Buttons state<span class="token punctuation">]</span><span class="token punctuation">;</span>
   NSData <span class="token operator">*</span>pointerState <span class="token operator">=</span> <span class="token punctuation">[</span>m_Pointers state<span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -248,7 +252,12 @@
   
   <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>m_State retain<span class="token punctuation">]</span> autorelease<span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</code></pre> </li><li> <p><strong>VHIDButtonCollection.m 和 VHIDPointerCollection.m</strong>：<br/> 这两个类负责维护按钮和指针的状态，并生成对应的HID报告部分：</p> <p>在VHIDButtonCollection中：</p> <pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>setButton<span class="token punctuation">:</span><span class="token punctuation">(</span>NSUInteger<span class="token punctuation">)</span>buttonIndex pressed<span class="token punctuation">:</span><span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>pressed <span class="token punctuation">{<!-- --></span>
+</code></pre>
+</li><li>
+<p><strong>VHIDButtonCollection.m 和 VHIDPointerCollection.m</strong>：<br/>
+这两个类负责维护按钮和指针的状态，并生成对应的HID报告部分：</p>
+<p>在VHIDButtonCollection中：</p>
+<pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>setButton<span class="token punctuation">:</span><span class="token punctuation">(</span>NSUInteger<span class="token punctuation">)</span>buttonIndex pressed<span class="token punctuation">:</span><span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>pressed <span class="token punctuation">{<!-- --></span>
   <span class="token comment">// ... 检查按钮索引</span>
   NSUInteger buttonByte <span class="token operator">=</span> buttonIndex <span class="token operator">/</span> <span class="token number">8</span><span class="token punctuation">;</span>
   NSUInteger buttonBit <span class="token operator">=</span> buttonIndex <span class="token operator">%</span> <span class="token number">8</span><span class="token punctuation">;</span>
@@ -260,7 +269,9 @@
   <span class="token keyword">else</span>
       data<span class="token punctuation">[</span>buttonByte<span class="token punctuation">]</span> <span class="token operator">&amp;</span><span class="token operator">=</span> <span class="token operator">~</span><span class="token punctuation">(</span>buttonMasks<span class="token punctuation">[</span>buttonBit<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</code></pre> <p>在VHIDPointerCollection中：</p> <pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>setPointer<span class="token punctuation">:</span><span class="token punctuation">(</span>NSUInteger<span class="token punctuation">)</span>pointerIndex position<span class="token punctuation">:</span><span class="token punctuation">(</span>NSPoint<span class="token punctuation">)</span>position <span class="token punctuation">{<!-- --></span>
+</code></pre>
+<p>在VHIDPointerCollection中：</p>
+<pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>setPointer<span class="token punctuation">:</span><span class="token punctuation">(</span>NSUInteger<span class="token punctuation">)</span>pointerIndex position<span class="token punctuation">:</span><span class="token punctuation">(</span>NSPoint<span class="token punctuation">)</span>position <span class="token punctuation">{<!-- --></span>
   <span class="token comment">// ... 检查指针索引</span>
   <span class="token keyword">char</span> <span class="token operator">*</span>data <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">[</span>m_State mutableBytes<span class="token punctuation">]</span> <span class="token operator">+</span> pointerIndex <span class="token operator">*</span> HIDStatePointerSize<span class="token punctuation">;</span>
   
@@ -268,13 +279,22 @@
   <span class="token operator">*</span>data <span class="token operator">=</span> <span class="token punctuation">[</span>VHIDPointerCollection clipCoordinateTo<span class="token punctuation">:</span>position<span class="token punctuation">.</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
   <span class="token operator">*</span><span class="token punctuation">(</span>data <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token punctuation">[</span>VHIDPointerCollection clipCoordinateTo<span class="token punctuation">:</span>position<span class="token punctuation">.</span>y<span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</code></pre> </li><li> <p><strong>GAMainViewController.m 中的代理方法</strong>：<br/> 当VHIDDevice状态变化时，通过代理方法将状态传递给WJoyDevice：</p> <pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>VHIDDevice<span class="token punctuation">:</span><span class="token punctuation">(</span>VHIDDevice <span class="token operator">*</span><span class="token punctuation">)</span>device stateChanged<span class="token punctuation">:</span><span class="token punctuation">(</span>NSData <span class="token operator">*</span><span class="token punctuation">)</span>state <span class="token punctuation">{<!-- --></span>
+</code></pre>
+</li><li>
+<p><strong>GAMainViewController.m 中的代理方法</strong>：<br/>
+当VHIDDevice状态变化时，通过代理方法将状态传递给WJoyDevice：</p>
+<pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>VHIDDevice<span class="token punctuation">:</span><span class="token punctuation">(</span>VHIDDevice <span class="token operator">*</span><span class="token punctuation">)</span>device stateChanged<span class="token punctuation">:</span><span class="token punctuation">(</span>NSData <span class="token operator">*</span><span class="token punctuation">)</span>state <span class="token punctuation">{<!-- --></span>
   <span class="token punctuation">[</span>_virtualDevice updateHIDState<span class="token punctuation">:</span>state<span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</code></pre> </li><li> <p><strong>WJoyDevice.m 中的更新方法</strong>：<br/> 最后，WJoyDevice将HID状态报告提交给系统：</p> <pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>updateHIDState<span class="token punctuation">:</span><span class="token punctuation">(</span>NSData<span class="token operator">*</span><span class="token punctuation">)</span>HIDState <span class="token punctuation">{<!-- --></span>
+</code></pre>
+</li><li>
+<p><strong>WJoyDevice.m 中的更新方法</strong>：<br/>
+最后，WJoyDevice将HID状态报告提交给系统：</p>
+<pre><code class="prism language-objc hljs"><span class="token operator">-</span> <span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>updateHIDState<span class="token punctuation">:</span><span class="token punctuation">(</span>NSData<span class="token operator">*</span><span class="token punctuation">)</span>HIDState <span class="token punctuation">{<!-- --></span>
   <span class="token keyword">return</span> <span class="token punctuation">[</span>m_Impl updateState<span class="token punctuation">:</span>HIDState<span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</code></pre> </li></ol>
+</code></pre>
+</li></ol>
 <h3><a id="_329"></a>总结</h3>
 <p>这个工程通过以下步骤将 Xbox One 控制器转换为 macOS 可识别的 HID 设备：</p>
 <ol><li>使用 IOKit 框架与 Xbox One 控制器通信，读取原始输入数据</li><li>将这些数据解析为结构化的按钮和摇杆状态</li><li>创建一个虚拟 HID 设备，生成标准的 HID 报告描述符</li><li>将控制器状态映射到虚拟 HID 设备状态</li><li>通过内核驱动程序将虚拟设备注册到系统</li></ol>
