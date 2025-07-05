@@ -5,19 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ntfs-3g MacOS High Sierra 10.13.1 brew编译失败解决方案</title>
-    <link rel="stylesheet" href="css/common/125a8466cc4b403bad0ef03b725d6f5d.css">
-    <link rel="stylesheet" href="css/common/762f7595fdc29098c10bedc44fb08d79.css">
-    <link rel="stylesheet" href="css/common/25978cf10b5368d50d66d027f7ac6995.css">
-    <link rel="stylesheet" href="css/common/01256533b5796652379f01b9d5d2a4e1.css">
-    <link rel="stylesheet" href="css/common/3456820cac63d19e4c744608c87562e9.css">
-    <link rel="stylesheet" href="css/common/24f21657c5465ed6e144fb4401350e07.css">
-    <link rel="stylesheet" href="css/common/1a98987dfda088c62bb1183b9ebd77b8.css">
-    <link rel="stylesheet" href="css/common/01addd087fe9e3ace40b6be660c60689.css">
-    <link rel="stylesheet" href="css/common/7fec870fdbedeaba28df5c37ac431c1d.css">
-    <link rel="stylesheet" href="css/common/7ebfc34abf5dd1ce6de5f5865a58ff24.css">
-    <link rel="stylesheet" href="css/common/40f864214c8f1419f9c655aaf1b6fa71.css">
-    <link rel="stylesheet" href="css/common/inline_1b451fdea25e76a730a723374f416b11.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
     <style>
@@ -173,100 +160,199 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> 升级10.13.1之后 ntfs-3g brew 安装失败，会有以下提示：</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><br/> </span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">Last 15 lines from /Users/dany/Library/Logs/Homebrew/ntfs-3g/02.make:</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">clang -DHAVE_CONFIG_H -I. -I..     -DFUSE_USE_VERSION=26 -D_FILE_OFFSET_BITS=64 -D_DARWIN_USE_64_BIT_INODE -I/usr/local/include/osxfuse/fuse -I../include/ntfs-3g -DPLUGIN_DIR=\"/usr/local/Cellar/ntfs-3g/2017.3.23/lib/ntfs-3g\" -g -O2 -Wall -c -o lowntfs_3g-lowntfs-3g.o `test -f 'lowntfs-3g.c' || echo './'`lowntfs-3g.c</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">clang -DHAVE_CONFIG_H -I. -I..     -DFUSE_USE_VERSION=26 -D_FILE_OFFSET_BITS=64 -D_DARWIN_USE_64_BIT_INODE -I/usr/local/include/osxfuse/fuse -I../include/ntfs-3g -DPLUGIN_DIR=\"/usr/local/Cellar/ntfs-3g/2017.3.23/lib/ntfs-3g\" -g -O2 -Wall -c -o lowntfs_3g-ntfs-3g_common.o `test -f 'ntfs-3g_common.c' || echo './'`ntfs-3g_common.c</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">/bin/sh ../libtool  --tag=CC   --mode=link clang  -I../include/ntfs-3g -g -O2 -Wall  -lintl -framework CoreFoundation -o ntfs-3g.probe ntfs_3g_probe-ntfs-3g.probe.o ../libntfs-3g/libntfs-3g.la -lc </span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">lowntfs-3g.c:1932:29: error: no member named 'st_atim' in 'struct stat'</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">                                                = timespec2ntfs(stin-&gt;st_atim);</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">                                                                ~~~~  ^</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">lowntfs-3g.c:1938:29: error: no member named 'st_mtim' in 'struct stat'</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">                                                = timespec2ntfs(stin-&gt;st_mtim);</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">                                                                ~~~~  ^</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">2 errors generated.</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><br/> </span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> 找一下这个stat的定义：</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">find /Applications/Xcode.app/ -name "stat.h"</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">/Applications/Xcode.app//Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stat.h </span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> 发现这个结构是修改了：</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">struct stat {<!-- --></span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>dev_t<span style="white-space:pre"> </span><span style="white-space:pre"></span>st_dev;<span style="white-space:pre"> </span>/* [XSI] ID of device containing file */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>ino_t<span style="white-space:pre"> </span>  <span style="white-space:pre"></span>st_ino;<span style="white-space:pre"> </span>/* [XSI] File serial number */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>mode_t<span style="white-space:pre"> </span><span style="white-space:pre"></span>st_mode;<span style="white-space:pre"> </span>/* [XSI] Mode of file (see below) */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>nlink_t<span style="white-space:pre"> </span>st_nlink;<span style="white-space:pre"> </span>/* [XSI] Number of hard links */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>uid_t<span style="white-space:pre"> </span>st_uid;<span style="white-space:pre"> </span>/* [XSI] User ID of the file */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>gid_t<span style="white-space:pre"> </span>st_gid;<span style="white-space:pre"> </span>/* [XSI] Group ID of the file */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>dev_t<span style="white-space:pre"> </span>st_rdev;<span style="white-space:pre"> </span>/* [XSI] Device ID */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">#if !defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE)</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>struct<span style="white-space:pre"> </span>timespec st_atimespec;<span style="white-space:pre"> </span>/* time of last access */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>struct<span style="white-space:pre"> </span>timespec st_mtimespec;<span style="white-space:pre"> </span>/* time of last data modification */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>struct<span style="white-space:pre"> </span>timespec st_ctimespec;<span style="white-space:pre"> </span>/* time of last status change */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">#else</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>time_t<span style="white-space:pre"> </span>st_atime;<span style="white-space:pre"> </span>/* [XSI] Time of last access */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>long<span style="white-space:pre"> </span>st_atimensec;<span style="white-space:pre"> </span>/* nsec of last access */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>time_t<span style="white-space:pre"> </span>st_mtime;<span style="white-space:pre"> </span>/* [XSI] Last data modification time */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>long<span style="white-space:pre"> </span>st_mtimensec;<span style="white-space:pre"> </span>/* last data modification nsec */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>time_t<span style="white-space:pre"> </span>st_ctime;<span style="white-space:pre"> </span>/* [XSI] Time of last status change */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>long<span style="white-space:pre"> </span>st_ctimensec;<span style="white-space:pre"> </span>/* nsec of last status change */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">#endif</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>off_t<span style="white-space:pre"> </span>st_size;<span style="white-space:pre"> </span>/* [XSI] file size, in bytes */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>blkcnt_t<span style="white-space:pre"> </span>st_blocks;<span style="white-space:pre"> </span>/* [XSI] blocks allocated for file */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>blksize_t<span style="white-space:pre"> </span>st_blksize;<span style="white-space:pre"> </span>/* [XSI] optimal blocksize for I/O */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>__uint32_t<span style="white-space:pre"> </span>st_flags;<span style="white-space:pre"> </span>/* user defined flags for file */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>__uint32_t<span style="white-space:pre"> </span>st_gen;<span style="white-space:pre"> </span>/* file generation number */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>__int32_t<span style="white-space:pre"> </span>st_lspare;<span style="white-space:pre"> </span>/* RESERVED: DO NOT USE! */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><span style="white-space:pre"></span>__int64_t<span style="white-space:pre"> </span>st_qspare[2];<span style="white-space:pre"> </span>/* RESERVED: DO NOT USE! */</span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">};</span></p>
-<div>
-<span style=""><br/> </span>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+升级10.13.1之后 ntfs-3g brew 安装失败，会有以下提示：</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><br/>
+</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">Last 15 lines from /Users/dany/Library/Logs/Homebrew/ntfs-3g/02.make:</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">clang -DHAVE_CONFIG_H -I. -I..     -DFUSE_USE_VERSION=26 -D_FILE_OFFSET_BITS=64 -D_DARWIN_USE_64_BIT_INODE -I/usr/local/include/osxfuse/fuse -I../include/ntfs-3g -DPLUGIN_DIR=\"/usr/local/Cellar/ntfs-3g/2017.3.23/lib/ntfs-3g\" -g -O2 -Wall -c
+ -o lowntfs_3g-lowntfs-3g.o `test -f 'lowntfs-3g.c' || echo './'`lowntfs-3g.c</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">clang -DHAVE_CONFIG_H -I. -I..     -DFUSE_USE_VERSION=26 -D_FILE_OFFSET_BITS=64 -D_DARWIN_USE_64_BIT_INODE -I/usr/local/include/osxfuse/fuse -I../include/ntfs-3g -DPLUGIN_DIR=\"/usr/local/Cellar/ntfs-3g/2017.3.23/lib/ntfs-3g\" -g -O2 -Wall -c
+ -o lowntfs_3g-ntfs-3g_common.o `test -f 'ntfs-3g_common.c' || echo './'`ntfs-3g_common.c</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">/bin/sh ../libtool  --tag=CC   --mode=link clang  -I../include/ntfs-3g -g -O2 -Wall  -lintl -framework CoreFoundation -o ntfs-3g.probe ntfs_3g_probe-ntfs-3g.probe.o ../libntfs-3g/libntfs-3g.la -lc </span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">lowntfs-3g.c:1932:29: error: no member named 'st_atim' in 'struct stat'</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">                                                = timespec2ntfs(stin-&gt;st_atim);</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">                                                                ~~~~  ^</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">lowntfs-3g.c:1938:29: error: no member named 'st_mtim' in 'struct stat'</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">                                                = timespec2ntfs(stin-&gt;st_mtim);</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">                                                                ~~~~  ^</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">2 errors generated.</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><br/>
+</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+找一下这个stat的定义：</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">find /Applications/Xcode.app/ -name "stat.h"</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">/Applications/Xcode.app//Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stat.h </span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+发现这个结构是修改了：</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">struct stat {<!-- --></span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>dev_t<span style="white-space:pre">
+</span><span style="white-space:pre"></span>st_dev;<span style="white-space:pre">
+</span>/* [XSI] ID of device containing file */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>ino_t<span style="white-space:pre">
+</span>  <span style="white-space:pre"></span>st_ino;<span style="white-space:pre">
+</span>/* [XSI] File serial number */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>mode_t<span style="white-space:pre">
+</span><span style="white-space:pre"></span>st_mode;<span style="white-space:pre">
+</span>/* [XSI] Mode of file (see below) */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>nlink_t<span style="white-space:pre">
+</span>st_nlink;<span style="white-space:pre"> </span>/* [XSI] Number of hard links */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>uid_t<span style="white-space:pre">
+</span>st_uid;<span style="white-space:pre"> </span>/* [XSI] User ID of the file */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>gid_t<span style="white-space:pre">
+</span>st_gid;<span style="white-space:pre"> </span>/* [XSI] Group ID of the file */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>dev_t<span style="white-space:pre">
+</span>st_rdev;<span style="white-space:pre"> </span>/* [XSI] Device ID */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">#if !defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE)</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>struct<span style="white-space:pre">
+</span>timespec st_atimespec;<span style="white-space:pre"> </span>/* time of last access */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>struct<span style="white-space:pre">
+</span>timespec st_mtimespec;<span style="white-space:pre"> </span>/* time of last data modification */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>struct<span style="white-space:pre">
+</span>timespec st_ctimespec;<span style="white-space:pre"> </span>/* time of last status change */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">#else</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>time_t<span style="white-space:pre">
+</span>st_atime;<span style="white-space:pre"> </span>/* [XSI] Time of last access */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>long<span style="white-space:pre">
+</span>st_atimensec;<span style="white-space:pre"> </span>/* nsec of last access */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>time_t<span style="white-space:pre">
+</span>st_mtime;<span style="white-space:pre"> </span>/* [XSI] Last data modification time */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>long<span style="white-space:pre">
+</span>st_mtimensec;<span style="white-space:pre"> </span>/* last data modification nsec */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>time_t<span style="white-space:pre">
+</span>st_ctime;<span style="white-space:pre"> </span>/* [XSI] Time of last status change */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>long<span style="white-space:pre">
+</span>st_ctimensec;<span style="white-space:pre"> </span>/* nsec of last status change */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">#endif</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>off_t<span style="white-space:pre">
+</span>st_size;<span style="white-space:pre"> </span>/* [XSI] file size, in bytes */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>blkcnt_t<span style="white-space:pre">
+</span>st_blocks;<span style="white-space:pre"> </span>/* [XSI] blocks allocated for file */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>blksize_t<span style="white-space:pre">
+</span>st_blksize;<span style="white-space:pre"> </span>/* [XSI] optimal blocksize for I/O */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>__uint32_t<span style="white-space:pre">
+</span>st_flags;<span style="white-space:pre"> </span>/* user defined flags for file */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>__uint32_t<span style="white-space:pre">
+</span>st_gen;<span style="white-space:pre"> </span>/* file generation number */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>__int32_t<span style="white-space:pre">
+</span>st_lspare;<span style="white-space:pre"> </span>/* RESERVED: DO NOT USE! */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><span style="white-space:pre"></span>__int64_t<span style="white-space:pre">
+</span>st_qspare[2];<span style="white-space:pre"> </span>/* RESERVED: DO NOT USE! */</span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">};</span></p>
+<div><span style=""><br/>
+</span></div>
+<div>应该就是<span style="font-family:Menlo; font-size:13px">st_atimensec和<span style="font-family:Menlo; font-size:13px">st_mtimensec了，</span></span></div>
+<div><span style="font-family:Menlo; font-size:13px"><span style="font-family:Menlo; font-size:13px"><span style="color:rgb(120,73,42); font-family:Menlo; font-size:13px">cd /Users/you/Library/Caches/Homebrew</span><br/>
+</span></span></div>
+<div><span style="color:#78492a">把</span>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style="">ntfs-3g-2017.3.23.tgz解压出来, </span></p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><br/>
+</span></p>
 </div>
+<div>修改一下lowntfs-3g.c：</div>
+<div>加一行在这两句前面</div>
 <div>
-  应该就是 
- <span style="font-family:Menlo; font-size:13px">st_atimensec和<span style="font-family:Menlo; font-size:13px">st_mtimensec了，</span></span>
-</div>
-<div>
-<span style="font-family:Menlo; font-size:13px"><span style="font-family:Menlo; font-size:13px"><span style="color:rgb(120,73,42); font-family:Menlo; font-size:13px">cd /Users/you/Library/Caches/Homebrew</span><br/> </span></span>
-</div>
-<div>
-<span style="color:#78492a">把</span>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style="">ntfs-3g-2017.3.23.tgz解压出来, </span></p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><br/> </span></p>
-</div>
-<div>
-  修改一下lowntfs-3g.c： 
-</div>
-<div>
-  加一行在这两句前面 
-</div>
-<div>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo; color:rgb(120,73,42)"> #define _DARWIN_C_SOURCE</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo; color:rgb(120,73,42)"> 把 </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> stin-&gt;st_atim 和</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> stin-&gt;st_mtim 修成上面两个的名字,</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo"> <span style=""><strong>./configure --prefix=/usr/local/Cellar/ntfs-3g/2017.3.23 --exec-prefix=/usr/</strong></span></p> make  
- <p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> sudo make install </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> 解决问题</p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> <br/> </p>
-<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo"> <br/> </p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo; color:rgb(120,73,42)">
+#define _DARWIN_C_SOURCE</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo; color:rgb(120,73,42)">
+把 </p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+stin-&gt;st_atim 和</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+stin-&gt;st_mtim 修成上面两个的名字,</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:13px; line-height:normal; font-family:Menlo">
+<span style=""><strong>./configure --prefix=/usr/local/Cellar/ntfs-3g/2017.3.23 --exec-prefix=/usr/</strong></span></p>
+make 
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+sudo make install </p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+解决问题</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
+<p style="margin-top:0px; margin-bottom:0px; font-size:11px; line-height:normal; font-family:Menlo">
+<br/>
+</p>
 </div>
 </div>
     </div>
     
     <div class="footer">
-        <p>版本所有 tdany.com  | 发表时间: 2017-11-12 22:23:25</p>
+        <p>发表时间: 2017-11-12 22:23:25</p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
