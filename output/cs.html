@@ -5,138 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小米10 adbd 以root权限启动提供服务</title>
+    <link rel="stylesheet" href="styles.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
 
-    <style>
-        /* 保留CSDN常用的文本颜色类 */
-        .text-red, [class*="text-red"] { color: red !important; }
-        .text-blue, [class*="text-blue"] { color: blue !important; }
-        .text-green, [class*="text-green"] { color: green !important; }
-        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
-        .text-purple, [class*="text-purple"] { color: purple !important; }
-        .text-orange, [class*="text-orange"] { color: orange !important; }
-        
-        /* 保留常见的CSDN文本样式类 */
-        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
-        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
-        .underline, [class*="underline"] { text-decoration: underline !important; }
-        
-        /* 确保内联样式不被覆盖 */
-        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
-        
-        /* 保留font标签的color属性 */
-        .article-content font[color="red"] { color: red !important; }
-        .article-content font[color="blue"] { color: blue !important; }
-        .article-content font[color="green"] { color: green !important; }
-        .article-content font[color="yellow"] { color: yellow !important; }
-        .article-content font[color="purple"] { color: purple !important; }
-        .article-content font[color="orange"] { color: orange !important; }
-        .article-content font[color="black"] { color: black !important; }
-        .article-content font[color="white"] { color: white !important; }
-        .article-content font[color="gray"] { color: gray !important; }
-        .article-content font[color="#000000"] { color: #000000 !important; }
-        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
-        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
-        .article-content font[color="#0000FF"] { color: #0000FF !important; }
-        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
-        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
-        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
-    </style>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
-        img { max-width: 100%; height: auto; }
-        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
-        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
-        pre[class*="language-"] { position: relative; }
-        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
-        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
-        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
-        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
-        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
-        .source-link { margin-bottom: 15px; color: #666; }
-        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
-        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
-        /* 文章元数据样式 */
-        .article-meta { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 15px; 
-            font-size: 14px; 
-            color: #666; 
-            margin-bottom: 15px; 
-        }
-        .meta-item { 
-            display: flex; 
-            align-items: center; 
-        }
-        .meta-item i { 
-            margin-right: 5px; 
-            color: #0066cc; 
-        }
-        
-        /* 标签样式 */
-        .article-tags { 
-            margin-bottom: 15px; 
-        }
-        .tag { 
-            display: inline-block; 
-            background-color: #e6f2ff; 
-            color: #0066cc; 
-            padding: 3px 8px; 
-            border-radius: 4px; 
-            font-size: 12px; 
-            margin-right: 5px; 
-        }
-        
-        /* 描述样式 */
-        .article-description { 
-            background-color: #f5f5f5; 
-            padding: 15px; 
-            border-left: 4px solid #0066cc; 
-            margin-bottom: 20px; 
-            font-style: italic; 
-            color: #555; 
-        }
-        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
-        .token.punctuation { color: #f8f8f2; }
-        .token.namespace { opacity: .7; }
-        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
-        .token.boolean, .token.number { color: #ae81ff; }
-        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
-        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
-        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
-        .token.keyword { color: #66d9ef; }
-        .token.regex, .token.important { color: #fd971f; }
-        .token.important, .token.bold { font-weight: bold; }
-        .token.italic { font-style: italic; }
-        .token.entity { cursor: help; }
-        
-        /* 添加header和footer样式 */
-        .header { 
-            padding: 10px 0; 
-            margin-bottom: 20px; 
-            border-bottom: 1px solid #eee; 
-        }
-        .header a { 
-            text-decoration: none; 
-            color: #007bff; 
-            font-weight: bold; 
-        }
-        .header a:hover { 
-            text-decoration: underline; 
-        }
-        .footer { 
-            margin-top: 30px; 
-            padding-top: 20px; 
-            border-top: 1px solid #eee; 
-            color: #666; 
-            font-size: 0.9em; 
-            text-align: center; 
-        }
-    </style>
+
 </head>
 <body>
     <div class="header">
@@ -148,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-01-15 19:54:54</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2407</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2408</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 4</div>
         
@@ -174,8 +48,7 @@
 <p>1.  下载android 10 的 aosp_arm64-img  <a href="https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest" rel="nofollow">https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest</a>， </p>
 <p><a href="https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest/aosp_arm64-img-7064523.zip" rel="nofollow">https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest/aosp_arm64-img-7064523.zip</a></p>
 <p>2.   解压<a href="https://ci.android.com/builds/submitted/7064523/aosp_arm64-userdebug/latest/aosp_arm64-img-7064523.zip" rel="nofollow">aosp_arm64-img-7064523.zip</a>得到system.img文件， 用以下命令得到debug版的adbd</p>
-<pre>
-<code class="hljs language-javascript">mkdir /mnt/system
+<pre><code class="hljs language-javascript">mkdir /mnt/system
 mount -o ro system.img /mnt/system
 #一定要-o ro 要不然默认是rw，  mount不成功.
 
@@ -183,20 +56,17 @@ mount -o ro system.img /mnt/system
 cp  /mnt/system/system/bin/adbd   adbd
 </code></pre>
 <p>因为是ext2文件系统，使用linux比较方便，macos也可以使用fuse。可以用file命令来判断这个image是raw的img还是sparse的img, 要是sparse img, 还需要使用simg2img命令来转一下, 需要的话，使用brew , yum  , apt之类的工具安装。</p>
-<pre>
-<code class="hljs language-javascript">$ file system.img 
+<pre><code class="hljs language-javascript">$ file system.img 
 system.img: Linux rev 1.0 ext2 filesystem data, UUID=4729639d-b5f2-5cc1-a120-9ac5f788683c (extents) (large files) (huge files)</code></pre>
 <p>3. 上传adbd到 手机</p>
-<pre>
-<code class="hljs language-javascript">adb push adbd /mnt/sdcard
+<pre><code class="hljs language-javascript">adb push adbd /mnt/sdcard
 adb shell su -c mv /mnt/sdcard/adbd /data/local/
 adb shell su -c chmod +x /data/local/adbd
 
 </code></pre>
 <p>4. 编写脚本adbdroot, system_properties_arm64是专门用于修改ro.开头的只读系统变量的，ro开头是只读，使用setprop是无法修改的，具体原理看<a href="https://bbs.pediy.com/thread-222293.htm" rel="nofollow">https://bbs.pediy.com/thread-222293.htm</a></p>
 <p> </p>
-<pre>
-<code class="hljs language-javascript">Upload  system_properties_arm64  and adb to /data/local/
+<pre><code class="hljs language-javascript">Upload  system_properties_arm64  and adb to /data/local/
 
 stop adbd 
 /data/local/system_properties_arm64 ro.secure 0
@@ -208,16 +78,14 @@ nohup  ./adbd &gt;/dev/null &amp;
 <p> </p>
 <p> </p>
 <p>5.上传adbdroot到手机，并执行</p>
-<pre>
-<code class="hljs language-javascript">adb push adbdroot /mnt/sdcard/
+<pre><code class="hljs language-javascript">adb push adbdroot /mnt/sdcard/
 adb shell su -c mv /mnt/sdcard/adbdroot /data/local
 adb shell su -c chmod +x /data/local/adbdroot 
 adb shell su -c /data/local/adbdroot
 
 </code></pre>
 <p>6. 使用whoami测试,  得到adb shell权限默认就是root，不需要再su一下了，使用原来的脚本工具，调试就很方便了。</p>
-<pre>
-<code class="hljs language-javascript">$ adb shell whoami
+<pre><code class="hljs language-javascript">$ adb shell whoami
 root
 </code></pre>
 <p>本文用到的资源我上传了一份在这里，adbd和system_properties_arm64 , <a href="https://download.csdn.net/download/aerror/14429391">https://download.csdn.net/download/aerror/14429391</a>, 方便大家直接使用。</p>
@@ -229,8 +97,7 @@ root
 <p>属性是由init进程读取到内存中，然后通过mmap只读方式共享到其他进程中。读的时候每个进程都可以直接读取，而修改或者添加只能由init进程来进行，这样方便selinux权限管理。</p>
 <p>有root权限后，我们可以将属性内存通过mmap读写的方式共享到我们的内存中，这样可以任意修改，绕过init的限制。</p>
 <h3 id="msg_header_h2_0">属性内存结构</h3>
-<pre>
-<code class="hljs language-javascript">* +-----+   children    +----+   children    +--------+
+<pre><code class="hljs language-javascript">* +-----+   children    +----+   children    +--------+
 * |     |--------------&gt;| ro |--------------&gt;| secure |
 * +-----+               +----+               +--------+
 *                       /    \                /   |
@@ -242,8 +109,7 @@ root
 *</code></pre>
 <p> </p>
 <p>上图其实很形象，是字典树和二叉树的混合。结点信息数据结构如下：</p>
-<pre>
-<code class="hljs language-javascript">typedef struct prop_bt {
+<pre><code class="hljs language-javascript">typedef struct prop_bt {
     uint8_t namelen;        // 该结点名字长度
     uint8_t reserved[3];    // 对齐的作用
     uint32_t prop;          // 指向prop_info，里面保存key和value信息
@@ -259,8 +125,7 @@ typedef struct prop_info {
     char name[0];               // 属性名字
 } prop_info;</code></pre>
 <p>思路：</p>
-<pre>
-<code class="hljs language-javascript">1. Android N上，首先读取读取/property_contexts文件，获取属性前缀和security context
+<pre><code class="hljs language-javascript">1. Android N上，首先读取读取/property_contexts文件，获取属性前缀和security context
 （selinux定义的)的关系，由于每个security context对应一个文件，所以需要通过前缀来找到对应的文
 件，6.0及以下所以属性都保存在/dev/__properties__文件中，可以不读取/property_contexts文件
 2. 打开对应的文件，将属性以'.'分隔，将第一部分和头结点对比，若相同则第二部分和children对比，不同，
