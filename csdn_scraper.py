@@ -493,49 +493,14 @@ def generate_html(title, content, url, output_file, publish_time=None, view_coun
         # 移除原始CSS引用
         css_links = ""
         
+        # 添加独立的CSS文件引用
+        main_css = "    <link rel=\"stylesheet\" href=\"styles.css\">\n"
+        
         # 添加Prism.js的CSS和JS
         prism_css = "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css\">\n"
         prism_js = "    <script src=\"https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js\"></script>\n"
         prism_js += "    <script src=\"https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js\"></script>\n"
         prism_js += "    <script src=\"https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js\"></script>\n"
-        
-        # 添加额外的CSS以确保保留原文中带颜色的文字
-        extra_css = """    <style>
-        /* 保留CSDN常用的文本颜色类 */
-        .text-red, [class*="text-red"] { color: red !important; }
-        .text-blue, [class*="text-blue"] { color: blue !important; }
-        .text-green, [class*="text-green"] { color: green !important; }
-        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
-        .text-purple, [class*="text-purple"] { color: purple !important; }
-        .text-orange, [class*="text-orange"] { color: orange !important; }
-        
-        /* 保留常见的CSDN文本样式类 */
-        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
-        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
-        .underline, [class*="underline"] { text-decoration: underline !important; }
-        
-        /* 确保内联样式不被覆盖 */
-        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
-        
-        /* 保留font标签的color属性 */
-        .article-content font[color="red"] { color: red !important; }
-        .article-content font[color="blue"] { color: blue !important; }
-        .article-content font[color="green"] { color: green !important; }
-        .article-content font[color="yellow"] { color: yellow !important; }
-        .article-content font[color="purple"] { color: purple !important; }
-        .article-content font[color="orange"] { color: orange !important; }
-        .article-content font[color="black"] { color: black !important; }
-        .article-content font[color="white"] { color: white !important; }
-        .article-content font[color="gray"] { color: gray !important; }
-        .article-content font[color="#000000"] { color: #000000 !important; }
-        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
-        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
-        .article-content font[color="#0000FF"] { color: #0000FF !important; }
-        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
-        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
-        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
-    </style>
-"""
         
         html_template = f'''
 <!DOCTYPE html>
@@ -544,102 +509,10 @@ def generate_html(title, content, url, output_file, publish_time=None, view_coun
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
+{main_css}
 {prism_css}
-{extra_css}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {{ font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }}
-        img {{ max-width: 100%; height: auto; }}
-        pre {{ background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }}
-        code {{ font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }}
-        pre[class*="language-"] {{ position: relative; }}
-        pre[class*="language-"] .copy-to-clipboard-button {{ position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }}
-        pre[class*="language-"] .copy-to-clipboard-button:hover {{ background: rgba(0,0,0,0.5); }}
-        pre[class*="language-"] code {{ user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }}
-        pre[class*="language-"]:hover .copy-to-clipboard-button {{ display: block; }}
-        pre[class*="language-"] .copy-to-clipboard-button {{ display: none; }}
-        .source-link {{ margin-bottom: 15px; color: #666; }}
-        h1 {{ font-size: 28px; margin-bottom: 15px; color: #333; }}
-        .article-content {{ margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }}
-        
-        /* 文章元数据样式 */
-        .article-meta {{ 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 15px; 
-            font-size: 14px; 
-            color: #666; 
-            margin-bottom: 15px; 
-        }}
-        .meta-item {{ 
-            display: flex; 
-            align-items: center; 
-        }}
-        .meta-item i {{ 
-            margin-right: 5px; 
-            color: #0066cc; 
-        }}
-        
-        /* 标签样式 */
-        .article-tags {{ 
-            margin-bottom: 15px; 
-        }}
-        .tag {{ 
-            display: inline-block; 
-            background-color: #e6f2ff; 
-            color: #0066cc; 
-            padding: 3px 8px; 
-            border-radius: 4px; 
-            font-size: 12px; 
-            margin-right: 5px; 
-        }}
-        
-        /* 描述样式 */
-        .article-description {{ 
-            background-color: #f5f5f5; 
-            padding: 15px; 
-            border-left: 4px solid #0066cc; 
-            margin-bottom: 20px; 
-            font-style: italic; 
-            color: #555; 
-        }}
-        .token.comment, .token.prolog, .token.doctype, .token.cdata {{ color: #8292a2; }}
-        .token.punctuation {{ color: #f8f8f2; }}
-        .token.namespace {{ opacity: .7; }}
-        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted {{ color: #f92672; }}
-        .token.boolean, .token.number {{ color: #ae81ff; }}
-        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted {{ color: #a6e22e; }}
-        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable {{ color: #f8f8f2; }}
-        .token.atrule, .token.attr-value, .token.function, .token.class-name {{ color: #e6db74; }}
-        .token.keyword {{ color: #66d9ef; }}
-        .token.regex, .token.important {{ color: #fd971f; }}
-        .token.important, .token.bold {{ font-weight: bold; }}
-        .token.italic {{ font-style: italic; }}
-        .token.entity {{ cursor: help; }}
-        
-        /* 添加header和footer样式 */
-        .header {{ 
-            padding: 10px 0; 
-            margin-bottom: 20px; 
-            border-bottom: 1px solid #eee; 
-        }}
-        .header a {{ 
-            text-decoration: none; 
-            color: #007bff; 
-            font-weight: bold; 
-        }}
-        .header a:hover {{ 
-            text-decoration: underline; 
-        }}
-        .footer {{ 
-            margin-top: 30px; 
-            padding-top: 20px; 
-            border-top: 1px solid #eee; 
-            color: #666; 
-            font-size: 0.9em; 
-            text-align: center; 
-        }}
-    </style>
+
 </head>
 <body>
     <div class="header">
@@ -802,115 +675,8 @@ def generate_index_html(output_dir, article_info):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSDN博客文章集合</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {{  
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #f8f9fa;
-        }}
-        h1 {{  
-            font-size: 28px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #333;
-        }}
-        h2 {{  
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #444;
-        }}
-        .search-box {{  
-            margin-bottom: 20px;
-        }}
-        .search-box input {{  
-            width: 100%;
-            max-width: 500px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }}
-        .article-list {{  
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }}
-        .article-item {{  
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }}
-        .article-item:hover {{  
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }}
-        .article-title {{  
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }}
-        .article-title a {{  
-            text-decoration: none;
-            color: #0066cc;
-        }}
-        .article-title a:hover {{  
-            color: #004499;
-            text-decoration: underline;
-        }}
-        .article-description {{  
-            color: #555;
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 1.5;
-        }}
-        .article-meta {{  
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 13px;
-            color: #666;
-        }}
-        .meta-item {{  
-            display: flex;
-            align-items: center;
-        }}
-        .meta-item i {{  
-            margin-right: 5px;
-        }}
-        .article-tags {{  
-            margin-top: 8px;
-        }}
-        .tag {{  
-            display: inline-block;
-            background-color: #e6f2ff;
-            color: #0066cc;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }}
-        .publish-time {{
-            color: #666;
-            font-size: 0.85em;
-        }}
-        .footer {{ 
-            margin-top: 30px; 
-            padding-top: 20px; 
-            border-top: 1px solid #eee; 
-            color: #666; 
-            font-size: 0.9em; 
-            text-align: center; 
-        }}
-    </style>
 </head>
 <body>
     <h1>CSDN博客文章集合</h1>

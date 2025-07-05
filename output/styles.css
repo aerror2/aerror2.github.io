@@ -1,0 +1,466 @@
+/* CSDN博客样式文件 - 改进版 */
+
+/* 基础字体设置 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2c3e50;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 标题样式 */
+h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #2c3e50;
+    margin: 0 0 24px 0;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #3498db;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #34495e;
+    margin: 32px 0 16px 0;
+    padding-left: 12px;
+    border-left: 4px solid #3498db;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #34495e;
+    margin: 24px 0 12px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+h4, h5, h6 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #34495e;
+    margin: 20px 0 10px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+/* 正文段落样式 */
+p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2c3e50;
+    margin: 0 0 16px 0;
+    text-align: justify;
+    word-break: break-word;
+}
+
+/* 链接样式 */
+a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #8e44ad;
+}
+
+/* 列表样式 */
+ul, ol {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2c3e50;
+    margin: 16px 0;
+    padding-left: 24px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* 引用块样式 */
+blockquote {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #7f8c8d;
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-left: 4px solid #bdc3c7;
+    background-color: #ecf0f1;
+    font-style: italic;
+}
+
+/* 代码样式 */
+code {
+    font-family: 'Fira Code', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    font-size: 14px;
+    background-color: #f1f2f6;
+    color: #e74c3c;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+pre {
+    font-family: 'Fira Code', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-weight: normal;
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 15px;
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ecf0f1;
+    color: #2c3e50;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #e8f4fd;
+}
+
+/* 图片样式 */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+    display: block;
+}
+
+/* 文章容器样式 */
+.article-content {
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 24px 0;
+    border: 1px solid #e1e8ed;
+}
+
+/* 文章元信息样式 */
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.meta-item i {
+    margin-right: 6px;
+    color: #3498db;
+    font-size: 16px;
+}
+
+/* 标签样式 */
+.article-tags {
+    margin: 16px 0;
+}
+
+.tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 4px 8px 4px 0;
+    transition: transform 0.2s ease;
+}
+
+.tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 描述样式 */
+.article-description {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+    border-left: 5px solid #3498db;
+    margin: 20px 0;
+    font-style: italic;
+    color: #34495e;
+    border-radius: 0 8px 8px 0;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* 导航样式 */
+.header {
+    padding: 16px 0;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+.header a {
+    color: #3498db;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.header a:hover {
+    color: #2980b9;
+    text-decoration: none;
+    transform: translateX(-4px);
+}
+
+/* 页脚样式 */
+.footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 2px solid #ecf0f1;
+    color: #7f8c8d;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* 源链接样式 */
+.source-link {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #17a2b8;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.source-link a {
+    color: #17a2b8;
+    font-weight: 500;
+}
+
+/* 强调文本样式 */
+strong, b {
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+em, i {
+    font-style: italic;
+    color: #34495e;
+}
+
+/* 分隔线样式 */
+hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #bdc3c7, transparent);
+    margin: 32px 0;
+}
+
+/* 代码块复制按钮样式 */
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+}
+
+.copy-button:hover {
+    background: rgba(0,0,0,0.5);
+}
+
+pre:hover .copy-button {
+    display: block;
+}
+
+pre {
+    position: relative;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+        font-size: 15px;
+    }
+    
+    h1 {
+        font-size: 26px;
+    }
+    
+    h2 {
+        font-size: 22px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
+    
+    .article-content {
+        padding: 20px;
+    }
+    
+    .article-meta {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    pre {
+        padding: 16px;
+        font-size: 13px;
+    }
+    
+    code {
+        font-size: 13px;
+    }
+}
+
+/* 保留CSDN原有的颜色样式 */
+.text-red, [class*="text-red"] { color: #e74c3c !important; }
+.text-blue, [class*="text-blue"] { color: #3498db !important; }
+.text-green, [class*="text-green"] { color: #27ae60 !important; }
+.text-yellow, [class*="text-yellow"] { color: #f39c12 !important; }
+.text-purple, [class*="text-purple"] { color: #9b59b6 !important; }
+.text-orange, [class*="text-orange"] { color: #e67e22 !important; }
+
+/* 保留常见的CSDN文本样式类 */
+.bold, .strong, [class*="bold"], [class*="strong"] { font-weight: 700 !important; }
+.italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+.underline, [class*="underline"] { text-decoration: underline !important; }
+
+/* 保留font标签的color属性 */
+.article-content font[color="red"] { color: #e74c3c !important; }
+.article-content font[color="blue"] { color: #3498db !important; }
+.article-content font[color="green"] { color: #27ae60 !important; }
+.article-content font[color="yellow"] { color: #f39c12 !important; }
+.article-content font[color="purple"] { color: #9b59b6 !important; }
+.article-content font[color="orange"] { color: #e67e22 !important; }
+.article-content font[color="black"] { color: #2c3e50 !important; }
+.article-content font[color="white"] { color: #ffffff !important; }
+.article-content font[color="gray"] { color: #7f8c8d !important; }
+.article-content font[color="#000000"] { color: #000000 !important; }
+.article-content font[color="#FF0000"] { color: #FF0000 !important; }
+.article-content font[color="#00FF00"] { color: #00FF00 !important; }
+.article-content font[color="#0000FF"] { color: #0000FF !important; }
+.article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+.article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+.article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+
+/* 目录样式 */
+.toc {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 24px 0;
+}
+
+.toc h3 {
+    margin-top: 0;
+    color: #495057;
+    font-size: 18px;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 8px;
+}
+
+.toc ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.toc li {
+    margin: 8px 0;
+    padding-left: 16px;
+    position: relative;
+}
+
+.toc li:before {
+    content: "▶";
+    position: absolute;
+    left: 0;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.toc a {
+    color: #495057;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.toc a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
