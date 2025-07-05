@@ -1,0 +1,3613 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源BLHELI-S 的C语言版本</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+
+    <style>
+        /* 保留CSDN常用的文本颜色类 */
+        .text-red, [class*="text-red"] { color: red !important; }
+        .text-blue, [class*="text-blue"] { color: blue !important; }
+        .text-green, [class*="text-green"] { color: green !important; }
+        .text-yellow, [class*="text-yellow"] { color: #FFD700 !important; }
+        .text-purple, [class*="text-purple"] { color: purple !important; }
+        .text-orange, [class*="text-orange"] { color: orange !important; }
+        
+        /* 保留常见的CSDN文本样式类 */
+        .bold, .strong, [class*="bold"], [class*="strong"] { font-weight: bold !important; }
+        .italic, .em, [class*="italic"], [class*="em"] { font-style: italic !important; }
+        .underline, [class*="underline"] { text-decoration: underline !important; }
+        
+        /* 确保内联样式不被覆盖 */
+        .article-content * { color: initial; background-color: initial; font-weight: initial; font-style: initial; text-decoration: initial; }
+        
+        /* 保留font标签的color属性 */
+        .article-content font[color="red"] { color: red !important; }
+        .article-content font[color="blue"] { color: blue !important; }
+        .article-content font[color="green"] { color: green !important; }
+        .article-content font[color="yellow"] { color: yellow !important; }
+        .article-content font[color="purple"] { color: purple !important; }
+        .article-content font[color="orange"] { color: orange !important; }
+        .article-content font[color="black"] { color: black !important; }
+        .article-content font[color="white"] { color: white !important; }
+        .article-content font[color="gray"] { color: gray !important; }
+        .article-content font[color="#000000"] { color: #000000 !important; }
+        .article-content font[color="#FF0000"] { color: #FF0000 !important; }
+        .article-content font[color="#00FF00"] { color: #00FF00 !important; }
+        .article-content font[color="#0000FF"] { color: #0000FF !important; }
+        .article-content font[color="#FFFF00"] { color: #FFFF00 !important; }
+        .article-content font[color="#00FFFF"] { color: #00FFFF !important; }
+        .article-content font[color="#FF00FF"] { color: #FF00FF !important; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; background-color: #f8f9fa; }
+        img { max-width: 100%; height: auto; }
+        pre { background-color: #2d2d2d; padding: 10px; border-radius: 5px; overflow-x: auto; margin: 1em 0; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; }
+        pre[class*="language-"] { position: relative; }
+        pre[class*="language-"] .copy-to-clipboard-button { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; cursor: pointer; }
+        pre[class*="language-"] .copy-to-clipboard-button:hover { background: rgba(0,0,0,0.5); }
+        pre[class*="language-"] code { user-select: all; -webkit-user-select: all; -moz-user-select: all; -ms-user-select: all; }
+        pre[class*="language-"]:hover .copy-to-clipboard-button { display: block; }
+        pre[class*="language-"] .copy-to-clipboard-button { display: none; }
+        .source-link { margin-bottom: 15px; color: #666; }
+        h1 { font-size: 28px; margin-bottom: 15px; color: #333; }
+        .article-content { margin-top: 25px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* 文章元数据样式 */
+        .article-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+        }
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+        }
+        .meta-item i { 
+            margin-right: 5px; 
+            color: #0066cc; 
+        }
+        
+        /* 标签样式 */
+        .article-tags { 
+            margin-bottom: 15px; 
+        }
+        .tag { 
+            display: inline-block; 
+            background-color: #e6f2ff; 
+            color: #0066cc; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-right: 5px; 
+        }
+        
+        /* 描述样式 */
+        .article-description { 
+            background-color: #f5f5f5; 
+            padding: 15px; 
+            border-left: 4px solid #0066cc; 
+            margin-bottom: 20px; 
+            font-style: italic; 
+            color: #555; 
+        }
+        .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #8292a2; }
+        .token.punctuation { color: #f8f8f2; }
+        .token.namespace { opacity: .7; }
+        .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f92672; }
+        .token.boolean, .token.number { color: #ae81ff; }
+        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #a6e22e; }
+        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string, .token.variable { color: #f8f8f2; }
+        .token.atrule, .token.attr-value, .token.function, .token.class-name { color: #e6db74; }
+        .token.keyword { color: #66d9ef; }
+        .token.regex, .token.important { color: #fd971f; }
+        .token.important, .token.bold { font-weight: bold; }
+        .token.italic { font-style: italic; }
+        .token.entity { cursor: help; }
+        
+        /* 添加header和footer样式 */
+        .header { 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .header a { 
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+        .header a:hover { 
+            text-decoration: underline; 
+        }
+        .footer { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
+            font-size: 0.9em; 
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">← 返回目录</a>
+    </div>
+    
+    <h1>开源BLHELI-S 的C语言版本</h1>
+    <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/149029033" target="_blank">https://blog.csdn.net/aerror/article/details/149029033</a></div>
+    
+    <div class="article-meta">
+        <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-30 18:27:43</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 164</div>
+        
+        
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
+    </div>
+    
+    <div class="article-tags">标签: <span class="tag">c语言</span>, <span class="tag">开发语言</span></div>
+    
+    <div class="article-description">【代码】开源BLHELI-S 的C语言版本。</div>
+    
+    <div class="article-content">
+        <div class="htmledit_views atom-one-dark" id="content_views">
+<p>借助ai 我翻译了一下版本如下：</p>
+<p>github 工程在 <a href="https://github.com/aerror2/BLHeli_S_C" title="https://github.com/aerror2/BLHeli_S_C">https://github.com/aerror2/BLHeli_S_C</a></p>
+<p>里面还有大量的注释，分析，流程图等</p>
+<pre><code class="language-cpp hljs">/*
+ * BLHeli_S.c
+ * 从BLHeli_S.asm转换而来的C语言代码
+ */
+
+#include &lt;stdint.h&gt;
+#include &lt;stdbool.h&gt;
+
+// ## 主要功能模块
+// 1. 电机换相控制 ：
+   
+//    - 包含六个换相状态（comm1comm2到comm6comm1）
+//    - 根据电机旋转方向（正向或反向）设置不同的FET开关逻辑
+//    - 使用比较器检测反电动势过零点以确定换相时机
+// 2. 运行模式 ：
+   
+//    - 启动阶段（STARTUP_PHASE）
+//    - 初始运行阶段（INITIAL_RUN_PHASE）
+//    - 正常运行阶段
+//    - 双向运行支持（PGM_BIDIR）
+//    - 方向变化制动（DIR_CHANGE_BRAKE）
+// 3. 信号处理 ：
+   
+//    - 支持多种输入信号类型：常规PWM、OneShot125、OneShot42、DShot150/300/600、Multishot
+//    - 信号超时检测和处理
+//    - DShot命令处理（方向控制、蜂鸣器控制等）
+// 4. 参数设置 ：
+   
+//    - 默认参数设置（set_default_parameters）
+//    - 参数解码（decode_settings）
+//    - 油门校准（throttle_calibration）
+//    - EEPROM参数存储
+// 5. 保护功能 ：
+   
+//    - 温度保护
+//    - 电压监测
+//    - 堵转保护（Stall_Cnt）
+//    - 功率限制（Pwm_Limit）
+// 6. 辅助功能 ：
+   
+//    - 蜂鸣器控制（beep_f1到beep_f4）
+//    - LED控制
+//    - 看门狗初始化
+//    - 时钟配置（支持24MHz和48MHz）
+// 7. 引导加载程序 ：
+   
+//    - 包含引导加载程序代码（BLHeliBootLoad.inc）
+//    - 支持固件更新
+// ## 运行流程
+// 1. 系统初始化（pgm_start）：禁用看门狗，设置堆栈，初始化VDD监视器，设置时钟频率，初始化端口和XBAR，清除RAM，设置默认参数，读取EEPROM参数。
+// 2. 信号检测（init_no_signal）：检测输入信号类型，包括常规PWM、OneShot125、OneShot42、DShot和Multishot。
+// 3. 电机启动（init_start）：设置启动PWM，配置双向操作，设置STARTUP_PHASE标志，初始化换相。
+// 4. 电机运行（run1-run6）：执行六步换相序列，包括等待比较器输出变化，执行换相，计算下一次换相时间。
+// 5. 运行检查：监控转速、方向变化、堵转情况，必要时执行制动或方向改变。
+// 6. 电源关闭处理：关闭所有FET，清除标志，等待新的上电信号。
+// ## 特殊功能
+// 1. DShot命令处理 ：
+   
+//    - 命令1-5：触发不同的蜂鸣器序列
+//    - 命令7-8：设置正向/反向
+//    - 命令9-10：禁用/启用双向模式
+//    - 命令12：保存设置到EEPROM
+//    - 命令20-21：处理DShot方向控制
+// 2. 油门校准 ：支持通过发射机进行高/低油门校准，并将结果存储到EEPROM。
+// 3. 双向运行 ：支持电机正反向运行，包括方向变化时的制动处理。
+// 这个固件展示了一个完整的无刷电机控制系统，包含了从信号输入处理到电机换相控制的所有必要组件，同时提供了丰富的配置选项和保护机制。
+
+// ;**** **** **** **** ****
+// ;
+// ; 该软件最初设计用于Eflite mCP X，但现在已适配用于一般的多旋翼/飞机
+// ;
+// ; 该软件的灵感来源于Bernard Konze的BLMC：http://home.versanet.de/~bkonze/blc_6a/blc_6a.htm
+// ; 以及Simon Kirby的TGY：https://github.com/sim-/tgy
+// ;
+// ; 建议将此文件的制表符宽度设置为5
+// ;
+// ; 该代码专为多旋翼应用设计，运行阻尼光模式（damped light mode）
+// ;
+// ; 输入信号可以是普通信号(1-2ms)、OneShot125(125-250us)、OneShot42(41.7-83.3us)或Multishot(5-25us)，频率可以根据格式允许的最高频率设定。
+// ; 还支持三种Dshot信号速率：Dshot150、Dshot300和Dshot600。Dshot600需要48MHz的MCU。
+// ; 代码会自动检测普通信号、OneShot125、Oneshot42、Multishot或Dshot。
+// ;
+// ; 软件的前几行必须根据所选环境进行修改：
+// ; ESCNO EQU "ESC"
+// ; MCU_48MHZ EQU "N"
+// ; FETON_DELAY EQU "N"
+
+
+// ;**** **** **** **** ****
+// ; 修订历史：
+// ; - Rev16.0 开始。基于基础代码的14.5版本构建
+// ;           使用硬件PWM实现非常平滑的油门响应、静音运行和对非常高转速的支持
+// ;           实现了反向双向模式
+// ;           在双向模式下实现了前进和后退的独立油门增益
+// ;           实现了对Oneshot42和Multishot的支持
+// ; - Rev16.1 通过启动功率参数使低转速功率限制可编程
+// ; - Rev16.2 修复了阻止温度保护的错误
+// ;           提高了对非常高输入信号速率的鲁棒性
+// ;           通过将蜂鸣器强度编程为1可以关闭蜂鸣声
+// ;           在存储前检查油门校准差异是否高于所需的最小值。在成功的最小油门校准之前不会存储最大油门校准
+// ; - Rev16.3 实现了可编程温度保护
+// ;           改进了对引导加载程序的保护，并普遍降低了闪存损坏的风险
+// ;           对同步保持进行了一些小的改进
+// ; - Rev16.4 修复了可能因有缺陷的"eeprom"签名而阻止引导加载程序操作的错误
+// ; - Rev16.5 添加了对DShot150、DShot300和DShot600的支持
+// ; - Rev16.6 修复了32kHz下multishot的信号检测问题
+// ;           改进了高输入信号速率下的双向模式
+// ; - Rev16.7 添加了用于蜂鸣和临时反向的Dshot命令（主要由brycedjohnson贡献）
+
+
+// ;**** **** **** **** ****
+// ; 最低8K字节的片内自编程闪存
+// ; 最低512字节内部SRAM
+
+// ;**** **** **** **** ****
+// ; 主时钟是内部24MHz振荡器（或48MHz，此时下面的时间减半）
+// ; 虽然代码中使用24/48，但确切的时钟频率是24.5MHz或49.0MHz
+// ; 定时器0（41.67ns计数）始终向上计数，用于
+// ; - RC脉冲测量
+// ; 定时器1（41.67ns计数）始终向上计数，用于
+// ; - DShot帧同步检测
+// ; 定时器2（500ns计数）始终向上计数，用于
+// ; - RC脉冲超时计数和换向时间
+// ; 定时器3（500ns计数）始终向上计数，用于
+// ; - 换向超时
+// ; PCA0（41.67ns计数）始终向上计数，用于
+// ; - 硬件PWM生成
+
+
+// ;**** **** **** **** ****
+// ; 中断处理
+// ; C8051在进入中断例程时不会禁用中断。
+// ; 此外，某些中断标志需要通过软件清除
+// ; 代码在某些中断例程中禁用中断
+// ; - 在蜂鸣期间禁用中断，以避免中断造成的可听见干扰
+
+// ;**** **** **** **** ****
+// ; 电机控制：
+// ; - 无刷电机控制，每个电气360度有6个状态
+// ; - 0度的提前定时在一次换向后30度和下一次换向前30度有零交叉
+// ; - 此实现中的定时提前名义上设置为15度
+// ; - 电机PWM始终为阻尼光模式（又称互补PWM，再生制动）
+// ; 从零交叉开始的电机序列：
+// ; - 定时器等待：Wt_Comm			15度	; 从零交叉到实际换向的等待时间
+// ; - 定时器等待：Wt_Advance		15度	; 定时提前的等待时间。标称换向点在此之后
+// ; - 定时器等待：Wt_Zc_Scan		7.5度	; 在寻找零交叉之前的等待时间
+// ; - 扫描零交叉			22.5度	; 标称值，随电机变化而变化
+// ;
+// ; 电机启动：
+// ; 在正常的反电动势换向运行开始之前，有一个启动阶段和一个初始运行阶段。
+
+
+
+// ;**** **** **** **** ****
+// ; List of enumerated supported ESCs
+// A_			EQU 1	  ; X  X  RC X  MC MB MA CC    X  X  Cc Cp Bc Bp Ac Ap
+// B_			EQU 2	  ; X  X  RC X  MC MB MA CC    X  X  Ap Ac Bp Bc Cp Cc
+// C_			EQU 3	  ; Ac Ap MC MB MA CC X  RC    X  X  X  X  Cc Cp Bc Bp
+// D_			EQU 4	  ; X  X  RC X  CC MA MC MB    X  X  Cc Cp Bc Bp Ac Ap	Com fets inverted
+// E_			EQU 5	  ; L1 L0 RC X  MC MB MA CC    X  L2 Cc Cp Bc Bp Ac Ap	A with LEDs
+// F_			EQU 6	  ; X  X  RC X  MA MB MC CC    X  X  Cc Cp Bc Bp Ac Ap
+// G_			EQU 7	  ; X  X  RC X  CC MA MC MB    X  X  Cc Cp Bc Bp Ac Ap	Like D, but noninverted com fets
+// H_			EQU 8	  ; RC X  X  X  MA MB CC MC    X  Ap Bp Cp X  Ac Bc Cc
+// I_			EQU 9	  ; X  X  RC X  MC MB MA CC    X  X  Ac Bc Cc Ap Bp Cp
+// J_			EQU 10	; L2 L1 L0 RC CC MB MC MA    X  X  Cc Bc Ac Cp Bp Ap	LEDs
+// K_			EQU 11	; X  X  MC X  MB CC MA RC    X  X  Ap Bp Cp Cc Bc Ac	Com fets inverted
+// L_			EQU 12	; X  X  RC X  CC MA MB MC    X  X  Ac Bc Cc Ap Bp Cp
+// M_			EQU 13	; MA MC CC MB RC L0 X  X     X  Cc Bc Ac Cp Bp Ap X     LED
+// N_			EQU 14	; X  X  RC X  MC MB MA CC    X  X  Cp Cc Bp Bc Ap Ac
+// O_			EQU 15	; X  X  RC X  CC MA MC MB    X  X  Cc Cp Bc Bp Ac Ap	Like D, but low side pwm
+// P_			EQU 16	; X  X  RC MA CC MB MC X     X  Cc Bc Ac Cp Bp Ap X
+// Q_			EQU 17	; Cp Bp Ap L1 L0 X  RC X     X  MA MB MC CC Cc Bc Ac    LEDs
+// R_			EQU 18	; X  X  RC X  MC MB MA CC    X  X  Ac Bc Cc Ap Bp Cp
+// S_			EQU 19   ; X  X  RC X  CC MA MC MB    X  X  Cc Cp Bc Bp Ac Ap    Like O, but com fets inverted
+// T_			EQU 20	; RC X  MA X  MB CC MC X     X  X  Cp Bp Ap Ac Bc Cc
+// U_			EQU 21	; MA MC CC MB RC L0 L1 L2    X  Cc Bc Ac Cp Bp Ap X	Like M, but with 3 LEDs
+// V_			EQU 22	; Cc X  RC X  MC CC MB MA    X  Ap Ac Bp X  X  Bc Cp
+// W_			EQU 23	; RC MC MB X  CC MA X  X     X  Ap Bp Cp X  X  X  X	Tristate gate driver
+// X_			EQU 24	; Reserved
+// Y_			EQU 25	; Reserved
+// Z_			EQU 26   ; X  X  RC X  CC MA MC MB    X  X  Cp Cc Bp Bc Ap Ac  	Like S, but pwm fets inverted
+
+// A_X_		EQU 30	; X  X  RC CC MA MC MB X     X  X  Cc Cp Bc Bp Ac Ap    PWM fets active high, on low side.  COM fets active low
+// B_X_		EQU 31	; X  X  RC CC MA MC MB X     X  X  Cp Cc Bp Bc Ap Ac    PWM fets active high, on high side. COM fets active high
+// C_X_		EQU 32	; X  X  RC CC MA MC MB X     X  X  Cp Cc Bp Bc Ap Ac    PWM fets active low, on high side.  COM fets active high
+// D_X_		EQU 33	; X  X  RC CC MA MC MB X     X  X  Cc Cp Bc Bp Ac Ap    PWM fets active high, on high side. COM fets active high
+// E_X_		EQU 34	; X  X  RC CC MA MB MC X     X  X  Ac Bc Cc Ap Bp Cp    PWM fets active high, on high side. COM fets active high
+
+// ;**** **** **** **** ****
+// ; Select the port mapping to use (or unselect all for use with external batch compile file)
+// ;ESCNO EQU A_
+// ;ESCNO EQU B_
+// ;ESCNO EQU C_
+// ;ESCNO EQU D_
+// ;ESCNO EQU E_
+// ;ESCNO EQU F_
+// ;ESCNO EQU G_
+// ;ESCNO EQU H_
+// ;ESCNO EQU I_
+// ;ESCNO EQU J_
+// ;ESCNO EQU K_
+// ;ESCNO EQU L_
+// ;ESCNO EQU M_
+// ;ESCNO EQU N_
+// ;ESCNO EQU O_
+// ;ESCNO EQU P_
+// ;ESCNO EQU Q_
+// ;ESCNO EQU R_
+// ;ESCNO EQU S_
+// ;ESCNO EQU T_
+// ;ESCNO EQU U_
+// ;ESCNO EQU V_
+// ;ESCNO EQU W_
+// ;ESCNO EQU X_
+// ;ESCNO EQU Y_
+// ;ESCNO EQU Z_
+// ;ESCNO EQU A_X_  ; Requires MCU_48MHZ=2
+// ;ESCNO EQU B_X_  ; Requires MCU_48MHZ=2
+// ;ESCNO EQU C_X_  ; Requires MCU_48MHZ=2
+// ;ESCNO EQU D_X_  ; Requires MCU_48MHZ=2
+// ;ESCNO EQU E_X_  ; Requires MCU_48MHZ=2
+
+// ;**** **** **** **** ****
+// ; Select the MCU type (or unselect for use with external batch compile file)
+// ;MCU_48MHZ EQU	2
+
+// ;**** **** **** **** ****
+// ; Select the fet deadtime (or unselect for use with external batch compile file)
+// ;FETON_DELAY EQU 50	; 20.4ns per step
+
+
+// ;**** **** **** **** ****
+// ; ESC selection statements
+// IF ESCNO == A_
+// $include (A.inc)	; Select pinout A
+// ENDIF
+
+// IF ESCNO == B_
+// $include (B.inc)	; Select pinout B
+// ENDIF
+
+// IF ESCNO == C_
+// $include (C.inc)	; Select pinout C
+// ENDIF
+
+// IF ESCNO == D_
+// $include (D.inc)	; Select pinout D
+// ENDIF
+
+// IF ESCNO == E_
+// $include (E.inc)	; Select pinout E
+// ENDIF
+
+// IF ESCNO == F_
+// $include (F.inc)	; Select pinout F
+// ENDIF
+
+// IF ESCNO == G_
+// $include (G.inc)	; Select pinout G
+// ENDIF
+
+// IF ESCNO == H_
+// $include (H.inc)	; Select pinout H
+// ENDIF
+
+// IF ESCNO == I_
+// $include (I.inc)	; Select pinout I
+// ENDIF
+
+// IF ESCNO == J_
+// $include (J.inc)	; Select pinout J
+// ENDIF
+
+// IF ESCNO == K_
+// $include (K.inc)	; Select pinout K
+// ENDIF
+
+// IF ESCNO == L_
+// $include (L.inc)	; Select pinout L
+// ENDIF
+
+// IF ESCNO == M_
+// $include (M.inc)	; Select pinout M
+// ENDIF
+
+// IF ESCNO == N_
+// $include (N.inc)	; Select pinout N
+// ENDIF
+
+// IF ESCNO == O_
+// $include (O.inc)	; Select pinout O
+// ENDIF
+
+// IF ESCNO == P_
+// $include (P.inc)	; Select pinout P
+// ENDIF
+
+// IF ESCNO == Q_
+// $include (Q.inc)	; Select pinout Q
+// ENDIF
+
+// IF ESCNO == R_
+// $include (R.inc)	; Select pinout R
+// ENDIF
+
+// IF ESCNO == S_
+// $include (S.inc)        ; Select pinout S
+// ENDIF
+
+// IF ESCNO == T_
+// $include (T.inc)        ; Select pinout T
+// ENDIF
+
+// IF ESCNO == U_
+// $include (U.inc)        ; Select pinout U
+// ENDIF
+
+// IF ESCNO == V_
+// $include (V.inc)        ; Select pinout V
+// ENDIF
+
+// IF ESCNO == W_
+// $include (W.inc)        ; Select pinout W
+// ENDIF
+
+// IF ESCNO == X_
+// ;$include (X.inc)        ; Select pinout X
+// ENDIF
+
+// IF ESCNO == Y_
+// ;$include (Y.inc)        ; Select pinout Y
+// ENDIF
+
+// IF ESCNO == Z_
+// $include (Z.inc)        ; Select pinout Z
+// ENDIF
+
+// IF ESCNO == A_X_
+// $include (A_X.inc)      ; Select pinout A_X
+// ENDIF
+
+// IF ESCNO == B_X_
+// $include (B_X.inc)      ; Select pinout B_X
+// ENDIF
+
+// IF ESCNO == C_X_
+// $include (C_X.inc)      ; Select pinout C_X
+// ENDIF
+
+// IF ESCNO == D_X_
+// $include (D_X.inc)      ; Select pinout D_X
+// ENDIF
+
+// IF ESCNO == E_X_
+// $include (E_X.inc)      ; Select pinout E_X
+// ENDIF
+
+// 寄存器定义
+// SiLabs EFM8 寄存器定义
+typedef struct {
+    volatile uint8_t P0;
+    volatile uint8_t SP;
+    volatile uint8_t DPL;
+    volatile uint8_t DPH;
+    volatile uint8_t PCON;
+    volatile uint8_t TCON;
+    volatile uint8_t TMOD;
+    volatile uint8_t TL0;
+    volatile uint8_t TL1;
+    volatile uint8_t TH0;
+    volatile uint8_t TH1;
+    volatile uint8_t CKCON0;
+    volatile uint8_t P1;
+    volatile uint8_t SCON0;
+    volatile uint8_t SBUF0;
+    volatile uint8_t P2;
+    volatile uint8_t IE;
+    volatile uint8_t P0MDOUT;
+    volatile uint8_t P1MDOUT;
+    volatile uint8_t P2MDOUT;
+    volatile uint8_t P0MDIN;
+    volatile uint8_t P1MDIN;
+    volatile uint8_t P2MDIN;
+    volatile uint8_t P0SKIP;
+    volatile uint8_t P1SKIP;
+    volatile uint8_t P2SKIP;
+    volatile uint8_t PCA0CN0;
+    volatile uint8_t PCA0MD;
+    volatile uint8_t PCA0CPM0;
+    volatile uint8_t PCA0CPM1;
+    volatile uint8_t PCA0CPM2;
+    volatile uint8_t PCA0L;
+    volatile uint8_t PCA0H;
+    volatile uint8_t PCA0CPL0;
+    volatile uint8_t PCA0CPH0;
+    volatile uint8_t PCA0CPL1;
+    volatile uint8_t PCA0CPH1;
+    volatile uint8_t PCA0CPL2;
+    volatile uint8_t PCA0CPH2;
+    volatile uint8_t RSTSRC;
+    volatile uint8_t CLKSEL;
+    volatile uint8_t TMR2CN0;
+    volatile uint8_t TMR2L;
+    volatile uint8_t TMR2H;
+    volatile uint8_t TMR2RLL;
+    volatile uint8_t TMR2RLH;
+    volatile uint8_t TMR3CN0;
+    volatile uint8_t TMR3L;
+    volatile uint8_t TMR3H;
+    volatile uint8_t TMR3RLL;
+    volatile uint8_t TMR3RLH;
+    volatile uint8_t ADC0CN0;
+    volatile uint8_t ADC0AC;
+    volatile uint8_t ADC0MX;
+    volatile uint8_t ADC0CF;
+    volatile uint8_t ADC0L;
+    volatile uint8_t ADC0H;
+    volatile uint8_t IP;
+    volatile uint8_t EIE1;
+    volatile uint8_t EIP1;
+    volatile uint8_t IT01CF;
+    volatile uint8_t VDM0CN;
+    volatile uint8_t WDTCN;
+    volatile uint8_t XBR0;
+    volatile uint8_t XBR1;
+    volatile uint8_t CPT0CN;
+    volatile uint8_t CPT0MD;
+    volatile uint8_t CPT0MX;
+    volatile uint8_t CPT1CN;
+    volatile uint8_t CPT1MD;
+    volatile uint8_t CPT1MX;
+    volatile uint8_t COMPARATOR;
+    volatile uint8_t PSW;       // 程序状态字寄存器
+    volatile uint8_t ACC;       // 累加器寄存器
+} SFR_t;
+
+#define SFR (*((SFR_t *)0x80))
+
+// 位定义
+#define IE_EA       0x80  // 全局中断使能
+ #define IE_ET3      0x40  // Timer 3中断使能
+#define IE_ET2      0x20  // Timer 2中断使能
+#define IE_ET1      0x08  // Timer 1中断使能
+#define IE_ET0      0x02  // Timer 0中断使能
+#define IE_EX1      0x04  // 外部中断1使能
+#define IE_EX0      0x01  // 外部中断0使能
+
+// 标志位结构体
+typedef struct {
+    uint8_t STARTUP_PHASE : 1;       // 启动阶段标志
+    uint8_t INITIAL_RUN_PHASE : 1;   // 初始运行阶段标志
+    uint8_t MOTOR_STARTED : 1;       // 电机已启动标志
+    uint8_t DIR_CHANGE_BRAKE : 1;    // 方向改变制动标志
+    uint8_t HIGH_RPM : 1;            // 高转速标志
+    uint8_t DEMAG_DETECTED : 1;      // 检测到消磁标志
+    uint8_t COMP_TIMED_OUT : 1;      // 比较器超时标志
+    uint8_t PWM_ON : 1;              // PWM开启标志
+} Flags1_t;
+
+typedef struct {
+    uint8_t POWER_ON : 1;            // 电源开启标志
+    uint8_t COMP_TIMED_OUT : 1;      // 比较器超时标志
+    uint8_t reserved : 6;            // 保留位
+} Flags0_t;
+
+typedef struct {
+    uint8_t NORMAL_RUN_PHASE : 1;    // 正常运行阶段标志
+    uint8_t reserved : 7;            // 保留位
+} Flags1_Ext_t;
+
+// 扩展标志位全局变量
+volatile Flags1_Ext_t Flags1_Ext;
+
+typedef struct {
+    uint8_t RCP_UPDATED : 1;         // RC脉冲更新标志
+    uint8_t RCP_FULL_RANGE : 1;      // RC脉冲全范围标志
+    uint8_t RCP_ONESHOT125 : 1;      // OneShot125标志
+    uint8_t RCP_ONESHOT42 : 1;       // OneShot42标志
+    uint8_t RCP_MULTISHOT : 1;       // Multishot标志
+    uint8_t RCP_DSHOT : 1;           // DShot标志
+    uint8_t RCP_DIR_REV : 1;         // RC脉冲方向反转标志
+    uint8_t THROTTLE_CALIBRATION : 1; // 油门校准标志
+    uint8_t RCP_EDGE_NO : 1;         // RC脉冲边沿编号标志
+    uint8_t DSHOT_TELEMETRY_REQUESTED : 1; // DShot遥测请求标志
+    uint8_t DSHOT_TELEMETRY_READY : 1;     // DShot遥测准备好标志
+    uint8_t DSHOT_CAL_REQUESTED : 1;       // DShot校准请求标志
+    uint8_t DSHOT_STOP_REQUESTED : 1;      // DShot停止请求标志
+    uint8_t reserved : 3;                  // 保留位
+} Flags2_t;
+
+typedef struct {
+    uint8_t PGM_DIR_REV : 1;         // 编程方向反转标志
+    uint8_t PGM_BIDIR : 1;           // 编程双向标志
+    uint8_t PGM_BIDIR_REV : 1;       // 编程双向反转标志
+    uint8_t reserved : 5;            // 保留位
+} Flags3_t;
+
+// 全局变量
+volatile Flags1_t Flags1;
+volatile Flags2_t Flags2;
+volatile Flags3_t Flags3;
+volatile Flags0_t Flags0;
+volatile uint8_t Comm_Phase;         // 当前换向相位
+volatile uint8_t Low_Voltage_Prot_Limit; // 低电压保护限制
+
+// 8051 特殊功能寄存器
+volatile uint8_t ACC;                // 累加器
+volatile uint8_t PSW;                // 程序状态字
+
+// 相位和定时变量
+volatile uint16_t Comm_Period;        // 换向周期
+volatile uint16_t Comm_Period4x;      // 换向周期的4倍值
+volatile uint16_t Wait_Comm;          // 换向等待时间
+volatile uint16_t Wait_Advance;       // 提前换向等待时间
+volatile uint16_t Wait_Before_Scan;   // 扫描前等待时间
+volatile uint16_t Wt_Zc_Scan;         // 零交叉扫描等待时间
+volatile uint16_t Wt_Zc_Timeout;      // 零交叉超时时间
+volatile uint16_t Wt_Comm_Start;      // 换向开始等待时间
+volatile uint16_t Last_Comm_Period;   // 上次换向周期
+
+// 参数变量
+volatile uint8_t Pgm_Direction;       // 方向参数
+volatile uint8_t Pgm_Rampup_Power;    // 加速功率参数
+volatile uint8_t Pgm_Comm_Timing;     // 换向定时参数
+volatile uint8_t Pgm_Advance;         // 提前角参数
+volatile uint8_t Pgm_Beep_Strength;   // 蜂鸣器强度参数
+volatile uint8_t Pgm_Beacon_Strength; // 信标强度参数
+volatile uint8_t Pgm_Beacon_Delay;    // 信标延迟参数
+volatile uint8_t Pgm_Throttle_Cal;    // 油门校准参数
+volatile uint8_t Pgm_Startup_Power;   // 启动功率参数
+volatile uint8_t Pgm_Pwm_Freq;        // PWM频率参数
+volatile uint8_t Pgm_Demag_Comp;      // 去磁补偿参数
+volatile uint8_t Pgm_Direction_Rev;   // 方向反转参数
+volatile uint8_t Pgm_Input_Pol;       // 输入极性参数
+volatile uint8_t Pgm_Enable_TX_Program; // 启用TX编程参数
+
+// 电机控制变量
+volatile uint8_t Comm_Period4x_L;     // 换向周期4倍值低字节
+volatile uint8_t Comm_Period4x_H;     // 换向周期4倍值高字节
+volatile uint8_t Comparator_Read_Cnt; // 比较器读取计数
+volatile uint8_t Demag_Detected_Metric; // 去磁检测指标
+volatile uint8_t Demag_Pwr_Off_Thresh; // 去磁断电阈值
+volatile uint8_t Initial_Run_Rot_Cntd; // 初始运行旋转计数
+volatile uint8_t Pwm_Limit;          // PWM限制值
+volatile uint8_t Pwm_Limit_By_Rpm;   // 根据转速的PWM限制
+volatile uint8_t Pwm_Limit_Beg;      // 初始PWM限制
+volatile uint8_t Startup_Cnt;        // 启动计数
+volatile uint8_t Stall_Cnt;          // 失速计数
+
+// RC脉冲变量
+volatile uint16_t New_Rcp;           // 新RC脉冲值
+volatile uint16_t Rcp_Min;           // RC脉冲最小值
+volatile uint16_t Rcp_Max;           // RC脉冲最大值
+volatile uint16_t Rcp_Start;         // RC脉冲开始值
+volatile uint16_t Rcp_Stop;          // RC脉冲停止值
+volatile uint8_t Rcp_Update_Cnt;     // RC脉冲更新计数
+
+// 标志变量
+volatile uint8_t Initial_Run;        // 初始运行标志
+volatile uint8_t Motor_Running;      // 电机运行标志
+volatile uint8_t Demag_Detected;     // 去磁检测标志
+volatile uint8_t Comp_Read_Cnt;      // 比较器读取计数
+volatile uint8_t Startup_Phase;      // 启动阶段
+volatile uint8_t Zc_Timeout_Cnt;     // 零交叉超时计数
+volatile uint8_t Startup_Zc_Timeout; // 启动阶段零交叉超时计数
+
+// 运行状态变量
+volatile uint8_t Run_Mode;           // 运行模式
+volatile uint8_t Curr_Pwm;           // 当前PWM值
+volatile uint8_t Requested_Pwm;      // 请求的PWM值
+volatile uint8_t Actual_Pwm;         // 实际PWM值
+volatile uint8_t Throttle_Gain;      // 油门增益
+volatile uint8_t Throttle;           // 油门值
+volatile uint8_t Prev_Throttle;      // 上一次油门值
+
+// 常量定义
+#define PHASE_INITIAL_RUN 0          // 初始运行阶段
+#define PHASE_NORMAL_RUN 1           // 正常运行阶段
+
+// DShot变量
+volatile uint8_t Dshot_Cmd;
+volatile uint8_t Dshot_Cmd_Cnt;
+volatile uint8_t DShot_Frame_Length_Thr;
+volatile uint8_t DShot_Pwm_Thr;
+volatile uint8_t DShot_Timer_Preset;
+volatile uint8_t DShot_Frame_Start_L;
+volatile uint8_t DShot_Frame_Start_H;
+
+// 油门校准变量
+volatile uint8_t Throttle_Gain;
+volatile uint8_t Throttle_Gain_M;
+volatile uint8_t Throttle_Gain_BD_Rev;
+volatile uint8_t Throttle_Gain_BD_Rev_M;
+volatile uint8_t Min_Throttle_L;
+volatile uint8_t Min_Throttle_H;
+volatile uint8_t Center_Throttle_L;
+volatile uint8_t Center_Throttle_H;
+volatile uint8_t Max_Throttle_L;
+volatile uint8_t Max_Throttle_H;
+
+// 温度和电压保护变量
+volatile uint8_t Adc_Conversion_Cnt;
+volatile uint8_t Current_Average_Temp;
+volatile uint8_t Temp_Prot_Limit;
+
+// 定时变量
+volatile uint8_t Wt_Comm_Start_L;
+volatile uint8_t Wt_Comm_Start_H;
+volatile uint8_t Wt_Adv_Start_L;
+volatile uint8_t Wt_Adv_Start_H;
+volatile uint8_t Wt_Zc_Scan_Start_L;
+volatile uint8_t Wt_Zc_Scan_Start_H;
+volatile uint8_t Wt_Zc_Tout_Start_L;
+volatile uint8_t Wt_Zc_Tout_Start_H;
+
+// 其他变量
+volatile uint8_t Beep_Strength;
+volatile uint8_t Flash_Key_1;
+volatile uint8_t Flash_Key_2;
+volatile uint8_t Initial_Arm;
+volatile uint8_t Power_On_Wait_Cnt_L;
+volatile uint8_t Power_On_Wait_Cnt_H;
+volatile uint8_t Temp1;
+volatile uint8_t Temp2;
+volatile uint8_t Temp3;
+volatile uint8_t Temp4;
+volatile uint8_t Temp5;
+volatile uint8_t Temp6;
+volatile uint8_t Temp7;
+volatile uint8_t Temp8;
+
+// PWM寄存器
+volatile uint8_t Power_Pwm_Reg_L;
+volatile uint8_t Power_Pwm_Reg_H;
+volatile uint8_t Damp_Pwm_Reg_L;
+volatile uint8_t Damp_Pwm_Reg_H;
+
+// 编程参数
+#define PGM_PARAM_DIRECTION           0
+#define PGM_PARAM_MIN_THROTTLE        1
+#define PGM_PARAM_MAX_THROTTLE        2
+#define PGM_PARAM_CENTER_THROTTLE     3
+#define PGM_PARAM_ENABLE_TX_PROGRAM   4
+#define PGM_PARAM_BEEP_STRENGTH       5
+#define PGM_PARAM_BEACON_STRENGTH     6
+#define PGM_PARAM_BEACON_DELAY        7
+#define PGM_PARAM_THROTTLE_RATE       8
+#define PGM_PARAM_DEMAG_COMP          9
+#define PGM_PARAM_DIRECTION_REV       10
+#define PGM_PARAM_RAMPUP_POWER        11
+#define PGM_PARAM_PWM_FREQ            12
+#define PGM_PARAM_COMM_TIMING         13
+#define PGM_PARAM_DAMPING_FORCE       14
+#define PGM_PARAM_VOLTAGE_COMP        15
+#define PGM_PARAM_BRAKE_ON_STOP       16
+#define PGM_PARAM_LED_CONTROL         17
+#define PGM_PARAM_ENABLE_TEMP_PROT    18
+
+// 常量定义
+#define FETON_DELAY             7
+#define TEMP_LIMIT              155
+#define TEMP_LIMIT_STEP         5
+#define MCU_48MHZ               1  // 0=24MHz, 1=48MHz, 2=96MHz (1S capable)
+#define PWM_STARTUP             48  // 启动PWM值
+#define PWM_MAX                 255 // 最大PWM值
+#define PWM_BEEP                48  // 蜂鸣器PWM值
+#define LOW_VOLTAGE_LIMIT       112 // 低电压限制
+
+// 端口和引脚定义
+#define RTX_PORT                SFR.P0
+#define RTX_PIN                 0
+#define COMPARATOR_OUT          (SFR.COMPARATOR &amp; 0x40) // 比较器输出位
+
+// 函数声明
+// 中断处理函数
+void t3_int(void);
+void int0_int(void);
+void int1_int(void);
+void t0_int(void);
+void t2_int(void);
+void pca_int(void);
+
+// 换向函数
+void comm1comm2(void);
+void comm2comm3(void);
+void comm3comm4(void);
+void comm4comm5(void);
+void comm5comm6(void);
+void comm6comm1(void);
+
+// 延时函数
+void wait1ms(void);
+void wait3ms(void);
+void wait10ms(void);
+void wait30ms(void);
+void wait100ms(void);
+void wait200ms(void);
+void waitxms(uint8_t ms);
+
+// 比较器和换向相关函数
+void evaluate_comparator_integrity(void);
+void wait_for_comm(void);
+void setup_comm_wait(void);
+
+// 定时相关函数
+void initialize_timing(void);
+void calc_next_comm_timing(void);
+void wait_advance_timing(void);
+void calc_new_wait_times(void);
+void adjust_timing_two_steps_fast(void);
+void store_times_up_or_down_fast(void);
+void store_times_increase_fast(void);
+void store_times_decrease_fast(void);
+
+// 零交叉检测相关函数
+void wait_before_zc_scan(void);
+void wait_for_comp_out_low(void);
+void wait_for_comp_out_high(void);
+void comp_read_wrong_extend_timeout(void);
+void comp_read_wrong_low_rpm(void);
+void comp_read_wrong_timeout_set(void);
+
+// PWM和电源控制函数
+void set_pwm_limit_low_rpm(void);
+void set_pwm_limit_high_rpm(void);
+void set_startup_pwm(void);
+void start_adc_conversion(void);
+void check_temp_voltage_and_limit_power(void);
+void temp_average_inc_dec(void);
+void temp_check_exit(void);
+void check_voltage_start(void);
+void switch_power_off(void);
+
+// 蜂鸣器函数
+void beep_f1(void);
+void beep_f2(void);
+void beep_f3(void);
+void beep_f4(void);
+void beep(uint8_t freq);
+void success_beep(void);
+void success_beep_inverted(void);
+
+// 参数设置函数
+void set_default_parameters(void);
+void scale_throttle_cal(uint8_t throttle_cal);
+void decode_settings(void);
+void find_throttle_gains(void);
+void find_throttle_gain(void);
+void average_throttle(void);
+void led_control(void);
+void read_all_eeprom_parameters(void);
+void erase_and_store_all_in_eeprom(void);
+
+// 全局变量 - 电机状态监控
+volatile uint8_t Pwm;           // PWM值
+volatile uint8_t Temperature;   // 温度
+volatile uint8_t Voltage;       // 电压
+volatile uint8_t Current;       // 电流
+
+// 遥测数据结构体
+typedef struct {
+    uint8_t RPM;           // 电机转速
+    uint8_t Temperature;   // 温度
+    uint8_t Voltage;       // 电压
+    uint8_t Current;       // 电流
+    uint8_t Status;        // 状态标志
+    uint8_t Checksum;      // 校验和
+} Telemetry_Data_Struct;
+
+// 遥测数据全局变量
+Telemetry_Data_Struct Telemetry_Data;
+
+// RC脉冲和DShot处理函数
+void rc_pulse_detection(void);
+void rc_pulse_processing(void);
+void dshot_cmd_processing(void);
+void dshot_cmd_detection(void);
+void startup_phase_processing(void);
+void initial_run_phase_processing(void);
+void motor_running_processing(void);
+void dshot_special_cmd_processing(void);
+void throttle_processing(void);
+
+// DShot命令处理相关函数
+void beep_with_tone(uint8_t tone);
+void set_motor_direction(uint8_t direction);
+void set_3d_mode(uint8_t mode);
+void save_settings_to_eeprom(void);
+void set_temp_direction(uint8_t direction);
+void prepare_telemetry_data(void);
+uint8_t calculate_telemetry_checksum(void);
+void throttle_calibration(void);
+
+// 电机运行阶段处理相关函数
+void adjust_pwm_limits_startup(void);
+void adjust_pwm_limits_initial_run(void);
+void adjust_pwm_limits_normal_run(void);
+void check_demag_status(void);
+void throttle_calibration(void);
+void throttle_change_processing(void);
+
+// 电机控制函数
+void start_motor(void);
+void run_motor(void);
+void stop_motor(void);
+void motor_start_prepare(void);
+void motor_start_init(void);
+void motor_start_phase1(void);
+void motor_start_phase2(void);
+void motor_start_phase3(void);
+void motor_start_phase4(void);
+
+// 硬件初始化函数
+void initialize_ports(void);
+void initialize_timers(void);
+void initialize_adc(void);
+void initialize_pwm(void);
+void initialize_comparator(void);
+void initialize_pca(void);
+void initialize_crossbar(void);
+void initialize_watchdog(void);
+void initialize_clock(void);
+
+/**
+ * 等待1毫秒
+ */
+void wait1ms(void) {
+    uint16_t i;
+    for (i = 0; i &lt; 1000; i++) {
+        // 空循环，延时约1毫秒
+        // 具体循环次数需要根据时钟频率调整
+    }
+}
+
+/**
+ * 等待3毫秒
+ */
+void wait3ms(void) {
+    wait1ms();
+    wait1ms();
+    wait1ms();
+}
+
+/**
+ * 等待10毫秒
+ */
+void wait10ms(void) {
+    uint8_t i;
+    for (i = 0; i &lt; 10; i++) {
+        wait1ms();
+    }
+}
+
+/**
+ * 等待30毫秒
+ */
+void wait30ms(void) {
+    uint8_t i;
+    for (i = 0; i &lt; 3; i++) {
+        wait10ms();
+    }
+}
+
+/**
+ * 等待100毫秒
+ */
+void wait100ms(void) {
+    uint8_t i;
+    for (i = 0; i &lt; 10; i++) {
+        wait10ms();
+    }
+}
+
+/**
+ * 等待200毫秒
+ */
+void wait200ms(void) {
+    wait100ms();
+    wait100ms();
+}
+
+/**
+ * 等待指定毫秒数
+ */
+void waitxms(uint8_t ms) {
+    uint8_t i;
+    for (i = 0; i &lt; ms; i++) {
+        wait1ms();
+    }
+}
+
+/**
+ * 评估比较器完整性
+ * 在未检测到零交叉时评估比较器状态
+ */
+void evaluate_comparator_integrity(void) {
+    // 增加比较器读取计数
+    Comparator_Read_Cnt++;
+    
+    // 检查是否超过最大读取次数
+    if (Comparator_Read_Cnt &gt; Pgm_Comm_Timing) {
+        // 设置比较器超时标志
+        Flags1.COMP_TIMED_OUT = 1;
+        
+        // 禁用Timer3中断
+        SFR.IE &amp;= ~IE_ET3;
+        
+        // 根据当前运行模式处理
+        if (Flags1.INITIAL_RUN_PHASE) {
+            // 初始运行阶段 - 直接执行换向
+            switch (Comm_Phase) {
+                case 1:
+                    comm1comm2();
+                    break;
+                case 2:
+                    comm2comm3();
+                    break;
+                case 3:
+                    comm3comm4();
+                    break;
+                case 4:
+                    comm4comm5();
+                    break;
+                case 5:
+                    comm5comm6();
+                    break;
+                case 6:
+                    comm6comm1();
+                    break;
+            }
+        } else {
+            // 正常运行阶段 - 可能需要更复杂的处理
+            // 检查是否达到零交叉超时计数阈值
+            Zc_Timeout_Cnt++;
+            
+            if (Zc_Timeout_Cnt &gt; 5) {
+                // 连续多次超时，可能需要停止电机
+                stop_motor();
+            } else {
+                // 尝试继续运行，执行换向
+                switch (Comm_Phase) {
+                    case 1:
+                        comm1comm2();
+                        break;
+                    case 2:
+                        comm2comm3();
+                        break;
+                    case 3:
+                        comm3comm4();
+                        break;
+                    case 4:
+                        comm4comm5();
+                        break;
+                    case 5:
+                        comm5comm6();
+                        break;
+                    case 6:
+                        comm6comm1();
+                        break;
+                }
+            }
+        }
+        
+        // 重置比较器读取计数
+        Comparator_Read_Cnt = 0;
+        
+        // 重新启用Timer3中断
+        SFR.IE |= IE_ET3;
+    }
+}
+
+/**
+ * 等待换向
+ * 在检测到零交叉后准备换向
+ */
+void wait_for_comm(void) {
+    // 禁用Timer3中断
+    SFR.IE &amp;= ~IE_ET3;
+    
+    // 重置比较器读取计数
+    Comparator_Read_Cnt = 0;
+    
+    // 清除比较器超时标志
+    Flags1.COMP_TIMED_OUT = 0;
+    
+    // 设置Timer3为等待换向时间
+    SFR.TMR3CN0 = 0x00;  // 停止Timer3
+    SFR.TMR3L = 0;
+    SFR.TMR3H = 0;
+    SFR.TMR3RLL = Wait_Comm;
+    SFR.TMR3RLH = 0;
+    SFR.TMR3CN0 = 0x04;  // 启动Timer3
+    
+    // 等待Timer3溢出
+    while (!(SFR.TMR3CN0 &amp; 0x80));
+    
+    // 清除Timer3溢出标志
+    SFR.TMR3CN0 &amp;= ~0x80;
+    
+    // 根据当前换向相位执行换向
+    switch (Comm_Phase) {
+        case 1:
+            comm1comm2();
+            break;
+        case 2:
+            comm2comm3();
+            break;
+        case 3:
+            comm3comm4();
+            break;
+        case 4:
+            comm4comm5();
+            break;
+        case 5:
+            comm5comm6();
+            break;
+        case 6:
+            comm6comm1();
+            break;
+    }
+    
+    // 重新启用Timer3中断
+    SFR.IE |= IE_ET3;
+}
+
+/**
+ * 设置换向等待
+ * 根据当前相位和方向设置下一次换向的等待时间
+ */
+void setup_comm_wait(void) {
+    // 计算下一次换向的时间
+    calc_next_comm_timing();
+    
+    // 等待提前定时
+    wait_advance_timing();
+    
+    // 根据当前相位执行换向
+    switch (Comm_Phase) {
+        case 1:
+            comm1comm2();
+            break;
+        case 2:
+            comm2comm3();
+            break;
+        case 3:
+            comm3comm4();
+            break;
+        case 4:
+            comm4comm5();
+            break;
+        case 5:
+            comm5comm6();
+            break;
+        case 6:
+            comm6comm1();
+            break;
+    }
+}
+
+/**
+ * 初始化定时
+ * 设置初始的换向时间和相关变量
+ */
+void initialize_timing(void) {
+    // 设置初始换向时间
+    Comm_Period4x = 65000;  // 设置一个较大的初始值
+    Comm_Period = Comm_Period4x &gt;&gt; 2;
+    
+    // 初始化等待时间
+    Wait_Advance = 0;
+    Wait_Comm = 0;
+    Wait_Before_Scan = 0;
+    
+    // 重置计数器
+    Comparator_Read_Cnt = 0;
+    
+    // 清除标志
+    Flags1.COMP_TIMED_OUT = 0;
+}
+
+/**
+ * 计算下一次换向时间
+ * 根据当前转速和设置计算下一次换向的时间
+ */
+void calc_next_comm_timing(void) {
+    // 计算新的等待时间
+    calc_new_wait_times();
+    
+    // 根据运行阶段调整定时
+    if (Flags1.INITIAL_RUN_PHASE) {
+        // 初始运行阶段 - 使用固定时间
+        Wait_Comm = Comm_Period4x &gt;&gt; 3;  // 1/8 周期
+    } else if (Flags1_Ext.NORMAL_RUN_PHASE) {
+        // 正常运行阶段 - 根据设置调整
+        if (Pgm_Comm_Timing == 0) {
+            // 低定时设置
+            Wait_Comm = Comm_Period4x &gt;&gt; 3;  // 1/8 周期
+        } else if (Pgm_Comm_Timing == 1) {
+            // 中定时设置
+            Wait_Comm = Comm_Period4x &gt;&gt; 2;  // 1/4 周期
+        } else {
+            // 高定时设置
+            Wait_Comm = (Comm_Period4x * 3) &gt;&gt; 3;  // 3/8 周期
+        }
+    }
+}
+
+/**
+ * 等待提前定时
+ * 在换向前等待指定的时间
+ */
+void wait_advance_timing(void) {
+    // 禁用Timer3中断
+    SFR.IE &amp;= ~IE_ET3;
+    
+    // 设置Timer3为等待提前时间
+    SFR.TMR3CN0 = 0x00;  // 停止Timer3
+    SFR.TMR3L = 0;
+    SFR.TMR3H = 0;
+    SFR.TMR3RLL = Wait_Advance;
+    SFR.TMR3RLH = 0;
+    SFR.TMR3CN0 = 0x04;  // 启动Timer3
+    
+    // 等待Timer3溢出
+    while (!(SFR.TMR3CN0 &amp; 0x80));
+    
+    // 清除Timer3溢出标志
+    SFR.TMR3CN0 &amp;= ~0x80;
+}
+
+/**
+ * 计算新的等待时间
+ * 根据当前转速和设置计算各种等待时间
+ */
+void calc_new_wait_times(void) {
+    // 计算零交叉扫描前的等待时间
+    Wait_Before_Scan = Comm_Period &gt;&gt; 3;  // 1/8 周期
+    
+    // 计算提前定时等待时间
+    if (Pgm_Advance == 0) {
+        // 低提前设置
+        Wait_Advance = 0;
+    } else if (Pgm_Advance == 1) {
+        // 中提前设置
+        Wait_Advance = Comm_Period &gt;&gt; 3;  // 1/8 周期
+    } else {
+        // 高提前设置
+        Wait_Advance = Comm_Period &gt;&gt; 2;  // 1/4 周期
+    }
+    
+    // 调整高转速下的定时
+    adjust_timing_two_steps_fast();
+}
+
+/**
+ * 调整高转速下的定时
+ * 在高转速下进行两步快速调整
+ */
+void adjust_timing_two_steps_fast(void) {
+    // 根据转速调整定时
+    if (Comm_Period &lt; 2000) {
+        // 高转速情况
+        store_times_up_or_down_fast();
+    }
+}
+
+/**
+ * 根据转速变化存储时间
+ * 在高转速下根据转速变化调整定时
+ */
+void store_times_up_or_down_fast(void) {
+    // 检查转速变化
+    if (Comm_Period &lt; Last_Comm_Period) {
+        // 转速增加
+        store_times_increase_fast();
+    } else if (Comm_Period &gt; Last_Comm_Period) {
+        // 转速减少
+        store_times_decrease_fast();
+    }
+    
+    // 更新上次换向周期
+    Last_Comm_Period = Comm_Period;
+}
+
+/**
+ * 存储转速增加时的时间
+ * 当电机转速增加时调整定时参数
+ */
+void store_times_increase_fast(void) {
+    // 转速增加时，需要减少等待时间以适应更快的换向
+    // 减少零交叉扫描前的等待时间
+    Wait_Before_Scan = (Wait_Before_Scan * 7) &gt;&gt; 3;  // 乘以7/8
+    
+    // 减少提前定时等待时间
+    if (Wait_Advance &gt; 0) {
+        Wait_Advance = (Wait_Advance * 7) &gt;&gt; 3;  // 乘以7/8
+    }
+    
+    // 确保等待时间不小于最小值
+    if (Wait_Before_Scan &lt; 2) {
+        Wait_Before_Scan = 2;
+    }
+    
+    if (Wait_Advance &lt; 1) {
+        Wait_Advance = 1;
+    }
+}
+
+/**
+ * 存储转速减少时的时间
+ * 当电机转速减少时调整定时参数
+ */
+void store_times_decrease_fast(void) {
+    // 转速减少时，需要增加等待时间以适应更慢的换向
+    // 增加零交叉扫描前的等待时间
+    Wait_Before_Scan = (Wait_Before_Scan * 9) &gt;&gt; 3;  // 乘以9/8
+    
+    // 增加提前定时等待时间
+    if (Wait_Advance &gt; 0) {
+        Wait_Advance = (Wait_Advance * 9) &gt;&gt; 3;  // 乘以9/8
+    }
+    
+    // 确保等待时间不超过最大值
+    if (Wait_Before_Scan &gt; (Comm_Period &gt;&gt; 2)) {
+        Wait_Before_Scan = Comm_Period &gt;&gt; 2;  // 最大为1/4周期
+    }
+    
+    if (Wait_Advance &gt; (Comm_Period &gt;&gt; 1)) {
+        Wait_Advance = Comm_Period &gt;&gt; 1;  // 最大为1/2周期
+    }
+}
+
+/**
+ * 零交叉扫描前等待
+ * 在开始零交叉扫描前等待一段时间
+ */
+void wait_before_zc_scan(void) {
+    // 禁用Timer3中断
+    SFR.IE &amp;= ~IE_ET3;
+    
+    // 设置Timer3为零交叉扫描前的等待时间
+    SFR.TMR3CN0 = 0x00;  // 停止Timer3
+    SFR.TMR3L = 0;
+    SFR.TMR3H = 0;
+    SFR.TMR3RLL = Wait_Before_Scan;
+    SFR.TMR3RLH = 0;
+    SFR.TMR3CN0 = 0x04;  // 启动Timer3
+    
+    // 等待Timer3溢出
+    while (!(SFR.TMR3CN0 &amp; 0x80));
+    
+    // 清除Timer3溢出标志
+    SFR.TMR3CN0 &amp;= ~0x80;
+    
+    // 重置比较器读取计数
+    Comparator_Read_Cnt = 0;
+}
+
+/**
+ * 等待比较器输出低电平
+ */
+void wait_for_comp_out_low(void) {
+    uint16_t i;
+    
+    // 等待比较器输出变为低电平
+    for (i = 0; i &lt; 1000; i++) {
+        if (COMPARATOR_OUT == 0) {
+            return;
+        }
+    }
+    
+    // 超时处理
+    comp_read_wrong_timeout_set();
+}
+
+/**
+ * 等待比较器输出高电平
+ */
+void wait_for_comp_out_high(void) {
+    uint16_t i;
+    
+    // 等待比较器输出变为高电平
+    for (i = 0; i &lt; 1000; i++) {
+        if (COMPARATOR_OUT == 1) {
+            return;
+        }
+    }
+    
+    // 超时处理
+    comp_read_wrong_timeout_set();
+}
+
+/**
+ * 比较器读取错误 - 扩展超时
+ * 在初始运行阶段处理比较器超时
+ */
+void comp_read_wrong_extend_timeout(void) {
+    // 增加比较器读取计数
+    Comparator_Read_Cnt++;
+    
+    // 检查是否超过最大尝试次数
+    if (Comparator_Read_Cnt &gt; 3) {
+        // 设置比较器超时标志
+        Flags1.COMP_TIMED_OUT = 1;
+        
+        // 在初始运行阶段，增加启动超时计数
+        if (Flags1.INITIAL_RUN_PHASE) {
+            Startup_Zc_Timeout++;
+            
+            // 如果超过最大启动超时次数，停止电机
+            if (Startup_Zc_Timeout &gt; 5) {
+                stop_motor();
+            }
+        }
+    }
+}
+
+/**
+ * 比较器读取错误 - 低转速处理
+ * 在正常运行阶段处理比较器超时
+ */
+void comp_read_wrong_low_rpm(void) {
+    // 增加比较器读取计数
+    Comparator_Read_Cnt++;
+    
+    // 检查是否超过最大尝试次数
+    if (Comparator_Read_Cnt &gt; 10) {
+        // 设置比较器超时标志
+        Flags1.COMP_TIMED_OUT = 1;
+        
+        // 在低转速下，可能需要调整定时参数
+        if (Comm_Period &gt; 10000) {
+            // 对于非常低的转速，增加等待时间
+            Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 2);  // 增加25%
+            Wait_Before_Scan = Wait_Before_Scan + (Wait_Before_Scan &gt;&gt; 2);  // 增加25%
+            
+            // 限制最大等待时间
+            if (Wait_Comm &gt; (Comm_Period &gt;&gt; 1)) {
+                Wait_Comm = Comm_Period &gt;&gt; 1;  // 最大为1/2周期
+            }
+            
+            if (Wait_Before_Scan &gt; (Comm_Period &gt;&gt; 2)) {
+                Wait_Before_Scan = Comm_Period &gt;&gt; 2;  // 最大为1/4周期
+            }
+        }
+    }
+}
+
+/**
+ * 比较器读取错误 - 设置超时
+ * 设置比较器超时标志
+ */
+void comp_read_wrong_timeout_set(void) {
+    // 设置超时标志
+    Flags1.COMP_TIMED_OUT = 1;
+}
+
+/**
+ * 设置低转速下的PWM限制
+ * 在低转速下限制PWM输出以防止过电流
+ */
+void set_pwm_limit_low_rpm(void) {
+    // 根据转速设置PWM限制
+    if (Comm_Period &gt; 25000) {
+        // 非常低的转速
+        Pwm_Limit = PWM_STARTUP;
+    } else if (Comm_Period &gt; 12500) {
+        // 低转速
+        Pwm_Limit = PWM_STARTUP + ((PWM_MAX - PWM_STARTUP) &gt;&gt; 2);
+    } else if (Comm_Period &gt; 6250) {
+        // 中低转速
+        Pwm_Limit = PWM_STARTUP + ((PWM_MAX - PWM_STARTUP) &gt;&gt; 1);
+    } else {
+        // 中等转速
+        Pwm_Limit = PWM_STARTUP + (((PWM_MAX - PWM_STARTUP) * 3) &gt;&gt; 2);
+    }
+}
+
+/**
+ * 设置高转速下的PWM限制
+ * 在高转速下调整PWM限制
+ */
+void set_pwm_limit_high_rpm(void) {
+    // 高转速下无限制
+    Pwm_Limit = PWM_MAX;
+}
+
+/**
+ * 设置启动PWM
+ * 设置电机启动时的PWM值
+ */
+void set_startup_pwm(void) {
+    // 设置启动PWM值
+    Pwm_Limit = PWM_STARTUP;
+    Pwm = PWM_STARTUP;
+}
+
+/**
+ * 启动ADC转换
+ * 开始模数转换以测量温度和电压
+ */
+void start_adc_conversion(void) {
+    // 启动ADC转换
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 检查温度和电压并限制功率
+ * 根据温度和电压限制输出功率以保护电路
+ */
+void check_temp_voltage_and_limit_power(void) {
+    // 检查温度
+    temp_average_inc_dec();
+    
+    // 检查温度是否过高
+    temp_check_exit();
+    
+    // 检查电压
+    check_voltage_start();
+}
+
+/**
+ * 温度平均值增减
+ * 计算温度的平均值
+ */
+void temp_average_inc_dec(void) {
+    // 计算温度平均值
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 温度检查退出
+ * 检查温度是否过高，如果是则关闭电机
+ */
+void temp_check_exit(void) {
+    // 检查温度是否超过限制
+    if (Temperature &gt; TEMP_LIMIT) {
+        // 温度过高，关闭电机
+        switch_power_off();
+    }
+}
+
+/**
+ * 检查电压启动
+ * 检查电压是否在安全范围内
+ */
+void check_voltage_start(void) {
+    // 检查电压是否过低
+    if (Voltage &lt; LOW_VOLTAGE_LIMIT) {
+        // 电压过低，限制功率或关闭电机
+        Pwm_Limit = PWM_STARTUP;
+    }
+}
+
+/**
+ * 关闭电源
+ * 关闭所有PWM输出
+ */
+void switch_power_off(void) {
+    // 关闭所有PWM输出
+    Pwm = 0;
+    Pwm_Limit = 0;
+    
+    // 设置标志
+    Flags0.POWER_ON = 0;
+}
+
+/**
+ * 蜂鸣器频率1
+ * 产生特定频率的蜂鸣声
+ */
+void beep_f1(void) {
+    beep(1);
+}
+
+/**
+ * 蜂鸣器频率2
+ * 产生特定频率的蜂鸣声
+ */
+void beep_f2(void) {
+    beep(2);
+}
+
+/**
+ * 蜂鸣器频率3
+ * 产生特定频率的蜂鸣声
+ */
+void beep_f3(void) {
+    beep(3);
+}
+
+/**
+ * 蜂鸣器频率4
+ * 产生特定频率的蜂鸣声
+ */
+void beep_f4(void) {
+    beep(4);
+}
+
+/**
+ * 蜂鸣器
+ * 根据指定的频率产生蜂鸣声
+ */
+void beep(uint8_t freq) {
+    uint8_t i;
+    
+    // 设置蜂鸣器PWM值
+    Pwm = PWM_BEEP;
+    
+    // 根据频率设置蜂鸣时间
+    switch (freq) {
+        case 1:
+            // 频率1 - 低频
+            for (i = 0; i &lt; 200; i++) {
+                wait1ms();
+            }
+            break;
+        case 2:
+            // 频率2 - 中低频
+            for (i = 0; i &lt; 150; i++) {
+                wait1ms();
+            }
+            break;
+        case 3:
+            // 频率3 - 中高频
+            for (i = 0; i &lt; 100; i++) {
+                wait1ms();
+            }
+            break;
+        case 4:
+            // 频率4 - 高频
+            for (i = 0; i &lt; 50; i++) {
+                wait1ms();
+            }
+            break;
+    }
+    
+    // 关闭蜂鸣器
+    Pwm = 0;
+    
+    // 等待一段时间
+    wait30ms();
+}
+
+/**
+ * 成功蜂鸣
+ * 产生表示成功的蜂鸣序列
+ */
+void success_beep(void) {
+    // 产生上升音阶的蜂鸣声
+    beep_f1();
+    beep_f2();
+    beep_f3();
+    beep_f4();
+}
+
+/**
+ * 反向成功蜂鸣
+ * 产生表示成功的反向蜂鸣序列
+ */
+void success_beep_inverted(void) {
+    // 产生下降音阶的蜂鸣声
+    beep_f4();
+    beep_f3();
+    beep_f2();
+    beep_f1();
+}
+
+/**
+ * 设置默认参数
+ * 初始化默认的电调参数
+ */
+void set_default_parameters(void) {
+    // 设置默认参数
+    Pgm_Direction = 1;           // 默认方向
+    Pgm_Rampup_Power = 5;        // 默认启动功率
+    Pgm_Comm_Timing = 1;         // 默认换向定时
+    Pgm_Advance = 1;             // 默认提前角
+    Pgm_Beep_Strength = 40;      // 默认蜂鸣器强度
+    Pgm_Beacon_Strength = 80;    // 默认信标强度
+    Pgm_Beacon_Delay = 4;        // 默认信标延迟
+    Pgm_Throttle_Cal = 0;        // 默认油门校准
+    Pgm_Startup_Power = 10;      // 默认启动功率
+    Pgm_Pwm_Freq = 2;            // 默认PWM频率
+    Pgm_Demag_Comp = 1;          // 默认去磁补偿
+    Pgm_Direction_Rev = 0;       // 默认方向反转
+    Pgm_Input_Pol = 1;           // 默认输入极性
+    Pgm_Enable_TX_Program = 1;   // 默认启用TX编程
+}
+
+/**
+ * 缩放油门校准
+ * 根据油门校准值调整油门范围
+ */
+void scale_throttle_cal(uint8_t throttle_cal) {
+    // 根据油门校准值调整油门范围
+    // 具体实现取决于控制策略
+}
+
+/**
+ * 解码设置
+ * 解码EEPROM中的设置参数
+ */
+void decode_settings(void) {
+    // 解码设置参数
+    // 具体实现取决于EEPROM存储格式
+}
+
+/**
+ * 查找油门增益
+ * 查找所有油门增益值
+ */
+void find_throttle_gains(void) {
+    // 查找所有油门增益
+    find_throttle_gain();
+}
+
+/**
+ * 查找油门增益
+ * 计算单个油门增益值
+ */
+void find_throttle_gain(void) {
+    // 计算油门增益
+    // 具体实现取决于控制策略
+}
+
+/**
+ * 平均油门
+ * 计算油门的平均值
+ */
+void average_throttle(void) {
+    // 计算油门平均值
+    // 具体实现取决于控制策略
+}
+
+/**
+ * LED控制
+ * 控制LED指示灯的状态
+ */
+void led_control(void) {
+    // 控制LED指示灯
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 读取所有EEPROM参数
+ * 从EEPROM中读取所有存储的参数
+ */
+void read_all_eeprom_parameters(void) {
+    // 读取EEPROM参数
+    // 具体实现取决于EEPROM存储格式和硬件配置
+}
+
+/**
+ * 擦除并存储所有参数到EEPROM
+ * 擦除EEPROM并存储当前参数
+ */
+void erase_and_store_all_in_eeprom(void) {
+    // 擦除EEPROM
+    // 存储参数到EEPROM
+    // 具体实现取决于EEPROM存储格式和硬件配置
+}
+
+/**
+ * 从相位1换向到相位2
+ */
+void comm1comm2(void) {
+    // 更新相位
+    Comm_Phase = 2;
+    
+    // 根据方向设置PWM和比较器
+    if (Pgm_Direction == 0) {
+        // 正向旋转
+        // 设置PWM输出和比较器输入
+        // 具体实现取决于硬件配置
+    } else {
+        // 反向旋转
+        // 设置PWM输出和比较器输入
+        // 具体实现取决于硬件配置
+    }
+}
+
+/**
+ * INT0中断处理函数
+ * 处理外部中断0
+ */
+void int0_int(void) {
+    // 保存寄存器
+    uint8_t A_Temp = ACC;
+    uint8_t PSW_Temp = PSW;
+    
+    // 处理中断
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 恢复寄存器
+    ACC = A_Temp;
+    PSW = PSW_Temp;
+    
+    // 返回中断
+    return;
+}
+
+/**
+ * INT1中断处理函数
+ * 处理外部中断1
+ */
+void int1_int(void) {
+    // 保存寄存器
+    uint8_t A_Temp = ACC;
+    uint8_t PSW_Temp = PSW;
+    
+    // 处理中断
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 恢复寄存器
+    ACC = A_Temp;
+    PSW = PSW_Temp;
+    
+    // 返回中断
+    return;
+}
+
+/**
+ * Timer0中断处理函数
+ * 处理定时器0中断
+ */
+void t0_int(void) {
+    // 保存寄存器
+    uint8_t A_Temp = ACC;
+    uint8_t PSW_Temp = PSW;
+    
+    // 处理中断
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 恢复寄存器
+    ACC = A_Temp;
+    PSW = PSW_Temp;
+    
+    // 返回中断
+    return;
+}
+
+/**
+ * Timer2中断处理函数
+ * 处理定时器2中断
+ */
+void t2_int(void) {
+    // 保存寄存器
+    uint8_t A_Temp = ACC;
+    uint8_t PSW_Temp = PSW;
+    
+    // 处理中断
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 恢复寄存器
+    ACC = A_Temp;
+    PSW = PSW_Temp;
+    
+    // 返回中断
+    return;
+}
+
+/**
+ * PCA中断处理函数
+ * 处理PCA中断
+ */
+void pca_int(void) {
+    // 保存寄存器
+    uint8_t A_Temp = ACC;
+    uint8_t PSW_Temp = PSW;
+    
+    // 处理中断
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 恢复寄存器
+    ACC = A_Temp;
+    PSW = PSW_Temp;
+    
+    // 返回中断
+    return;
+}
+
+/**
+ * 检测RC脉冲
+ * 检测并处理RC脉冲信号
+ */
+void rc_pulse_detection(void) {
+    // 检测RC脉冲
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 检查是否为DShot协议
+    if (Flags2.RCP_DSHOT) {
+        // DShot协议检测
+        // DShot信号的解码主要在Timer1中断中完成
+        // 这里只需要检查是否有新的DShot帧到达
+        
+        // 检查DShot帧计数器是否更新
+        if (Dshot_Frame_Cnt != Last_Dshot_Frame_Cnt) {
+            // 更新上一次帧计数器
+            Last_Dshot_Frame_Cnt = Dshot_Frame_Cnt;
+            
+            // 调用RC脉冲处理函数
+            rc_pulse_processing();
+        }
+    } else {
+        // 传统PWM或OneShot信号检测
+        // 这部分代码保持不变
+        
+        // 检查是否有新的RC脉冲到达
+        if (Flags2.RCP_EDGE_NO) {
+            // 清除边沿标志
+            Flags2.RCP_EDGE_NO = 0;
+            
+            // 调用RC脉冲处理函数
+            rc_pulse_processing();
+        }
+    }
+}
+
+/**
+ * 处理RC脉冲
+ * 处理接收到的RC脉冲信号
+ */
+void rc_pulse_processing(void) {
+    // 处理RC脉冲
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 检查是否为DShot协议
+    if (Flags2.RCP_DSHOT) {
+        // DShot协议处理
+        // 在Timer1中断中已经完成了DShot信号的解码
+        // 这里只需要设置RCP_UPDATED标志，让主循环处理解码后的油门值
+        Flags2.RCP_UPDATED = 1;
+        
+        // 检查是否有DShot命令需要处理
+        if (Dshot_Cmd != 0) {
+            // 处理DShot命令
+            dshot_cmd_processing();
+        }
+    } else {
+        // 传统PWM或OneShot信号处理
+        // 这部分代码保持不变
+        
+        // 设置RCP_UPDATED标志，让主循环处理解码后的油门值
+        Flags2.RCP_UPDATED = 1;
+    }
+}
+
+/**
+ * 处理DShot命令
+ * 处理接收到的DShot命令
+ */
+void dshot_cmd_processing(void) {
+    // 处理DShot命令
+    // 根据DShot命令类型执行相应操作
+    switch (Dshot_Cmd) {
+        case 1: // DSHOT_CMD_BEEP1
+        case 2: // DSHOT_CMD_BEEP2
+        case 3: // DSHOT_CMD_BEEP3
+        case 4: // DSHOT_CMD_BEEP4
+        case 5: // DSHOT_CMD_BEEP5
+            // 处理蜂鸣器命令
+            switch_power_off();
+            beep_with_tone(Dshot_Cmd);
+            break;
+            
+        case 7: // DSHOT_CMD_SPIN_DIRECTION_1
+        case 8: // DSHOT_CMD_SPIN_DIRECTION_2
+            // 处理旋转方向命令
+            if (Dshot_Cmd_Cnt &gt;= 6) { // 需要连续接收6次
+                set_motor_direction(Dshot_Cmd);
+            }
+            break;
+            
+        case 9:  // DSHOT_CMD_3D_MODE_OFF
+        case 10: // DSHOT_CMD_3D_MODE_ON
+            // 处理3D模式命令
+            if (Dshot_Cmd_Cnt &gt;= 6) { // 需要连续接收6次
+                set_3d_mode(Dshot_Cmd);
+            }
+            break;
+            
+        case 12: // DSHOT_CMD_SAVE_SETTINGS
+            // 保存设置命令
+            if (Dshot_Cmd_Cnt &gt;= 6) { // 需要连续接收6次
+                save_settings_to_eeprom();
+            }
+            break;
+            
+        case 20: // DSHOT_CMD_SPIN_DIRECTION_NORMAL
+        case 21: // DSHOT_CMD_SPIN_DIRECTION_REVERSED
+            // 处理临时旋转方向命令
+            if (Dshot_Cmd_Cnt &gt;= 6) { // 需要连续接收6次
+                set_temp_direction(Dshot_Cmd);
+            }
+            break;
+            
+        default:
+            // 重置命令计数器
+            Dshot_Cmd = 0;
+            Dshot_Cmd_Cnt = 0;
+            break;
+    }
+}
+
+/**
+ * 检测DShot命令
+ * 检测并解码DShot命令
+ */
+void dshot_cmd_detection(void) {
+    // 检测DShot命令
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 检查是否为DShot协议
+    if (!Flags2.RCP_DSHOT) {
+        // 不是DShot协议，直接返回
+        return;
+    }
+    
+    // 检查是否有新的DShot命令
+    if (Dshot_Cmd == 0) {
+        // 没有新命令，直接返回
+        return;
+    }
+    
+    // 检查命令计数器是否达到阈值
+    // DShot命令需要连续接收多次才会被执行，以避免误触发
+    if (Dshot_Cmd_Cnt &lt; DSHOT_CMD_THRESHOLD) {
+        // 命令计数器未达到阈值，直接返回
+        return;
+    }
+    
+    // 命令计数器达到阈值，可以执行命令
+    // 根据命令类型执行相应操作
+    switch (Dshot_Cmd) {
+        // 蜂鸣器命令 (1-5)
+        case 1: // 蜂鸣器命令1 - 短鸣
+        case 2: // 蜂鸣器命令2 - 长鸣
+        case 3: // 蜂鸣器命令3 - 双短鸣
+        case 4: // 蜂鸣器命令4 - 双长鸣
+        case 5: // 蜂鸣器命令5 - 长短鸣
+            // 设置蜂鸣器命令标志
+            Beep_Cmd = Dshot_Cmd;
+            break;
+            
+        // 电机方向命令 (20-21)
+        case 20: // 正常方向
+            Flags3.PGM_DIR_REV = 0;
+            break;
+        case 21: // 反向
+            Flags3.PGM_DIR_REV = 1;
+            break;
+            
+        // 保存设置命令 (12)
+        case 12: // 保存设置
+            // 保存当前设置到EEPROM
+            erase_and_store_all_in_eeprom();
+            break;
+            
+        // 3D模式命令 (7-10)
+        case 7: // 3D模式开启
+            Flags3.PGM_BIDIR = 1;
+            break;
+        case 8: // 3D模式关闭
+            Flags3.PGM_BIDIR = 0;
+            break;
+        case 9: // 3D模式临时开启
+            Flags2.RCP_DIR_REV = 1;
+            break;
+        case 10: // 3D模式临时关闭
+            Flags2.RCP_DIR_REV = 0;
+            break;
+            
+        // 其他命令
+        default:
+            // 重置命令计数器
+            Dshot_Cmd = 0;
+            Dshot_Cmd_Cnt = 0;
+            break;
+    }
+    
+    // 命令已处理，重置命令计数器
+    Dshot_Cmd = 0;
+    Dshot_Cmd_Cnt = 0;
+}
+
+/**
+ * 处理特殊DShot命令
+ * 处理特殊的DShot命令，如校准、方向切换等
+ */
+void dshot_special_cmd_processing(void) {
+    // 处理特殊DShot命令
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 检查是否为DShot协议
+    if (!Flags2.RCP_DSHOT) {
+        // 不是DShot协议，直接返回
+        return;
+    }
+    
+    // 处理特殊DShot命令
+    // 这些命令通常需要特殊处理，不能在普通命令处理中执行
+    
+    // 处理遥测请求
+    if (Flags2.DSHOT_TELEMETRY_REQUESTED) {
+        // 清除遥测请求标志
+        Flags2.DSHOT_TELEMETRY_REQUESTED = 0;
+        
+        // 准备遥测数据
+        prepare_telemetry_data();
+        
+        // 设置遥测数据准备好标志
+        Flags2.DSHOT_TELEMETRY_READY = 1;
+    }
+    
+    // 处理校准请求
+    if (Flags2.DSHOT_CAL_REQUESTED) {
+        // 清除校准请求标志
+        Flags2.DSHOT_CAL_REQUESTED = 0;
+        
+        // 执行校准过程
+        throttle_calibration();
+    }
+    
+    // 处理紧急停止请求
+    if (Flags2.DSHOT_STOP_REQUESTED) {
+        // 清除紧急停止请求标志
+        Flags2.DSHOT_STOP_REQUESTED = 0;
+        
+        // 立即停止电机
+        switch_power_off();
+        
+        // 设置电机停止标志
+        Flags1.MOTOR_STARTED = 0;
+    }
+}
+
+/**
+ * 准备遥测数据
+ * 收集并准备DShot遥测数据
+ */
+void prepare_telemetry_data(void) {
+    // 准备遥测数据
+    // 收集电机运行状态信息用于遥测反馈
+    
+    // 电机转速信息
+    if (Flags1.MOTOR_STARTED) {
+        // 电机已启动，计算转速
+        // 转速与换相周期成反比
+        if (Comm_Period4x_H == 0 &amp;&amp; Comm_Period4x_L &lt; 4) {
+            // 转速过高，设置最大值
+            Telemetry_Data.RPM = 0xFF;
+        } else {
+            // 根据换相周期计算转速
+            // 转速 = 常数 / 换相周期
+            uint16_t period = (Comm_Period4x_H &lt;&lt; 8) | Comm_Period4x_L;
+            Telemetry_Data.RPM = (uint8_t)(60000 / period);
+        }
+    } else {
+        // 电机未启动，转速为0
+        Telemetry_Data.RPM = 0;
+    }
+    
+    // 温度信息
+    Telemetry_Data.Temperature = Temperature;
+    
+    // 电压信息
+    Telemetry_Data.Voltage = Voltage;
+    
+    // 电流信息（如果有电流传感器）
+    Telemetry_Data.Current = Current;
+    
+    // 电机状态信息
+    Telemetry_Data.Status = 0;
+    if (Flags1.MOTOR_STARTED) Telemetry_Data.Status |= 0x01; // 电机运行标志
+    if (Flags3.PGM_BIDIR) Telemetry_Data.Status |= 0x02;    // 3D模式标志
+    if (Flags2.RCP_DIR_REV) Telemetry_Data.Status |= 0x04;  // 反向标志
+    
+    // 计算校验和
+    Telemetry_Data.Checksum = calculate_telemetry_checksum();
+}
+
+/**
+ * 计算遥测数据校验和
+ * 为DShot遥测数据计算CRC校验和
+ * @return 计算得到的校验和
+ */
+uint8_t calculate_telemetry_checksum(void) {
+    // 计算遥测数据的校验和
+    // 使用简单的CRC-8算法
+    
+    uint8_t crc = 0;
+    uint8_t *data = (uint8_t *)&amp;Telemetry_Data;
+    
+    // 计算除校验和字段外的所有字段的CRC
+    // 假设校验和字段是结构体的最后一个字段
+    for (uint8_t i = 0; i &lt; sizeof(Telemetry_Data) - 1; i++) {
+        uint8_t inbyte = data[i];
+        for (uint8_t j = 0; j &lt; 8; j++) {
+            uint8_t mix = (crc ^ inbyte) &amp; 0x01;
+            crc &gt;&gt;= 1;
+            if (mix) crc ^= 0x8C; // CRC-8 多项式
+            inbyte &gt;&gt;= 1;
+        }
+    }
+    
+    return crc;
+}
+
+/**
+ * 油门校准
+ * 处理DShot油门校准命令
+ */
+void throttle_calibration(void) {
+    // 油门校准过程
+    // 这个函数在收到DShot校准命令时被调用
+    
+    // 停止电机
+    switch_power_off();
+    
+    // 设置校准标志
+    Flags2.THROTTLE_CALIBRATION = 1;
+    
+    // 记录当前时间，用于校准超时
+    Throttle_Cal_Timeout_Cnt = 100; // 设置超时计数器，例如10秒
+    
+    // 发出校准开始提示音
+    beep_f4();
+    
+    // 等待高油门信号
+    while (Throttle_Cal_Timeout_Cnt &gt; 0) {
+        // 检查是否收到高油门信号
+        if (New_Rcp &gt; 1800) { // 假设1800是高油门阈值
+            // 记录高油门值
+            Pgm_Throttle_Cal_Max = New_Rcp;
+            
+            // 发出确认音
+            beep_f3();
+            
+            // 等待低油门信号
+            Throttle_Cal_Timeout_Cnt = 100; // 重置超时计数器
+            while (Throttle_Cal_Timeout_Cnt &gt; 0) {
+                // 检查是否收到低油门信号
+                if (New_Rcp &lt; 1200) { // 假设1200是低油门阈值
+                    // 记录低油门值
+                    Pgm_Throttle_Cal_Min = New_Rcp;
+                    
+                    // 计算油门范围
+                    Pgm_Throttle_Cal_Range = Pgm_Throttle_Cal_Max - Pgm_Throttle_Cal_Min;
+                    
+                    // 保存校准参数到EEPROM
+                    erase_and_store_all_in_eeprom();
+                    
+                    // 发出校准完成提示音
+                    success_beep();
+                    
+                    // 清除校准标志
+                    Flags2.THROTTLE_CALIBRATION = 0;
+                    
+                    return;
+                }
+                
+                // 延时
+                // 这里应该有一个延时函数调用
+                // 或者在主循环中递减Throttle_Cal_Timeout_Cnt
+            }
+            
+            // 超时，校准失败
+            break;
+        }
+        
+        // 延时
+        // 这里应该有一个延时函数调用
+        // 或者在主循环中递减Throttle_Cal_Timeout_Cnt
+    }
+    
+    // 校准失败，发出警告音
+    beep_f1();
+    
+    // 清除校准标志
+    Flags2.THROTTLE_CALIBRATION = 0;
+}
+
+/**
+ * 启动阶段处理
+ * 处理电机启动阶段的逻辑
+ */
+void startup_phase_processing(void) {
+    // 启动阶段处理
+    // 检查启动计数器
+    if (++Startup_Cnt &gt;= 24) {
+        // 启动计数达到阈值，转换到初始运行阶段
+        Flags1.STARTUP_PHASE = 0;
+        Flags1.INITIAL_RUN_PHASE = 1;
+    }
+    
+    // 执行启动阶段的换相和时序计算
+    calc_next_comm_timing();
+    
+    // 检查启动超时
+    if (Startup_Timeout_Cntd == 0) {
+        // 启动超时，返回等待加电状态
+        switch_power_off();
+        return;
+    }
+    
+    // 根据启动阶段调整PWM限制
+    adjust_pwm_limits_startup();
+}
+
+/**
+ * 初始运行阶段处理
+ * 处理电机初始运行阶段的逻辑
+ */
+void initial_run_phase_processing(void) {
+    // 初始运行阶段处理
+    // 检查是否是方向改变制动
+    if (Flags1.DIR_CHANGE_BRAKE) {
+        // 方向改变制动情况下的特殊处理
+        return;
+    }
+    
+    // 检查初始运行计数器
+    if (++Initial_Run_Cnt &gt;= 48) {
+        // 初始运行计数达到阈值，转换到正常运行阶段
+        Flags1.INITIAL_RUN_PHASE = 0;
+        Flags1.MOTOR_STARTED = 1;
+        Flags1_Ext.NORMAL_RUN_PHASE = 1;
+    }
+    
+    // 执行初始运行阶段的换相和时序计算
+    calc_next_comm_timing();
+    
+    // 根据初始运行阶段调整PWM限制
+    adjust_pwm_limits_initial_run();
+}
+
+/**
+ * 电机运行阶段处理
+ * 处理电机正常运行阶段的逻辑
+ */
+void motor_running_processing(void) {
+    // 电机运行阶段处理
+    // 检查运行状态
+    if (Comm_Period4x_H == 0 || Comm_Period4x_L &lt; 4) {
+        // 电机转速过高，设置高转速标志
+        Flags1.HIGH_RPM = 1;
+    } else {
+        // 电机转速正常，清除高转速标志
+        Flags1.HIGH_RPM = 0;
+    }
+    
+    // 执行正常运行阶段的换相和时序计算
+    calc_next_comm_timing();
+    
+    // 根据正常运行阶段调整PWM限制
+    adjust_pwm_limits_normal_run();
+    
+    // 检查消磁情况
+    check_demag_status();
+}
+
+/**
+ * 处理油门信号
+ * 处理接收到的油门信号
+ */
+void throttle_processing(void) {
+    // 处理油门信号
+    // 具体实现取决于硬件配置和控制策略
+    
+    // 处理DShot油门值
+    if (Flags2.RCP_DSHOT) {
+        // DShot协议不仅可以发送命令，还可以调整油门值
+        // DShot油门值范围为0-2047(11位)，需要转换为0-255(8位)的PWM值
+        
+        // 检查是否为零油门
+        if (New_Rcp == 0) {
+            Requested_Pwm = 0;
+            return;
+        }
+        
+        // 检查是否在有效范围内
+        if (New_Rcp &lt; Min_Throttle_L || New_Rcp &gt; Max_Throttle_L) {
+            // 超出范围，增加计数器
+            Rcp_Outside_Range_Cnt++;
+            if (Rcp_Outside_Range_Cnt &gt; 10) {
+                Rcp_Outside_Range_Cnt = 10;
+                Rcp_Stop_Cnt++;
+                if (Rcp_Stop_Cnt &gt; 10) {
+                    Rcp_Stop_Cnt = 10;
+                    // 停止电机
+                    switch_power_off();
+                }
+            }
+            return;
+        }
+        
+        // 重置计数器
+        Rcp_Outside_Range_Cnt = 0;
+        Rcp_Stop_Cnt = 0;
+        
+        // 计算油门值
+        // 将DShot 11位值(0-2047)映射到8位PWM值(0-255)
+        uint16_t throttle_value = New_Rcp;
+        
+        // 应用油门曲线（可根据需要调整）
+        if (Flags3.PGM_BIDIR) {
+            // 双向模式下的油门处理
+            if (Flags2.RCP_DIR_REV) {
+                // 反向
+                throttle_value = (throttle_value * 2) - 2048;
+            } else {
+                // 正向
+                throttle_value = throttle_value * 2;
+            }
+        } else {
+            // 单向模式下的油门处理
+            throttle_value = ((throttle_value - Min_Throttle_L) * 255) / (Max_Throttle_L - Min_Throttle_L);
+        }
+        
+        // 限制在0-255范围内
+        if (throttle_value &gt; 255) throttle_value = 255;
+        
+        // 更新请求的PWM值
+        Requested_Pwm = (uint8_t)throttle_value;
+        
+        // 如果电机未启动且油门值足够高，则启动电机
+        if (!Flags1.MOTOR_STARTED &amp;&amp; Requested_Pwm &gt; (Min_Throttle_L + 3)) {
+            // 启动电机
+            Flags1.STARTUP_PHASE = 1;
+            Startup_Cnt = 0;
+        }
+    } else {
+        // 处理传统PWM或OneShot信号
+        // 这部分代码保持不变
+    }
+}
+
+/**
+ * 油门校准
+ * 执行油门校准过程
+ */
+void throttle_calibration(void) {
+    // 执行油门校准
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 处理油门变化
+ * 处理油门信号的变化
+ */
+void throttle_change_processing(void) {
+    // 处理油门变化
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 启动电机
+ * 执行电机启动过程
+ */
+void start_motor(void) {
+    // 启动电机
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 运行电机
+ * 控制电机正常运行
+ */
+void run_motor(void) {
+    // 运行电机
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 停止电机
+ * 执行电机停止过程
+ */
+void stop_motor(void) {
+    // 停止电机
+    // 关闭所有相位的PWM输出
+    switch_power_off();
+    
+    // 清除运行标志
+    Flags1.STARTUP_PHASE = 0;
+    Flags1.INITIAL_RUN_PHASE = 0;
+    Flags1.MOTOR_STARTED = 0;
+    
+    // 重置计数器
+    Startup_Cnt = 0;
+    Initial_Run_Cnt = 0;
+}
+
+/**
+ * 根据指定的音调发出蜂鸣声
+ */
+void beep_with_tone(uint8_t tone) {
+    // 关闭电机电源
+    switch_power_off();
+    
+    // 根据不同的音调发出蜂鸣声
+    switch (tone) {
+        case 1: // DSHOT_CMD_BEEP1
+            beep_f1();
+            break;
+        case 2: // DSHOT_CMD_BEEP2
+            beep_f2();
+            break;
+        case 3: // DSHOT_CMD_BEEP3
+            beep_f3();
+            break;
+        case 4: // DSHOT_CMD_BEEP4
+        case 5: // DSHOT_CMD_BEEP5
+            beep_f4();
+            break;
+        default:
+            break;
+    }
+    
+    // 等待蜂鸣完成
+    wait100ms();
+    
+    // 重置DShot命令
+    Dshot_Cmd = 0;
+    Dshot_Cmd_Cnt = 0;
+}
+
+/**
+ * 设置电机旋转方向
+ */
+void set_motor_direction(uint8_t direction) {
+    if (direction == 7) { // DSHOT_CMD_SPIN_DIRECTION_1
+        // 设置为方向1
+        Pgm_Direction = 1;
+        Flags3.PGM_DIR_REV = 0;
+        Flags3.PGM_BIDIR_REV = 0;
+    } else if (direction == 8) { // DSHOT_CMD_SPIN_DIRECTION_2
+        // 设置为方向2
+        Pgm_Direction = 2;
+        Flags3.PGM_DIR_REV = 1;
+        Flags3.PGM_BIDIR_REV = 1;
+    }
+    
+    // 重置DShot命令
+    Dshot_Cmd = 0;
+    Dshot_Cmd_Cnt = 0;
+}
+
+/**
+ * 设置3D模式
+ */
+void set_3d_mode(uint8_t mode) {
+    if (mode == 9) { // DSHOT_CMD_3D_MODE_OFF
+        // 关闭3D模式
+        if (Flags3.PGM_BIDIR) {
+            Pgm_Direction -= 2;
+            Flags3.PGM_BIDIR = 0;
+        }
+    } else if (mode == 10) { // DSHOT_CMD_3D_MODE_ON
+        // 开启3D模式
+        if (!Flags3.PGM_BIDIR) {
+            Pgm_Direction += 2;
+            Flags3.PGM_BIDIR = 1;
+        }
+    }
+    
+    // 重置DShot命令
+    Dshot_Cmd = 0;
+    Dshot_Cmd_Cnt = 0;
+}
+
+/**
+ * 保存设置到EEPROM
+ */
+void save_settings_to_eeprom(void) {
+    // 初始化Flash密钥
+    Flash_Key_1 = 0xA5;
+    Flash_Key_2 = 0xF1;
+    
+    // 擦除并存储所有参数到EEPROM
+    erase_and_store_all_in_eeprom();
+    
+    // 重置DShot命令
+    Dshot_Cmd = 0;
+    Dshot_Cmd_Cnt = 0;
+}
+
+/**
+ * 设置临时旋转方向
+ */
+void set_temp_direction(uint8_t direction) {
+    // 读取原始方向设置
+    uint8_t original_direction = read_eeprom_direction();
+    
+    if (direction == 20) { // DSHOT_CMD_SPIN_DIRECTION_NORMAL
+        // 设置为正常方向
+        Pgm_Direction = original_direction;
+        Flags3.PGM_DIR_REV = (original_direction &amp; 0x01) ? 1 : 0;
+        Flags3.PGM_BIDIR_REV = (original_direction &amp; 0x01) ? 1 : 0;
+    } else if (direction == 21) { // DSHOT_CMD_SPIN_DIRECTION_REVERSED
+        // 设置为反向
+        if (original_direction == 1) {
+            Pgm_Direction = 2;
+        } else if (original_direction == 2) {
+            Pgm_Direction = 1;
+        } else if (original_direction == 3) {
+            Pgm_Direction = 4;
+        } else if (original_direction == 4) {
+            Pgm_Direction = 3;
+        }
+        
+        Flags3.PGM_DIR_REV = (Pgm_Direction &amp; 0x01) ? 1 : 0;
+        Flags3.PGM_BIDIR_REV = (Pgm_Direction &amp; 0x01) ? 1 : 0;
+    }
+    
+    // 重置DShot命令
+    Dshot_Cmd = 0;
+    Dshot_Cmd_Cnt = 0;
+}
+
+/**
+ * 调整启动阶段的PWM限制
+ */
+void adjust_pwm_limits_startup(void) {
+    // 根据启动阶段计数器调整PWM限制
+    if (Startup_Cnt &lt; Pgm_Startup_Power_Tx) {
+        // 启动初期，使用较低的PWM限制
+        Pwm_Limit = Pgm_Startup_Pwr;
+    } else {
+        // 启动后期，逐渐增加PWM限制
+        Pwm_Limit = Pgm_Startup_Pwr + ((Startup_Cnt - Pgm_Startup_Power_Tx) &gt;&gt; 1);
+        
+        // 确保不超过最大限制
+        if (Pwm_Limit &gt; Pgm_Running_Pwr) {
+            Pwm_Limit = Pgm_Running_Pwr;
+        }
+    }
+}
+
+/**
+ * 调整初始运行阶段的PWM限制
+ */
+void adjust_pwm_limits_initial_run(void) {
+    // 根据初始运行阶段计数器调整PWM限制
+    if (Initial_Run_Cnt &lt; 100) {
+        // 初始运行阶段，逐渐增加PWM限制
+        Pwm_Limit = Pgm_Startup_Pwr + (Initial_Run_Cnt &gt;&gt; 1);
+        
+        // 确保不超过最大限制
+        if (Pwm_Limit &gt; Pgm_Running_Pwr) {
+            Pwm_Limit = Pgm_Running_Pwr;
+        }
+    } else {
+        // 初始运行后期，使用正常运行PWM限制
+        Pwm_Limit = Pgm_Running_Pwr;
+    }
+}
+
+/**
+ * 调整正常运行阶段的PWM限制
+ */
+void adjust_pwm_limits_normal_run(void) {
+    // 正常运行阶段，使用配置的运行PWM限制
+    Pwm_Limit = Pgm_Running_Pwr;
+    
+    // 如果温度过高，降低PWM限制
+    if (Flags2.HIGH_TEMP) {
+        Pwm_Limit = Pwm_Limit &gt;&gt; 1; // 降低一半功率
+    }
+}
+
+/**
+ * 检查消磁状态
+ */
+void check_demag_status(void) {
+    // 检查消磁计数器
+    if (Demag_Detected_Metric &gt; 0) {
+        // 消磁计数器递减
+        Demag_Detected_Metric--;
+    }
+    
+    // 检查消磁状态
+    if (Demag_Detected) {
+        // 消磁检测到，增加消磁计数器
+        Demag_Detected_Metric = Demag_Detected_Metric + 3;
+        
+        // 限制最大值
+        if (Demag_Detected_Metric &gt; 100) {
+            Demag_Detected_Metric = 100;
+        }
+        
+        // 清除消磁检测标志
+        Demag_Detected = 0;
+    }
+    
+    // 根据消磁计数器调整PWM限制
+    if (Demag_Detected_Metric &gt; 20) {
+        // 消磁严重，降低PWM限制
+        Pwm_Limit = Pwm_Limit - (Demag_Detected_Metric &gt;&gt; 3);
+    }
+}
+
+/**
+ * 电机启动准备
+ * 准备电机启动过程
+ */
+void motor_start_prepare(void) {
+    // 准备电机启动
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 电机启动初始化
+ * 初始化电机启动参数
+ */
+void motor_start_init(void) {
+    // 初始化电机启动参数
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 电机启动阶段1
+ * 执行电机启动的第一阶段
+ */
+void motor_start_phase1(void) {
+    // 执行电机启动阶段1
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 电机启动阶段2
+ * 执行电机启动的第二阶段
+ */
+void motor_start_phase2(void) {
+    // 执行电机启动阶段2
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 电机启动阶段3
+ * 执行电机启动的第三阶段
+ */
+void motor_start_phase3(void) {
+    // 执行电机启动阶段3
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 电机启动阶段4
+ * 执行电机启动的第四阶段
+ */
+void motor_start_phase4(void) {
+    // 执行电机启动阶段4
+    // 具体实现取决于硬件配置和控制策略
+}
+
+/**
+ * 初始化端口
+ * 配置GPIO端口的方向和初始状态
+ */
+void initialize_ports(void) {
+    // 初始化端口
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化定时器
+ * 配置定时器的工作模式和中断
+ */
+void initialize_timers(void) {
+    // 初始化定时器
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化ADC
+ * 配置ADC的工作模式和通道
+ */
+void initialize_adc(void) {
+    // 初始化ADC
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化PWM
+ * 配置PWM的频率和占空比
+ */
+void initialize_pwm(void) {
+    // 初始化PWM
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化比较器
+ * 配置比较器的工作模式和中断
+ */
+void initialize_comparator(void) {
+    // 初始化比较器
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化PCA
+ * 配置PCA的工作模式和中断
+ */
+void initialize_pca(void) {
+    // 初始化PCA
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化交叉开关
+ * 配置交叉开关的连接
+ */
+void initialize_crossbar(void) {
+    // 初始化交叉开关
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化看门狗
+ * 配置看门狗的超时时间和复位行为
+ */
+void initialize_watchdog(void) {
+    // 初始化看门狗
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 初始化时钟
+ * 配置系统时钟的频率和分频
+ */
+void initialize_clock(void) {
+    // 初始化时钟
+    // 具体实现取决于硬件配置
+}
+
+/**
+ * 从相位2换向到相位3
+ */
+void comm2comm3(void) {
+    // 更新相位
+    Comm_Phase = 3;
+    
+    // 根据方向设置PWM和比较器
+    if (Pgm_Direction == 0) {
+        // 正向旋转
+        // 设置PWM输出和比较器输入
+    } else {
+        // 反向旋转
+        // 设置PWM输出和比较器输入
+    }
+}
+
+/**
+ * 从相位3换向到相位4
+ */
+void comm3comm4(void) {
+    // 更新相位
+    Comm_Phase = 4;
+    
+    // 根据方向设置PWM和比较器
+    if (Pgm_Direction == 0) {
+        // 正向旋转
+        // 设置PWM输出和比较器输入
+    } else {
+        // 反向旋转
+        // 设置PWM输出和比较器输入
+    }
+}
+
+/**
+ * 从相位4换向到相位5
+ */
+void comm4comm5(void) {
+    // 更新相位
+    Comm_Phase = 5;
+    
+    // 根据方向设置PWM和比较器
+    if (Pgm_Direction == 0) {
+        // 正向旋转
+        // 设置PWM输出和比较器输入
+    } else {
+        // 反向旋转
+        // 设置PWM输出和比较器输入
+    }
+}
+
+/**
+ * 从相位5换向到相位6
+ */
+void comm5comm6(void) {
+    // 更新相位
+    Comm_Phase = 6;
+    
+    // 根据方向设置PWM和比较器
+    if (Pgm_Direction == 0) {
+        // 正向旋转
+        // 设置PWM输出和比较器输入
+    } else {
+        // 反向旋转
+        // 设置PWM输出和比较器输入
+    }
+}
+
+/**
+ * 从相位6换向到相位1
+ */
+void comm6comm1(void) {
+    // 更新相位
+    Comm_Phase = 1;
+    
+    // 根据方向设置PWM和比较器
+    if (Pgm_Direction == 0) {
+        // 正向旋转
+        // 设置PWM输出和比较器输入
+    } else {
+        // 反向旋转
+        // 设置PWM输出和比较器输入
+    }
+}
+
+/**
+ * Timer3中断处理函数
+ * 处理Timer3中断，用于零交叉检测
+ */
+void t3_int(void) {
+    // 保存寄存器
+    uint8_t saved_psw = SFR.PSW;
+    uint8_t saved_acc = SFR.ACC;
+    
+    // 禁用中断
+    SFR.IE &amp;= ~IE_EA;
+    
+    // 计算换向周期
+    Comm_Period4x = ((uint16_t)SFR.TMR3H &lt;&lt; 8) | SFR.TMR3L; // 从TMR3寄存器读取
+    Comm_Period = Comm_Period4x &gt;&gt; 2;
+    
+    // 计算等待时间
+    Wait_Advance = Comm_Period &gt;&gt; 1;
+    Wait_Comm = Comm_Period &gt;&gt; 3;
+    Wait_Before_Scan = Comm_Period &gt;&gt; 2;
+    
+    // 处理零交叉检测
+    if (Flags1.INITIAL_RUN_PHASE) {
+        // 初始运行阶段
+        // 根据换向相位和方向检查比较器状态
+        if (Pgm_Direction == 0) {
+            // 正向旋转
+            switch (Comm_Phase) {
+                case 1:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 2:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 3:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 4:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 5:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 6:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+            }
+        } else {
+            // 反向旋转
+            switch (Comm_Phase) {
+                case 1:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 2:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 3:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 4:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 5:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 6:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+            }
+        }
+    } else if (Flags1_Ext.NORMAL_RUN_PHASE) {
+        // 正常运行阶段
+        if (Pgm_Direction == 0) {
+            // 正向旋转
+            switch (Comm_Phase) {
+                case 1:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 1);
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 2:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 1);
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 3:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 2);
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 4:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 5:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 6:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+            }
+        } else {
+            // 反向旋转
+            switch (Comm_Phase) {
+                case 1:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 1);
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 2:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 1);
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 3:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        Wait_Comm = Wait_Comm + (Wait_Comm &gt;&gt; 2);
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 4:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 5:
+                    if (!(SFR.COMPARATOR &amp; 0x40)) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+                case 6:
+                    if (SFR.COMPARATOR &amp; 0x40) {
+                        // 检测到零交叉
+                        wait_for_comm();
+                    } else {
+                        evaluate_comparator_integrity();
+                    }
+                    break;
+            }
+        }
+    }
+    
+    // 恢复寄存器
+    SFR.PSW = saved_psw;
+    SFR.ACC = saved_acc;
+    
+    // 返回中断
+    return;
+}
+
+/**
+ * 主函数 - 程序入口点
+ */
+void main(void) {
+    // 初始化Flash密钥
+    Flash_Key_1 = 0;
+    Flash_Key_2 = 0;
+    
+    // 初始化看门狗
+    SFR.WDTCN = 0xDE;  // 禁用看门狗第一步
+    SFR.WDTCN = 0xAD;  // 禁用看门狗第二步
+    
+    // 初始化VDD监视器
+    SFR.VDM0CN = 0x80;  // 使能VDD监视器
+    
+    // 初始化时钟
+#if MCU_48MHZ == 1
+    SFR.CLKSEL = 0x03;  // 设置为48MHz
+#elif MCU_48MHZ == 2
+    SFR.CLKSEL = 0x03;  // 设置为48MHz基础
+    // 额外的96MHz配置
+#else
+    SFR.CLKSEL = 0x02;  // 设置为24MHz
+#endif
+    
+    // 初始化端口I/O
+    SFR.P0MDOUT = 0x00;  // 所有P0引脚设为开漏输出
+    SFR.P1MDOUT = 0x00;  // 所有P1引脚设为开漏输出
+    SFR.P2MDOUT = 0x00;  // 所有P2引脚设为开漏输出
+    
+    // 初始化交叉开关
+    SFR.XBR0 = 0x00;  // 禁用所有外设
+    SFR.XBR1 = 0x40;  // 使能交叉开关
+    
+    // 从EEPROM加载参数
+    read_all_eeprom_parameters();
+    
+    // 初始化变量
+    Flags0 = 0;
+    Flags1.STARTUP_PHASE = 1;  // 设置启动阶段标志
+    Flags1.INITIAL_RUN_PHASE = 0;
+    Flags1.MOTOR_STARTED = 0;
+    Flags1.DIR_CHANGE_BRAKE = 0;
+    Flags1.HIGH_RPM = 0;
+    Flags1.DEMAG_DETECTED = 0;
+    Flags1.COMP_TIMED_OUT = 0;
+    Flags1.PWM_ON = 0;
+    Flags1_Ext.NORMAL_RUN_PHASE = 0;
+    
+    Flags2.RCP_UPDATED = 0;
+    Flags2.RCP_FULL_RANGE = 0;
+    Flags2.RCP_ONESHOT125 = 0;
+    Flags2.RCP_ONESHOT42 = 0;
+    Flags2.RCP_MULTISHOT = 0;
+    Flags2.RCP_DSHOT = 0;
+    Flags2.RCP_DIR_REV = 0;
+    
+    Flags3.PGM_DIR_REV = 0;
+    Flags3.PGM_BIDIR = 0;
+    Flags3.PGM_BIDIR_REV = 0;
+    
+    // 初始化电机控制变量
+    Comm_Phase = 1;
+    Comparator_Read_Cnt = 0;
+    Demag_Detected_Metric = 0;
+    Initial_Run_Rot_Cntd = 0;
+    Pwm_Limit = 0;
+    Pwm_Limit_By_Rpm = 0;
+    Pwm_Limit_Beg = 0;
+    Startup_Cnt = 0;
+    Stall_Cnt = 0;
+    
+    // 初始化RC脉冲变量
+    New_Rcp = 0;
+    Rcp_Outside_Range_Cnt = 0;
+    Rcp_Stop_Cnt = 0;
+    Rcp_Timeout_Cntd = 0;
+    
+    // 初始化温度和电压保护变量
+    Adc_Conversion_Cnt = 0;
+    Current_Average_Temp = 0;
+    Temp_Prot_Limit = TEMP_LIMIT;
+    
+    // 初始化其他变量
+    Beep_Strength = 0;
+    Initial_Arm = 0;
+    Power_On_Wait_Cnt_L = 0;
+    Power_On_Wait_Cnt_H = 0;
+    
+    // 初始化PWM寄存器
+    Power_Pwm_Reg_L = 0;
+    Power_Pwm_Reg_H = 0;
+    Damp_Pwm_Reg_L = 0;
+    Damp_Pwm_Reg_H = 0;
+    
+    // 解码设置
+    decode_settings();
+    
+    // 初始化油门增益
+    find_throttle_gains();
+    
+    // 初始化定时器
+    initialize_timing();
+    
+    // 启动ADC转换
+    start_adc_conversion();
+    
+    // 启动蜂鸣器序列
+    beep_f1();
+    wait100ms();
+    beep_f2();
+    wait100ms();
+    beep_f3();
+    wait100ms();
+    
+    // 使能中断
+    SFR.IE |= IE_EA;
+    
+    // 主循环
+    while (1) {
+        // 处理RC脉冲信号
+        if (Flags2.RCP_UPDATED) {
+            Flags2.RCP_UPDATED = 0;
+            Rcp_Timeout_Cntd = 0;
+            
+            if (Flags2.RCP_DSHOT) {
+                // DShot模式下，使用throttle_processing函数处理油门值
+                throttle_processing();
+            } else {
+                // 传统PWM或OneShot模式
+                // 检查RC脉冲是否在有效范围内
+                if (New_Rcp &lt; Min_Throttle_L || New_Rcp &gt; Max_Throttle_L) {
+                    Rcp_Outside_Range_Cnt++;
+                    if (Rcp_Outside_Range_Cnt &gt; 10) {
+                        Rcp_Outside_Range_Cnt = 10;
+                        Rcp_Stop_Cnt++;
+                        if (Rcp_Stop_Cnt &gt; 10) {
+                            Rcp_Stop_Cnt = 10;
+                            // 停止电机
+                            switch_power_off();
+                        }
+                    }
+                } else {
+                    Rcp_Outside_Range_Cnt = 0;
+                    Rcp_Stop_Cnt = 0;
+                    
+                    // 处理油门信号
+                    average_throttle();
+                    
+                    // 检查是否需要启动电机
+                    if (!Flags1.MOTOR_STARTED &amp;&amp; New_Rcp &gt; (Min_Throttle_L + 3)) {
+                        // 启动电机
+                        Flags1.STARTUP_PHASE = 1;
+                        Startup_Cnt = 0;
+                    }
+                }
+                }
+            }
+        } else {
+            // 检查RC脉冲超时
+            if (Rcp_Timeout_Cntd == 0) {
+                // RC脉冲超时，停止电机
+                switch_power_off();
+            }
+        }
+        
+        // 检查DShot命令
+        if (Flags2.RCP_DSHOT &amp;&amp; Dshot_Cmd_Cnt &gt; 0) {
+            // 处理DShot命令
+            dshot_cmd_processing();
+        }
+        
+        // 检查启动和运行条件
+        if (Flags1.STARTUP_PHASE) {
+            // 启动阶段逻辑
+            startup_phase_processing();
+        } else if (Flags1.INITIAL_RUN_PHASE) {
+            // 初始运行阶段逻辑
+            initial_run_phase_processing();
+        } else if (Flags1.MOTOR_STARTED) {
+            // 电机已启动逻辑
+            motor_running_processing();
+        }
+        
+        // 检查超时
+        if (Comparator_Read_Cnt &gt; 0) {
+            if (Flags1.STARTUP_PHASE) {
+                if (--Startup_Zc_Timeout_Cntd == 0) {
+                    Flags0.COMP_TIMED_OUT = 1;
+                    setup_comm_wait();
+                } else {
+                    setup_zc_scan_timeout();
+                }
+            } else {
+                Flags0.COMP_TIMED_OUT = 1;
+                setup_comm_wait();
+            }
+        }
+        
+        // 检查方向和速度
+        if (Rcp_Timeout_Cntd == 0) {
+            // RC脉冲超时，返回等待上电状态
+            Stall_Cnt = 0;
+            SFR.IE_EA = 0; // 禁用中断
+            return; // 返回等待上电状态
+        }
+        
+        // 检查方向
+        if (Flags3.PGM_BIDIR) {
+            // 双向操作模式
+            if ((Flags3.PGM_DIR_REV &amp;&amp; !Flags2.RCP_DIR_REV) || 
+                (!Flags3.PGM_DIR_REV &amp;&amp; Flags2.RCP_DIR_REV)) {
+                // 实际旋转方向与强制方向不匹配
+                if (!Flags1.DIR_CHANGE_BRAKE) {
+                    Flags1.DIR_CHANGE_BRAKE = 1;
+                    Pwm_Limit = Pwm_Limit_Beg;
+                    return; // 返回run4，改变强制方向
+                }
+            }
+        }
+        
+        // 检查速度
+        uint8_t min_speed = 0xF0; // 默认最小速度
+        if (Flags1.DIR_CHANGE_BRAKE) {
+            Pwm_Limit = Pwm_Limit_Beg; // 制动时设置最大功率
+            min_speed = 0x20; // 双向制动终止速度
+        }
+        
+        // 检查转速是否低于阈值
+        if (Comm_Period4x_H &gt;= min_speed) {
+            // 转速过低
+            if (!Flags1.DIR_CHANGE_BRAKE) {
+                // 如果不是方向改变，则停止
+                Stall_Cnt = 0;
+                SFR.IE_EA = 0; // 禁用中断
+                return; // 返回等待上电状态
+            } else {
+                // 方向改变，重新设置旋转方向
+                Flags1.DIR_CHANGE_BRAKE = 0;
+                Flags3.PGM_DIR_REV = 0; // 默认正向
+                if (Flags2.RCP_DIR_REV) {
+                    Flags3.PGM_DIR_REV = 1; // 设置旋转方向
+                }
+                Flags1.INITIAL_RUN_PHASE = 1;
+                Initial_Run_Rot_Cntd = 18;
+                Pwm_Limit = Pwm_Limit_Beg; // 设置初始最大功率
+                return; // 返回run1
+            }
+        } else {
+            // 转速正常，返回run1继续运行
+            return; // 返回run1
+        }
+    }
+}</code></pre>
+<p></p>
+</div>
+    </div>
+    
+    <div class="footer">
+        <p>发表时间: 2025-06-30 18:27:43</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 处理代码块，添加语言类和复制功能
+        document.addEventListener('DOMContentLoaded', function() {            
+            // 为没有指定语言的代码块添加默认语言
+            document.querySelectorAll('pre code:not([class*="language-"])').forEach(function(block) {
+                block.className = 'hljs language-javascript';
+            });
+            
+            // 确保所有代码块都有hljs类
+            document.querySelectorAll('pre code[class*="language-"]:not([class*="hljs"])').forEach(function(block) {
+                block.className = 'hljs ' + block.className;
+            });
+            
+            // 为所有代码块添加自定义复制按钮
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 创建复制按钮
+                var copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = '复制';
+                copyButton.style.position = 'absolute';
+                copyButton.style.top = '5px';
+                copyButton.style.right = '5px';
+                copyButton.style.background = 'rgba(0,0,0,0.3)';
+                copyButton.style.color = 'white';
+                copyButton.style.border = 'none';
+                copyButton.style.borderRadius = '3px';
+                copyButton.style.padding = '5px 10px';
+                copyButton.style.fontSize = '0.8em';
+                copyButton.style.cursor = 'pointer';
+                copyButton.style.display = 'none';
+                
+                // 鼠标悬停时显示按钮
+                pre.addEventListener('mouseenter', function() {
+                    copyButton.style.display = 'block';
+                });
+                
+                pre.addEventListener('mouseleave', function() {
+                    copyButton.style.display = 'none';
+                });
+                
+                // 点击复制按钮时复制代码
+                copyButton.addEventListener('click', function() {
+                    var code = pre.querySelector('code');
+                    var text = code.textContent || code.innerText;
+                    
+                    // 使用现代的 Clipboard API
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)
+                            .then(function() {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            })
+                            .catch(function(err) {
+                                console.error('Clipboard API 复制失败:', err);
+                                // 如果 Clipboard API 失败，尝试使用传统方法
+                                fallbackCopyToClipboard();
+                            });
+                    } else {
+                        // 对于不支持 Clipboard API 的浏览器，使用传统方法
+                        fallbackCopyToClipboard();
+                    }
+                    
+                    // 传统复制方法作为后备
+                    function fallbackCopyToClipboard() {
+                        // 创建临时文本区域
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            var successful = document.execCommand('copy');
+                            if (successful) {
+                                copyButton.textContent = '已复制!';
+                                setTimeout(function() {
+                                    copyButton.textContent = '复制';
+                                }, 2000);
+                            } else {
+                                copyButton.textContent = '复制失败';
+                            }
+                        } catch (err) {
+                            copyButton.textContent = '复制失败';
+                            console.error('传统复制方法失败:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    }
+                });
+                
+                // 添加按钮到代码块
+                pre.style.position = 'relative';
+                pre.appendChild(copyButton);
+            });
+            
+            // 确保Prism重新高亮所有代码块
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>
