@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-05-19 21:15:21</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1363</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1417</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 1</div>
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 6</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -38,7 +38,8 @@
 <p>接收机是0-2000us pwm输出，500-1000是基础的pwm, 就是说没有信号也定期输出500（舵机）或1000（油门），这样单片机可以检测到有无信号.</p>
 <p>timer0来控制led的开关和闪烁，timer0使用10khz， timer2使用16m的时钟.</p>
 <p> </p>
-<pre><code class="language-cpp hljs">#include "N76E003.h"
+<pre>
+<code class="language-cpp hljs">#include "N76E003.h"
 #include "Common.h"
 #include "Delay.h"
 #include "SFR_Macro.h"

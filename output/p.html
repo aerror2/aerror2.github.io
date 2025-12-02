@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-03-06 13:04:42</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 566</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 800</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -35,18 +35,21 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>这个也是main函数开始的，下面就是最后一行代码，表示export出rSo 函数作为它的名字公开为main, 和dll export表有点像了。</p>
-<pre><code class="hljs hljs language-javascript">	export {
+<pre>
+<code class="hljs hljs language-javascript">	export {
 				rSo as main
 			}; 
 
 
 </code></pre>
 <p>其中rSO是</p>
-<pre><code class="hljs hljs language-javascript">function rSo(i) {
+<pre>
+<code class="hljs hljs language-javascript">function rSo(i) {
 	return new nSo(i).open()
 }</code></pre>
 <p>nSO是一个类，应该是就是workbenchMain了。</p>
-<pre><code class="hljs hljs language-javascript">var nSo = class extends V {
+<pre>
+<code class="hljs hljs language-javascript">var nSo = class extends V {
 	constructor(i) {
 		super(), this.a = i, this.b()
 	}

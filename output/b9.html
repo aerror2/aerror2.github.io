@@ -22,10 +22,10 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2023-06-22 12:36:54</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 937</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 981</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 3</div>
-        
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
     </div>
     
     <div class="article-tags">标签: <span class="tag">51单片机</span>, <span class="tag">嵌入式硬件</span>, <span class="tag">单片机</span></div>
@@ -46,7 +46,8 @@
 <p></p>
 <p>   分时如上图，这样的话，我们只需要中断600次一秒就可以输出6个通道的PWM了</p>
 <p>代码：</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 void et2()interrupt 12{                                //TIMER 2
 		
 
@@ -134,7 +135,8 @@ void et2()interrupt 12{                                //TIMER 2
 }</code></pre>
 <p></p>
 <p>   方法3. 上面的中断次数还是过多，可以进一步减少中断，可以先排序，然后执行，中断最多是pwm数量的N+1, 以下是伪代码</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 #include &lt;stdio.h&gt;
 #include &lt;stdint.h&gt;
 

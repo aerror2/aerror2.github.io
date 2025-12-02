@@ -22,9 +22,9 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-02-20 10:56:07</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 986</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1100</div>
         
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 11</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 12</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 6</div>
     </div>
     
@@ -36,17 +36,25 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p></p>
 <p>这里涉及到一些定时器，PCA，说明一下它们的使用：</p>
-<p>; 主时钟是内部24MHz振荡器（或48MHz，以下时间减半）<br/> ; 虽然代码中使用了 24/48，但确切的时钟频率是 24.5MHz 或 49.0 MHz<br/> ; 定时器 0（41.67ns 计数）始终向上计数并用于<br/> ; - RC输入信号脉冲测量</p>
-<p>; 定时器 1（41.67ns 计数）始终向上计数并用于<br/> ; - DShot 帧同步检测</p>
-<p>; 定时器 2（计数 500ns）始终向上计数，用于<br/> ; - RC输入信号脉冲超时计数和换相时间</p>
-<p>; 定时器 3（计数 500ns）始终向上计数，用于<br/> ; - 换相超时</p>
-<p>; PCA0（41.67ns 计数）始终向上计数并用于<br/> ; - 硬件 PWM 生成</p>
+<p>; 主时钟是内部24MHz振荡器（或48MHz，以下时间减半）<br/>
+; 虽然代码中使用了 24/48，但确切的时钟频率是 24.5MHz 或 49.0 MHz<br/>
+; 定时器 0（41.67ns 计数）始终向上计数并用于<br/>
+; - RC输入信号脉冲测量</p>
+<p>; 定时器 1（41.67ns 计数）始终向上计数并用于<br/>
+; - DShot 帧同步检测</p>
+<p>; 定时器 2（计数 500ns）始终向上计数，用于<br/>
+; - RC输入信号脉冲超时计数和换相时间</p>
+<p>; 定时器 3（计数 500ns）始终向上计数，用于<br/>
+; - 换相超时</p>
+<p>; PCA0（41.67ns 计数）始终向上计数并用于<br/>
+; - 硬件 PWM 生成</p>
 <p>; - 使用了两个道通CEX0和CEX1, 两个pwm互补。</p>
 <p></p>
 <p>上一篇在检查comp_out超时的时候，会调用一下零位扫描的。这里继续一起读一下。</p>
 <p>这个 wait_before_zc_scan，其实比较简单，就是从把timer3的超时设置为Comm_Period4x_L和Comm_Period4x_H, 只有在STARTUP_PHASE和 SHL INITIAL_RUN_PHASE阶段才会设置。</p>
 <p>特别地，如果是STARTUP_PHASE，timer3的高位寄存器会加上 64(40h).</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
@@ -113,7 +121,8 @@ setup_zc_scan_timeout_startup_done:
 wait_before_zc_scan_exit:          
 	ret</code></pre>
 <p>换相之后有一个等待，就是等t3超时</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
@@ -177,7 +186,8 @@ wait_for_comm_wait:
 <p>     3. Set_Pwm_A/B/C则是通过操作crossbar的SKIP寄存来控制pca的pwm在哪个端口输出。对P.INC的针脚布局，P0SKIP在一开始就给设置成0xFF了，就是说外设不会在P0的端口输出。 于是这里就只需要操作 P1SKIP就可以了。 如Set_Pwm_C，   P1SKIP =  37h(00110111b), 即P1.3 P1.6和 P1.7会给外设使用，  根据优先度，PCA0的CEX0会使用P1.3(CpwmFET)输出 CEX1 会在P1.6(CcomFET)输出。 其它类似。Set_Pwm_B是 5Bh  （01011011    BpwmFET p.2 , BcomFET P1.5 ),Set_Pwm_A 是6Dh    （0110 1101      ApwmFET p.1  AcomFET p1.4.</p>
 <p></p>
 <p></p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
 ; Commutation routines

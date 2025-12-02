@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-02-13 11:40:28</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 397</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 491</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -36,7 +36,8 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p></p>
 <p>发现只需要11G显存！只使用一张rtx3060 12G的就搞定了。速度和答案质量还不错，太令人惊喜了！</p>
-<pre><code class="hljs language-javascript"> nvidia-smi -l
+<pre>
+<code class="hljs language-javascript"> nvidia-smi -l
 Thu Feb 13 10:22:25 2025       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 525.89.02    Driver Version: 525.89.02    CUDA Version: 12.0     |
@@ -59,7 +60,8 @@ Thu Feb 13 10:22:25 2025
 |    0   N/A  N/A     23463      C   ...1_avx/ollama_llama_server    10880MiB |
 +-----------------------------------------------------------------------------+</code></pre>
 <p>7B只需要5GB的显存</p>
-<pre><code class="hljs language-javascript">+-----------------------------------------------------------------------------+
+<pre>
+<code class="hljs language-javascript">+-----------------------------------------------------------------------------+
 | NVIDIA-SMI 525.89.02    Driver Version: 525.89.02    CUDA Version: 12.0     |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
@@ -81,15 +83,19 @@ Thu Feb 13 10:22:25 2025
 +-----------------------------------------------------------------------------+</code></pre>
 <h2>搭建步骤：</h2>
 <h3>1. 安装ollma</h3>
-<pre><code class="hljs language-javascript">curl -fsSL https://ollama.com/install.sh | sh</code></pre>
+<pre>
+<code class="hljs language-javascript">curl -fsSL https://ollama.com/install.sh | sh</code></pre>
 <h3>2.下载安装14B模型</h3>
-<pre><code class="hljs language-javascript"> ollama pull deepseek-r1:14B</code></pre>
+<pre>
+<code class="hljs language-javascript"> ollama pull deepseek-r1:14B</code></pre>
 <h3>3.安装open-webui</h3>
-<pre><code class="hljs language-javascript">conda create -n open-webui python=3.11
+<pre>
+<code class="hljs language-javascript">conda create -n open-webui python=3.11
 conda activate open-webui
  pip install open-webu</code></pre>
 <h3>4.启动open-webui</h3>
-<pre><code class="hljs language-javascript">open-webui serve</code></pre>
+<pre>
+<code class="hljs language-javascript">open-webui serve</code></pre>
 <h3>5. 浏览器访问机器的8080，设置管理员密码，选择开放模型</h3>
 <h3>6.完工，选择deepseek-r1:14B，开始聊！</h3>
 <p></p>

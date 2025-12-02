@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2023-09-11 20:24:29</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 823</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 941</div>
         
         
         
@@ -37,9 +37,11 @@
 <p>1. 安装最新版的ffmpeg</p>
 <p>2. 安装cywin环境</p>
 <p>3. 设置path到ffmpeg</p>
-<pre><code class="hljs language-javascript">export PATH=$PATH:"PATH/TO/FFMPEG/BIN"</code></pre>
+<pre>
+<code class="hljs language-javascript">export PATH=$PATH:"PATH/TO/FFMPEG/BIN"</code></pre>
 <p>4.到ape所在的目录，执行以下命令</p>
-<pre><code class="hljs language-javascript">find . -iname "*.ape"  | while read line; do  fb=${line::-4}; fn="$fb.flac";echo ffmpeg -y -i "$line" -c:a flac "$fn";  ffmpeg -y -i "$line" -c:a flac "$fn"; done</code></pre>
+<pre>
+<code class="hljs language-javascript">find . -iname "*.ape"  | while read line; do  fb=${line::-4}; fn="$fb.flac";echo ffmpeg -y -i "$line" -c:a flac "$fn";  ffmpeg -y -i "$line" -c:a flac "$fn"; done</code></pre>
 <p></p>
 </div>
     </div>

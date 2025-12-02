@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-01-18 13:44:58</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 706</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 811</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 10</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 7</div>
@@ -37,19 +37,23 @@
 <p>补丁就是简单了，就是直接使用set命令就好了。</p>
 <p>如 set *(int*)0xabc1234 = 0x58000070</p>
 <p>那就么就是把0xabc1234改成指令：</p>
-<pre><code class="hljs language-javascript">ldr x16, #12 </code></pre>
+<pre>
+<code class="hljs language-javascript">ldr x16, #12 </code></pre>
 <p>但是 跳转到任意地址就很麻烦了。 正常的 arm64跳转转令B,BL,BLX只有+-128M, 我们很多时候要跳到大于这个值的地址。我们在arm64下可以选的指令就只有br指令了。原来在ARM/Thumb中使用的 ldr pc, [pc, #??] ， 但arm64是不能这样了。</p>
 <p>根据NDK的编译结果，我们br的时候 x16和x17可以随便用。</p>
 <p>但是它也需要给一个寄存器赋值一个64bit的地址， 可是arm的指令是固定的32bit的，即使给一个寄存器赋值一个64bit的值都麻烦。</p>
 <p>如</p>
-<pre><code class="hljs language-javascript"><code>mov x0, #0x830082008100</code></code></pre>
+<pre>
+<code class="hljs language-javascript"><code>mov x0, #0x830082008100</code></code></pre>
 <p>这个是无法执行的，你必须拆开来，使用逻辑位移分几次来做。就是这么麻烦！</p>
-<pre><code class="hljs language-javascript">MOV      x0,#0x8100
+<pre>
+<code class="hljs language-javascript">MOV      x0,#0x8100
 MOVK     x0,#0x8200,LSL #16
 MOVK     x0,#8300,LSL #32</code></pre>
 <p>比较方便就是ldr </p>
 <p>下面例子是补丁pairip的，让它在某个点直接跳去调用系统api，sleep(0x7fffffff);</p>
-<pre><code class="hljs language-javascript">define patchpairip
+<pre>
+<code class="hljs language-javascript">define patchpairip
 
 #ldr x16, #12   //70000058 &gt;  0x58000070
 #ldr x0, #12    //60000058 &gt;  0x58000060

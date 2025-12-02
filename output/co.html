@@ -22,10 +22,10 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-11-01 22:03:56</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2563</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2666</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 6</div>
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 21</div>
-        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 6</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 23</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 7</div>
     </div>
     
     <div class="article-tags">标签: <span class="tag">stm32</span>, <span class="tag">arm</span>, <span class="tag">嵌入式硬件</span></div>
@@ -36,9 +36,11 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>发现使用STM32F103C8 i2c是可以工作了，要是cpu选STM32F103C6Tx发现生成代码i2c不工作，多次尝试和比较发现，STM32F103C6Tx生成的i2c的msp初始化gpio的时候少了一个速度的配置:</p>
 <p>      </p>
-<pre><code class="hljs language-javascript">  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;</code></pre>
+<pre>
+<code class="hljs language-javascript">  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;</code></pre>
 <p>加上这行就正常工作了。汗。如下，加到 USER CODE BEGIN 和  USER CODE END中间，这样再生成代码就不怕冲走了。</p>
-<pre><code class="hljs language-javascript">void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
+<pre>
+<code class="hljs language-javascript">void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -65,7 +67,8 @@
   /* USER CODE END I2C1_MspInit 1 */
   }
 }</code></pre>
-<p><br/>  </p>
+<p><br/>
+ </p>
 </div>
     </div>
     

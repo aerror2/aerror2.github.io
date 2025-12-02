@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-21 14:54:06</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 281</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 442</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
@@ -35,14 +35,17 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>如macos,cmake默认其实是使用clang的，编译一些比较新的开源项目，一些编译选项就用了，像多项模板也使用不了。如clang: <strong>error: </strong>unknown argument: '-floop-strip-mine'</p>
-<p>如 模板    template&lt;int32_t bits = 0, int32_t exp = 0&gt;<br/>     void SaveToDisk(const char* const dictionary)</p>
+<p>如 模板    template&lt;int32_t bits = 0, int32_t exp = 0&gt;<br/>
+    void SaveToDisk(const char* const dictionary)</p>
 <p>这些。</p>
 <p></p>
 <p>这时候可以指定gcc为编译器，可以使用CC和CXX来定义 ,不过还是使用cmake本身的宏定义比较好<code>CMAKE_C_COMPILER</code> 和 <code>CMAKE_CXX_COMPILER</code>。使用方法如下：</p>
 <p></p>
-<pre><code class="hljs language-javascript">cmake -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ ..</code></pre>
+<pre>
+<code class="hljs language-javascript">cmake -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ ..</code></pre>
 <p></p>
-<pre><code class="hljs language-javascript">cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-14 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-14 ..</code></pre>
+<pre>
+<code class="hljs language-javascript">cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-14 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-14 ..</code></pre>
 <p></p>
 </div>
     </div>

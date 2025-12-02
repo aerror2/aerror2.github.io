@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-12 16:21:40</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 279</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 361</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 3</div>
@@ -35,13 +35,15 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>上一篇使用oldpwd来转目录，也可解决问题，但是其实mintty有一个隐藏的--dir的参数，启动的时候指定即可，发文记录一下。使用方法如下：</p>
-<pre><code class="hljs hljs language-javascript">E:\cywin\bin\mintty.exe  --dir  '%cd%'  -h always  -e /bin/sh --login </code></pre>
+<pre>
+<code class="hljs hljs language-javascript">E:\cywin\bin\mintty.exe  --dir  '%cd%'  -h always  -e /bin/sh --login </code></pre>
 <p>这个打一个cygwin的窗口，登录/bin/sh ，初始化环境变量后，会cd的%cd%这个当前目录。</p>
 <p>对于使用sublime text，我在当前编辑所在的文件的路径下打开一个cygwin的命行令窗口，进行命令行操作，这样就很方便了，直接打开，不用再自己cd到当前目录。</p>
 <p>        可以自己新建以下的内容放到：</p>
 <p>            C:\Users\xxx\AppData\Roaming\Sublime Text 3\Packages\User\cywin.sublime-build</p>
 <p>          </p>
-<pre><code class="hljs hljs language-javascript">{
+<pre>
+<code class="hljs hljs language-javascript">{
 	"shell_cmd": "echo %cd% &amp;&amp; E:\\cywin\\bin\\mintty.exe  --dir  '%cd%'  -h always  -e /bin/sh --login "
 }
 </code></pre>

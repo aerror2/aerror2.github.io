@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-24 12:47:38</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 133</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 262</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -35,20 +35,24 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>1.首先编译</p>
-<pre><code class="hljs hljs language-javascript">dotnet build  testproj.csproj -f net9.0-maccatalyst
+<pre>
+<code class="hljs hljs language-javascript">dotnet build  testproj.csproj -f net9.0-maccatalyst
 ...
  net9.0-maccatalyst 已成功 (2.0 秒) →bin/Debug/net9.0-maccatalyst/maccatalyst-x64/testproj.dll
 
 在 2.2 秒内生成 已成功</code></pre>
 <p>2. 测试运行一下</p>
-<pre><code class="hljs hljs language-javascript">dotnet run --project testproj.csproj -f net9.0-maccatalyst</code></pre>
+<pre>
+<code class="hljs hljs language-javascript">dotnet run --project testproj.csproj -f net9.0-maccatalyst</code></pre>
 <p>3. 打包成app</p>
-<pre><code class="hljs hljs language-javascript">dotnet publish testproj.csproj -f net9.0-maccatalyst -c Release --self-contained -p:CreatePackage=true
+<pre>
+<code class="hljs hljs language-javascript">dotnet publish testproj.csproj -f net9.0-maccatalyst -c Release --self-contained -p:CreatePackage=true
 
 
 find . -name ".app"  #找出app的路径，下面使用</code></pre>
 <p>4. 生成dmg</p>
-<pre><code class="hljs hljs language-javascript">cp -r testproj.app temp_dmg/
+<pre>
+<code class="hljs hljs language-javascript">cp -r testproj.app temp_dmg/
 hdiutil create -volname LauncherMauiNew -srcfolder temp_dmg -ov -format UDZO  testproj.dmg
 </code></pre>
 <p></p>

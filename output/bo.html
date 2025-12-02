@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-06-21 13:18:24</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1377</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2016</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 5</div>
@@ -37,11 +37,13 @@
 <p>一直好端端的，突然打开vm提示这个。</p>
 <p>查了一下，应该是网络有关。</p>
 <p>试了</p>
-<pre><code class="hljs language-javascript">sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh --stop
+<pre>
+<code class="hljs language-javascript">sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh --stop
 sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh --start</code></pre>
 <p>无效</p>
 <p>再试</p>
-<pre><code class="hljs language-javascript">sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh --stop
+<pre>
+<code class="hljs language-javascript">sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh --stop
 
 sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh  --configue
 sudo /Applications/VMware\ Fusion.app/Contents/Library/services/services.sh  --start
@@ -50,7 +52,8 @@ sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --status</code>
 <p>看到状态也对。</p>
 <p>各项服务启动也是正常的，但是就是vm没有网络了。</p>
 <p>ifconfig 看了一下，发信息多了一个bridge..</p>
-<pre><code class="hljs language-javascript">bridge100: flags=8863&lt;UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+<pre>
+<code class="hljs language-javascript">bridge100: flags=8863&lt;UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
 	options=3&lt;RXCSUM,TXCSUM&gt;
 	ether 72:85:c2:b4:cf:64 
 	inet 192.168.2.1 netmask 0xffffff00 broadcast 192.168.2.255

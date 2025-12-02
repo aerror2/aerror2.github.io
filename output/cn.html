@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-11-10 14:21:27</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 472</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 514</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
         
@@ -37,20 +37,16 @@
 <p>1. 从arduino官方网站：https://www.arduino.cc/en/Main/Software下载mac平台的IDE</p>
 <p>2.安装Arduino Makefile ， </p>
 <p> </p>
-<pre>
-<code class="hljs language-javascript">   git clone https://github.com/sudar/Arduino-Makefile.git</code></pre>
+<pre><code class="hljs language-javascript">   git clone https://github.com/sudar/Arduino-Makefile.git</code></pre>
 <p>3. 下载minimosd-extra源代码</p>
 <p> </p>
-<pre>
-<code class="hljs language-javascript"> git clone  https://github.com/night-ghost/minimosd-extra.git</code></pre>
+<pre><code class="hljs language-javascript"> git clone  https://github.com/night-ghost/minimosd-extra.git</code></pre>
 <p>4.下载SingleSerial</p>
-<pre>
-<code class="hljs language-javascript">cd minimosd-extra
+<pre><code class="hljs language-javascript">cd minimosd-extra
 git submodule init 
 git submodule update</code></pre>
 <p>5. 修改build.sh, 仅编译MAVLINK和NMEA</p>
-<pre>
-<code class="hljs language-javascript">#!/bin/sh
+<pre><code class="hljs language-javascript">#!/bin/sh
 
 BUILD='MinimOsd_Extra/build-atmega328'
 SRC='MinimOsd_Extra'
@@ -82,8 +78,7 @@ make_one 'NMEA'
 
 #make_one 'MAVLINK' '-DWALKERA_TELEM=RssiPin' &amp;&amp;</code></pre>
 <p>6.修改MinimOsd_Extra/Makefile的include文件名为你下载的Arduino Makefile源码所在路径，我这里是 /Volumes/p1t2/Arduino-Makefile/Arduino.mk</p>
-<pre>
-<code class="hljs language-javascript">...
+<pre><code class="hljs language-javascript">...
 
 #include /usr/share/arduino/Arduino.mk
 include /Volumes/p1t2/Arduino-Makefile/Arduino.mk
@@ -91,8 +86,7 @@ include /Volumes/p1t2/Arduino-Makefile/Arduino.mk
 </code></pre>
 <p>7执行 build.sh</p>
 <p>        </p>
-<pre>
-<code class="hljs language-javascript">./build.sh</code></pre>
+<pre><code class="hljs language-javascript">./build.sh</code></pre>
 <p></p>
 </div>
     </div>

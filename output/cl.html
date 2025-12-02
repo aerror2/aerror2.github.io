@@ -22,10 +22,10 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-12-31 15:46:45</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 6949</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 7416</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 3</div>
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 42</div>
-        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 11</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 44</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 12</div>
     </div>
     
     <div class="article-tags">标签: <span class="tag">stm32</span>, <span class="tag">单片机</span>, <span class="tag">嵌入式硬件</span></div>
@@ -35,12 +35,15 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>为什么要使用LL库，因为生成的固件大小可以小很多很多，MCU贵呀，可以省很多成本了。</p>
-<p><br/>  </p>
-<pre><code class="hljs language-javascript">uint8_t i2c_read_len(I2C_TypeDef *I2Cx,  uint8_t Addr , uint8_t Reg, uint8_t len,uint8_t *buf)；
+<p><br/>
+ </p>
+<pre>
+<code class="hljs language-javascript">uint8_t i2c_read_len(I2C_TypeDef *I2Cx,  uint8_t Addr , uint8_t Reg, uint8_t len,uint8_t *buf)；
 
 uint8_t i2c_write_len(I2C_TypeDef *I2Cx,  uint8_t addr , uint8_t reg, uint8_t len,uint8_t *buf)；</code></pre>
 <p>实现这两个函数，理论上全部写需求都好了，网上的例子不知道为什么不可用，同时网上的例子也不支持多字节读写，参考了HAL I2C的代码实现，调通可用，如下：</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 uint8_t i2c_read_len(I2C_TypeDef *I2Cx,  uint8_t Addr , uint8_t Reg, uint8_t len,uint8_t *buf)
 {
    

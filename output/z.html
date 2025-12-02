@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-01-22 16:09:27</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 737</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 846</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 4</div>
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -36,18 +36,21 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>    你要是遇到同样错误，找一圈都没有解决，建议认真读一下本文，这个应该是最终极的解决办法，从原理上剖析了产生的原因，同时给出来了调试和定位的办法。</p>
 <p>    maccos使用brew安装了一个gcc14, 结果编译一个最简单的程序都报错，如下：</p>
-<pre><code class="hljs language-javascript">gcc-14 test.c -o t
+<pre>
+<code class="hljs language-javascript">gcc-14 test.c -o t
 ld: unsupported tapi file type '!tapi-tbd' in YAML file '/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk/usr/lib/libSystem.tbd' for architecture x86_64
 collect2: error: ld returned 1 exit status</code></pre>
 <p>        查了网上是说libSystem.tbd和ld不一致引起的。现在不知道ld是调用了哪份，当前系统一堆不同版本的。</p>
 <p>      一般的解决办法如下：</p>
 <p>      </p>
-<pre><code class="hljs language-javascript">sudo rm -rf /Library/Developer/CommandLineTools
+<pre>
+<code class="hljs language-javascript">sudo rm -rf /Library/Developer/CommandLineTools
 xcode-select --install</code></pre>
 <p>        但是我试了并没有用，同时使用clang编译是正常的，说明这个CommandLineTools没有问题的。</p>
 <p>       没有办法了，只好自己来分析一下了。</p>
 <p>        首先使用 dtruss跟踪一下系统api调用，发现ld应该是posix_spawn调用了。如下：</p>
-<pre><code class="hljs language-javascript">sudo dtruss gcc-14 test.c -o t
+<pre>
+<code class="hljs language-javascript">sudo dtruss gcc-14 test.c -o t
 Password:
 SYSCALL(args) 		 = return
 
@@ -292,7 +295,8 @@ unlink("/var/tmp//ccJ8HKNk.o\0", 0x0, 0x0)		 = 0 0
 stat64("/var/tmp//ccDAFOTi.s\0", 0x7FFEEF6B45A0, 0x0)		 = 0 0
 unlink("/var/tmp//ccDAFOTi.s\0", 0x0, 0x0)		 = 0 0</code></pre>
 <p>系统apiposix_spawn的参数没有打印出来，不知道为什么， lldb跟一下。</p>
-<pre><code class="hljs language-javascript">sudo lldb gcc-14
+<pre>
+<code class="hljs language-javascript">sudo lldb gcc-14
 Password:
           ^
 SyntaxError: invalid syntax
@@ -395,7 +399,8 @@ collect2: error: ld returned 1 exit status
 Process 87222 exited with status = 1 (0x00000001) </code></pre>
 <p>发现是最后一个apiposix_spawn是调用/usr/local/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/x86_64-apple-darwin20/14/collect2</p>
 <p>运行一下 它加一个-debug参数</p>
-<pre><code class="hljs language-javascript"> /usr/local/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/x86_64-apple-darwin20/14/collect2    -debug  
+<pre>
+<code class="hljs language-javascript"> /usr/local/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/x86_64-apple-darwin20/14/collect2    -debug  
 //...去掉一堆
 Looking for 'gcc'
 collect2 version 14.2.0
@@ -407,9 +412,11 @@ c_file              = a.out.cdtor.c
 o_file              = a.out.cdtor.o</code></pre>
 <p>看起来是使用了 /usr/local/anaconda3/bin/ld 我晕。</p>
 <p>这个一堆都使用了这个目录下的，先临时屏蔽一下，</p>
-<pre><code class="hljs language-javascript">mv  /usr/local/anaconda3/bin  /usr/local/anaconda3/bin.bak</code></pre>
+<pre>
+<code class="hljs language-javascript">mv  /usr/local/anaconda3/bin  /usr/local/anaconda3/bin.bak</code></pre>
 <p>再执行</p>
-<pre><code class="hljs language-javascript"> /usr/local/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/x86_64-apple-darwin20/14/collect2    -debug  
+<pre>
+<code class="hljs language-javascript"> /usr/local/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/x86_64-apple-darwin20/14/collect2    -debug  
 //...
 Looking for 'gcc'
 collect2 version 14.2.0
@@ -427,7 +434,8 @@ ld: warning: No platform min-version specified on command line
 ld: no object files specified
 collect2: error: ld returned 1 exit status</code></pre>
 <p>看起来好了，再试试编译</p>
-<pre><code class="hljs language-javascript">$  gcc-14 test.c -o t &amp;&amp; ./t
+<pre>
+<code class="hljs language-javascript">$  gcc-14 test.c -o t &amp;&amp; ./t
 Hello Cruel World!
 </code></pre>
 <p>完美解决！！</p>

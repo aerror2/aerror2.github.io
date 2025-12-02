@@ -22,10 +22,10 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-08-25 23:13:46</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1893</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2245</div>
         
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 16</div>
-        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 7</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 20</div>
+        <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 9</div>
     </div>
     
     <div class="article-tags">标签: <span class="tag">网络</span></div>
@@ -39,7 +39,8 @@
 <p><strong>bmRequestType(1) + bRequest(1) + wvalue(2) + wIndex(2) + wLength(2)</strong></p>
 <p>按插入一个HID设备，setup和传输的时线间，只有四步，即可完成设置，举例说明：</p>
 <h2>1. 请求设备描述符</h2>
-<pre><code class="hljs language-javascript">  52.0  CTL    80 06 00 01     00 00 12 00                            GET DESCRIPTOR         372.1.0 
+<pre>
+<code class="hljs language-javascript">  52.0  CTL    80 06 00 01     00 00 12 00                            GET DESCRIPTOR         372.1.0 
                         device        
   52.0  IN     12 01 10 01  00 00 00 08  9b 0b 12 40  01 00 01 ff  ...........@....       372.2.0        
                00 01                                               ..                     372.2.16             </code></pre>
@@ -49,7 +50,8 @@
 <p> wIndex =  00 00 <span style="color:#fe2c24">当有多个hid设备，此为下标索引</span>。</p>
 <p>wLenght   12 00 </p>
 <h2>2.  请求配置描述</h2>
-<pre><code class="hljs language-javascript">  52.0  CTL    80 06 00 02      00 00 09 00                            GET DESCRIPTOR         373.1.0   
+<pre>
+<code class="hljs language-javascript">  52.0  CTL    80 06 00 02      00 00 09 00                            GET DESCRIPTOR         373.1.0   
                          conf    
   52.0  IN     09 02 22 00  01 01 00 80  32                        ..".....2              373.2.0        
   52.0  CTL    80 06 00 02  00 00 22 00                            GET DESCRIPTOR         374.1.0
@@ -73,11 +75,13 @@
 <p><em>bmAttributes    80</em></p>
 <p><em>MaxPower      </em></p>
 <h2>3. 设置config和设置IDLE</h2>
-<pre><code class="hljs language-javascript">  52.0  CTL    00 09 01 00  00 00 00 00                            SET CONFIG             375.1.0        
+<pre>
+<code class="hljs language-javascript">  52.0  CTL    00 09 01 00  00 00 00 00                            SET CONFIG             375.1.0        
   52.0  CTL    21 0a 00 00  00 00 00 00                            SET IDLE               376.1.0    </code></pre>
 <h2>4. 取report 描述符</h2>
 <p>要是有多个接口（复合型的设备），IDX就是多个报告的下标索引。对应 pInformation-&gt;USBwIndex(即wIndex).</p>
-<pre><code class="hljs language-javascript">  52.0  CTL    81 06 00   22     00 00 81 00                            GET DESCRIPTOR         377.1.0 
+<pre>
+<code class="hljs language-javascript">  52.0  CTL    81 06 00   22     00 00 81 00                            GET DESCRIPTOR         377.1.0 
                      IDX report  IDX
 
   52.0  IN     06 a0 ff 09  01 a1 01 09  02 a1 00 06  a1 ff 09 03  ................       377.2.0        
@@ -89,7 +93,8 @@
 <p></p>
 <h2>5. 发送Report数据 </h2>
 <p>根据report定义，定时或触发性发送数据。</p>
-<pre><code class="hljs language-javascript">  61.1  22:47:10.332         8  IN     02 71 a4 b9  a8 c4 11 6c                                                                                .q.....l                              1574.1.0(397)   
+<pre>
+<code class="hljs language-javascript">  61.1  22:47:10.332         8  IN     02 71 a4 b9  a8 c4 11 6c                                                                                .q.....l                              1574.1.0(397)   
   61.1  22:47:10.340         8  IN     02 00 bd fa  47 00 eb 47                                                                                ....G..G                              1575.1.0(397)   
   61.1  22:47:10.348         8  IN     02 00 fe ae  50 00 fe 50                                                                                ....P..P                              1576.1.0(397)   
   61.1  22:47:10.356         8  IN     01 80 80 80  80 00 80 04                                                                                ........                              1577.1.0(397)   </code></pre>

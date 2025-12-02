@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2023-06-24 17:00:06</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1750</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1986</div>
         
         
         
@@ -35,10 +35,12 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>MacOs下面没有这个perf命令，但有类似的，也是非常方便，它就是 Instruments， 是xcode自带一个性能分析和自动化测试的工具。需要安装Xcode.以下是使用例子, 进行耗时的profile。</p>
-<pre><code class="hljs language-javascript">Instruments -t "Time Profiler"  ./stm32flash  -m 8n1 -b 115200  -w xx.hex     -S 0x000c00:9000 -v   /dev/tty.usbserial-14520 
+<pre>
+<code class="hljs language-javascript">Instruments -t "Time Profiler"  ./stm32flash  -m 8n1 -b 115200  -w xx.hex     -S 0x000c00:9000 -v   /dev/tty.usbserial-14520 
 Instruments Trace Complete: instrumentscli0.trace</code></pre>
 <p>打开结果，使用open即可，就会打开图形界面，你就可以进行分析。</p>
-<pre><code class="hljs language-javascript">open instrumentscli0.trace</code></pre>
+<pre>
+<code class="hljs language-javascript">open instrumentscli0.trace</code></pre>
 </div>
     </div>
     

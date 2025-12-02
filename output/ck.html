@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2021-12-31 15:50:09</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2013</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2174</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 1</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -34,32 +34,222 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-<p>#include "string.h"<br/> #include "stm32f1xx_ll_system.h"<br/> #define FLASH_PAGE_SIZE ((uint32_t)0x00000400)</p>
-<p>#define LL_FLASH_GET_FLAG(__FLAG__)  (((__FLAG__) == FLASH_FLAG_OPTVERR) ? \<br/>                                             (FLASH-&gt;OBR &amp; FLASH_OBR_OPTERR) : \<br/>                                             (FLASH-&gt;SR &amp; (__FLAG__)))</p>
-<p><br/> #define OBR_REG_INDEX                1U<br/>  #define FLASH_FLAG_BSY             FLASH_SR_BSY              /*!&lt; FLASH Busy flag                          */ <br/>  #define FLASH_FLAG_PGERR           FLASH_SR_PGERR            /*!&lt; FLASH Programming error flag             */<br/>  #define FLASH_FLAG_WRPERR          FLASH_SR_WRPRTERR         /*!&lt; FLASH Write protected error flag         */<br/>  #define FLASH_FLAG_EOP             FLASH_SR_EOP              /*!&lt; FLASH End of Operation flag              */<br/>  #define FLASH_FLAG_OPTVERR         ((OBR_REG_INDEX &lt;&lt; 8U | FLASH_OBR_OPTERR)) /*!&lt; Option Byte Error        */</p>
-<p> #define HAL_MAX_DELAY      0xFFFFFFFFU<br/> #define FLASH_TIMEOUT_VALUE              50000U /* 50 s */</p>
+<p>#include "string.h"<br/>
+#include "stm32f1xx_ll_system.h"<br/>
+#define FLASH_PAGE_SIZE ((uint32_t)0x00000400)</p>
+<p>#define LL_FLASH_GET_FLAG(__FLAG__)  (((__FLAG__) == FLASH_FLAG_OPTVERR) ? \<br/>
+                                            (FLASH-&gt;OBR &amp; FLASH_OBR_OPTERR) : \<br/>
+                                            (FLASH-&gt;SR &amp; (__FLAG__)))</p>
+<p><br/>
+#define OBR_REG_INDEX                1U<br/>
+ #define FLASH_FLAG_BSY             FLASH_SR_BSY              /*!&lt; FLASH Busy flag                          */ <br/>
+ #define FLASH_FLAG_PGERR           FLASH_SR_PGERR            /*!&lt; FLASH Programming error flag             */<br/>
+ #define FLASH_FLAG_WRPERR          FLASH_SR_WRPRTERR         /*!&lt; FLASH Write protected error flag         */<br/>
+ #define FLASH_FLAG_EOP             FLASH_SR_EOP              /*!&lt; FLASH End of Operation flag              */<br/>
+ #define FLASH_FLAG_OPTVERR         ((OBR_REG_INDEX &lt;&lt; 8U | FLASH_OBR_OPTERR)) /*!&lt; Option Byte Error        */</p>
+<p> #define HAL_MAX_DELAY      0xFFFFFFFFU<br/>
+#define FLASH_TIMEOUT_VALUE              50000U /* 50 s */</p>
 <p></p>
 <p>uint8_t FailSafe_Flag;</p>
 <p>#define FLASH_PAGES_TO_BE_PROTECTED OB_WRP_Pages0to3</p>
-<p>#if 1<br/> /**<br/>   * @brief  Wait for a FLASH operation to complete.<br/>   * @param  Timeout  maximum flash operation timeout<br/>   * @retval HAL Status<br/>   */<br/> int  FLASH_WaitForLastOperation(uint32_t Timeout)<br/> {<!-- --><br/>   /* Wait for the FLASH operation to complete by polling on BUSY flag to be reset.<br/>      Even if the FLASH operation fails, the BUSY flag will be reset and an error<br/>      flag will be set */<br/>      <br/>   uint32_t tickstart = SysTick-&gt;VAL;<br/>      <br/>   while(LL_FLASH_GET_FLAG(FLASH_FLAG_BSY)) <br/>   { <br/>     if (Timeout != 10000)<br/>     {<!-- --><br/>       if((Timeout == 0U) || ((SysTick-&gt;VAL-tickstart) &gt; Timeout))<br/>       {<!-- --><br/>         return 1;<br/>       }<br/>     }<br/>   }<br/>   <br/>   /* Check FLASH End of Operation flag  */<br/>   if (LL_FLASH_GET_FLAG(FLASH_FLAG_EOP))<br/>   {<!-- --><br/>     /* Clear FLASH End of Operation pending bit */<br/>     LL_FLASH_GET_FLAG(FLASH_FLAG_EOP);<br/>   }<br/>   <br/>   if(LL_FLASH_GET_FLAG(FLASH_FLAG_WRPERR)  || <br/>      LL_FLASH_GET_FLAG(FLASH_FLAG_OPTVERR) || <br/>      LL_FLASH_GET_FLAG(FLASH_FLAG_PGERR))<br/>   {<!-- --><br/>     /*Save the error code*/<br/>    // FLASH_SetErrorCode();<br/>     return 2;<br/>   }</p>
-<p>  /* There is no error flag set */<br/>   return 0;<br/> }</p>
+<p>#if 1<br/>
+/**<br/>
+  * @brief  Wait for a FLASH operation to complete.<br/>
+  * @param  Timeout  maximum flash operation timeout<br/>
+  * @retval HAL Status<br/>
+  */<br/>
+int  FLASH_WaitForLastOperation(uint32_t Timeout)<br/>
+{<!-- --><br/>
+  /* Wait for the FLASH operation to complete by polling on BUSY flag to be reset.<br/>
+     Even if the FLASH operation fails, the BUSY flag will be reset and an error<br/>
+     flag will be set */<br/>
+     <br/>
+  uint32_t tickstart = SysTick-&gt;VAL;<br/>
+     <br/>
+  while(LL_FLASH_GET_FLAG(FLASH_FLAG_BSY)) <br/>
+  { <br/>
+    if (Timeout != 10000)<br/>
+    {<!-- --><br/>
+      if((Timeout == 0U) || ((SysTick-&gt;VAL-tickstart) &gt; Timeout))<br/>
+      {<!-- --><br/>
+        return 1;<br/>
+      }<br/>
+    }<br/>
+  }<br/>
+  <br/>
+  /* Check FLASH End of Operation flag  */<br/>
+  if (LL_FLASH_GET_FLAG(FLASH_FLAG_EOP))<br/>
+  {<!-- --><br/>
+    /* Clear FLASH End of Operation pending bit */<br/>
+    LL_FLASH_GET_FLAG(FLASH_FLAG_EOP);<br/>
+  }<br/>
+  <br/>
+  if(LL_FLASH_GET_FLAG(FLASH_FLAG_WRPERR)  || <br/>
+     LL_FLASH_GET_FLAG(FLASH_FLAG_OPTVERR) || <br/>
+     LL_FLASH_GET_FLAG(FLASH_FLAG_PGERR))<br/>
+  {<!-- --><br/>
+    /*Save the error code*/<br/>
+   // FLASH_SetErrorCode();<br/>
+    return 2;<br/>
+  }</p>
+<p>  /* There is no error flag set */<br/>
+  return 0;<br/>
+}</p>
 <p>#endif</p>
-<p>void Flash_Erase(uint32_t PageAddress, uint8_t NbrOfPage)<br/> {<!-- --><br/>       uint32_t address = 0U;<br/>         int status= 0;</p>
-<p>      /* Page Erase requested on address located on bank1 */<br/>       /* Wait for last operation to be completed */<br/>       if (FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE) == 0)<br/>       {<!-- --><br/>         /*Initialization of PageError variable*/<br/>      //   *PageError = 0xFFFFFFFFU;<br/>         <br/>         /* Erase page by page to be done*/<br/>         for(address = PageAddress;<br/>             address &lt; ((NbrOfPage * FLASH_PAGE_SIZE) + PageAddress);<br/>             address += FLASH_PAGE_SIZE)<br/>         {<!-- --><br/>               /* Proceed to erase the page */<br/>                         SET_BIT(FLASH-&gt;CR, FLASH_CR_PER);<br/>                         WRITE_REG(FLASH-&gt;AR, PageAddress);<br/>                         SET_BIT(FLASH-&gt;CR, FLASH_CR_STRT);<br/>           <br/>           /* Wait for last operation to be completed */<br/>           status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);<br/>           <br/>           /* If the erase operation is completed, disable the PER Bit */<br/>           CLEAR_BIT(FLASH-&gt;CR, FLASH_CR_PER);<br/>           <br/>           if (status != 0)<br/>           {<!-- --><br/>             /* In case of error, stop erase procedure and return the faulty address */<br/>           //  *PageError = address;<br/>             break;<br/>           }<br/>         }<br/>       }<br/>     <br/>     <br/>     /*<br/>   uint8_t i = 0;<br/>   FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);<br/>   for (i = 0; i &lt; NbrOfPage; i++)<br/>   {<!-- --><br/>     FLASH_ErasePage(addr + (FLASH_PAGE_SIZE * i));<br/>   }*/<br/> }</p>
-<p>void Flash_Program_HalfWord(uint32_t WriteAddr, uint16_t Data)<br/> {<!-- --><br/>     </p>
-<p>    /* Proceed to program the new data */<br/>     SET_BIT(FLASH-&gt;CR, FLASH_CR_PG);</p>
-<p><br/>   /* Write data in the address */<br/>   *(__IO uint16_t*)WriteAddr = Data;<br/>     <br/>     /*<br/>   if (FLASH_ProgramHalfWord(WriteAddr, Data) != FLASH_COMPLETE)<br/>   {<!-- --><br/>     while (1)<br/>     {<!-- --><br/>       RED_LED_FLICKER;<br/>       Delay_Ms(200);<br/>     }<br/>   }*/<br/> }</p>
-<p><br/> void Flash_Program_Word(uint32_t WriteAddr, uint32_t Data)<br/> {<!-- --><br/>     <br/>     <br/>   uint8_t index = 0;<br/>   uint8_t nbiterations = 0;<br/>   </p>
-<p><br/>     /* Wait for last operation to be completed */<br/>   int  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);</p>
-<p>  <br/>   if(status == 0)<br/>   {<!-- --></p>
-<p>    {<!-- --><br/>       /* Program word (32-bit = 2*16-bit) at a specified address. */<br/>       nbiterations = 2U;<br/>     }<br/>  </p>
-<p>    for (index = 0U; index &lt; nbiterations; index++)<br/>     {<!-- --><br/>                  Flash_Program_HalfWord((WriteAddr + (2U*index)), (uint16_t)(Data &gt;&gt; (16U*index)));</p>
-<p><br/>         /* Wait for last operation to be completed */<br/>         status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);<br/>     <br/>         /* If the program operation is completed, disable the PG Bit */<br/>         CLEAR_BIT(FLASH-&gt;CR, FLASH_CR_PG);<br/>       /* In case of error, stop programation procedure */<br/>       if (status != 0)<br/>       {<!-- --><br/>         break;<br/>       }<br/>     }<br/>   }</p>
-<p>    /*<br/>   if (FLASH_ProgramWord(WriteAddr, Data) != FLASH_COMPLETE)<br/>   {<!-- --><br/>     while (1)<br/>     {<!-- --><br/>       RED_LED_FLICKER;<br/>       Delay_Ms(200);<br/>     }<br/>   }<br/>     */<br/> }</p>
-<p>void Flash_Program_Allow(void)<br/> {<!-- --><br/>     //__set_PRIMASK(1);<br/>     LL_mDelay(1);<br/>     if(READ_BIT(FLASH-&gt;CR, FLASH_CR_LOCK) != RESET)<br/>   {<!-- --><br/>     /* Authorize the FLASH Registers access */<br/>     WRITE_REG(FLASH-&gt;KEYR, FLASH_KEY1);<br/>     WRITE_REG(FLASH-&gt;KEYR, FLASH_KEY2);<br/>          /* Verify Flash is unlocked */<br/>     if(READ_BIT(FLASH-&gt;CR, FLASH_CR_LOCK) != RESET)<br/>     {<!-- --><br/>       <br/>     }<br/>   }<br/>     <br/>     /*<br/>   __set_PRIMASK(1);<br/>   Delay_Ms(1);<br/>   FLASH_Unlock();<br/>     */<br/> }</p>
-<p>void Flash_Program_Forbid(void)<br/> {<!-- --><br/>     <br/>         <br/>   SET_BIT(FLASH-&gt;CR, FLASH_CR_LOCK);<br/>     LL_mDelay(1);<br/> //    __set_PRIMASK(0);<br/>     /*<br/>   FLASH_Lock();<br/>   Delay_Ms(1);<br/>   __set_PRIMASK(0);<br/>     */<br/> }</p>
-<p>void Flash_Data_Save(void)<br/> {<!-- --><br/>   Flash_Program_Allow();<br/>   Flash_Erase(Rx_Data_Addr, 1);<br/>   for (uint16_t i = 0; i &lt; 25; i++)<br/>     Flash_Program_Word(Rx_Data_Addr + 4 * i, RF_Para.Flash_Data[i]);<br/>   Flash_Program_Forbid();</p>
-<p>}<br/>  </p>
+<p>void Flash_Erase(uint32_t PageAddress, uint8_t NbrOfPage)<br/>
+{<!-- --><br/>
+      uint32_t address = 0U;<br/>
+        int status= 0;</p>
+<p>      /* Page Erase requested on address located on bank1 */<br/>
+      /* Wait for last operation to be completed */<br/>
+      if (FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE) == 0)<br/>
+      {<!-- --><br/>
+        /*Initialization of PageError variable*/<br/>
+     //   *PageError = 0xFFFFFFFFU;<br/>
+        <br/>
+        /* Erase page by page to be done*/<br/>
+        for(address = PageAddress;<br/>
+            address &lt; ((NbrOfPage * FLASH_PAGE_SIZE) + PageAddress);<br/>
+            address += FLASH_PAGE_SIZE)<br/>
+        {<!-- --><br/>
+              /* Proceed to erase the page */<br/>
+                        SET_BIT(FLASH-&gt;CR, FLASH_CR_PER);<br/>
+                        WRITE_REG(FLASH-&gt;AR, PageAddress);<br/>
+                        SET_BIT(FLASH-&gt;CR, FLASH_CR_STRT);<br/>
+          <br/>
+          /* Wait for last operation to be completed */<br/>
+          status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);<br/>
+          <br/>
+          /* If the erase operation is completed, disable the PER Bit */<br/>
+          CLEAR_BIT(FLASH-&gt;CR, FLASH_CR_PER);<br/>
+          <br/>
+          if (status != 0)<br/>
+          {<!-- --><br/>
+            /* In case of error, stop erase procedure and return the faulty address */<br/>
+          //  *PageError = address;<br/>
+            break;<br/>
+          }<br/>
+        }<br/>
+      }<br/>
+    <br/>
+    <br/>
+    /*<br/>
+  uint8_t i = 0;<br/>
+  FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);<br/>
+  for (i = 0; i &lt; NbrOfPage; i++)<br/>
+  {<!-- --><br/>
+    FLASH_ErasePage(addr + (FLASH_PAGE_SIZE * i));<br/>
+  }*/<br/>
+}</p>
+<p>void Flash_Program_HalfWord(uint32_t WriteAddr, uint16_t Data)<br/>
+{<!-- --><br/>
+    </p>
+<p>    /* Proceed to program the new data */<br/>
+    SET_BIT(FLASH-&gt;CR, FLASH_CR_PG);</p>
+<p><br/>
+  /* Write data in the address */<br/>
+  *(__IO uint16_t*)WriteAddr = Data;<br/>
+    <br/>
+    /*<br/>
+  if (FLASH_ProgramHalfWord(WriteAddr, Data) != FLASH_COMPLETE)<br/>
+  {<!-- --><br/>
+    while (1)<br/>
+    {<!-- --><br/>
+      RED_LED_FLICKER;<br/>
+      Delay_Ms(200);<br/>
+    }<br/>
+  }*/<br/>
+}</p>
+<p><br/>
+void Flash_Program_Word(uint32_t WriteAddr, uint32_t Data)<br/>
+{<!-- --><br/>
+    <br/>
+    <br/>
+  uint8_t index = 0;<br/>
+  uint8_t nbiterations = 0;<br/>
+  </p>
+<p><br/>
+    /* Wait for last operation to be completed */<br/>
+  int  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);</p>
+<p>  <br/>
+  if(status == 0)<br/>
+  {<!-- --></p>
+<p>    {<!-- --><br/>
+      /* Program word (32-bit = 2*16-bit) at a specified address. */<br/>
+      nbiterations = 2U;<br/>
+    }<br/>
+ </p>
+<p>    for (index = 0U; index &lt; nbiterations; index++)<br/>
+    {<!-- --><br/>
+                 Flash_Program_HalfWord((WriteAddr + (2U*index)), (uint16_t)(Data &gt;&gt; (16U*index)));</p>
+<p><br/>
+        /* Wait for last operation to be completed */<br/>
+        status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);<br/>
+    <br/>
+        /* If the program operation is completed, disable the PG Bit */<br/>
+        CLEAR_BIT(FLASH-&gt;CR, FLASH_CR_PG);<br/>
+      /* In case of error, stop programation procedure */<br/>
+      if (status != 0)<br/>
+      {<!-- --><br/>
+        break;<br/>
+      }<br/>
+    }<br/>
+  }</p>
+<p>    /*<br/>
+  if (FLASH_ProgramWord(WriteAddr, Data) != FLASH_COMPLETE)<br/>
+  {<!-- --><br/>
+    while (1)<br/>
+    {<!-- --><br/>
+      RED_LED_FLICKER;<br/>
+      Delay_Ms(200);<br/>
+    }<br/>
+  }<br/>
+    */<br/>
+}</p>
+<p>void Flash_Program_Allow(void)<br/>
+{<!-- --><br/>
+    //__set_PRIMASK(1);<br/>
+    LL_mDelay(1);<br/>
+    if(READ_BIT(FLASH-&gt;CR, FLASH_CR_LOCK) != RESET)<br/>
+  {<!-- --><br/>
+    /* Authorize the FLASH Registers access */<br/>
+    WRITE_REG(FLASH-&gt;KEYR, FLASH_KEY1);<br/>
+    WRITE_REG(FLASH-&gt;KEYR, FLASH_KEY2);<br/>
+         /* Verify Flash is unlocked */<br/>
+    if(READ_BIT(FLASH-&gt;CR, FLASH_CR_LOCK) != RESET)<br/>
+    {<!-- --><br/>
+      <br/>
+    }<br/>
+  }<br/>
+    <br/>
+    /*<br/>
+  __set_PRIMASK(1);<br/>
+  Delay_Ms(1);<br/>
+  FLASH_Unlock();<br/>
+    */<br/>
+}</p>
+<p>void Flash_Program_Forbid(void)<br/>
+{<!-- --><br/>
+    <br/>
+        <br/>
+  SET_BIT(FLASH-&gt;CR, FLASH_CR_LOCK);<br/>
+    LL_mDelay(1);<br/>
+//    __set_PRIMASK(0);<br/>
+    /*<br/>
+  FLASH_Lock();<br/>
+  Delay_Ms(1);<br/>
+  __set_PRIMASK(0);<br/>
+    */<br/>
+}</p>
+<p>void Flash_Data_Save(void)<br/>
+{<!-- --><br/>
+  Flash_Program_Allow();<br/>
+  Flash_Erase(Rx_Data_Addr, 1);<br/>
+  for (uint16_t i = 0; i &lt; 25; i++)<br/>
+    Flash_Program_Word(Rx_Data_Addr + 4 * i, RF_Para.Flash_Data[i]);<br/>
+  Flash_Program_Forbid();</p>
+<p>}<br/>
+ </p>
 </div>
     </div>
     

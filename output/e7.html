@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JETFAY JER1 电调说明书及调参指南</title>
+    <title>JETFAY JER1 电调说明书及调参及编程指南</title>
     <link rel="stylesheet" href="styles.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
@@ -17,12 +17,12 @@
         <a href="manual.html">← 返回目录</a>
     </div>
     
-    <h1>JETFAY JER1 电调说明书及调参指南</h1>
+    <h1>JETFAY JER1 电调说明书及调参及编程指南</h1>
     <div class="source-link">原文链接: <a href="https://blog.csdn.net/aerror/article/details/148907781" target="_blank">https://blog.csdn.net/aerror/article/details/148907781</a></div>
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2025-06-25 21:59:50</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 830</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1124</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 13</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 16</div>
@@ -30,24 +30,30 @@
     
     <div class="article-tags">标签: <span class="tag">单片机</span></div>
     
-    <div class="article-description">这个电调是通过驱动电机发出的声音来交互调参数的。这些前置条件对于通过电机声音进行调参至关重要，因为只有在硬件连接正确的情况下，电调才能正常工作并发出提示音。</div>
+    <div class="article-description">本电调支持通过串口进行编程控制，实现单向通信控制。设置的电调需要接上喇叭或者电机，电调使用喇叭和电机发出声音来回应串口指令的设置。启动后，可以响应PWM设置指令，根据设置去驱动电机或者喇叭。</div>
     
     <div class="article-content">
         <div class="markdown_views prism-atom-one-dark" id="content_views">
 <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
 <path d="M5,0 0,2.5 5,5z" id="raphael-marker-block" stroke-linecap="round" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
 </svg>
-<h2><a id="JETFAY_JER1_2"></a>JETFAY JER1</h2>
-<h2><a id="_4"></a>产品规格</h2>
-<h4><a id="_6"></a>基本参数</h4>
+<h2><a id="JETFAY_JER1_1"></a>JETFAY JER1</h2>
+<h2><a id="_3"></a>产品规格</h2>
+<h4><a id="_5"></a>基本参数</h4>
 <ul><li>尺寸：4.9mm x 6.3mm x 2.2mm</li><li>重量：0.07g</li><li>工作电压：3.3V - 5V</li><li>输出电流：每路1A持续，最大1.5A. 两路并联时电流x2</li><li>通道数：双路双向，独立或混合输出</li></ul>
-<h4><a id="_13"></a>产品特点</h4>
-<ol><li>最小最轻的超微型双路双向电调</li><li>精准的线性速度控制，实现细腻调速</li><li>强劲低速扭矩输出，确保平稳起步与逼真攀爬体验，轻松应对重载</li><li>超静音运行</li><li>内置智能过热保护</li><li>多档可调工作频率，适配各类应用场景，完美匹配不同电机特性</li><li>可调快慢衰减与刹车模式</li><li>可调双通道混控模式</li><li>可调单/双向模式</li><li>中位/零油门自检保护，即启动时必须零油门，才会激活电调功能，以防意外。</li><li>优质供电电路设计，高品质沉金工艺，性能稳定可靠</li><li>丰富的参数调节选项，满足多样化需求</li></ol>
-<h4><a id="_31"></a>接线示意图</h4>
-<p><img alt="请添加图片描述" src="images/e7/353e725a817a444faad5c6291042beeb.png"><br/> <img alt="请添加图片描述" src="images/e7/b808d1ecdab54aebb87f2b00cc34fa2d.png"/></img></p>
-<h4><a id="_36"></a>应用场景</h4>
-<ul><li>微型小车</li><li>工程车</li><li>飞机</li><li>其它需要精确电机控制的设备</li></ul>
-<h2><a id="_43"></a>电调启动和调参指南</h2>
+<h4><a id="_12"></a>产品特点</h4>
+<ol><li>最小最轻的超微型多功能双路双向电调，媲美瑞士军刀</li><li>精准的线性速度控制，实现细腻调速</li><li>强劲低速扭矩输出，确保平稳起步与逼真攀爬体验，轻松应对重载</li><li>超静音运行</li><li>内置智能过热保护</li><li>多档可调工作频率，适配各类应用场景，完美匹配不同电机特性</li><li>可调快慢衰减与刹车模式</li><li>可调双通道混控模式</li><li>可调单/双向有刷电调模式</li><li>可驱动2相4线，4相5线步进电机，速度和电流可调</li><li>可作舵机控制板，驱动5线的舵机(电位器+有刷电机)</li><li>可以驱动喇叭发出汽笛，警笛，救护车，消防车和射击的声音。</li><li>可以支持多种输入信号，包括标准PWM, 电压ADC, 串口信号，默认根据当前工作模式自动检查信号。</li><li>丰富的参数调节选项，可以满足不同的需求</li><li>可以使用串口进行调参和完全控制编程，二次开发，实现复杂功能</li><li>串口支持设备编号，1条信号总线可以控制多达15个设备</li><li>优质供电电路设计，高品质沉金工艺，性能稳定可靠</li></ol>
+<h4><a id="_34"></a>接线示意图</h4>
+<p><img alt="请添加图片描述" src="images/e7/b215cbde17ce472aa23ba7612b53f0e1.png"><br/> <img alt="请添加图片描述" src="images/e7/1afb71eaff5e4bcf8a89b2e426c6f699.png"/></img></p>
+<p><img alt="请添加图片描述" src="images/e7/e579294847e04b778cabd9db40a57b99.png"/></p>
+<p><img alt="请添加图片描述" src="images/e7/484bd379c766439d8d4db7110cec03b4.png"/></p>
+<p><img alt="请添加图片描述" src="images/e7/c726ee0cae324371afd54cff0ecfe149.png"/></p>
+<p><img alt="请添加图片描述" src="images/e7/b018ae02247b41ebb42a13606334cad1.png"/></p>
+<h4><a id="_49"></a>输入信号和自动检测机制</h4>
+<ul><li>默认时，信号的自动检测，即先看是不是usart, 再看不是pwm, 如果不是PWM , 而当前是喇叭或单向电调模式， 则就认为是adc电压控制信号</li><li>usart信号为9600bps , 8n1.</li><li>pwm信号为50hz, 占空1000-2000us</li><li>电压信号为0-5v, 当小于1.0v, 认为是零油门，大于3.0v认为是全油门，1.0 - 3.0v 则是比例油门。</li><li>使用串口命令或JER1Suite可以修改这个信号输入检测方式，改为： 2. 仅usart信号； 3. usart和adc</li></ul>
+<h4><a id="_57"></a>应用场景</h4>
+<ul><li>微型小车</li><li>工程车</li><li>飞机</li><li>舵机</li><li>喇叭和汽笛</li><li>步进电机控制设备</li><li>其它需要精确电机控制的设备</li></ul>
+<h2><a id="_67"></a>电调启动和调参指南</h2>
 <p></p>
 <div class="csdn-video-box" data-report-view='{"spm":"3001.10261","extra":{"id":"HtMFforr-1751087588112"}}'>
 <iframe allowfullscreen="true" data-mediaembed="bilibili" frameborder="0" id="HtMFforr-1751087588112" src="https://player.bilibili.com/player.html?aid=114759043127896"></iframe>
@@ -60,24 +66,45 @@
 <p>JETFAY JER1 电调低速扭矩演示（408空心杯）</p>
 </div>
 <p></p>
-<p>已经测过支持的电机</p>
+<p></p>
+<div class="csdn-video-box" data-report-view='{"spm":"3001.10261","extra":{"id":"hyi9p3Fr-1755704349827"}}'>
+<iframe allowfullscreen="true" data-mediaembed="bilibili" frameborder="0" id="hyi9p3Fr-1755704349827" src="https://player.bilibili.com/player.html?aid=115060059938465"></iframe>
+<p>JETFAY JER1 舵机功能使用效果演示</p>
+</div>
+<p></p>
+<p></p>
+<div class="csdn-video-box" data-report-view='{"spm":"3001.10261","extra":{"id":"D69Np9Lv-1755704364316"}}'>
+<iframe allowfullscreen="true" data-mediaembed="bilibili" frameborder="0" id="D69Np9Lv-1755704364316" src="https://player.bilibili.com/player.html?aid=115060043226639"></iframe>
+<p>JETFAY JER1 驱动4相5线和两相4线的步进电机演示</p>
+</div>
+<p></p>
+<p></p>
+<div class="csdn-video-box" data-report-view='{"spm":"3001.10261","extra":{"id":"64xAweZ4-1755704375916"}}'>
+<iframe allowfullscreen="true" data-mediaembed="bilibili" frameborder="0" id="64xAweZ4-1755704375916" src="https://player.bilibili.com/player.html?aid=115059959274683"></iframe>
+<p>JETFAY JER1声效模式使用效果演示</p>
+</div>
+<p></p>
+<h3><a id="_86"></a>已经测过支持的电机：</h3>
 <p><img alt="请添加图片描述" src="images/e7/653648b15cb7450cbde9f5e2ce2cfe90.jpeg"/></p>
-<h3><a id="1__56"></a>1. 硬件连接和正常启动流程</h3>
-<p>这个电调是通过驱动电机发出的声音来交互调参数的。</p>
+<h3><a id="_89"></a>测试过支持的步进电机：</h3>
+<p><img alt="请添加图片描述" src="images/e7/5cc43830975446d3aa97c2fce2bc35cf.jpeg"/></p>
+<h3><a id="1__92"></a>1. 硬件连接和正常启动流程</h3>
+<p>这个电调是通过驱动电机/喇叭发出的声音来交互调参数的。</p>
 <p>在开始调参前，请确保以下硬件连接正确，请参考上面的接线示意图：</p>
 <ol><li>电调的信号线已正确连接到接收机的对应通道</li><li>电机已正确连接到电调的输出端</li><li>电池已正确连接到电调的电源输入端</li><li>所有连接需牢固可靠，避免接触不良</li></ol>
-<p>这些前置条件对于通过电机声音进行调参至关重要，因为只有在硬件连接正确的情况下，电调才能正常工作并发出提示音。<br/> 注意，当并联输出时，输出声音会比较小，需要详细听，或者调参时不要并联。</p>
-<h3><a id="2___70"></a>2. 电调正常启动流程</h3>
+<p>这些前置条件对于通过电机/喇叭机声音进行调参至关重要，因为只有在硬件连接正确的情况下，电调才能正常工作并发出提示音。</p>
+<p>注意，仅当是usart或pwm信号时才可以进行参数调整， ADC电压信号不支持调参操作。<br/> 另外使用电机时，有些电机电感很小，声音会比较小，需要很详细听才行，也可以调参数时临时接喇叭。</p>
+<h3><a id="2___110"></a>2. 电调正常启动流程</h3>
 <ol><li> <p>上电启动</p>
 <ul><li>电调上电后会播放开机音乐（do-re-mi音阶），表示电调正常工作</li><li>等待1秒进入信号检测状态</li></ul> </li><li> <p>信号检测</p>
-<ul><li>电调等待接收机发送油门信号</li><li>当检测到任一通道的油门信号时，会播放低音的提示音（do）</li><li>此时如果油门不在零位，电调会发出中位自检报警声,持续一个短的高音(fa) 2秒一次，直到油门回到零位</li></ul> </li><li> <p>正常运行</p>
+<ul><li>电调等待接收机发送油门信号</li><li>当检测到任一通道的油门信号时，如果是PWM会播放低音的提示音（do）, 如果是Usart信号，会播放进入编程提示音（do re mi fa，重复3次）， 如果是ADC信号，刚会播放 do do mi 三声。</li></ul> </li><li> <p>正常运行</p>
 <ul><li>油门回到零位后，电调会设置当前位置为零油门值： 
     <ul><li>单向模式：最低点为零油门（值为100）</li><li>双向模式：中点为零油门（值为150）</li></ul> </li><li>此时电调进入正常运行状态，可以通过推油门来控制电机转速</li></ul> </li></ol>
 <p>注意：每次改变转向模式（单向/双向）后，都需要重新将油门摇杆移动到对应的零油门位置（单向模式为最低点，双向模式为中点），电调才能正常启动。</p>
-<h3><a id="3__90"></a>3. 进入调参模式</h3>
+<h3><a id="3__129"></a>3. 进入调参模式</h3>
 <ol><li>上电后，电调会播放开机音乐（do re mi），表示正常工作</li><li>等待1秒后，电调进入信号检查状态</li><li>当检测到有效信号时，会发出一个长音（do）</li><li>进入调参模式的步骤： 
   <ul><li>听到开机音乐(do re mi)之后1秒内， 将任一通道油门推到最大</li><li>等待全油门提示音（mi mi mi mi 四声一组，循环播放）</li><li>听到全油门提示音后，将油门拉回零位</li><li>等待零油门提示音（do do 两声一组，重复4次）</li><li>两秒内，再次将油门推到最大</li><li>听到进入编程提示音（do re mi fa，重复3次）后，即进入调参模式</li></ul> </li></ol>
-<h3><a id="4__103"></a>4. 参数设置流程</h3>
+<h3><a id="4__142"></a>4. 参数设置流程</h3>
 <ol><li>进入调参模式后，电调会按以下顺序循环发出可调参数的对应提示音： 
   <ol><li>PWM频率设置（FUNC_FREQ = 1）</li><li>衰减模式设置（FUNC_DECAY = 2）</li><li>混控模式设置（FUNC_MIX_CONTROL = 3）</li><li>电机旋转方向设置（FUNC_DIRECTION = 4）</li></ol> </li><li>对于每个参数： 
   <ul><li>首先播放当前功能编号对应的提示音（长音do，次数等于功能编号）</li><li>然后播放当前参数值对应的提示音（短音mi，次数等于参数值编号）</li><li>接着播放可选的参数值提示音（短音mi，次数等于参数编号）</li><li>例如： 
@@ -86,24 +113,68 @@
     <ul><li>保持油门在最大位置</li><li>等待下一个参数值提示音</li></ul> </li><li>如果不想修改当前参数： 
     <ul><li>等待所有参数值提示音播放完</li><li>自动进入下一个参数设置</li></ul> </li><li>快速跳过当前功能设置： 
     <ul><li>将油门拉到半油门位置</li><li>电调会立即跳过当前功能，进入下一个功能的设置</li></ul> </li></ul> </li><li>当所有参数循环完成后，会重新从PWM频率设置开始</li></ol>
-<h3><a id="5__132"></a>5. 参数说明</h3>
-<h4><a id="1_PWMFUNC_FREQ__1_134"></a>功能1 PWM频率（FUNC_FREQ = 1）</h4>
-<ul><li>参数1（PARAM_FREQ_LOW）：75Hz （默认）</li><li>参数2（PARAM_FREQ_NORMAL）：150hz</li><li>参数3（PARAM_FREQ_MEDUIUM）：1000Hz</li><li>参数4（PARAM_FREQ_HIGH）：47kHz</li></ul>
-<p>小的电机可以使用尽量低的工作频率，以达到最佳的低速线性和扭矩表现。<br/> 除了 1000hz 工作时不静音，其它频率是工作时静音</p>
-<h4><a id="2_FUNC_DECAY__2_144"></a>功能2 衰减模式（FUNC_DECAY = 2）</h4>
-<ul><li>参数1（PARAM_DECAY_FAST）：快衰减 （默认）</li><li>参数2（PARAM_DECAY_SLOW）：慢衰减</li></ul>
-<p>！慢衰减 模式，收油门后，电机会很快停下，即电机会有类似刹车的功能，此外还可以提高对于速度的控制的准确度，以及低速的可以获得更强的扭矩表现。对于比较大的电机可能需要配合更多的工作频率。</p>
-<p>快衰减 收油门后，电机还是惯性的转，兼容性更好。</p>
-<h4><a id="3_FUNC_MIX_CONTROL__3_153"></a>功能3 混控模式（FUNC_MIX_CONTROL = 3）</h4>
-<ul><li>参数1（PARAM_MIX_DISABLE）：关闭混控 （默认）</li><li>参数2（PARAM_MIX_ENABLE）：开启混控，（注意，如果是并联输出，一定不要设置这个混控！)</li></ul>
-<h4><a id="4_FUNC_DIRECTION__4_157"></a>功能4 电机旋转方向（FUNC_DIRECTION = 4）</h4>
-<ul><li>参数1（PARAM_DIR_BIDIRECT）：双向模式 （默认） 
-  <ul><li>零油门位置：油门中位</li><li>半油门位置：约3/4油门位置</li><li>修改为双向模式后需要将油门回到中位（新的零油门位置）才能启动电调</li></ul> </li><li>参数2（PARAM_DIR_UNIDIRECT）：单向模式 
-  <ul><li>零油门位置：最低油门位置</li><li>半油门位置：油门中位</li><li>修改为单向模式后需要将油门回到最低位（新的零油门位置）才能启动电调</li></ul> </li></ul>
-<h3><a id="6__168"></a>6. 提示音说明</h3>
+<h3><a id="5_171"></a>5.功能参数说明</h3>
+<h4><a id="1__FUNC_FREQ_175"></a>1. 工作频率设置 (FUNC_FREQ)</h4>
+<table><thead><tr><th>参数值</th><th>名称</th><th>其他模式</th><th>步进电机模式</th><th>喇叭模式</th></tr></thead><tbody><tr><td>1</td><td>PARAM_FREQ_LOW</td><td>75Hz</td><td>电流低</td><td>S2警笛</td></tr><tr><td>2</td><td>PARAM_FREQ_NORMAL</td><td>150Hz</td><td>电流正常</td><td>S2救护车</td></tr><tr><td>3</td><td>PARAM_FREQ_MEDUIUM</td><td>500Hz</td><td>电流中</td><td>S2消防车</td></tr><tr><td>4</td><td>PARAM_FREQ_HIGH</td><td>1000Hz</td><td>电流高</td><td>S2电子射击</td></tr></tbody></table>
+<h4><a id="2__FUNC_DECAY_184"></a>2. 衰减设置 (FUNC_DECAY)</h4>
+<table><thead><tr><th>参数值</th><th>名称</th><th>其他模式</th><th>步进电机模式</th><th>喇叭模式</th></tr></thead><tbody><tr><td>1</td><td>PARAM_DECAY_FAST</td><td>快速衰减</td><td>4拍模式</td><td>S1低频</td></tr><tr><td>2</td><td>PARAM_DECAY_SLOW</td><td>慢速衰减</td><td>8拍模式</td><td>S1高频</td></tr></tbody></table>
+<h4><a id="3__FUNC_MIX_CONTROL_191"></a>3. 混控设置 (FUNC_MIX_CONTROL)</h4>
+<table><thead><tr><th>参数值</th><th>名称</th><th>说明</th></tr></thead><tbody><tr><td>1</td><td>PARAM_MIX_DISABLE</td><td>默认不混控，两路独立</td></tr><tr><td>2</td><td>PARAM_MIX_ENABLE</td><td>启用混控</td></tr><tr><td>3</td><td>PARAM_MIX_STEP_MOTOR</td><td>4或5线步进电机模式</td></tr></tbody></table>
+<h4><a id="4__FUNC_DIRECTION_199"></a>4. 方向设置 (FUNC_DIRECTION)</h4>
+<table><thead><tr><th>参数值</th><th>名称</th><th>说明</th></tr></thead><tbody><tr><td>1</td><td>PARAM_DIR_BIDIRECT</td><td>默认双向</td></tr><tr><td>2</td><td>PARAM_DIR_UNIDIRECT</td><td>单向</td></tr><tr><td>3</td><td>PARAM_DIR_SERVO</td><td>舵机模式，双向有边界</td></tr><tr><td>4</td><td>PARAM_DIR_SPEAKER</td><td>喇叭模式，S1汽车鸣笛，S2警笛</td></tr></tbody></table>
+<h4><a id="5__FUNC_INPUT_SIGAL_208"></a>5. 输入信号设置 (FUNC_INPUT_SIGAL)</h4>
+<table><thead><tr><th>参数值</th><th>名称</th><th>说明</th></tr></thead><tbody><tr><td>1</td><td>PARAM_INPUT_SIGNAL_AUTO</td><td>自动检测输入信号,串口输入/PWM/ADC输入</td></tr><tr><td>2</td><td>PARAM_INPUT_SIGNAL_USART_ONLY</td><td>仅使用串口输入</td></tr><tr><td>3</td><td>PARAM_INPUT_SIGNAL_USART_OR_ADC</td><td>串口或ADC输入</td></tr></tbody></table>
+<h3><a id="6__216"></a>6. 串口编程控制</h3>
+<h4><a id="_218"></a>概述</h4>
+<p>本电调支持通过串口进行编程控制，实现单向通信控制。设置的电调需要接上喇叭或者电机，电调使用喇叭和电机发出声音来回应串口指令的设置。启动后，可以响应PWM设置指令，根据设置去驱动电机或者喇叭。</p>
+<h4><a id="_222"></a>串口通信参数</h4>
+<ul><li><strong>波特率</strong>: 9600 bps</li><li><strong>数据位</strong>: 8 bit</li><li><strong>校验位</strong>: 无校验</li><li><strong>停止位</strong>: 1 bit</li><li><strong>格式</strong>: 8N1</li></ul>
+<p>可以使用 RS232、RS485 等进行长距离总线控制</p>
+<h4><a id="ID_231"></a>设备ID管理</h4>
+<ul><li>支持设备ID编号，实现总线控制</li><li>最多可以设置15个设备（ID: 1-15）</li><li>ID为0表示广播模式，所有设备都会响应</li><li>通过设备ID可以实现多设备的独立控制</li></ul>
+<h4><a id="_238"></a>串口命令协议</h4>
+<h5><a id="_240"></a>命令格式</h5>
+<p>所有命令采用5字节格式：</p>
+<pre><code class="hljs language-javascript">[前缀] [设备ID+命令] [参数1] [参数2] [校验和]
+</code></pre>
+<ul><li><strong>前缀</strong>: 0x55 (固定)</li><li><strong>设备ID+命令</strong>: 高4位为设备ID，低4位为命令码</li><li><strong>参数1</strong>: 第一个参数</li><li><strong>参数2</strong>: 第二个参数</li><li><strong>校验和</strong>: 参数1+参数2+参数3的和</li></ul>
+<h5><a id="_253"></a>支持的命令</h5>
+<table><thead><tr><th>命令码</th><th>名称</th><th>说明</th></tr></thead><tbody><tr><td>0x1</td><td>CMD_HOST_WRITE</td><td>写入配置参数</td></tr><tr><td>0x2</td><td>CMD_HOST_SAVE</td><td>保存设置到Flash</td></tr><tr><td>0x3</td><td>CMD_HOST_START</td><td>启动电机运行</td></tr><tr><td>0x4</td><td>CMD_HOST_RESET_DEFAULT</td><td>恢复默认设置</td></tr><tr><td>0x5</td><td>CMD_HOST_REBOOT</td><td>重启设备</td></tr><tr><td>0x6</td><td>CMD_HOST_SET_PWM</td><td>设置PWM值</td></tr><tr><td>0x7</td><td>CMD_HOST_SET_DEVICE_ID</td><td>设置设备ID</td></tr><tr><td>0x8</td><td>CMD_HOST_QUERY_PARAM</td><td>查询参数值</td></tr><tr><td>0xF</td><td>CMD_HOST_CONNECT</td><td>连接设备</td></tr></tbody></table>
+<h5><a id="_267"></a>命令详细说明</h5>
+<p><strong>1. 写入配置 (CMD_HOST_WRITE)</strong></p>
+<ul><li>参数1: 功能号 (FUNC_FREQ/FUNC_DECAY/FUNC_MIX_CONTROL/FUNC_DIRECTION/FUNC_INPUT_SIGAL)</li><li>参数2: 参数值</li><li>功能: 设置指定功能的参数值，设备会发出声音确认</li></ul>
+<p><strong>2. 保存设置 (CMD_HOST_SAVE)</strong></p>
+<ul><li>参数1: 无效</li><li>参数2: 无效</li><li>功能: 将当前设置保存到Flash存储器</li></ul>
+<p><strong>3. 启动电机 (CMD_HOST_START)</strong></p>
+<ul><li>参数1: PWM1值 (0-255)</li><li>参数2: PWM2值 (0-255)</li><li>功能: 启动电机并设置初始PWM值</li></ul>
+<p><strong>4. 恢复默认 (CMD_HOST_RESET_DEFAULT)</strong></p>
+<ul><li>参数1: 无效</li><li>参数2: 无效</li><li>功能: 恢复所有设置为出厂默认值</li></ul>
+<p><strong>5. 重启设备 (CMD_HOST_REBOOT)</strong></p>
+<ul><li>参数1: 无效</li><li>参数2: 无效</li><li>功能: 立即重启设备</li></ul>
+<p><strong>6. 设置PWM (CMD_HOST_SET_PWM)</strong></p>
+<ul><li>参数1: PWM1值 (0-255)</li><li>参数2: PWM2值 (0-255)</li><li>功能: 实时设置PWM输出值</li></ul>
+<p><strong>7. 设置设备ID (CMD_HOST_SET_DEVICE_ID)</strong></p>
+<ul><li>参数1: 新的设备ID (1-15)</li><li>参数2: 无效</li><li>功能: 设置设备的ID号</li></ul>
+<p><strong>8. 查询参数 (CMD_HOST_QUERY_PARAM)</strong></p>
+<ul><li>参数1: 功能号</li><li>参数2: 无效</li><li>功能: 查询指定功能的当前参数值，设备会发出声音回应</li></ul>
+<p><strong>9. 连接设备 (CMD_HOST_CONNECT)</strong></p>
+<ul><li>参数1: 无效</li><li>参数2: 无效</li><li>功能: 建立与设备的连接</li></ul>
+<h4><a id="_314"></a>设备启动和连接</h4>
+<ol><li><strong>信号检测</strong>: 设备启动时会自动检查输入信号类型，判断是否为串口输入</li><li><strong>连接建立</strong>: 检测到串口信号后，应尽快发送连接命令(CMD_HOST_CONNECT)给设备</li><li><strong>优先连接</strong>: JER1Suite会监听串口设备，一旦发现新设备就立即发送连接命令，确保优先建立串口连接</li></ol>
+<h4><a id="JER1Suite_320"></a>JER1Suite工具</h4>
+<p>百度盘 下载地址：<br/> 链接:https://pan.baidu.com/s/13UDQv7HLHYzkX6f7lzLeJA?pwd=81yc 提取码:81yc 复制这段内容后打开百度网盘手机App，操作更方便哦</p>
+<p>源代码，windows和macos安装包在<br/> https://github.com/aerror2/JER1Suite</p>
+<p>JER1Suite是专门为本电调开发的上位机软件，实现了所有串口命令的图形化操作：</p>
+<ul><li><strong>设备发现</strong>: 自动监听和发现串口设备</li><li><strong>参数配置</strong>: 图形化界面配置所有功能参数</li><li><strong>实时控制</strong>: 实时调整PWM输出值</li><li><strong>设备管理</strong>: 支持多设备ID管理</li><li><strong>状态监控</strong>: 监控设备连接状态和参数设置</li></ul>
+<h4><a id="_339"></a>使用流程</h4>
+<p><img alt="请添加图片描述" src="images/e7/c27574a26b654e7e99322a1fb1326f9f.png"/></p>
+<ol><li><strong>启动JER1Suite</strong>: 运行上位机软件</li><li><strong>设备连接</strong>: 软件点选 按钮 “自动连接”， 软件就会监听和发现新的串口设备， 并自动连接设备</li><li><strong>硬件连接</strong>: 电调的输出端要接上负载，一个电机或喇叭, 将电调连接到串口工具, 如CH340/CH341等usbttl(TX-&gt;S1, GND-&gt;GND , V3.3 -&gt; VCC)， 然后接到USB口， 如果听到电调发出do re mi fa , do re mi fa那么表示连接成功，如果不行，关于jer1suite, 重复操作1-3步。</li><li><strong>参数配置</strong>: 根据需要配置各项功能参数</li><li><strong>保存设置</strong>: 将配置保存到设备Flash中</li><li><strong>启动运行</strong>: 启动电机开始正常工作</li><li><strong>实时控制</strong>: 可随时调整PWM值或重新配置参数</li></ol>
+<h4><a id="_350"></a>注意事项</h4>
+<ul><li>设备在配置模式下会通过声音反馈确认操作</li><li>建议在配置完成后保存设置，避免断电丢失</li><li>可随时发送重启命令重新初始化设备</li><li>多设备环境下注意设置不同的设备ID避免冲突</li></ul>
+<h3><a id="6__362"></a>6. 提示音说明</h3>
 <ul><li>开机音乐：do re mi</li><li>有效信号提示音：一个长的do音</li><li>油门提升音：检测到油门从零位开始提升</li><li>全油门提示音：mi mi mi mi（四声一组，循环播放）</li><li>零油门提示音：do do（两声一组，重复4次，间隔后再重复一次，等待1.5秒）</li><li>进入编程提示音：do re mi fa（重复3次）</li><li>功能编号提示音：长音do（次数等于功能编号）</li><li>参数值提示音：短音mi（次数等于参数编号）</li><li>保存确认提示音：do re mi fa（重复3次）</li><li>中位自检报警声: 持续一个短的高音(fa) 2秒一次</li></ul>
-<h3><a id="7__181"></a>7. 注意事项</h3>
-<ol><li>在调参过程中，请注意区分长音do（功能编号）和短音mi（参数值）</li><li>每个功能和参数都有其固定的编号，通过提示音的次数来识别</li><li>使用半油门可以快速跳过当前功能的设置</li><li>修改电机方向模式后，需要将油门移动到新的零位才能启动电调</li><li>如果想退出调参模式，可以直接断电重启</li><li>所有参数修改后会立即保存，重启后仍然有效</li><li>如果不小心进入调参模式，重启即可</li><li>对于双向和单向，零油门和半油门的位置是不同的，双向时，中位是零油门， 半油则3/4的位置附近，单向则是最低位是零油门，而半油是中位。 对于设置转向双向，和双转单时，因零位修改后就变了，所以需要再移到摇杆到新的零油门才能正常启动电调。</li></ol>
+<h3><a id="7__375"></a>7. 注意事项</h3>
+<ol><li>在调参过程中，请注意区分长音do（功能编号）和短音mi（参数值）</li><li>每个功能和参数都有其固定的编号，通过提示音的次数来识别</li><li>使用半油门可以快速跳过当前功能的设置</li><li>修改电机方向模式后，需要将油门移动到新的零位才能启动电调</li><li>如果想退出调参模式，可以直接断电重启</li><li>所有参数修改后会立即保存，重启后仍然有效</li><li>如果不小心进入调参模式，重启即可</li><li>对于双向和单向，零油门和半油门的位置是不同的，双向时，中位是零油门， 半油则3/4的位置附近，单向则是最低位是零油门，而半油是中位。 对于设置转向双向，和双转单时，因零位修改后就变了，所以需要再移到摇杆到新的零油门才能正常启动电调。</li><li>如果想要恢复到默认设置，那么可以在进行编程模式立即把摇杆打开零油门位置。</li></ol>
 </div>
     </div>
     

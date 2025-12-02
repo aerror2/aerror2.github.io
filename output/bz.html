@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-01-17 09:18:43</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1134</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1323</div>
         
         <div class="meta-item"><i class="far fa-star"></i> 收藏数: 9</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 11</div>
@@ -36,13 +36,15 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <h2>1. 首先把LUA 转成JSON 对象</h2>
 <p>因为是excel, 所以第一层要是数组，否则没有什么意义，即lua对象要是一个数组比较合理。这里使用开源的json.lua， 但是开源的，对于数字作下标的，或者是一个数组里，不同类型的key混合的情况无法转换，所以我进行了一定的改进，先进行了扫描判断是不是混合的key，是的话，取消key,把key到结构里作为一个字段处理。源码如下：</p>
-<pre><code class="language-Lua hljs">
+<pre>
+<code class="language-Lua hljs">
 local json = loadfile("json.lua/json.lua")()
 t1 = new Test();
 print(json.encode(t1))
 </code></pre>
 <h2>库代码：</h2>
-<pre><code class="language-Lua hljs">--
+<pre>
+<code class="language-Lua hljs">--
 -- json.lua
 --
 -- Copyright (c) 2020 rxi
@@ -482,7 +484,8 @@ return json
 </code></pre>
 <h2>二、把JSON转成CSV</h2>
 <p>使用python，json_to_csv这个库 。 它会把树形展平</p>
-<pre><code class="language-python hljs">import sys
+<pre>
+<code class="language-python hljs">import sys
 import json
 import csv
 import io
@@ -584,7 +587,8 @@ if __name__ == "__main__":
 </code></pre>
 <h2>三、把csv转成xlsx文件</h2>
 <p>使用开源的xlsxwriter, pip先安装一下, 使用代码如下：</p>
-<pre><code class="language-python hljs">import sys
+<pre>
+<code class="language-python hljs">import sys
 import json
 import csv
 import io

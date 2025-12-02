@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-11-15 17:08:53</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 292</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 377</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 2</div>
@@ -36,16 +36,20 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>使用gdb就好了。</p>
 <p>但凡安装了python，安装目录下都有一个python-gdb.py, 不知道在什么地方可以find一下，</p>
-<pre><code class="hljs language-javascript"># find / -name "python-gdb.py"
+<pre>
+<code class="hljs language-javascript"># find / -name "python-gdb.py"
 /root/soft_setup/Python-3.7.9/python-gdb.py
 /root/soft_setup/Python-2.7.12/python-gdb.py
 </code></pre>
 <p>然后gdb -p pid</p>
-<pre><code class="hljs language-javascript"># gdb -p 185697</code></pre>
+<pre>
+<code class="hljs language-javascript"># gdb -p 185697</code></pre>
 <p>然后source一下，或者加下.gdbinit里面</p>
-<pre><code class="hljs language-javascript">source /root/soft_setup/Python-3.7.9/python-gdb.py</code></pre>
+<pre>
+<code class="hljs language-javascript">source /root/soft_setup/Python-3.7.9/python-gdb.py</code></pre>
 <p>然后就可以使用py开头的命令了，如py-bt</p>
-<pre><code class="hljs language-javascript">py-bt               py-bt-full          py-down             py-list             py-locals           py-print            py-up               python              python-interactive  
+<pre>
+<code class="hljs language-javascript">py-bt               py-bt-full          py-down             py-list             py-locals           py-print            py-up               python              python-interactive  
 </code></pre>
 <p></p>
 </div>

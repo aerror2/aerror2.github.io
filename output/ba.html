@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-12-29 16:33:12</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 166</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 219</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -36,7 +36,8 @@
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>只是需要使用sdcc的make的时候，最后打印一下hex文件占用flash的大小和百分比，试了srec_info ， python 的intelhex等，好像都不是需要的。没有办法，只好自己使用shell脚本写一个。</p>
 <p>如下：</p>
-<pre><code class="hljs hljs language-javascript">	len=`tail -n2 $1  | grep -v 00000001FF | cut -b 2-3`
+<pre>
+<code class="hljs hljs language-javascript">	len=`tail -n2 $1  | grep -v 00000001FF | cut -b 2-3`
 	off=`tail -n2 $1  | grep -v 00000001FF | cut -b 4-7`
 	fsize=`echo "ibase=16;$off + $len"  | bc`
 	imx=`echo $2|cut -b3-`
@@ -46,7 +47,8 @@
 </code></pre>
 <p>保存为showsize.sh,使用例子如下</p>
 <p></p>
-<pre><code class="hljs hljs language-javascript">$ ./showsize.sh obj/main.hex 0x4000
+<pre>
+<code class="hljs hljs language-javascript">$ ./showsize.sh obj/main.hex 0x4000
 total hex size 14505 of 16384 (88.00%)
 </code></pre>
 <p></p>

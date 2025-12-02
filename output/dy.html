@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2017-04-07 13:06:39</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2014</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2040</div>
         
         
         
@@ -34,15 +34,16 @@
     
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
-                    __text:000000010187CF12                 or      eax, r14d &lt;--这里下断点加上断点命令 register write eax 0x140   
-<br/>
+                    
+__text:000000010187CF12                 or      eax, r14d &lt;--这里下断点加上断点命令 register write eax 0x140  <br/>
 <br/>
 <br/>
 <p>使用lldb -p  pid 附加上unity进程, 然后找上面这行，加上断点命令，就可以了. 以下内容仅用作查找上面这一行的上下文使用</p>
-<p><br/> </p>
-<p><br/> </p>
-<p></p>
-<pre><code class="language-cpp hljs">text:000000010187CE6F loc_10187CE6F:                          ; CODE XREF: __text:000000010187CD4Bj
+<p><br/>
+</p>
+<p><br/>
+</p>
+<p></p><pre><code class="language-cpp hljs">text:000000010187CE6F loc_10187CE6F:                          ; CODE XREF: __text:000000010187CD4Bj
 __text:000000010187CE6F                 mov     edi, [rbp-0BF4h]
 __text:000000010187CE75                 mov     esi, 1
 __text:000000010187CE7A                 xor     edx, edx
@@ -139,10 +140,8 @@ __text:000000010187CFFB                 cmp     r15, r14
 __text:000000010187CFFE                 jz      loc_10187D1A1
 __text:000000010187D004                 xor     r13d, r13d
 __text:000000010187D007                 xor     r12d, r12d
-__text:000000010187D00A                 jmp     loc_10187D0F0</code></pre>
+__text:000000010187D00A                 jmp     loc_10187D0F0</code></pre><br/>
 <br/>
-<br/>
-<p></p>
 </div>
     </div>
     

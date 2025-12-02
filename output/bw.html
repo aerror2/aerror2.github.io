@@ -22,9 +22,9 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-01-29 15:52:24</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3238</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 3669</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 6</div>
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 45</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 50</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 26</div>
     </div>
     
@@ -39,7 +39,8 @@
 <p>BLHELI主要是由 一堆.inc文件和 BLHeli_S.asm两个组成。 *.inc主要是定义针脚的布局，然后如何开关各个fet等，这个和主逻辑关系不大，我们先不解读*.inc. </p>
 <p></p>
 <p>BLHeli_S.asm 是从pgm_start 开始的, 我们按正常的流程一行一行来读，先走主的流程。</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
@@ -116,7 +117,8 @@ ENDIF
 <p>    跟着读取配置等等 然后驱动电机<span style="color:#fe2c24;">响三声，输出一个do re mi 的声音</span>。表示初始化完成。</p>
 <p>一共会有四个声调输出，f1, f2,f3,f4, 我们认为是do re mi fa吧。 即do re mi就是f1 f2  f3.</p>
 <p>接着检查输入的rc_in, 就是电调的信线连着那个针脚的电平，检查它有没有15ms持续都是高电平，如果是的话，那么跳到bootloader, 就是进入和电脑blsuite设置的功能里。因为如 pwm是20ms一个周期，高电平最多2-3ms， dshot, ppm 等都不可能这么多时间高电平，所以这个15ms是一个很合理的值。</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
 ; No signal entry point
@@ -142,8 +144,10 @@ IF MCU_48MHZ == 2
 ELSE
 	ljmp	1C00h			; Jump to bootloader
 ENDIF</code></pre>
-<p>我们先不看bootloader,  先看正常流程，正常流程是跳到bootloader_done，跳到这里，就是解码之前读出的配置,  然后调用 find_throttle_gains 去找油门补偿，就是根据最大最小测试，还有死区，计算一个油门的补偿，结果放在 Throttle_Gain:    （  ; Gain to be applied to RCP value）和<br/> Throttle_Gain_M:           (  倍数， Gain to be applied to RCP value (multiplier 0=1x, 1=2x, 2=4x etc)) )</p>
-<pre><code class="language-cpp hljs">bootloader_done:
+<p>我们先不看bootloader,  先看正常流程，正常流程是跳到bootloader_done，跳到这里，就是解码之前读出的配置,  然后调用 find_throttle_gains 去找油门补偿，就是根据最大最小测试，还有死区，计算一个油门的补偿，结果放在 Throttle_Gain:    （  ; Gain to be applied to RCP value）和<br/>
+Throttle_Gain_M:           (  倍数， Gain to be applied to RCP value (multiplier 0=1x, 1=2x, 2=4x etc)) )</p>
+<pre>
+<code class="language-cpp hljs">bootloader_done:
 	; Decode settings
 	call	decode_settings
 	; Find throttle gain from stored min and max settings
@@ -158,7 +162,8 @@ IF MCU_48MHZ &gt;= 1
 	Set_MCU_Clk_24MHz
 ENDIF</code></pre>
 <p>开启油门输入的中断，开启timer等等</p>
-<pre><code class="language-cpp hljs">; Setup timers for pwm input
+<pre>
+<code class="language-cpp hljs">; Setup timers for pwm input
 	mov	IT01CF, #RTX_PIN	; Route RCP input to INT0
 	mov	TCON, #11h		; Timer 0 run and INT0 edge triggered
 	mov	CKCON0, #04h		; Timer 0 clock is system clock
@@ -178,14 +183,16 @@ ENDIF
 	mov	EIE1, #90h		; Enable timer 3 and PCA0 interrupts
 	mov	IP, #01h			; High priority to INT0 interrupts</code></pre>
 <p>初始化比较器和ADC，并打开所有的中断</p>
-<pre><code class="language-cpp hljs">	; Initialize comparator
+<pre>
+<code class="language-cpp hljs">	; Initialize comparator
 	Initialize_Comparator	; Initialize comparator
 	; Initialize ADC
 	Initialize_Adc			; Initialize ADC operation
 	call	wait1ms
 	setb	IE_EA			; Enable all interrupts</code></pre>
 <p>重置一些和dshot输入信号相关的变量：</p>
-<pre><code class="language-cpp hljs">	; Reset stall count
+<pre>
+<code class="language-cpp hljs">	; Reset stall count
 	mov	Stall_Cnt, #0
 	; Initialize RC pulse
 	clr	Flags2.RCP_UPDATED		 	; Clear updated flag
@@ -200,7 +207,8 @@ ENDIF
 <p>测试信号是不是常规的pwm， 直接等100ms ，是如果Rcp_Outside_Range_Cnt小于10，那么就是常规的pwm。  否则去检查是不是OneShot125，mulitshot. 检查之前会上面几行已经清空Flags2.RCP_ONESHOT125，  Flags2.RCP_ONESHOT42，clr    Flags2.RCP_MULTISHOT</p>
 <p>和clr    Flags2.RCP_DSHOT。</p>
 <p>Rcp_Outside_Range的是在输入信号的中断里，检查到高电水大于2235us就会增加一次计数。pwm是20ms一个周期，最多5次，正常一般正电平也不会超2235us。</p>
-<pre><code class="language-cpp hljs">; Test whether signal is regular pwm
+<pre>
+<code class="language-cpp hljs">; Test whether signal is regular pwm
 	mov	Rcp_Outside_Range_Cnt, #0		; Reset out of range counter
 	call wait100ms						; Wait for new RC pulse
 	clr	C
@@ -209,7 +217,8 @@ ENDIF
 	jnc	($+4)   ;jump to Test whether signal is OneShot125 
 	ajmp	validate_rcp_start</code></pre>
 <p>检查输入出信号是不是dshot, 检查之前设置    Flags2.RCP_ONESHOT125  </p>
-<pre><code class="language-cpp hljs">	; Test whether signal is OneShot125
+<pre>
+<code class="language-cpp hljs">	; Test whether signal is OneShot125
 	setb	Flags2.RCP_ONESHOT125			; Set OneShot125 flag
 	mov	Rcp_Outside_Range_Cnt, #0		; Reset out of range counter
 	call wait100ms						; Wait for new RC pulse
@@ -220,7 +229,8 @@ ENDIF
 	ajmp	validate_rcp_start
 </code></pre>
 <p>检查其它信号，这里如下，这里不详细看了, 相关资料</p>
-<pre><code class="hljs language-javascript">Standard PWM ：1000us – 2000us
+<pre>
+<code class="hljs language-javascript">Standard PWM ：1000us – 2000us
 Oneshot125：125us – 250us
 Oneshot 42：2us – 84us
 Multishot：5us – 25us
@@ -230,7 +240,8 @@ Dshot300 ：53.4us
 Dshot600 ：26.7us
 DShot1200：13.4us</code></pre>
 <p></p>
-<pre><code class="language-cpp hljs">; Test whether signal is OneShot42
+<pre>
+<code class="language-cpp hljs">; Test whether signal is OneShot42
 	clr	Flags2.RCP_ONESHOT125
 	setb	Flags2.RCP_ONESHOT42			; Set OneShot42 flag
 	mov	Rcp_Outside_Range_Cnt, #0		; Reset out of range counter
@@ -332,10 +343,12 @@ ENDIF
 	subb	A, #10
 	jc	validate_rcp_start</code></pre>
 <p>如果都不满足，那么跳回no signal，继续检查。</p>
-<pre><code class="language-cpp hljs">	ajmp	init_no_signal
+<pre>
+<code class="language-cpp hljs">	ajmp	init_no_signal
 </code></pre>
 <p>要是检测到上述任一个信号，那么再等3 ms, 看看jb    Flags2.RCP_UPDATED，是不是有设置，应该就是说再去读一个输入值了吧。就是没有设置，那么跳回init_no_signal， 继续检查。</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 validate_rcp_start:
 	; Validate RC pulse
 	call wait3ms						; Wait for new RC pulse
@@ -343,7 +356,8 @@ validate_rcp_start:
 	ljmp	init_no_signal					; Go back to detect input signal
 </code></pre>
 <p>信号ok了，那么开始一个<span style="color:#fe2c24;">长beep  f1</span>了 , 这里没有wait30ms, 其实就是do加长三倍。</p>
-<pre><code class="language-cpp hljs">; Beep arm sequence start signal
+<pre>
+<code class="language-cpp hljs">; Beep arm sequence start signal
 	clr 	IE_EA						; Disable all interrupts
 	call beep_f1						; Signal that RC pulse is ready
 	call beep_f1
@@ -352,7 +366,8 @@ validate_rcp_start:
 	call wait200ms	
 </code></pre>
 <p>开启arming序列, 要是dshot协议, 或者是双向打开，那么不会进行油门校准，直接跳到program_by_tx_checked, 如果设置没有打开tx program这里也会跳到program_by_tx_checked。</p>
-<pre><code class="language-cpp hljs">	; Arming sequence start
+<pre>
+<code class="language-cpp hljs">	; Arming sequence start
 arming_start:
 	jb	Flags2.RCP_DSHOT, ($+6)	; Disable tx programming for DShot
 	jnb	Flags3.PGM_BIDIR, ($+6) ; Disable  tx programming for bidir
@@ -368,7 +383,8 @@ arming_start:
 
 	jmp	program_by_tx_checked	; No - branch</code></pre>
 <p>进行arming_initial_arm_check，Initial_Arm（这个变量在开始是1， 在arming完成之后会置0）是不是1, 要是零，也跳到program_by_tx_checked</p>
-<pre><code class="language-cpp hljs">arming_initial_arm_check:
+<pre>
+<code class="language-cpp hljs">arming_initial_arm_check:
 	mov	A, Initial_Arm			; Yes - check if it is initial arm sequence
 	clr	C
 	subb	A, #1				; Is it the initial arm sequence?
@@ -379,7 +395,8 @@ arming_start:
 <p>就是说你的油门要是一直在高位，你听到<span style="color:#fe2c24;">两个f4的beep.</span></p>
 <p>两声beep之后，开计算平均油门。然后等200ms, 开始响成功beep，这个是f1,f2,f3,f4等10ms, 重复三次。  这个代码在inc里。</p>
 <p>保存这个油门值在 Pgm_Max_Throttle</p>
-<pre><code class="language-cpp hljs">arming_check:
+<pre>
+<code class="language-cpp hljs">arming_check:
 	; Initialize flash keys to valid values
 	mov	Flash_Key_1, #0A5h
 	mov	Flash_Key_2, #0F1h
@@ -415,7 +432,8 @@ throttle_high_cal:
 <p>等到小于中位的油门，就<span style="color:#fe2c24;">响beep_f1两次</span>。</p>
 <p>比较当前油门(new_Rcp)值是不是 Pgm_Max_Throttle 小 140us（35），如果太小，就是会把Pgm_Max_Throttle设置为当前的最小值+140us(35)，然后等200ms.</p>
 <p> 响成功的声音 success_beep_inverted， 这个和高油门的反过来了，就是f4, f3, f2, f1这样响三次，也是在inc文件里，这里为会了不打断主流程也不列贴出来了。</p>
-<pre><code class="language-cpp hljs">
+<pre>
+<code class="language-cpp hljs">
 throttle_low_cal_start:
 	mov	Temp8, #10			; Set 3 seconds wait time
 throttle_low_cal:			
@@ -464,13 +482,15 @@ program_by_tx_entry_store:
 	call erase_and_store_all_in_eeprom	
 	call	success_beep_inverted</code></pre>
 <p>然后来到tx编程的等待，这里又会跳回去init_no_signal，这里又会走一次上面的设置代码，但是到了校准高位油门时，因为New_Rcp这时是小于255/2的，所以你听到<span style="color:#fe2c24;">一声长响的beep_f1(do)</span> 后，就直接会跳到了program_by_tx_checked.</p>
-<pre><code class="language-cpp hljs">program_by_tx_entry_wait:
+<pre>
+<code class="language-cpp hljs">program_by_tx_entry_wait:
 	call wait100ms
 	call	find_throttle_gains		; Set throttle gains
 	ljmp	init_no_signal			; Go back
 </code></pre>
 <p>检查油门是不是低于stop, 是的话，arming结束， 开始<span style="color:#fe2c24;">长响一个三拍的beep_f4</span>（没有wait,所以连起来了）, 保存 Initial_Arm为0.</p>
-<pre><code class="language-cpp hljs">program_by_tx_checked:
+<pre>
+<code class="language-cpp hljs">program_by_tx_checked:
 	; Initialize flash keys to invalid values
 	mov	Flash_Key_1, #0
 	mov	Flash_Key_2, #0
@@ -494,7 +514,8 @@ arm_end_beep:
 	; Clear initial arm variable
 	mov	Initial_Arm, #0</code></pre>
 <p>检查信号， 这个其实就是看看 Rcp_Timeout_Cnt是不是零，Rcp_Timeout_Cntd在开始赋值1或10，要是超时这个减少1，要是零表示，有一段时间没有收到油门信号变化了，Timer2(t2), 每32ms会去减一下Rcp_Timeout_Cnt直至到零。Pgm_Beacon_Delay会和Power_On_Wait_Cnt_H相减，要是借位，就会开始beep f4, beep一次Power_On_Wait_Cnt_H会减1，就是Power_On_Wait_Cnt_L是255的时候beep一次了。 这个是用来发出声音来寻机用的。很多地方会跳回wait_for_power_on。</p>
-<pre><code class="language-cpp hljs">	; Armed and waiting for power on
+<pre>
+<code class="language-cpp hljs">	; Armed and waiting for power on
 wait_for_power_on:
 	clr	A
 	mov	Power_On_Wait_Cnt_L, A	; Clear wait counter
@@ -553,7 +574,8 @@ wait_for_power_on_no_beep:
 	jmp	init_no_signal				; If pulses missing - go back to detect input signal
 </code></pre>
 <p>如果有信号（Rcp_Timeout_Cntd不是零），同时New_Rcp(油门)不是零跳到 wait_for_power_on_nonzero， 再检查一次Rcp_Timeout_Cntd是不是零，要是不是零，那就跳到init_start</p>
-<pre><code class="language-cpp hljs">wait_for_power_on_not_missing:
+<pre>
+<code class="language-cpp hljs">wait_for_power_on_not_missing:
 	clr	C
 	mov	A, New_Rcp			; Load new RC pulse value
 	subb	A, #1		 		; Higher than stop

@@ -22,9 +22,9 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2024-02-06 19:36:56</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1278</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 1485</div>
         <div class="meta-item"><i class="far fa-comment"></i> 评论数: 3</div>
-        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 12</div>
+        <div class="meta-item"><i class="far fa-star"></i> 收藏数: 15</div>
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 22</div>
     </div>
     
@@ -35,11 +35,13 @@
     <div class="article-content">
         <div class="htmledit_views atom-one-dark" id="content_views">
 <p>我们接着细细读一下wait_for_comp_out_low和wait_for_comp_out_high。</p>
-<p><br/>        如上面看到的，这两个方法是由 run1-6最开始读取的， 可以看到，high low都差不多，只是访问的Bit_Access不一样, BitAccess是用来检查CMP0CN0.CPOUT的结果的，就是CPOUT是0表示电压CP0P &lt; CP0N，1表示CP0P &gt; CP0N。 即当不是转向刹车时，wait..low的时候，要看看CP0P小于CP0N,  wait..high相反。</p>
+<p><br/>
+       如上面看到的，这两个方法是由 run1-6最开始读取的， 可以看到，high low都差不多，只是访问的Bit_Access不一样, BitAccess是用来检查CMP0CN0.CPOUT的结果的，就是CPOUT是0表示电压CP0P &lt; CP0N，1表示CP0P &gt; CP0N。 即当不是转向刹车时，wait..low的时候，要看看CP0P小于CP0N,  wait..high相反。</p>
 <p>      测试的针脚在换相的时候更换，如P.inc的针脚布局看到的，检测A相时CMP0MX = 43h，B相是23h, C相是13h. 查手册得，三个的CP0P（正比较输入）都是P0.3 就是公共com, 然后CP0N（负比较输入）A相是P0.4  B相是P0.2, C相是P0.1。</p>
 <p>      HIGH_RPM这个标志是当前的电机运行速度，在计算时机的时候会清空或者设置。（当Comm_Period4x_H less than 2）</p>
 <p>先是把demag的检测标志（DEMAG_DETECTED）设置为1， 然后重置比较器的读取次数为零（Comparator_Read_Cnt）， 然后统一跳到wait_for_comp_out_start.</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
 ; Wait for comparator to go low/high routines
@@ -82,7 +84,8 @@ wait_for_comp_out_high:
 <p>       B. 否则就是在启动的阶段（STARTUP_PHASE），这里会将Startup_Zc_Timeout_Cntd减1(超时次数，wait_before_zc_scan会把它设置成2)，要是它还不是0，就跳到comp_check_timeout_extend_timeout,再调用setup_zc_scan_timeout。</p>
 <p></p>
 <p>comp_check_timeout_timeout_extended  这里会设置Flags0.COMP_TIMED_OUT， 然后跳到setup_comm_wait。</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 wait_for_comp_out_start:
 	; Set number of comparator readings
 	mov	Temp1, #1					; Number of OK readings required
@@ -138,7 +141,8 @@ comp_check_timeout_timeout_extended:
 	setb	Flags0.COMP_TIMED_OUT
 	ajmp	setup_comm_wait</code></pre>
 <p>接上面没有超时的流程走, 这里Comparator_Read_Cnt自增1，然后从CMP0CN0把值读到A,然后和上面选择的Bit_Access比较，如相等就跳到com_read_ok. 否则跳到comp_read_wrong。</p>
-<pre><code class="hljs language-javascript">comp_check_timeout_not_timed_out:
+<pre>
+<code class="hljs language-javascript">comp_check_timeout_not_timed_out:
 	inc	Comparator_Read_Cnt			; Increment comparator read count
 	Read_Comp_Out					; Read comparator output
 	anl	A, #40h
@@ -148,7 +152,8 @@ comp_check_timeout_timeout_extended:
 <p>如果是STARTUP_PHASE 的话，com_read_wrong这里会把Temp1自增1， 要是temp1大于等于temp2（最大次数），temp1减回1，变回来原来的值，就是temp1最多只能到temp2这个值了。</p>
 <p>然后跳回上面的comp_check_timeout，循环。</p>
 <p>如是当前不是STARTUP_PHASE, 会跳到comp_read_wrong_not_startup</p>
-<pre><code class="hljs language-javascript">comp_read_wrong:
+<pre>
+<code class="hljs language-javascript">comp_read_wrong:
 	jnb	Flags1.STARTUP_PHASE, comp_read_wrong_not_startup
 
 	inc	Temp1					; Increment number of OK readings required
@@ -162,7 +167,8 @@ comp_check_timeout_timeout_extended:
 <p>来到comp_read_wrong_not_startup，</p>
 <p>             这里判断要是需要检查消磁，会跳到comp_read_wrong_extend_timeout。</p>
 <p>             如果不需要的话，那么temp1自增1， 然后和temp2比较，要是小于temp2跳回comp_check_timeout, 要是大于等于，那就跳回最开始的地方wait_for_comp_out_start重新初始化，重新检测。 </p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 comp_read_wrong_not_startup:
 	jb	Flags0.DEMAG_DETECTED, comp_read_wrong_extend_timeout
 
@@ -177,7 +183,8 @@ comp_read_wrong_not_startup:
 <p></p>
 <p>有消磁检测时延长超时，默认是high_rpm 的，会把timer3设置一个1ms左右的超时, 然后设置T3_PENDING, 跳加wait_for_comp_out_start，</p>
 <p> 不是high_rpm看comp_read_wrong_low_rpm。</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 comp_read_wrong_extend_timeout:
 	clr	Flags0.DEMAG_DETECTED		; Clear demag detected flag
 	anl	EIE1, #7Fh				; Disable timer 3 interrupts
@@ -199,7 +206,8 @@ comp_read_wrong_timeout_set:
 </code></pre>
 <p>如果没有设置high_rpm，那么来到comread_wrong_low_rpm，Temp7先默认为0xff, 这里把Comm_Period4x_H乘以4, 看看有没有借位，没有的话，就把temp7=Comm_Period4x_H， </p>
 <p>然后以temp7去设置timer3的超时。</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 comp_read_wrong_low_rpm:
 	mov	A, Comm_Period4x_H			; Set timeout to ~4x comm period 4x value
 	mov	Temp7, #0FFh				; Default to long
@@ -229,7 +237,8 @@ comp_read_wrong_load_timeout:
 <p>如果成功读到正确的值，那么来到comp_read_ok这里，</p>
 <p>    如果Startup_Cnt&lt;1或者Flags0.DEMAG_DETECTED还是1，那么跳回wait_for_comp_out_start。 否则Temp1减1如果不是零，跳回comp_check_timeout。 </p>
 <p>上面条都不满的话，清空    clr    Flags0.COMP_TIMED_OUT， 然后去到setup_comm_wait。</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 comp_read_ok:
 	clr	C
 	mov	A, Startup_Cnt				; Force a timeout for the first commutation
@@ -248,8 +257,10 @@ comp_read_ok_jmp:
 
 	clr	Flags0.COMP_TIMED_OUT
 </code></pre>
-<p>setup_comm_wait 这里会初始化等待，主要是操作timer3, 先是把Wt_Comm_Start设置为当前的超时，然后再把Wt_Adv_Start设为auto reload的值, 作为下次的等待时间。 Timer3的中断主要是清空<br/> ​Flags0.T3_PENDING这个值。</p>
-<pre><code class="hljs language-javascript">
+<p>setup_comm_wait 这里会初始化等待，主要是操作timer3, 先是把Wt_Comm_Start设置为当前的超时，然后再把Wt_Adv_Start设为auto reload的值, 作为下次的等待时间。 Timer3的中断主要是清空<br/>
+​Flags0.T3_PENDING这个值。</p>
+<pre>
+<code class="hljs language-javascript">
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
 ; Setup commutation timing routine
@@ -276,7 +287,8 @@ setup_comm_wait:
 </code></pre>
 <p>接下来，检测这个比较器的行为是不是预期的。这个如果启动和初始化阶段不做，直接跳到eval_comp_exit。</p>
 <p>其它阶段，如果COMP_TIMED_OUT为零，或者Flags1.DIR_CHANGE_BRAKE，或者Flags0.DEMAG_DETECTED也跳到eval_comp_exit。如果不满足，则跳到run_to_wait_for_power_on_fail，是一些失败的检查，最坏会跳回init_no_signal。</p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 ;**** **** **** **** **** **** **** **** **** **** **** **** ****
 ;
 ; Evaluate comparator integrity
@@ -312,7 +324,8 @@ eval_comp_exit:
 <p>跟着检查Stall_Cnt, 要是它小于4那么跳回wait_for_power_on， 否则跳到init_no_signal。</p>
 <p></p>
 <p></p>
-<pre><code class="hljs language-javascript">
+<pre>
+<code class="hljs language-javascript">
 run_to_wait_for_power_on_fail:	
 	inc	Stall_Cnt					; Increment stall count
 	mov	A, New_Rcp				; Check if RCP is zero, then it is a normal stop			
@@ -351,10 +364,33 @@ run_to_wait_for_power_on_brake_done:
 jmp_wait_for_power_on:
 	jmp	wait_for_power_on			; Go back to wait for power on
 </code></pre>
-<p>​<br/> run_to_wait_for_power_on_fail是由前面的wait_for_comp_out_low和wait_for_comp_out_high的异常读取触发的。</p>
+<p>​<br/>
+run_to_wait_for_power_on_fail是由前面的wait_for_comp_out_low和wait_for_comp_out_high的异常读取触发的。</p>
 <p>这一篇主要是计算和等待bemf信号，还是很复杂的逻辑。</p>
-<p>上面的流程使用分主要情况讨论，总结一下：<br/> 1. 对于非启动阶段(STARTUP_PHASE和INITIAL_RUN_PHASE都是零)，低速(HIGH_RPM==0))<br/>    1.1 一开始就会设置DEMAG_DETECTED，<br/>    1.2 初始化读取的次数和最大读取次数，最大20次，当前次数为limit(Comm_Period4x_H/2, 1, 20)<br/>    1.3 判断timer3有没有超时，要是超时跳到超时处理流程1.7<br/>    1.4 尝试去读一次比较值，读对就直接返回，读错继续走<br/>    1.5 如DEMAG_DETECTED为1，清空DEMAG_DETECTED为零， 然后Comm_Period4x_H来设置timer3，延长超时，然后跳回1.2. 因为DEMAG_DETECTED变零就不会再来了，第二次就走 1.6 了。<br/>    1.6 如读取的次数大于小于最大读取次数  跳回1.3, 否则跳回1.2 <br/>    1.7 超时了，设置COMP_TIMED_OUT,然后跳到setup_comm_wait<br/>    1.8 要是DIR_CHANGE_BRAKE和DEMAG_DETECTED都没有设置的话，就会进入失败处理流程，跳到run_to_wait_for_power_on_fail。 即要是读错一次比较值后超时，不是DIR_CHANGE_BRAKE，就一定会进入失败流程了。</p>
-<p><br/>  2. 对于非启动阶段(STARTUP_PHASE和INITIAL_RUN_PHASE都是零)，高速(HIGH_RPM==1))<br/>     和低速相比，流程是一样的 不同点： <br/>    2.1 初始化读取的次数和最大读取次数不同，这时两个都是1， <br/>    2.2 第一次设置timer3延长超时固定是0xf000, 即1 ms左右。<br/>    <br/>  3. 对于启动阶段(STARTUP_PHASE和INITIAL_RUN_PHASE有一个是1)<br/>     3.1 一开始就会设置DEMAG_DETECTED<br/>     3.2 将DEMAG_DETECTED置为零， 初始化读取的次数和最大读取次数，最大20次，当前次数为limit(Comm_Period4x_H/2, 1, 20)<br/>     3.3 判断timer3有没有超时，要是超时跳到超时处理流程3.6<br/>     3.4 尝试去读一次比较值，读对就直接返回，读错继续走<br/>     3.5 自增读取次数，要是大于20, 就不会自增， 跟着跳回3.3<br/>     3.6 超时了， 判断Startup_Zc_Timeout_Cntd减1后是不是零，要是零的话，设置COMP_TIMED_OUT,然后跳到setup_comm_wait, 否则调用setup_zc_scan_timeout<br/>     3.7 setup_zc_scan_timeout 返回后跳到 3.4 </p>
+<p>上面的流程使用分主要情况讨论，总结一下：<br/>
+1. 对于非启动阶段(STARTUP_PHASE和INITIAL_RUN_PHASE都是零)，低速(HIGH_RPM==0))<br/>
+   1.1 一开始就会设置DEMAG_DETECTED，<br/>
+   1.2 初始化读取的次数和最大读取次数，最大20次，当前次数为limit(Comm_Period4x_H/2, 1, 20)<br/>
+   1.3 判断timer3有没有超时，要是超时跳到超时处理流程1.7<br/>
+   1.4 尝试去读一次比较值，读对就直接返回，读错继续走<br/>
+   1.5 如DEMAG_DETECTED为1，清空DEMAG_DETECTED为零， 然后Comm_Period4x_H来设置timer3，延长超时，然后跳回1.2. 因为DEMAG_DETECTED变零就不会再来了，第二次就走 1.6 了。<br/>
+   1.6 如读取的次数大于小于最大读取次数  跳回1.3, 否则跳回1.2 <br/>
+   1.7 超时了，设置COMP_TIMED_OUT,然后跳到setup_comm_wait<br/>
+   1.8 要是DIR_CHANGE_BRAKE和DEMAG_DETECTED都没有设置的话，就会进入失败处理流程，跳到run_to_wait_for_power_on_fail。 即要是读错一次比较值后超时，不是DIR_CHANGE_BRAKE，就一定会进入失败流程了。</p>
+<p><br/>
+ 2. 对于非启动阶段(STARTUP_PHASE和INITIAL_RUN_PHASE都是零)，高速(HIGH_RPM==1))<br/>
+    和低速相比，流程是一样的 不同点： <br/>
+   2.1 初始化读取的次数和最大读取次数不同，这时两个都是1， <br/>
+   2.2 第一次设置timer3延长超时固定是0xf000, 即1 ms左右。<br/>
+   <br/>
+ 3. 对于启动阶段(STARTUP_PHASE和INITIAL_RUN_PHASE有一个是1)<br/>
+    3.1 一开始就会设置DEMAG_DETECTED<br/>
+    3.2 将DEMAG_DETECTED置为零， 初始化读取的次数和最大读取次数，最大20次，当前次数为limit(Comm_Period4x_H/2, 1, 20)<br/>
+    3.3 判断timer3有没有超时，要是超时跳到超时处理流程3.6<br/>
+    3.4 尝试去读一次比较值，读对就直接返回，读错继续走<br/>
+    3.5 自增读取次数，要是大于20, 就不会自增， 跟着跳回3.3<br/>
+    3.6 超时了， 判断Startup_Zc_Timeout_Cntd减1后是不是零，要是零的话，设置COMP_TIMED_OUT,然后跳到setup_comm_wait, 否则调用setup_zc_scan_timeout<br/>
+    3.7 setup_zc_scan_timeout 返回后跳到 3.4 </p>
 <p>下图来自网络，仅参考，有出入：</p>
 <p><img alt="" height="664" src="images/bu/6b859b3f626db9c64f97c48293b82211.png" width="553"/></p>
 <p>高速状态下需要正确读取1次，低速状态下需要读取前4次换相时间高字节一半的次数，最大20次，特别的，在启动阶段，需要正确读取27次</p>

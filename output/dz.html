@@ -22,7 +22,7 @@
     
     <div class="article-meta">
         <div class="meta-item"><i class="far fa-calendar-alt"></i> 发布时间: 2016-08-27 15:38:25</div>
-        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2784</div>
+        <div class="meta-item"><i class="far fa-eye"></i> 浏览量: 2813</div>
         
         
         <div class="meta-item"><i class="far fa-thumbs-up"></i> 点赞数: 1</div>
@@ -41,67 +41,105 @@
 <p>4. tar -xzf valgrind-3.11.0.tar.bz2</p>
 <p>5. cd valgrind-3.11.0</p>
 <p>6. 设置工具链 ：</p>
-<p><br/> <br/>        ARCH_ABI="arm-linux-androideabi-4.8"<br/>        HOSTOSN="darwin-x86_64"<br/> </p>
-<p><br/> <br/>        export AR="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ar"<br/>        export LD="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ld"<br/>        export CC="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-gcc"<br/>        export CXX="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-g++"<br/> </p>
+<p><br/>
+<br/>
+       ARCH_ABI="arm-linux-androideabi-4.8"<br/>
+       HOSTOSN="darwin-x86_64"<br/>
+</p>
+<p><br/>
+<br/>
+       export AR="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ar"<br/>
+       export LD="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ld"<br/>
+       export CC="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-gcc"<br/>
+       export CXX="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-g++"<br/>
+</p>
 <p>#这个rand要设置，要不然就会在ld的时候用了默认的ranlib, 出错：no archive symbol table (run ranlib)</p>
-<p>       export RANLIB="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ranlib"<br/>        export STRIP="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-strip"<br/> </p>
-<p><br/> 7.设置sysroot, 记得要export，不然configure的时候，就会出错："configure: error: C compiler cannot create executables"<br/>        export CPPFLAGS="--sysroot=$NDK_ROOT/platforms/android-19/arch-arm" <br/>        export CFLAGS="--sysroot=$NDK_ROOT/platforms/android-19/arch-arm" <br/> </p>
+<p>       export RANLIB="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-ranlib"<br/>
+       export STRIP="$NDK_ROOT/toolchains/${ARCH_ABI}/prebuilt/${HOSTOSN}/bin/arm-linux-androideabi-strip"<br/>
+</p>
+<p><br/>
+7.设置sysroot, 记得要export，不然configure的时候，就会出错："configure: error: C compiler cannot create executables"<br/>
+       export CPPFLAGS="--sysroot=$NDK_ROOT/platforms/android-19/arch-arm" <br/>
+       export CFLAGS="--sysroot=$NDK_ROOT/platforms/android-19/arch-arm" <br/>
+</p>
 <p><span style="white-space:pre">android-19/</span> 这个挑一下你本地有的最新的就好。</p>
 <p>8. configure, 生成makefile</p>
-<p>    ./configure --prefix="/data/local/Inst" \<br/>   --host="armv7-unknown-linux" \<br/>   --target="armv7-unknown-linux" \<br/>   --with-tmpdir="/sdcard "</p>
+<p>    ./configure --prefix="/data/local/Inst" \<br/>
+  --host="armv7-unknown-linux" \<br/>
+  --target="armv7-unknown-linux" \<br/>
+  --with-tmpdir="/sdcard "</p>
 <p>完成之后必须看到这两行，要是是其它的，这个出错了，看readme.android文件的说明。</p>
-<p>#          Platform variant: android<br/> #     Primary -DVGPV string: -DVGPV_arm_linux_android=1<br/> </p>
-<p><br/> </p>
+<p>#          Platform variant: android<br/>
+#     Primary -DVGPV string: -DVGPV_arm_linux_android=1<br/>
+</p>
+<p><br/>
+</p>
 <p>9. 编译和生成：</p>
 <p>      make -j 4</p>
 <p>10. 把编译好的文件整理出来到Inst目录</p>
 <p>     make -j4 install DESTDIR=`pwd`/Inst</p>
 <p>    完成之后，全部要完装的文件都在当前目录下的Inst里了。</p>
-<p><br/> </p>
+<p><br/>
+</p>
 <p>11. 上传到手机</p>
 <p>     adb push  Inst/data/local/   /data/local/Inst</p>
-<p><br/> </p>
-<p><br/> </p>
+<p><br/>
+</p>
+<p><br/>
+</p>
 <p>使用：</p>
-<p><br/> </p>
+<p><br/>
+</p>
 <p></p>
 <p class="p1">写一个 start_valgrind.sh  上传到手机的 /data/local下：</p>
 <p class="p1">#!/system/bin/sh</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">PACKAGE="com.example.hellojni"</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1"># Callgrind tool</p>
 <p class="p1">#VGPARAMS='-v --error-limit=no --trace-children=yes --log-file=/sdcard/valgrind.log.%p --tool=callgrind --callgrind-out-file=/sdcard/callgrind.out.%p'</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1"># Memcheck tool</p>
 <p class="p1">VGPARAMS='-v --error-limit=no --trace-children=yes --log-file=/sdcard/valgrind.log.%p --tool=memcheck --leak-check=full --show-reachable=yes'</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">export TMPDIR=/data/data/$PACKAGE</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">exec /data/local/Inst/bin/valgrind $VGPARAMS $* </p>
 <br/>
 <p>本地写一个脚本： bootstrap_valgrind.sh </p>
 <p class="p1">#!/usr/bin/env bash</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">PACKAGE="com.example.hellojni"</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">adb push start_valgrind.sh /data/local/</p>
 <p class="p1">adb shell chmod 777 /data/local/start_valgrind.sh </p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">adb root</p>
 <p class="p1">adb shell "setprop wrap.$PACKAGE 'logwrapper /data/local/start_valgrind.sh'"</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">echo "wrap.$PACKAGE: $(adb shell getprop wrap.$PACKAGE)"</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">adb shell am force-stop $PACKAGE</p>
 <p class="p1">#这个是关闭selinux, 要不然会出acv denied的错误</p>
 <p class="p1">adb shell setenforce 0  </p>
 <p class="p1">#adb shell mount -o remount,rw -t ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system</p>
 <p class="p1">adb shell am start -a android.intent.action.MAIN -n $PACKAGE/.HelloJni</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p1">adb logcat -c</p>
 <p class="p1">adb logcat</p>
-<p class="p2"><br/> </p>
+<p class="p2"><br/>
+</p>
 <p class="p2">如果没有这个 adb shell setenforce 0   命令， 有会下面的错, 是因为selinux的权限问题，不让访问。</p>
 <p class="p2"></p>
 <p class="p1">&lt;36&gt;[ 1365.720814] type=1400 audit(1472452195.847:5): avc: denied { write } for pid=2396 comm="main" path="pipe:[16280]" dev="pipefs" ino=16280 scontext=u:r:untrusted_app:s0 tcontext=u:r:zygote:s0 tclass=fifo_file</p>
@@ -109,8 +147,10 @@
 <p class="p1"></p>
 <p class="p1"></p>
 <p class="p1">W/Zygote  (  198): at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)</p>
-<p class="p1"><br/> </p>
-<p class="p1"><br/> </p>
+<p class="p1"><br/>
+</p>
+<p class="p1"><br/>
+</p>
 <br/>
 <br/>
 <p>补丁，实际跑的时候nexus5下还有一个出错的：</p>
@@ -132,8 +172,26 @@
 <p class="p1">==13298== probably kill your program.</p>
 <br/>
 <p>需要改改 valgrind-3.11.0/VEX/priv/guest_arm_toIR.c  17257行，加上以下代码：</p>
-<p>   /*<br/> <br/> <br/>       disInstr(arm): unhandled instruction: 0xEC510F1E<br/>                  cond=14(0xE) 27:20=197(0xC5) 4:4=1 3:0=14(0xE)<br/>    */<br/>    /*mrrc     p15, 1, r0,  r1, c14  */<br/>    if (0xEC510F1E == (insn &amp; 0xFFFF0FFF)) {<!-- --><br/>       UInt rK = INSN(15,12);<br/>       UInt rM = INSN(19,16);<br/>       if (rK &lt;= 14&amp;&amp;rM &lt;= 14) {<!-- --><br/>          putIRegA(rK, mkU32(0), condT, Ijk_Boring);<br/>          putIRegA(rM, mkU32(0), condT, Ijk_Boring);<br/>          DIP("mrrc p15,1,r%u,r%u,r1,c14\n",rM,rK);<br/>          goto decode_success;<br/>       }<br/>    }<br/> </p>
-<p><br/> </p>
+<p>   /*<br/>
+<br/>
+<br/>
+      disInstr(arm): unhandled instruction: 0xEC510F1E<br/>
+                 cond=14(0xE) 27:20=197(0xC5) 4:4=1 3:0=14(0xE)<br/>
+   */<br/>
+   /*mrrc     p15, 1, r0,  r1, c14  */<br/>
+   if (0xEC510F1E == (insn &amp; 0xFFFF0FFF)) {<!-- --><br/>
+      UInt rK = INSN(15,12);<br/>
+      UInt rM = INSN(19,16);<br/>
+      if (rK &lt;= 14&amp;&amp;rM &lt;= 14) {<!-- --><br/>
+         putIRegA(rK, mkU32(0), condT, Ijk_Boring);<br/>
+         putIRegA(rM, mkU32(0), condT, Ijk_Boring);<br/>
+         DIP("mrrc p15,1,r%u,r%u,r1,c14\n",rM,rK);<br/>
+         goto decode_success;<br/>
+      }<br/>
+   }<br/>
+</p>
+<p><br/>
+</p>
 </div>
     </div>
     
